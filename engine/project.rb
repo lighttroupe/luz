@@ -56,7 +56,7 @@ class Project
 		}
 	}
 
-	attr_reader :change_count, :missing_plugin_names
+	attr_reader :change_count, :missing_plugin_names, :path
 
 	def initialize
 		@last_save_time = Time.now
