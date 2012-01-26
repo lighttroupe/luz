@@ -20,7 +20,7 @@ class ActorEffectRepeat < ActorEffect
 	title				"Repeat"
 	description	"Draws actor multiple times."
 
-	setting 'number', :integer, :range => 1..100, :default => 1..2
+	setting 'number', :integer, :range => 1..100, :default => 1..2, :summary => true
 
 	def render
 		for i in 0...number

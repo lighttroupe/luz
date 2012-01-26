@@ -167,6 +167,7 @@ class UserObject
 		self.class.settings.each { |setting|
 			# NOTE: uses ||= so it doesn't clober UOSs in case of File/Load or plugin reload
 			instance_eval("@#{setting.name}_setting ||= new_user_object_setting(setting)", __FILE__, __LINE__)
+			instance_eval("@#{setting.name}_setting.options = setting.options", __FILE__, __LINE__)
 			instance_eval("@#{setting.name}_setting.parent = self", __FILE__, __LINE__)
 			instance_eval("@settings << @#{setting.name}_setting", __FILE__, __LINE__)
 		}

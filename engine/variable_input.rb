@@ -36,7 +36,7 @@ class VariableInput < UserObject
 
 		resolve_settings
 		user_object_try {
-			@current_value = value.clamp(0.0, 1.0)
+			@current_value = (value || 0.0).clamp(0.0, 1.0)
 			return @current_value
 		}
 		return 0.0	# In case of exceptions

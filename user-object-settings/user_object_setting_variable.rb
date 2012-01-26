@@ -39,16 +39,17 @@ class UserObjectSettingVariable < UserObjectSetting
 		(@variable) ? @variable.do_value : 0.0		# NOTE: important that we ask the variable (not the engine), in case it hasn't been updated yet this frame
 	end
 
+	def last_value
+		(@variable) ? @variable.last_value : 0.0		# NOTE: important that we ask the variable (not the engine), in case it hasn't been updated yet this frame
+	end
+
 	def variable
 		@variable
 	end
 
-	def with_value(value)
-		if @variable
-			@variable.with_value(value) { yield }
-		else
-			yield
-		end
+	def with_value(value, &proc)
+		return yield unless @variable
+		@variable.with_value(value, &proc)
 	end
 
 	def summary

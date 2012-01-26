@@ -244,6 +244,9 @@ class EditorWindow < GladeWindow
 			EasyDialog.new(self, :icon => :error, :header => "#{project.missing_plugin_names.size.plural('Plugin', 'Plugins')} Removed", :body => "This project requires the following plugins which we do not have:\n\n#{list}\n\nAll objects based on the above plugins have been removed.", :buttons => [[:ok, 'OK', :ok]]).show
 		end
 
+		@current_file_path = project.path
+		update_window_title
+
 		project.not_changed!
 	end
 

@@ -39,7 +39,7 @@ class Variable < ParentUserObject
 
 	def with_value(new_value)
 		current_value = @temporary_value
-		@temporary_value = new_value
+		@temporary_value = new_value.clamp(0.0, 1.0)
 		yield
 		@temporary_value = current_value
 	end
@@ -98,6 +98,7 @@ class Variable < ParentUserObject
 	end
 
 	def linear_damper(proposed_value, max_change_per_frame)
+		@last_value ||= 0.0
 		delta_value = proposed_value - @last_value
 		return proposed_value.clamp(0.0, 1.0) if delta_value.abs < 0.0001
 

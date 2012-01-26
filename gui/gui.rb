@@ -214,4 +214,18 @@ class GUI
 			yield if EasyDialog.new(self, :icon => :question, :header => "Delete #{count} selected objects?", :body => "#{object_titles}\n\nObjects cannot be undeleted.", :buttons => [[:cancel, '_Cancel', :cancel], [:delete, '_Delete', :delete]]).show_modal == :delete
 		end
 	end
+
+	def safe_open_file(path)
+		if File.file? path and File.owned? path
+			open("|gnome-open #{path}")
+			positive_message "Opening #{File.basename(path)} ..."
+		end
+	end
+	
+	def safe_open_image(path)
+		if File.file? path and File.owned? path
+			open("|gimp #{path}")
+			positive_message "Opening #{File.basename(path)} ..."
+		end
+	end
 end

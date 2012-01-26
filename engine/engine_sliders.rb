@@ -63,4 +63,3 @@ module EngineSliders
 		new_slider_notify(name)						# this lets us notify (fill GUI lists) after loading a set from disk
 	end
 end
-

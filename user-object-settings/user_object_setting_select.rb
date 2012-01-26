@@ -36,6 +36,7 @@ class UserObjectSettingSelect < UserObjectSetting
 	end
 
 	def summary
-		summary_format(@selected.to_s)
+		option = @options[:options].find { |o| o.first == @selected }		# format: [[:sym, 'name'], ...]
+		summary_format((option ? option.last : @selected).to_s)
 	end
 end

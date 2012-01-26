@@ -22,12 +22,43 @@ module DrawingShaderSnippets
 	#
 	# Shader Snippets Stitching
 	#
-	VERTEX_SHADER_HACK = "\nvoid main(void)\n{\ngl_Position = ftransform();\ngl_TexCoord[0] = gl_TextureMatrix[0] * gl_MultiTexCoord0;\ngl_FrontColor = gl_Color;\n}"
+	FRAGMENT_SHADER_STUB = "
+		uniform sampler2D texture0;
+
+		float rand(vec2 co)
+		{
+			return fract(sin(dot(co.xy, vec2(12.9898,78.233))) * 43758.5453);
+		}
+
+		void main(void)
+		{
+			vec4 output_rgba = gl_Color;				// the color from glColor
+			vec2 texture_st = gl_TexCoord[0].st;	// the assigned texture coordinates
+			output_rgba *= texture2D(texture0, texture_st);
+			gl_FragColor = output_rgba;		// apply final color
+		}
+		"
+
+	VERTEX_SHADER_STUB = "
+		void main(void)
+		{
+			gl_Position = ftransform();
+			gl_TexCoord[0] = gl_TextureMatrix[0] * gl_MultiTexCoord0;
+			gl_FrontColor = gl_Color;
+		}
+		"
 
 	$fragment_shader_snippet_stack = []		# clears when reloading this file
 	$fragment_shader_object_stack = []
 	$fragment_shader_uniform_stack = []
 	$fragment_shader_snippet_cache ||= {}
+
+	$vertex_shader_snippet_stack = []		# clears when reloading this file
+	$vertex_shader_object_stack = []
+	$vertex_shader_uniform_stack = []
+	$vertex_shader_snippet_cache = {}
+
+	$shader_program_cache ||= Hash.new { |hash, key| hash[key] = {} }
 
 	def with_fragment_shader_snippet(snippet, object)
 		return yield unless snippet		# allow nil
@@ -40,7 +71,7 @@ module DrawingShaderSnippets
 		uniform_count = 0
 		object.settings.each { |setting|
 			if setting.shader?
-				name = "snippet_#{index}_#{setting.name}"
+				name = "fragment_snippet_#{index}_#{setting.name}"
 				value = setting.immediate_value
 				$fragment_shader_uniform_stack.push([name, value])
 				uniform_count += 1
@@ -56,25 +87,56 @@ module DrawingShaderSnippets
 		$fragment_shader_snippet_stack.pop
 	end
 
+	def with_vertex_shader_snippet(snippet, object)
+		return yield unless snippet		# allow nil
+
+		index = $vertex_shader_object_stack.count
+
+		$vertex_shader_snippet_stack.push(snippet)
+		$vertex_shader_object_stack.push(object)
+
+		uniform_count = 0
+		object.settings.each { |setting|
+			if setting.shader?
+				name = "vertex_snippet_#{index}_#{setting.name}"
+				value = setting.immediate_value
+				$vertex_shader_uniform_stack.push([name, value])
+				uniform_count += 1
+			end
+		}
+
+		yield
+
+		uniform_count.times {
+			$vertex_shader_uniform_stack.pop
+		}
+		$vertex_shader_object_stack.pop
+		$vertex_shader_snippet_stack.pop
+	end
+
 	def with_compiled_shader
 		return yield if $settings['no-shaders']
 
-		return yield if $fragment_shader_snippet_stack.empty?
+		return yield if $fragment_shader_snippet_stack.empty? and $vertex_shader_snippet_stack.empty?
 		$next_texture_number ||= 0
 
-		program = $fragment_shader_snippet_cache[$fragment_shader_snippet_stack]
+		fragment_shader_source = $fragment_shader_snippet_cache[$fragment_shader_snippet_stack]
+		unless fragment_shader_source
+			fragment_shader_source = join_fragment_shader_snippet_stack($fragment_shader_uniform_stack, $fragment_shader_snippet_stack, $fragment_shader_object_stack)
+			#puts fragment_shader_source
+			$fragment_shader_snippet_cache[$fragment_shader_snippet_stack] = fragment_shader_source
+		end
+		vertex_shader_source = $vertex_shader_snippet_cache[$vertex_shader_snippet_stack]
+		unless vertex_shader_source
+			vertex_shader_source = join_vertex_shader_snippet_stack($vertex_shader_uniform_stack, $vertex_shader_snippet_stack, $vertex_shader_object_stack)
+			puts vertex_shader_source
+			$vertex_shader_snippet_cache[$vertex_shader_snippet_stack] = vertex_shader_source
+		end
+
+		program = $shader_program_cache[fragment_shader_source][vertex_shader_source]
 		unless program
-			# Generate program for final code
-			#section("Compiling shader program from #{$fragment_shader_snippet_stack.count} snippet(s)") {
-
-				fragment_shader_source = join_fragment_shader_snippet_stack($fragment_shader_uniform_stack, $fragment_shader_snippet_stack, $fragment_shader_object_stack)
-				vertex_shader_source = VERTEX_SHADER_HACK
-
-				#puts fragment_shader_source
-
-				program = GLShaderProgram.new(:vertex_shader_source => vertex_shader_source, :fragment_shader_source => fragment_shader_source)
-				$fragment_shader_snippet_cache[$fragment_shader_snippet_stack] = program
-			#}
+			program = GLShaderProgram.new(:vertex_shader_source => vertex_shader_source, :fragment_shader_source => fragment_shader_source)
+			$shader_program_cache[fragment_shader_source][vertex_shader_source] = program
 		end
 
 		if program.ok?
@@ -87,7 +149,7 @@ module DrawingShaderSnippets
 				#
 				# Set collected uniform values
 				#
-				$fragment_shader_uniform_stack.each { |name_and_value|
+				($fragment_shader_uniform_stack + $vertex_shader_uniform_stack).each { |name_and_value|
 					case name_and_value[1]
 					when Float
 						program.set_f(name_and_value[0], name_and_value[1])
@@ -125,6 +187,8 @@ module DrawingShaderSnippets
 	end
 
 	def join_fragment_shader_snippet_stack(uniforms, snippets, objects)
+		return FRAGMENT_SHADER_STUB if snippets.empty?
+
 		#
 		# Source code for uniforms declarations at top of shader scripts
 		#
@@ -148,13 +212,14 @@ module DrawingShaderSnippets
 
 		float rand(vec2 co)
 		{
-			return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+			return fract(sin(dot(co.xy, vec2(12.9898,78.233))) * 43758.5453);
 		}
 
 		void main(void)
 		{
 			vec4 output_rgba = gl_Color;				// the color from glColor
 			vec2 texture_st = gl_TexCoord[0].st;	// the assigned texture coordinates
+			vec4 pixel_xyzw = gl_FragCoord;	// the assigned texture coordinates
 
 		"
 
@@ -166,25 +231,87 @@ module DrawingShaderSnippets
 			object.settings.each { |setting|
 				if setting.shader?
 					# TODO: improve find-and-replace
-					snippet = snippet.gsub(setting.name, "snippet_#{index}_#{setting.name}")
+					snippet = snippet.gsub(setting.name, "fragment_snippet_#{index}_#{setting.name}")
 				end
 			}
 
 			# Add brackets {} around snippet for local variable scoping and helpful comment
-			snippet = "\n\t\t\t{ // shader snippet #{index}: #{object.class.title}\n" + snippet + "\n\t\t\t}\n"
+			snippet = "\n\t\t\t{ // fragment shader snippet #{index}: #{object.class.title}\n#{snippet}\n\t\t\t}\n"
 
 			snippet
 		}.join("\n")
 
 		# sample the set GL texture (texture0), based on final texture_st, if the snippets don't do it
 		# TODO: only if a texture is set?
-		forced_texture_sample = snippets.last.include?('texture2D(texture0') ? '' : "\n\t\t\toutput_rgba *= texture2D(texture0, texture_st);"
+		forced_texture_sample = snippets.last.include?('texture2D(texture0') ? '' : "\n\t\t\toutput_rgba *= texture2D(texture0, texture_st);" unless snippets.empty?
 
-		static_footer = "
+		footer = "
 			gl_FragColor = output_rgba;		// apply final color
 		}
 		"
 
-		return [header, snippets_with_variables, forced_texture_sample, static_footer].join
+		return [header, snippets_with_variables, forced_texture_sample, footer].join
+	end
+
+	def join_vertex_shader_snippet_stack(uniforms, snippets, objects)
+		return VERTEX_SHADER_STUB if snippets.empty?
+
+		#
+		# Source code for uniforms declarations at top of shader scripts
+		#
+		uniforms = uniforms.collect { |name_and_value|
+			case name_and_value[1]
+			when Float
+				"uniform float #{name_and_value[0]};"
+			when Integer
+				"uniform int #{name_and_value[0]};"
+			when UserObjectSettingImage
+				"uniform sampler2D #{name_and_value[0]};"
+			end
+		}.join("\n\t\t")
+
+		#
+		# Static header
+		#
+		header = "
+		#{uniforms}
+
+		float rand(vec2 co)
+		{
+			return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+		}
+
+		void main(void)
+		{
+			vec4 vertex = ftransform();
+			vec4 texture_st = (gl_TextureMatrix[0] * gl_MultiTexCoord0);
+		"
+
+		#
+		# Replace uses of setting/uniform 'name' with 'snippet_0_name'
+		#
+		snippets_with_variables = snippets.collect_with_index { |snippet, index|
+			object = objects[index]
+			object.settings.each { |setting|
+				if setting.shader?
+					# TODO: improve find-and-replace
+					snippet = snippet.gsub(setting.name, "vertex_snippet_#{index}_#{setting.name}")
+				end
+			}
+
+			# Add brackets {} around snippet for local variable scoping and helpful comment
+			snippet = "\n\t\t\t//{ // vertex shader snippet #{index}: #{object.class.title}\n#{snippet}\n\t\t\t//}\n"
+
+			snippet
+		}.join("\n")
+
+		footer = "
+			gl_Position = vertex;
+			gl_TexCoord[0] = texture_st;
+			gl_FrontColor = gl_Color;
+		}
+		"
+
+		return [header, snippets_with_variables, footer].join
 	end
 end

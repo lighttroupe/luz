@@ -85,6 +85,8 @@ module DrawingColor
 
 	DRAW_METHOD_OPTIONS = [[:average, 'Average'], [:brighten, 'Brighten'], [:darken, 'Darken'], [:multiply, 'Multiply'], [:invert, 'Invert'], [:min, 'Min'], [:max, 'Max']]
 	def with_pixel_combine_function(name)
+		return yield unless name
+
 		case name
 		#
 		# Average, the default mode

@@ -16,20 +16,27 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-class ActorEffectPixelStorm < ActorEffect
-	title				"Pixel Storm"
-	description "Displace pixels in random directions."
+class ActorEffectScanLinesHorizontal < ActorEffect
+	title				"Scan Lines Horizontal"
+	description "Creates horizontal scanlines in images, with optional fading and horizontal translation."
 
-	setting 'amount', :float, :default => 0.0..1.0, :shader => true
+	setting 'size', :float, :range => 0.0..1.0, :default => 0.05..1.0, :shader => true
+	setting 'fade_one', :float, :range => 0.0..1.0, :default => 0.0..1.0, :shader => true
+	setting 'offset_one', :float, :range => -1.0..1.0, :default => 0.0..1.0, :shader => true
+	setting 'fade_two', :float, :range => 0.0..1.0, :default => 0.5..1.0, :shader => true
+	setting 'offset_two', :float, :range => -1.0..1.0, :default => 0.0..1.0, :shader => true
 
 	CODE = "
-		texture_st.s += ((0.5 - rand(texture_st.st)) * amount);
-		texture_st.t += ((0.5 - rand(texture_st.ts)) * amount);
+		if (mod(pixel_xyzw.y, size) >= (size / 2.0)) {
+			texture_st.s -= (offset_one);
+			output_rgba.a *= (1.0-fade_one);
+		} else {
+			texture_st.s -= (offset_two);
+			output_rgba.a *= (1.0-fade_two);
+		}
 	"
 
 	def render
-		return yield if amount == 0.0
-
 		with_fragment_shader_snippet(CODE, self) {
 			yield
 		}

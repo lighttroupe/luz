@@ -22,7 +22,7 @@ class ActorEffectImageSeriesSelect < ActorEffect
 
 	hint "Supports animated GIFs, and will some day also support video files."
 
-	setting 'image', :image
+	setting 'image', :image, :summary => true
 
 	setting 'forwards', :event
 	setting 'backwards', :event

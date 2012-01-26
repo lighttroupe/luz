@@ -16,21 +16,21 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-class ActorEffectPixelStorm < ActorEffect
-	title				"Pixel Storm"
-	description "Displace pixels in random directions."
+class ActorEffectVertexShaderText < ActorEffect
+	title				"Vertex Shader Test"
+	description ""
 
 	setting 'amount', :float, :default => 0.0..1.0, :shader => true
 
 	CODE = "
-		texture_st.s += ((0.5 - rand(texture_st.st)) * amount);
-		texture_st.t += ((0.5 - rand(texture_st.ts)) * amount);
-	"
+			vertex.x += (rand(vertex.xy)-0.5) * amount;
+			vertex.y += (rand(vertex.yx)-0.5) * amount;
+		"
 
 	def render
 		return yield if amount == 0.0
 
-		with_fragment_shader_snippet(CODE, self) {
+		with_vertex_shader_snippet(CODE, self) {
 			yield
 		}
 	end

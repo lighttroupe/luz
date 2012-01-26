@@ -20,7 +20,7 @@ class ActorEffectStack < ActorEffect
 	title				"Stack"
 	description "Draws actor many times, stacked in the Z dimension."
 
-	setting 'number', :integer, :range => 1..1000, :default => 1..2
+	setting 'number', :integer, :range => 1..1000, :default => 1..2, :summary => true
 	setting 'smallest', :float, :range => 0.0..9999.0, :default => 1.0..0.5
 	setting 'height', :float, :default => 0.0..1.0
 

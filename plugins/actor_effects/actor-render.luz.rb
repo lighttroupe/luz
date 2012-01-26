@@ -16,42 +16,17 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-class ProjectEffectGarbageManager < ProjectEffect
-	title				"Garbage Manager"
-	description "Allows finer control over Ruby's Garbage Collector."
+class ActorEffectActorRender < ActorEffect
+	title				'Actor Render'
+	description "Renders chosen actor once, immediate, live."
 
-	hint "You may want to inhibit Garbage Collection while drawing on canvases."
+	hint "Useful for rendering on Canvas actors."
 
-	setting 'inhibit', :event
-	setting 'force', :event
+	setting 'actor', :actor
 
-	setting 'period', :timespan, :default => [30, :seconds]
-	setting 'maximum', :timespan, :default => [1, :minutes]
-
-	def tick
-		if force.now?
-			#puts "Forced GC @ #{Time.now}..."
-			gc_once
-
-		elsif ((@last_gc_time.nil?) or ((Time.now.to_f - @last_gc_time) >= maximum.to_seconds))
-			#puts "Safeguard GC @ #{Time.now}..."
-			gc_once
-
-		elsif inhibit.now?
-			# do nothing-- note that inhibiting is overridden by maximum, but not periodic
-
-		elsif (((Time.now.to_f - @last_gc_time) >= period.to_seconds) && (!period.instant?))
-			#puts "Periodic GC @ #{Time.now}..."
-			gc_once
-
-		end
-	end
-
-	def gc_once
-		GC.enable
-		GC.start
-		GC.disable
-
-		@last_gc_time = Time.now.to_f
+	def render
+		#actor.one { |a| with_identity_transformation { a.render! } }
+		actor.one { |a| parent_user_object.using { a.render! } }
+		yield
 	end
 end

@@ -23,6 +23,8 @@ class UserObjectSettingEvent < UserObjectSetting
 		['@event'] + super
 	end
 
+	attr_reader :event
+
 	def widget
 		combobox = create_event_combobox(:event)
 
@@ -64,6 +66,11 @@ class UserObjectSettingEvent < UserObjectSetting
 
 	def count
 		return (@event ? @event.count : 0)
+	end
+
+	def with_value(value, &proc)
+		return yield unless @event
+		@event.with_value(value, &proc)
 	end
 
 	def summary

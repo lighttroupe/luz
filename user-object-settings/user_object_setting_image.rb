@@ -35,6 +35,10 @@ class UserObjectSettingImage < UserObjectSetting
 		[@image_name] + super
 	end
 
+	def summary
+		summary_format(@image_name) if @image_name
+	end
+
 	DEFAULT_BUTTON_TEXT = 'Choose'
 	IMAGE_MIME_TYPE_FILTER = 'image/*'
 
@@ -60,7 +64,13 @@ class UserObjectSettingImage < UserObjectSetting
 			choose_button.set_label(DEFAULT_BUTTON_TEXT)
 			clear_button.sensitive = false
 		}
-		return Gtk::hbox_for_widgets([choose_button, clear_button])
+
+		edit_button = create_edit_button
+		edit_button.signal_connect('clicked') {
+			$gui.safe_open_image(File.join($engine.project.file_path, @image_name))
+		}
+
+		return Gtk::hbox_for_widgets([choose_button, clear_button, edit_button])
 	end
 
 	def clear

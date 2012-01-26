@@ -16,21 +16,21 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-class ActorEffectPixelStorm < ActorEffect
-	title				"Pixel Storm"
-	description "Displace pixels in random directions."
+class ActorOffscreenCanvas < Actor
+	title				"Canvas"
+	description "A canvas upon which the Actor Render or Actor Pen plugins can draw."
 
-	setting 'amount', :float, :default => 0.0..1.0, :shader => true
-
-	CODE = "
-		texture_st.s += ((0.5 - rand(texture_st.st)) * amount);
-		texture_st.t += ((0.5 - rand(texture_st.ts)) * amount);
-	"
+	hint 'The drawn image is persistent, unless erased by effects.'
 
 	def render
-		return yield if amount == 0.0
+		@fbo.with_image { unit_square } if @fbo		# transparent unless some rendering has been done
+	end
 
-		with_fragment_shader_snippet(CODE, self) {
+	FBO_USING_OPTIONS = {:clear => false}
+
+	def using
+		@fbo ||= FramebufferObject.new(:height => 1024, :width => 1024)
+		@fbo.using(FBO_USING_OPTIONS) {
 			yield
 		}
 	end

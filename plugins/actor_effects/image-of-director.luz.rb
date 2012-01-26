@@ -20,7 +20,7 @@ class ActorEffectImageOfDirector < ActorEffect
 	title				"Image of Director"
 	description "Renders chosen director to an offscreen image, then applies that image to this actor."
 
-	setting 'director', :director
+	setting 'director', :director, :summary => true
 
 	def render
 		with_offscreen_buffer { |buffer|

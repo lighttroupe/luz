@@ -36,6 +36,14 @@ class UserObjectSetting
 	attr_accessor :parent
 	attr_reader :name, :last_value
 
+	def options=(options)
+		@options = options
+	end
+
+	def merge_options(options)
+		@options.merge!(options)
+	end
+
 	def to_yaml_properties
 		['@name', '@options', '@breaks_cache']
 	end
@@ -111,6 +119,10 @@ class UserObjectSetting
 
 	def create_new_object_button
 		Gtk::Button.new.set_image(Gtk::Image.new(Gtk::Stock::NEW, Gtk::IconSize::MENU)).set_relief(Gtk::RELIEF_NONE).set_focus_on_click(false)
+	end
+
+	def create_edit_button
+		Gtk::Button.new.set_image(Gtk::Image.new(Gtk::Stock::EDIT, Gtk::IconSize::MENU)).set_relief(Gtk::RELIEF_NONE).set_focus_on_click(false)
 	end
 
 	def create_clear_button
@@ -312,7 +324,7 @@ class UserObjectSetting
 			@options[:summary].sub('%', text)
 		when TrueClass
 			text
-		when NilClass
+		when FalseClass, NilClass
 			nil
 		else
 			puts "user-object-setting warning: unhandled option (:summary) in summary_format: #{@options[:summary]}"

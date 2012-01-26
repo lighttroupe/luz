@@ -22,7 +22,7 @@ class ActorEffectImageSpriteProgress < ActorEffect
 
 	hint "Supports images containing multiple frames, spaced equally, either horizontally or vertically."
 
-	setting 'image', :image
+	setting 'image', :image, :summary => true
 	setting 'number', :integer, :range => 1..256, :default => 1..2
 	setting 'progress', :float, :range => 0.0..1.0, :default => 0.0..1.0
 

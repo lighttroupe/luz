@@ -17,10 +17,8 @@
  ###############################################################################
 
 class ActorRectangleMesh < ActorShape
-	virtual	# hidden until vertex shaders exist
-
 	title				"Rectangle Mesh"
-	description "A rectangular with additional vertices, suitable for use with effects that warp vertices."
+	description "A rectangle with additional vertices, suitable for use with effects that warp vertices."
 
 	cache_rendering
 

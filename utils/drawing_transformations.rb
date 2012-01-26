@@ -83,14 +83,15 @@ module DrawingTransformations
 	end
 	#conditional :with_roll, :with_pitch, :with_yaw
 
-	def with_scale(x, y=nil)
+	def with_scale(x, y=nil, z=nil)
 		y ||= x		# When only one is given, scale equally x and y
+		z ||= 1.0		# When only one is given, scale equally x and y
 
 		# Special-case very common values...
-		return yield if x == 1.0 and y == 1.0
+		return yield if x == 1.0 and y == 1.0 and z == 1.0
 
 		GL.SaveMatrix {
-			GL.Scale(x, y, 1.0)
+			GL.Scale(x, y, z)
 			yield
 		}
 	end

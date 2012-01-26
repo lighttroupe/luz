@@ -22,7 +22,7 @@ class ActorEffectImageSeriesProgress < ActorEffect
 
 	hint "Supports animated GIFs, and will some day also support video files."
 
-	setting 'image', :image
+	setting 'image', :image, :summary => true
 	setting 'progress', :float, :default => 0.0..1.0
 
 	def render
