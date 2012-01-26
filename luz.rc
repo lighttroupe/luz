@@ -1,0 +1,68 @@
+#---------------------------------------------------------------
+style "common"
+{
+	GtkTreeView::vertical-padding = 0
+	GtkTreeView::horizontal-padding = 0
+
+	GtkTreeView::even-row-color = { 0, 0, 0 }
+	GtkTreeView::odd-row-color = { 0.12, 0.12, 0.12 }
+
+	fg[NORMAL] = { 0.90, 0.80, 0.80 }
+	fg[ACTIVE] = { 0.80, 0.80, 0.80 }
+	fg[PRELIGHT] = { 1.0, 1.0, 1.0 }
+	fg[INSENSITIVE] = { 0.80, 0.80, 0.80 }
+	fg[SELECTED] = { 0.80, 0.80, 0.80 }
+
+	bg[NORMAL] = { 0.2, 0.2, 0.2 }
+	bg[ACTIVE] = { 0.3, 0.3, 0.3 }
+	bg[PRELIGHT] = { 0.4, 0.8, 0.3 }
+	bg[INSENSITIVE] = { 0.10, 0.10, 0.10 }
+	bg[SELECTED] = { 0.0, 0.0, 0.0 }
+
+	text[NORMAL] = { 0.90, 0.90, 0.90 }
+	text[ACTIVE] = { 0.90, 0.90, 0.90 }
+	text[PRELIGHT] = { 1.0, 1.0, 1.0 }
+	text[INSENSITIVE] = { 0.65, 0.65, 0.65 }
+	text[SELECTED] = { 1.0, 1.0, 1.0 }
+
+	# widget backgrounds
+	base[ACTIVE] = { 0.15, 0.165, 0.185 }
+	base[NORMAL] = { 0.102, 0.117, 0.125 }
+	base[PRELIGHT] = { 0.20, 0.20, 0.20 }
+	base[INSENSITIVE] = { 0.3, 0.32, 0.35 }
+	base[SELECTED] = { 0.3, 0.6, 0.3 }
+
+	GtkWidget::link-color = { 0.5, 0.5, 1.0 }
+	GtkWidget::visited-link-color = { 0.5, 0.5, 1.0 }
+
+	engine "clearlooks"
+	{
+		menubarstyle      = 0       # 0 = flat, 1 = sunken, 2 = flat gradient
+	}
+}
+class "GtkWidget" style:highest "common"
+
+style "treeview" = "common"
+{
+	base[ACTIVE] = { 0.3, 0.4, 0.3 }
+	base[SELECTED] = { 0.4, 0.6, 0.4 }
+}
+class "GtkTreeView" style:highest "treeview"
+
+style "hscale" = "common"
+{
+	bg[SELECTED] = { 0.3, 0.6, 0.3 }			# This is the 'juice' an hscale has in the trough
+}
+class "GtkHScale" style:highest "hscale"
+
+style "progressbar" = "common"
+{
+	bg[SELECTED] = { 1.0, 0.6, 0.3 }			# This is the 'juice' an hscale has in the trough
+}
+class "GtkProgressBar" style:highest "progressbar"
+
+style "combobox" = "common"
+{
+
+}
+class "GtkComboBox" style:highest "combobox"

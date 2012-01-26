@@ -1,0 +1,11 @@
+# Luz Body Tracker
+# ================
+#
+# This app is still experimental and you're welcome to use it.
+#
+# A working OpenNI+NITE install is required to compile and run.
+#
+# Then get dependencies and build on Ubuntu using:
+
+sudo apt-get install build-essential libusb-1.0-0-dev liblo0-dev libgl1-mesa-dev libglu1-mesa-dev freeglut3-dev
+make

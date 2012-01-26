@@ -1,0 +1,57 @@
+#---------------------------------------------------------------
+style "common"
+{
+	GtkTreeView::vertical-padding = 0
+	GtkTreeView::horizontal-padding = 0
+
+	GtkTreeView::even-row-color = { 0, 0, 0 }
+	GtkTreeView::odd-row-color = { 0.12, 0.12, 0.12 }
+
+	fg[NORMAL] = { 0.90, 0.80, 0.80 }
+	fg[ACTIVE] = { 0.80, 0.80, 0.80 }
+	fg[PRELIGHT] = { 1.0, 1.0, 1.0 }
+	fg[INSENSITIVE] = { 0.80, 0.80, 0.80 }
+	fg[SELECTED] = { 0.80, 0.80, 0.80 }
+
+	bg[NORMAL] = { 0.3, 0.3, 0.3 }
+	bg[ACTIVE] = { 0.3, 0.3, 0.3 }
+	bg[PRELIGHT] = { 0.4, 0.8, 0.3 }
+	bg[INSENSITIVE] = { 0.10, 0.10, 0.10 }
+	bg[SELECTED] = { 0.0, 0.0, 0.0 }			# 
+
+	text[NORMAL] = { 0.90, 0.90, 0.90 }
+	text[ACTIVE] = { 0.90, 0.90, 0.90 }
+	text[PRELIGHT] = { 1.0, 1.0, 1.0 }
+	text[INSENSITIVE] = { 0.80, 0.80, 0.80 }
+	text[SELECTED] = { 1.0, 1.0, 1.0 }
+
+	base[ACTIVE]     = "#272a2f"
+	base[NORMAL]      =  "#1a1e20"
+	base[PRELIGHT]     = { 0.20, 0.20, 0.20 }
+	base[INSENSITIVE]  = "#4c5159"
+	base[SELECTED]     = { 0.3, 0.6, 0.3 }
+
+	engine "clearlooks" 
+	{
+		menubarstyle      = 0       # 0 = flat, 1 = sunken, 2 = flat gradient
+	}
+}
+class "GtkWidget" style:highest "common"
+
+style "treeview" = "common"
+{
+	base[ACTIVE] = { 0.3, 0.4, 0.3 }
+}
+class "GtkTreeView" style:highest "treeview"
+
+style "hscale" = "common"
+{
+	bg[SELECTED] = { 0.3, 0.6, 0.3 }			# This is the 'juice' an hscale has in the trough
+}
+class "GtkHScale" style:highest "hscale"
+
+style "progressbar" = "common"
+{
+	bg[SELECTED] = { 1.0, 0.6, 0.3 }			# This is the 'juice' an hscale has in the trough
+}
+class "GtkProgressBar" style:highest "progressbar"

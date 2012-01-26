@@ -1,0 +1,7 @@
+# Luz Input Manager
+# =================
+#
+# To build Input Manager on Ubuntu use:
+
+sudo apt-get install build-essential libx11-dev libxext-dev libxi-dev libsdl1.2-dev libcwiimote-dev libbluetooth-dev libportmidi-dev liblo-dev libunique-dev libgtkmm-2.4-dev
+make

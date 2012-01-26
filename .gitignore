@@ -1,0 +1,25 @@
+# Luz generated files #
+#######################
+frame-*.bmp
+temporary-save.luz
+
+# No sounds for now
+#######################
+*.wav
+
+# Build Files #
+###############
+mkmf.log
+
+# Binaries #
+############
+*.o
+*.so
+*.so.*
+
+# OS generated files #
+######################
+.DS_Store*
+Thumbs.db
+.notes
+*.~?~

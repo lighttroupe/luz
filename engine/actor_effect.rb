@@ -1,0 +1,52 @@
+ ###############################################################################
+ #  Copyright 2006 Ian McIntosh <ian@openanswers.org>
+ #
+ #  This program is free software; you can redistribute it and/or modify
+ #  it under the terms of the GNU General Public License as published by
+ #  the Free Software Foundation; either version 2 of the License, or
+ #  (at your option) any later version.
+ #
+ #  This program is distributed in the hope that it will be useful,
+ #  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ #  GNU Library General Public License for more details.
+ #
+ #  You should have received a copy of the GNU General Public License
+ #  along with this program; if not, write to the Free Software
+ #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ ###############################################################################
+
+require 'child_user_object', 'drawing'
+
+class ActorEffect < ChildUserObject
+	include Drawing
+
+	RADIUS = 0.5 		# (used by children)
+
+	###################################################################
+	# Object-level functions
+	###################################################################
+	attr_accessor :parent_user_object  	# set just before render time
+
+	def after_load
+		set_default_instance_variables(:enabled => true)
+		super
+	end
+
+	def child_index
+		($env[:child_index] || 0)
+	end
+
+	def total_children
+		($env[:total_children] || 1)
+	end
+
+	def child_number
+		child_index + 1
+	end
+
+	# default implementation just yields once (= renders the object once)
+	def render
+		yield
+	end
+end
