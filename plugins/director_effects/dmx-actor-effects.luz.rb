@@ -21,6 +21,7 @@ class DirectorEffectDMXActorEffects < DirectorEffect
 							with_env(:child_index, index) {					# this can have an effect on the resulting color set
 								actor_effects.render_recursive {			# run actor's effects, and when they're done...
 									color = GL.GetColorArray						# ...read the final color and send it to the DMX plugin (respecting alpha!)
+									light.resolve_settings
 									light.red, light.green, light.blue = color[0]*color[3], color[1]*color[3], color[2]*color[3]		# NOTE: assumes DMX plugins have 'red' 'green' 'blue' methods
 									light.tick													# let plugin do its work
 								}
