@@ -1,5 +1,5 @@
  ###############################################################################
- #  Copyright 2006 Ian McIntosh <ian@openanswers.org>
+ #  Copyright 2011 Ian McIntosh <ian@openanswers.org>
  #
  #  This program is free software; you can redistribute it and/or modify
  #  it under the terms of the GNU General Public License as published by
@@ -16,17 +16,25 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-class ActorEffectActorRender < ActorEffect
-	title				'Actor Render'
-	description "Renders chosen actor once, immediate, live."
+class ActorEffectPixelColorReduce < ActorEffect
+	title				"Pixel Color Reduce"
+	description ""
 
-	hint "Useful for rendering on Canvas actors."
-
-	setting 'actor', :actor, :summary => true
+	setting 'segments', :integer, :range => 1..1000, :default => 100..1000, :shader => true
 
 	def render
-		#actor.one { |a| with_identity_transformation { a.render! } }
-		actor.one { |a| parent_user_object.using { a.render! } }
-		yield
+		code = "
+			output_rgba *= texture2D(texture0, texture_st);
+
+			output_rgba.r = floor(output_rgba.r * float(segments)); // / segments; 
+			output_rgba.g = floor(output_rgba.g * float(segments)); // / segments; 
+			output_rgba.b = floor(output_rgba.b * float(segments)); // / segments;
+			
+			output_rgba.rgb /= float(segments); 
+		"
+
+		with_fragment_shader_snippet(code, self) {
+			yield
+		}
 	end
 end
