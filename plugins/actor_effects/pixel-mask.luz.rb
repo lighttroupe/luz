@@ -1,5 +1,5 @@
  ###############################################################################
- #  Copyright 2006 Ian McIntosh <ian@openanswers.org>
+ #  Copyright 2011 Ian McIntosh <ian@openanswers.org>
  #
  #  This program is free software; you can redistribute it and/or modify
  #  it under the terms of the GNU General Public License as published by
@@ -16,17 +16,27 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-class ActorEffectActorRender < ActorEffect
-	title				'Actor Render'
-	description "Renders chosen actor once, immediate, live."
+class ActorEffectPixelMask < ActorEffect
+	title				"Pixel Mask"
+	description ""
 
-	hint "Useful for rendering on Canvas actors."
+	setting 'red_cutoff', :float, :range => 0.0..1.0, :default => 0.0..1.0, :shader => true
+	setting 'green_cutoff', :float, :range => 0.0..1.0, :default => 0.0..1.0, :shader => true
+	setting 'blue_cutoff', :float, :range => 0.0..1.0, :default => 0.0..1.0, :shader => true
+	setting 'alpha_cutoff', :float, :range => 0.0..1.0, :default => 0.0..1.0, :shader => true
 
-	setting 'actor', :actor, :summary => true
+	CODE = "
+		output_rgba *= texture2D(texture0, texture_st);
+		if(output_rgba.a < alpha_cutoff || output_rgba.r < red_cutoff || output_rgba.g < green_cutoff || output_rgba.b < blue_cutoff) {
+			output_rgba = vec4(0,0,0,0);
+		}
+	"
 
 	def render
-		#actor.one { |a| with_identity_transformation { a.render! } }
-		actor.one { |a| parent_user_object.using { a.render! } }
-		yield
+		return yield if (red_cutoff == 0.0 and green_cutoff == 0.0 and blue_cutoff == 0.0 and alpha_cutoff == 0.0)
+
+		with_fragment_shader_snippet(CODE, self) {
+			yield
+		}
 	end
 end

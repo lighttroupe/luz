@@ -63,10 +63,12 @@ class Image
 		end
 
 		@rgba_data, @width, @height = image.to_blob { |i| i.format = 'RGBA' ; i.depth = 8 }, image.columns, image.rows
-		from_rgba8(@rgba_data, @width, @height)
+		#from_rgba8(@rgba_data, @width, @height)
+		@load_proc = Proc.new { from_rgba8(@rgba_data, @width, @height) }
+		self
 	end
-
 	###################################################################
+
 	# Copying pixel data to OpenGL
 	###################################################################
 
@@ -113,6 +115,10 @@ class Image
 	end
 
 	def using
+		if proc=@load_proc
+			@load_proc = nil
+			proc.call
+		end
 		with_texture(@opengl_texture_id) {
 			yield
 		}
