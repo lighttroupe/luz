@@ -43,7 +43,7 @@ class ActorEffectStipple < ActorEffect
 				texture_st.x = center_x;
 				texture_st.y = center_y;
 			} else {
-				return;
+				output_rgba = vec4(0.0,0.0,0.0,0.0);
 			}
 		"
 
