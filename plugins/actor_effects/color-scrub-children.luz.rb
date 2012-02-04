@@ -31,7 +31,7 @@ class ActorEffectColorScrubChildren < ActorEffect
 		# the bigger the delta, the less color application will occur
 		# delta is 0.0..1.0
 		delta /= (spread * 2.0)
-		fade_amount = (amount - delta)
+		fade_amount = (amount - delta).clamp(0.0, 1.0)
 		with_color(current_color.fade_to(fade_amount, color)) {
 			yield
 		}
