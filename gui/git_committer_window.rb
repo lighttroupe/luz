@@ -49,11 +49,32 @@ private
 	#
 	class ModifiedFilesTreeView < ObjectTreeView
 		column :path, :title => 'File', :renderers => [{:type => :text, :model_column => :path}]
+		column :selected, :renderers => [{:type => :toggle, :model_column => :selected, :on_toggled => :on_toggled}]
+
+		callback :selected_files_changed
+		attr_reader :selected_files
 
 		def initialize(model)
 			super(:model => model)
+
+			@selected_files = []
+
+			# Cosmetic changes
 			self.rules_hint = true
 			self.headers_visible = false
+		end
+
+		def on_toggled(iter)
+			if model.get_selected_column(iter) == 0
+				# was off, add it
+				@selected_files << model.get_object_column(iter)
+				model.set_selected_column(iter, 1)
+			else
+				# was on, remove it
+				@selected_files.delete(model.get_object_column(iter))
+				model.set_selected_column(iter, 0)
+			end
+			selected_files_changed_notify
 		end
 	end
 
@@ -61,15 +82,24 @@ private
 	# ModifiedFilesListStore
 	#
 	class ModifiedFilesListStore < ObjectListStore
+		column :selected, :type => :integer, :from_object => Proc.new { |object| 0 }
 		column :path, :type => :text, :from_object => Proc.new { |object| object.path }		# object is [path, Git::Status]
+
+		def initialize(parent)
+			@parent = parent
+			super()
+		end
 	end
 
 	#
 	#
 	#
 	def create_treeview
-		@modified_files_model = ModifiedFilesListStore.new
+		@modified_files_model = ModifiedFilesListStore.new(self)
 		@modified_files_treeview = ModifiedFilesTreeView.new(@modified_files_model)
+
+		@modified_files_treeview.on_selected_files_changed { p @modified_files_treeview.selected_files }
+
 		@modified_files_model.set_sort_column_id(ModifiedFilesListStore.path_column_index)
 		@list_container.add(@modified_files_treeview)
 		@modified_files_treeview.grab_focus
