@@ -18,6 +18,7 @@ class GitCommitterWindow < GladeWindow
 		add_changed_files!
 		on_selected_files_changed
 		@commit_message_entry.on_change { on_selected_files_changed }
+		positive_status_message('Perform a pull to begin...')
 	end
 
 	def positive_status_message(message)
@@ -44,6 +45,7 @@ class GitCommitterWindow < GladeWindow
 		puts @git.commit(commit_message)
 		positive_status_message(sprintf("Committed %d file(s).", paths.count))
 		refresh!
+		on_selected_files_changed
 		@modified_files_treeview.grab_focus
 	end
 	
