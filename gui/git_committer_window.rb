@@ -18,7 +18,7 @@ class GitCommitterWindow < GladeWindow
 		add_changed_files!
 		on_selected_files_changed
 		@commit_message_entry.on_change { on_selected_files_changed }
-		positive_status_message('Perform a pull to begin...')
+		positive_status_message('Pull to begin.')
 	end
 
 	def positive_status_message(message)
@@ -29,11 +29,16 @@ class GitCommitterWindow < GladeWindow
 	#
 	# Gtk+ Callbacks
 	#
+	GIT_PULL_ALREADY_UP_TO_DATE = 'Already up-to-date.'
 	def on_pull_button_clicked
 		positive_status_message('Updating...')
 		result_string = @git.pull		# TODO: --rebase ?
 		# TODO: don't just assume it worked
-		positive_status_message(result_string)
+		if result_string == GIT_PULL_ALREADY_UP_TO_DATE
+			positive_status_message("Up-to-date.  Go ahead and commit.")
+		else
+			
+		end
 
 		@list_container.sensitive = true
 		@commit_container.sensitive = true
@@ -42,8 +47,9 @@ class GitCommitterWindow < GladeWindow
 	def on_commit_button_clicked
 		paths = @modified_files_treeview.selected_files.map { |file| file.path }
 		@git.add(paths)
-		puts @git.commit(commit_message)
+		@git.commit(commit_message)
 		positive_status_message(sprintf("Committed %d file(s).", paths.count))
+		@modified_files_treeview.selected_files = []		# Hacky
 		refresh!
 		on_selected_files_changed
 		@modified_files_treeview.grab_focus
@@ -85,7 +91,7 @@ private
 		column :selected, :renderers => [{:type => :toggle, :model_column => :selected, :on_toggled => :on_toggled}], :position => :start
 
 		callback :selected_files_changed
-		attr_reader :selected_files
+		attr_accessor :selected_files
 
 		def initialize(model)
 			super(:model => model)
