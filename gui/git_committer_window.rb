@@ -34,6 +34,7 @@ class GitCommitterWindow < GladeWindow
 	def on_commit_button_clicked
 		@git.add(@modified_files_treeview.selected_files.map { |file| file.path } )
 		@git.commit(commit_message)
+		refresh
 	end
 
 	def on_push_button_clicked
@@ -130,5 +131,12 @@ private
 		@git.status.changed.each { |file|
 			@modified_files_model.add([file.last])
 		}
+	end
+	
+	def refresh
+		@modified_files_model.clear
+		add_changed_files
+		@commit_message_entry.text = ''
+		on_selected_files_changed
 	end
 end
