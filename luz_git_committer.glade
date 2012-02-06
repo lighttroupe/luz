@@ -30,9 +30,9 @@
                 <child>
                   <widget class="GtkButton" id="pull_button">
                     <property name="label" translatable="yes">_Pull</property>
-                    <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="tooltip" translatable="yes">Get latest changes from server.</property>
                     <property name="use_action_appearance">False</property>
                     <property name="relief">half</property>
                     <property name="use_underline">True</property>
@@ -58,15 +58,22 @@
                 </child>
                 <child>
                   <widget class="GtkButton" id="refresh_button">
-                    <property name="label" translatable="yes">_Refresh</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="tooltip" translatable="yes">Refresh list of my changed files.</property>
                     <property name="use_action_appearance">False</property>
-                    <property name="relief">half</property>
+                    <property name="relief">none</property>
                     <property name="use_underline">True</property>
                     <property name="focus_on_click">False</property>
                     <signal name="clicked" handler="on_refresh_button_clicked" swapped="no"/>
+                    <child>
+                      <widget class="GtkImage" id="image1">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="stock">gtk-refresh</property>
+                      </widget>
+                    </child>
                   </widget>
                   <packing>
                     <property name="expand">False</property>
@@ -84,7 +91,6 @@
             <child>
               <widget class="GtkScrolledWindow" id="list_container">
                 <property name="visible">True</property>
-                <property name="sensitive">False</property>
                 <property name="can_focus">True</property>
                 <property name="hscrollbar_policy">automatic</property>
                 <property name="vscrollbar_policy">automatic</property>
@@ -101,7 +107,6 @@
             <child>
               <widget class="GtkHBox" id="commit_container">
                 <property name="visible">True</property>
-                <property name="sensitive">False</property>
                 <property name="can_focus">False</property>
                 <child>
                   <widget class="GtkLabel" id="label1">
@@ -160,10 +165,10 @@
                 <child>
                   <widget class="GtkButton" id="push_button">
                     <property name="label" translatable="yes">P_ush</property>
-                    <property name="visible">True</property>
                     <property name="sensitive">False</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="tooltip" translatable="yes">Send committed changes to server.</property>
                     <property name="use_action_appearance">False</property>
                     <property name="relief">half</property>
                     <property name="use_underline">True</property>

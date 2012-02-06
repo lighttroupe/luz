@@ -21,7 +21,7 @@ class GitCommitterWindow < GladeWindow
 		add_changed_files!
 		on_selected_files_changed
 		@commit_message_entry.on_change { on_selected_files_changed }
-		positive_status_message('Pull to begin.')
+		#positive_status_message('Pull to begin.')
 	end
 
 	def positive_status_message(message)
@@ -43,7 +43,7 @@ class GitCommitterWindow < GladeWindow
 		result_string = @git.pull		# TODO: --rebase ?
 		# TODO: don't just assume it worked
 		if result_string == GIT_PULL_ALREADY_UP_TO_DATE
-			positive_status_message("Up-to-date.  Go ahead and commit.")
+			positive_status_message("Already up-to-date.")
 		else
 			
 		end
@@ -61,8 +61,24 @@ class GitCommitterWindow < GladeWindow
 		refresh!
 		on_selected_files_changed
 		@modified_files_treeview.grab_focus
+
+		# Auto-push
+		positive_status_message("Pushing to server...")
+		result_string = do_pull_with_stash
+		result_string = do_push
 	end
-	
+
+	def do_pull_with_stash
+		@git.branches[:master].stashes.save('temporary')
+		result_string = @git.pull
+		@git.branches[:master].stashes.apply
+		return result_string
+	end
+
+	def do_push
+		@git.push
+	end
+
 	def on_refresh_button_clicked
 		positive_status_message('Refreshing...')
 		refresh!
