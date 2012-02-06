@@ -29,12 +29,13 @@
                 <property name="can_focus">False</property>
                 <child>
                   <widget class="GtkButton" id="pull_button">
-                    <property name="label" translatable="yes">Pull</property>
+                    <property name="label" translatable="yes">_Pull</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                     <property name="use_action_appearance">False</property>
                     <property name="relief">half</property>
+                    <property name="use_underline">True</property>
                     <property name="focus_on_click">False</property>
                     <signal name="clicked" handler="on_pull_button_clicked" swapped="no"/>
                   </widget>
@@ -57,12 +58,13 @@
                 </child>
                 <child>
                   <widget class="GtkButton" id="refresh_button">
-                    <property name="label" translatable="yes">Refresh</property>
+                    <property name="label" translatable="yes">_Refresh</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                     <property name="use_action_appearance">False</property>
                     <property name="relief">half</property>
+                    <property name="use_underline">True</property>
                     <property name="focus_on_click">False</property>
                     <signal name="clicked" handler="on_refresh_button_clicked" swapped="no"/>
                   </widget>
@@ -123,6 +125,7 @@
                     <property name="can_default">True</property>
                     <property name="has_default">True</property>
                     <property name="invisible_char">•</property>
+                    <property name="activates_default">True</property>
                     <property name="primary_icon_activatable">False</property>
                     <property name="secondary_icon_activatable">False</property>
                     <property name="primary_icon_sensitive">True</property>
@@ -136,12 +139,15 @@
                 </child>
                 <child>
                   <widget class="GtkButton" id="commit_button">
-                    <property name="label" translatable="yes">Commit</property>
+                    <property name="label" translatable="yes">_Commit</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <property name="can_default">True</property>
+                    <property name="has_default">True</property>
                     <property name="receives_default">True</property>
                     <property name="use_action_appearance">False</property>
                     <property name="relief">half</property>
+                    <property name="use_underline">True</property>
                     <property name="focus_on_click">False</property>
                     <signal name="clicked" handler="on_commit_button_clicked" swapped="no"/>
                   </widget>
@@ -153,13 +159,14 @@
                 </child>
                 <child>
                   <widget class="GtkButton" id="push_button">
-                    <property name="label" translatable="yes">Push</property>
+                    <property name="label" translatable="yes">P_ush</property>
                     <property name="visible">True</property>
                     <property name="sensitive">False</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                     <property name="use_action_appearance">False</property>
                     <property name="relief">half</property>
+                    <property name="use_underline">True</property>
                     <property name="focus_on_click">False</property>
                     <signal name="clicked" handler="on_push_button_clicked" swapped="no"/>
                   </widget>
