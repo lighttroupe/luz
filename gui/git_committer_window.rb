@@ -14,27 +14,34 @@ class GitCommitterWindow < GladeWindow
 		create_treeview
 
 		# TODO: create treeview
-		open_repository
-		add_changed_files
+		open_repository!
+		add_changed_files!
 		on_selected_files_changed
 		@commit_message_entry.on_change { on_selected_files_changed }
+	end
+
+	def positive_status_message(message)
+		@status_label.markup = sprintf("<span color='green'>%s</span>", message)
 	end
 
 	#
 	# Gtk+ Callbacks
 	#
 	def on_pull_button_clicked
-		@status_label.markup = sprintf("<span color='green'>%s</span>", 'Updating...')
+		positive_status_message('Updating...')
 		Gtk.main_clear_queue
-		result_string = @git.pull
-		@status_label.markup = sprintf("<span color='green'>%s</span>", result_string)
-		# git pull --rebase
+		result_string = @git.pull		# TODO: --rebase ?
+		# TODO: don't just assume it worked
+		positive_status_message(result_string)
+
+		@list_container.sensitive = true
+		@commit_container.sensitive = true
 	end
 
 	def on_commit_button_clicked
 		@git.add(@modified_files_treeview.selected_files.map { |file| file.path } )
-		@git.commit(commit_message)
-		refresh
+		puts @git.commit(commit_message)
+		refresh!
 	end
 
 	def on_push_button_clicked
@@ -43,10 +50,6 @@ class GitCommitterWindow < GladeWindow
 
 	def on_delete_event
 		Gtk.main_quit		# quit app when main window is closed
-	end
-	
-	def commit_message
-		@commit_message_entry.text.strip
 	end
 
 	def on_selected_files_changed
@@ -123,19 +126,23 @@ private
 		@modified_files_treeview.grab_focus
 	end
 
-	def open_repository
+	def open_repository!
 		@git = Git.open(@path, :log => Logger.new(STDOUT))
 	end
 
-	def add_changed_files
+	def commit_message
+		@commit_message_entry.text.strip
+	end
+
+	def add_changed_files!
 		@git.status.changed.each { |file|
 			@modified_files_model.add([file.last])
 		}
 	end
-	
-	def refresh
+
+	def refresh!
 		@modified_files_model.clear
-		add_changed_files
+		add_changed_files!
 		@commit_message_entry.text = ''
 		on_selected_files_changed
 	end
