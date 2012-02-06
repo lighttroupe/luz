@@ -43,7 +43,6 @@ class GitCommitterWindow < GladeWindow
 		@git.add(paths)
 		puts @git.commit(commit_message)
 		positive_status_message(sprintf("Committed %d file(s).", paths.count))
-
 		refresh!
 	end
 
@@ -60,8 +59,9 @@ class GitCommitterWindow < GladeWindow
 		count = list.count
 		@commit_button.sensitive = (count > 0 and not commit_message.empty?)
 		@commit_button.label = sprintf("Commit %d", count)
+		@commit_container.sensitive = (count > 0)
 	end
-	
+
 	def unpushed_commits?
 		
 	end
