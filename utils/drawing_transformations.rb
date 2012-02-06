@@ -112,4 +112,11 @@ module DrawingTransformations
 		GL.MatrixMode(GL::MODELVIEW)
 		GL.PopMatrix
 	end
+
+	def current_xyz_translation
+		# "The translation components occupy the 13th, 14th, and 15th elements of the 16-element matrix" from http://www.opengl.org/resources/faq/technical/transformations.htm
+		matrix = GL.GetDoublev(GL::MODELVIEW_MATRIX)
+		a = matrix.last
+		return a[0], a[1], a[2] + 0.5
+	end
 end
