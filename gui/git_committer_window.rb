@@ -22,6 +22,7 @@ class GitCommitterWindow < GladeWindow
 
 	def positive_status_message(message)
 		@status_label.markup = sprintf("<span color='green'>%s</span>", message)
+		Gtk.main_clear_queue
 	end
 
 	#
@@ -29,7 +30,6 @@ class GitCommitterWindow < GladeWindow
 	#
 	def on_pull_button_clicked
 		positive_status_message('Updating...')
-		Gtk.main_clear_queue
 		result_string = @git.pull		# TODO: --rebase ?
 		# TODO: don't just assume it worked
 		positive_status_message(result_string)
@@ -44,6 +44,13 @@ class GitCommitterWindow < GladeWindow
 		puts @git.commit(commit_message)
 		positive_status_message(sprintf("Committed %d file(s).", paths.count))
 		refresh!
+		@modified_files_treeview.grab_focus
+	end
+	
+	def on_refresh_button_clicked
+		positive_status_message('Refreshing...')
+		refresh!
+		positive_status_message('Refreshed.')
 	end
 
 	def on_push_button_clicked
