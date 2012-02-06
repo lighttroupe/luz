@@ -168,7 +168,7 @@ class DirectorEffectGameTopDownShooter < DirectorEffect
 		if @enemies.count < 5 or $env[:frame_number] % 40 == 0
 			@enemy_choice ||= 0
 			@enemy_choice += 1
-			@enemy_choice %= enemies.count
+			@enemy_choice %= enemies.count if enemies.count > 0
 
 			spawn_enemy_group
 		end
