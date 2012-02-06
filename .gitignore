@@ -3,19 +3,18 @@
 frame-*.bmp
 temporary-save.luz
 
-# No sounds for now
-#######################
-*.wav
-
 # Build Files #
 ###############
 mkmf.log
 
-# Binaries #
-############
+# Generated Files #
+###################
 *.o
 *.so
 *.so.*
+input-manager/input-manager
+spectrum-analyzer/spectrum-analyzer
+body-tracker/body-tracker
 
 # OS generated files #
 ######################
