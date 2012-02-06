@@ -6,10 +6,13 @@ require 'logger'
 require 'object_liststore'
 require 'object_treeview'
 
+require 'unique_timeout_callback'
+
 class GitCommitterWindow < GladeWindow
 	def initialize(path)
 		super('git_committer_window')
 		@path = path
+		@message_clear_timeout = UniqueTimeoutCallback.new(2000) { retire_message }
 
 		create_treeview
 
@@ -24,6 +27,11 @@ class GitCommitterWindow < GladeWindow
 	def positive_status_message(message)
 		@status_label.markup = sprintf("<span color='green'>%s</span>", message)
 		Gtk.main_clear_queue
+		@message_clear_timeout.set
+	end
+
+	def retire_message
+		@status_label.markup = ''
 	end
 
 	#

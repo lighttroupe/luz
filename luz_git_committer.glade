@@ -106,7 +106,9 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="xpad">4</property>
-                    <property name="label" translatable="yes">Message:</property>
+                    <property name="label" translatable="yes">_Message:</property>
+                    <property name="use_underline">True</property>
+                    <property name="mnemonic_widget">commit_message_entry</property>
                   </widget>
                   <packing>
                     <property name="expand">False</property>
