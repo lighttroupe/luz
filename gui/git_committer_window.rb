@@ -16,6 +16,8 @@ class GitCommitterWindow < GladeWindow
 		# TODO: create treeview
 		open_repository
 		add_changed_files
+		on_selected_files_changed
+		@commit_message_entry.on_change { on_selected_files_changed }
 	end
 
 	#
@@ -30,8 +32,8 @@ class GitCommitterWindow < GladeWindow
 	end
 
 	def on_commit_button_clicked
-		#@git.add([file1, file2])
-		#@git.commit('message')
+		@git.add(@modified_files_treeview.selected_files.map { |file| file.path } )
+		@git.commit(commit_message)
 	end
 
 	def on_push_button_clicked
@@ -41,6 +43,21 @@ class GitCommitterWindow < GladeWindow
 	def on_delete_event
 		Gtk.main_quit		# quit app when main window is closed
 	end
+	
+	def commit_message
+		@commit_message_entry.text.strip
+	end
+
+	def on_selected_files_changed
+		list = @modified_files_treeview.selected_files
+		count = list.count
+		@commit_button.sensitive = (count > 0 and not commit_message.empty?)
+		@commit_button.label = sprintf("Commit %d", count)
+	end
+	
+	def unpushed_commits?
+		
+	end
 
 private
 
@@ -48,8 +65,8 @@ private
 	# ModifiedFilesTreeView
 	#
 	class ModifiedFilesTreeView < ObjectTreeView
-		column :path, :title => 'File', :renderers => [{:type => :text, :model_column => :path}]
-		column :selected, :renderers => [{:type => :toggle, :model_column => :selected, :on_toggled => :on_toggled}]
+		column :path, :title => 'File', :renderers => [{:type => :text, :model_column => :path}], :expand => true
+		column :selected, :renderers => [{:type => :toggle, :model_column => :selected, :on_toggled => :on_toggled}], :position => :start
 
 		callback :selected_files_changed
 		attr_reader :selected_files
@@ -98,7 +115,7 @@ private
 		@modified_files_model = ModifiedFilesListStore.new(self)
 		@modified_files_treeview = ModifiedFilesTreeView.new(@modified_files_model)
 
-		@modified_files_treeview.on_selected_files_changed { p @modified_files_treeview.selected_files }
+		@modified_files_treeview.on_selected_files_changed { on_selected_files_changed }
 
 		@modified_files_model.set_sort_column_id(ModifiedFilesListStore.path_column_index)
 		@list_container.add(@modified_files_treeview)
