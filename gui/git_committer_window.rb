@@ -39,8 +39,11 @@ class GitCommitterWindow < GladeWindow
 	end
 
 	def on_commit_button_clicked
-		@git.add(@modified_files_treeview.selected_files.map { |file| file.path } )
+		paths = @modified_files_treeview.selected_files.map { |file| file.path }
+		@git.add(paths)
 		puts @git.commit(commit_message)
+		positive_status_message(sprintf("Committed %d file(s).", paths.count))
+
 		refresh!
 	end
 
