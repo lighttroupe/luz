@@ -1,5 +1,7 @@
 require 'glade_window'
 
+require 'ruby-git/lib/git'
+
 class GitCommitterWindow < GladeWindow
 	def initialize(path)
 		super('git_committer_window')
