@@ -1,5 +1,5 @@
  ###############################################################################
- #  Copyright 2006 Ian McIntosh <ian@openanswers.org>
+ #  Copyright 2012 Ian McIntosh <ian@openanswers.org>
  #
  #  This program is free software; you can redistribute it and/or modify
  #  it under the terms of the GNU General Public License as published by
@@ -143,12 +143,14 @@ class SmartTreeView < Gtk::TreeView
 					self.class.module_eval("def #{name}_renderer ; @renderers[:#{name}] ; end", __FILE__, __LINE__)
 				end
 
-				renderer_options[:options].each { |key, value|
-					new_renderer.send(key.to_s + '=', value)
-				} if renderer_options[:options]
-				renderer_options.delete(:options)
+				# Apply :options = {} to new renderer, valid keys being methods on the Gtk+ renderer
+				if options = renderer_options.delete(:options)
+					options.each { |key, value|
+						new_renderer.send(key.to_s + '=', value)
+					}
+				end
 
-				# Assume remaining key=>value pairs are cell renderer options
+				# Assume remaining key => value pairs are cell renderer options
 				renderer_options.each { |key, value|
 					new_column.add_attribute(new_renderer, key, value)
 				}
@@ -159,7 +161,7 @@ class SmartTreeView < Gtk::TreeView
 			position = column_options[:position]
 			column_options.delete(:position)
 
-			# Assume remaining key=>value pairs are column options
+			# Assume remaining key => value pairs are column options
 			column_options.each { |key, value|
 				new_column.send(key.to_s + '=', value)
 			}
