@@ -3,22 +3,17 @@
 frame-*.bmp
 temporary-save.luz
 
-# Build Files #
-###############
-mkmf.log
-
 # Generated Files #
 ###################
-*.o
-*.so
-*.so.*
 input-manager/input-manager
 spectrum-analyzer/spectrum-analyzer
 body-tracker/body-tracker
-
-# OS generated files #
-######################
+*.o
+*.so
+*.so.*
 .DS_Store*
+mkmf.log
 Thumbs.db
 .notes
 *.~?~
+.bzr*
