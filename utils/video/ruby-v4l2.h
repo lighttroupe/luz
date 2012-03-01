@@ -1,3 +1,5 @@
+# Copyright 2012 Ian McIntosh
+
 #ifndef RUBY_V4L2_H
 #define RUBY_V4L2_H
 
