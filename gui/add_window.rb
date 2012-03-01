@@ -31,7 +31,7 @@ class AddWindow < GladeWindow
 	pipe :add_class, :class_treeview, :method => :add			# Called by engine to tell us about new classes
 
 	def initialize(title = '')
-		super('add_window')
+		super('add_window', :widgets => [:class_treeview_container, :ok_button, :edit_source_button, :name_label, :description_label])
 
 		$gui.on_reload { on_selection(@selected_class) if @selected_class }
 

@@ -20,7 +20,7 @@ require 'glade_window'
 
 class ErrorWindow < GladeWindow
 	def initialize
-		super
+		super('error_window', :widgets => [:details_expander, :details_textview])
 
 		on_key_press(Gdk::Keyval::GDK_Return) { activate_default }
 		on_key_press(Gdk::Keyval::GDK_Escape) { hide }

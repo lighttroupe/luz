@@ -16,41 +16,33 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-require 'libglade2'
-
-puts '*** Overriding buggy behavior of GladeXML#connect'
-class GladeXML
-	alias :connect_with_bug :connect
-	def connect(source, target, signal, handler, data, after = false)
-		guard_source_from_gc(source) if defined? guard_source_from_gc		# this method seems to be missing in debian
-		connect_with_bug(source, target, signal, handler, data, after)
-	end
-end
-
 require 'delegate'
 
-# NOTE: expects GLADE_FILE_NAME to defined externally
-
 class GladeWindow < DelegateClass(Gtk::Window)
+
+	MOUSE_BUTTON_1, MOUSE_BUTTON_2, MOUSE_BUTTON_3 = (1..3).to_a
+
 	def initialize(root_widget_name = nil, options = {})
-		options = {:glade_file_name => GLADE_FILE_NAME}.merge(options)
+		file_name = sprintf("gui/%s.ui", root_widget_name) 
+		instance_variable_names = options[:widgets] || []	
 
-		root_widget_name ||= self.class.name.to_lowercase_underscored
+		@builder = Gtk::Builder.new.add_from_file(file_name)
 
-		# Load the widgets below 'root_widget' and auto-hookup all the methods
-		glade = GladeXML.new(options[:glade_file_name], root_widget_name, &method(:get_signal_handler))
+		# create instance variables out of created widgets
+		instance_variable_names.each { |name|
+			instance_variable_set('@' + name.to_s, @builder.get_object(name.to_s))
+		}
 
-		# create instance variables for each widget below us (except root widget, which is handled below)
-		glade.widget_names.each { |name| instance_variable_set('@' + name, glade.get_widget(name)) unless name == root_widget_name }
+		# hookup signal handlers
+		@builder.connect_signals { |handler_name|
+			method(handler_name)
+		}
 
-		# In the class, we can refer to the GtkWindow as 'self', but we need an instance variable for delegation.
-
-		@window = glade.get_widget(root_widget_name)
-		throw "root widget not found '#{root_widget_name}'" unless @window
-
+		# in the class, we will refer to the GtkWindow as @window when referencing variables	
+		@window = @builder.get_object(root_widget_name)
 		@window.realize
 
-		options = root_widget_name = glade = nil		# GARBAGE-HACK
+		#options = root_widget_name = glade = nil		# GARBAGE-HACK
 
 		setup_default_signal_handlers
 

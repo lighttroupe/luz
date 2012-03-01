@@ -16,7 +16,7 @@ require 'constants'		# for MESSAGE_BUS_IP and MESSAGE_BUS_PORT
 
 class AudioPlayerWindow < GladeWindow
 	def initialize
-		super
+		super('audio_player_window', :widgets => [:play_button_image_container, :file_chooser_button, :progress_bar_hscale, :volumebutton])
 
 		#
 		# Socket

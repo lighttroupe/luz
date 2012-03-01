@@ -40,8 +40,7 @@ class EditorWindow < GladeWindow
 	RED_HEX = '#E92A09'
 
 	def initialize
-		super
-
+		super 'editor_window', :widgets => [:enter_exit_hscale, :simulation_speed_hscale, :simulation_speed_label, :enable_actor_stage_image, :enable_director_stage_image, :enable_output_preview_image, :message_label, :window_notebook, :actor_editor_container, :director_editor_container, :project_effect_editor_container, :curve_editor_container, :theme_editor_container, :variable_editor_container, :event_editor_container, :save_button, :open_recent_menu_item, :window_vpaned, :bottom_notebook, :actor_stage_container, :director_stage_container, :output_preview_container, :drawing_area_container, :beat_monitor_container,:editor_container_viewport,:actor_tab_image,:child_container]
 		@message_clear_timeout = UniqueTimeoutCallback.new(2000) { retire_message }
 
 		###################################################################
@@ -348,10 +347,6 @@ private
 		unpause
 	end
 
-	def on_toggle_fullscreen_editor_button_clicked
-		toggle_fullscreen
-	end
-
 	###################################################################
 	# Design: File Menu
 	###################################################################
@@ -421,7 +416,7 @@ private
 		end
 	end
 
-	def on_save_set_activate
+	def on_save_button_clicked
 		if @current_file_path.nil?
 			on_save_set_as_activate
 		else
@@ -491,7 +486,7 @@ private
 
 	attr_reader :current_file_path
 
-	def on_show_in_performance_mode_activate
+	def on_play_button_clicked
 		begin
 			run_performer!
 		rescue Exception => e
@@ -550,7 +545,7 @@ private
 		open("|gnome-open \"#{File.dirname(@current_file_path)}\"")
 	end
 
-	def on_record_activate
+	def on_record_button_clicked
 		return negative_message('Save project before rendering.') unless @current_file_path
 
 		temp_path = @current_file_path + '.tmp'
@@ -569,7 +564,7 @@ private
 		adjust_drawing_area
 	end
 
-	def on_fullscreen_activate
+	def on_fullscreen_button_clicked
 		toggle_fullscreen
 	end
 
@@ -580,7 +575,7 @@ private
 		$engine.beat!
 	end
 
-	def on_pause_activate
+	def on_pause_button_clicked
 		pause
 	end
 
@@ -681,23 +676,23 @@ private
 		end
 	end
 
-	def on_enable_actor_stage_view_togglebutton_toggled
-		@actor_stage_container.visible = @enable_actor_stage_view_togglebutton.active?
-		#@actor_stage_controls_container.visible = @enable_actor_stage_view_togglebutton.active?
-		adjust_drawing_area
-	end
+#	def on_enable_actor_stage_view_togglebutton_toggled
+#		@actor_stage_container.visible = @enable_actor_stage_view_togglebutton.active?
+#		#@actor_stage_controls_container.visible = @enable_actor_stage_view_togglebutton.active?
+#		adjust_drawing_area
+#	end
 
-	def on_enable_director_stage_view_togglebutton_toggled
-		@director_stage_container.visible = @enable_director_stage_view_togglebutton.active?
-		#@director_stage_controls_container.visible = @enable_director_stage_view_togglebutton.active?
-		adjust_drawing_area
-	end
+#	def on_enable_director_stage_view_togglebutton_toggled
+#		@director_stage_container.visible = @enable_director_stage_view_togglebutton.active?
+#		#@director_stage_controls_container.visible = @enable_director_stage_view_togglebutton.active?
+#		adjust_drawing_area
+#	end
 
-	def on_enable_output_preview_view_togglebutton_toggled
-		@output_preview_container.visible = @enable_output_preview_view_togglebutton.active?
-		#@director_stage_controls_container.visible = @enable_director_stage_view_togglebutton.active?
-		adjust_drawing_area
-	end
+#	def on_enable_output_preview_view_togglebutton_toggled
+#		@output_preview_container.visible = @enable_output_preview_view_togglebutton.active?
+#		#@director_stage_controls_container.visible = @enable_director_stage_view_togglebutton.active?
+#		adjust_drawing_area
+#	end
 
 	def on_show_output_window_clicked
 		@output_window.show
