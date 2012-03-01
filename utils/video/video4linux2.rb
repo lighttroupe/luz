@@ -2,8 +2,11 @@ module Video4Linux2
 	class Camera
 		def with_frame(offset=0)
 			@image ||= Image.new
+			@width ||= self.width
+			@height ||= self.height
 
-			@image.from_rgb8($webcam.data, self.width, self.height)
+			new_data = $webcam.data
+			@image.from_rgb8(new_data, @width, @height) if new_data
 
 			@image.using {
 				yield
