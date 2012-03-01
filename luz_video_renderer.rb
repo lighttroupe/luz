@@ -21,7 +21,6 @@
 Dir.chdir(File.dirname(__FILE__))	# So that this file can be run from anywhere
 $LOAD_PATH.unshift('./utils').unshift('./gui').unshift('.')
 
-GLADE_FILE_NAME = 'luz_video_renderer.glade'
 DEFAULT_GTK_RC_FILE = 'luz.rc'
 
 require 'gtk2'

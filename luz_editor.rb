@@ -29,7 +29,7 @@ $LOAD_PATH << './engine'
 ###################################################################
 APP_NAME			= 'Luz Studio'
 APP_COPYRIGHT	= "Copyright (c) #{Time.now.year} Ian McIntosh"
-APP_VERSION		= 0.90
+APP_VERSION		= 0.91
 
 DEFAULT_GTK_RC_FILE = 'luz.rc'
 

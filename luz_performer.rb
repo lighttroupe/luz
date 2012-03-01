@@ -242,30 +242,8 @@ $engine.hardwire!
 
 if @record_video
 	#
-	# Read in samples
-	#
-	Sample = Struct.new(:time, :name, :value)
-	samples = []
-
-	Dir.glob("#{@inputs_path}.*").each { |path|
-		File.open(path, 'r') { |f|
-			start = samples.size
-			f.each_line { |line|
-				columns = line.split(',').collect { |c| c.strip }
-				samples << Sample.new(columns[0].to_f, columns[1], {'true' => 1, 'false' => 0}[columns[2]] || columns[2].to_f)
-			}
-			puts "Loaded #{path} with #{samples.size - start} samples..."
-		}
-	} if @inputs_path
-	samples = samples.sort_by { |s| s.time }
-
-	puts "#{samples.size} samples..."
-	#exit if samples.empty?
-
-	#
 	# Loop, stepping time forward while rendering frames
 	#
-
 	fps = $application.frames_per_second
 	ms_per_frame = 1000.0 / fps
 	ms = 0
@@ -283,32 +261,8 @@ if @record_video
 		# reached the end?
 		exit if (quit_at_time and (time_in_seconds > quit_at_time))
 
-		#
-		# Send some samples to engine
-		#
-		while (sample=samples[sample_index]) and sample.time <= time_in_seconds
-			if sample.value.is_a? Float
-				$engine.on_slider_change(sample.name, sample.value)
-			elsif sample.value == 1
-				$engine.on_button_down(sample.name)
-			elsif sample.value == 0
-				$engine.on_button_up(sample.name)
-			end
-
-			sample_index += 1
-
-			# all out of input data?  schedule a quit
-			quit_at_time = (time_in_seconds + 2.0) unless samples[sample_index]
-		end
-
-		#
 		# Render a frame at specific time
-		#
 		$engine.do_frame(time_in_seconds)
-
-		#
-		# Save to disk
-		#
 
 		# Check for ESC
 		while event = SDL::Event2.poll
@@ -327,13 +281,9 @@ if @record_video
 			exit
 		end
 
-		#
-		# Advance
-		#
+		# Frame Done
 		SDL.GL_swap_buffers
-
 		frame_count += 1
-
 		ms += ms_per_frame
 	}
 else
