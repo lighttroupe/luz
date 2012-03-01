@@ -29,7 +29,11 @@ static VALUE Video4Linux2_Camera_data(VALUE self) {
 
 	// Read frame data right into the String's memory (ptr) and return it
 	ssize_t size = v4l2_read(camera->fd, RSTRING(camera->ruby_string_buffer)->ptr, RSTRING(camera->ruby_string_buffer)->len);
-	return camera->ruby_string_buffer;
+
+	if(size == -1)
+		return Qnil;
+	else
+		return camera->ruby_string_buffer;
 }
 
 /// + Video4Linux2::Camera#new
@@ -49,7 +53,7 @@ static VALUE Video4Linux2_Camera_new(VALUE klass) {
 	camera->format.fmt.pix.pixelformat = V4L2_PIX_FMT_RGB24;
 	camera->format.fmt.pix.field = V4L2_FIELD_ANY;
 
-	camera->fd = v4l2_open("/dev/video0", O_RDWR);
+	camera->fd = v4l2_open("/dev/video0", O_RDWR | O_NONBLOCK);
 	//printf("fd: %d\n", camera->fd);
 
 	// Set format
