@@ -22,9 +22,9 @@ class UserObjectEditorWindow < GladeWindow
 	attr_accessor :window_contents
 	empty_method :update
 
-	def initialize(glade_root)
-		super(glade_root)
-
+	def initialize(glade_root, options)
+		options[:widgets] = [:editor_container_viewport, :child_container] + options[:widgets]
+		super(glade_root, options)
 		@editor_container_viewport.draggable!
 	end
 end

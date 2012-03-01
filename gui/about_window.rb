@@ -20,7 +20,7 @@ require 'glade_window'
 
 class AboutWindow < GladeWindow
 	def initialize
-		super
+		super('about_window', :widgets => [:application_name_label, :version_label])
 
 		on_key_press(Gdk::Keyval::GDK_Escape) { hide }
 

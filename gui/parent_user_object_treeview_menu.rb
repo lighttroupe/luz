@@ -29,6 +29,10 @@ class ParentUserObjectTreeviewMenu < GladeWindow
 	alias :on_clone_activate :clone_notify
 	alias :on_delete_activate :delete_notify
 
+	def initialize
+		super('parent_user_object_treeview_menu', :widgets => [:new_child_menuitem, :clone_menuitem, :edit_menuitem, :delete_menuitem])
+	end
+
 	def popup_for_objects(objects, event)
 		@new_child_menuitem.sensitive = objects.size > 0
 		@clone_menuitem.sensitive = objects.size > 0

@@ -23,7 +23,7 @@ class UserObjectPropertiesEditorWindow < GladeWindow
 	callback :objects_tagged
 
 	def initialize(tag_model=nil)
-		super()
+		super 'user_object_properties_editor_window', :widgets => [:add_tag_button, :conditions_container, :title_entry, :object_type_label, :event_combobox_container, :enable_event_condition_checkbox, :event_condition_controls_container,:event_on_radiobutton,:enable_child_index_range_checkbox,:child_index_range_controls_container,:child_index_min_spinbutton,:child_index_max_spinbutton,:tag_treeview_container,:tag_entry, :tags_container]
 
 		on_key_press(Gdk::Keyval::GDK_Escape) { hide }
 
@@ -124,7 +124,7 @@ class UserObjectPropertiesEditorWindow < GladeWindow
 		return (@objects and @objects.inconsistent? { |object| object.has_tag?(tag) })
 	end
 
-	def on_add_tags_button_clicked
+	def on_add_tag_button_clicked
 		# Allow multiple comma separated tags
 		@tag_entry.text.split(',').each { |tag|
 			tag.strip!

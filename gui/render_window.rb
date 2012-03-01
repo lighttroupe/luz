@@ -10,7 +10,7 @@ class RenderWindow < GladeWindow
 		@suggested_filename = ''
 		@process_queue = []
 
-		super
+		super('render_window', :widgets => [:resolution_combobox, :project_filechooserbutton, :resolution_combobox, :music_filechooserbutton, :output_filename_error_label, :output_folder_filechooserbutton, :frames_per_second_spinbutton, :output_filename_entry, :encoding_combobox, :quality_combobox, :render_button, :terminal_container, :controls_container, :encoding_output_container, :launch_options_container])
 
 		@resolution_combobox.active = 0		# select first option
 

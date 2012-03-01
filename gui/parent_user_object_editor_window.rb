@@ -34,7 +34,7 @@ class ParentUserObjectEditorWindow < UserObjectEditorWindow
 	attr_reader :selected_parents
 
 	def initialize(glade_root, parent_class, parent_treeview_class, parent_editor_class, child_class, child_treeview_class, child_editor_class, tag_model=nil)
-		super(glade_root)
+		super(glade_root, :widgets => [:window_contents,:enable_event_condition_checkbox, :event_condition_controls_container,:event_on_radiobutton,:enable_child_index_range_checkbox,:child_index_range_controls_container,:child_index_min_spinbutton,:child_index_max_spinbutton,:tag_treeview_container,:tag_entry,:editor_container_viewport,:parent_treeview_container, :editor_container_vbox, :child_treeview_container, :new_child_button, :edit_child_button, :clone_child_button, :delete_child_button, :edit_parent_button, :clone_parent_button, :delete_parent_button])
 
 		@parent_class, @child_class = parent_class, child_class
 

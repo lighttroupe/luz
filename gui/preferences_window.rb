@@ -33,7 +33,7 @@ RESOLUTION_OPTIONS = [
 
 class PreferencesWindow < GladeWindow
 	def initialize
-		super
+		super('preferences_window', :widgets => [:editor_fps_spinbutton, :performer_fps_spinbutton, :project_directory_filechooserbutton, :enable_hints_checkbutton, :enable_snap_to_grid_checkbutton, :enable_live_editing_checkbutton, :resolution_combobox])
 
 		on_key_press(Gdk::Keyval::GDK_Escape) { hide }
 
