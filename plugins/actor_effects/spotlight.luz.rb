@@ -32,7 +32,7 @@ class ActorEffectSpotlight < ActorEffect
 				for i in 0...number
 					i.distributed_among(number, 1.0..smallest) { |scale_amount|
 						with_scale(scale_amount) {
-							i.distributed_among(number, 1.0..roll) { |roll_amount|
+							i.distributed_among(number, 0.0..roll) { |roll_amount|
 								with_roll(roll_amount) {
 									with_translation(0,0,(i.to_f/number) * height) {
 										yield :child_index => i, :total_children => number
