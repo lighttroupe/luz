@@ -1,4 +1,4 @@
-# Copyright 2012 Ian McIntosh
+// Copyright 2012 Ian McIntosh
 
 #include "ruby.h"
 #include "ruby-v4l2.h"
