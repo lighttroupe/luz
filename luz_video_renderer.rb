@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
  ###############################################################################
- #  Copyright 2009 Ian McIntosh <ian@openanswers.org>
+ #  Copyright 2012 Ian McIntosh <ian@openanswers.org>
  #
  #  This program is free software; you can redistribute it and/or modify
  #  it under the terms of the GNU General Public License as published by
