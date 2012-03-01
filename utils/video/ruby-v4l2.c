@@ -27,11 +27,9 @@ static VALUE Video4Linux2_Camera_data(VALUE self) {
 	camera_t* camera = NULL;
 	Data_Get_Struct(self, camera_t, camera);
 
-	//printf("before reading data... %d\n", RSTRING(camera->ruby_string)->len);
-	//ssize_t size = v4l2_read(camera->fd, RSTRING(camera->ruby_string)->ptr, RSTRING(camera->ruby_string)->len);
-	ssize_t size = v4l2_read(camera->fd, camera->buffer, camera->buffer_size);
-
-	return rb_str_new(camera->buffer, camera->buffer_size);
+	// Read frame data right into the String's memory (ptr) and return it
+	ssize_t size = v4l2_read(camera->fd, RSTRING(camera->ruby_string_buffer)->ptr, RSTRING(camera->ruby_string_buffer)->len);
+	return camera->ruby_string_buffer;
 }
 
 /// + Video4Linux2::Camera#new
@@ -60,17 +58,13 @@ static VALUE Video4Linux2_Camera_new(VALUE klass) {
 		printf("ioctl(fd, VIDIOC_S_FMT, ...): %d, errno: %d\n", ret, errno);
 	}
 
+	// Allocate a ruby String to hold frame data
 	camera->buffer_size = camera->format.fmt.pix.height * camera->format.fmt.pix.width * 3;		// RGB24 = 3 bytes per pixel (24/8)
 
-	//void* raw_buffer = malloc(camera->buffer_size);
-	//camera->ruby_string = rb_str_new(raw_buffer, camera->buffer_size);
-	//if(RSTRING(camera->ruby_string)->ptr == raw_buffer) {
-	//	printf("Pointers are equal..\n");
-	//}
-	//printf("length of Ruby String is %d, buffer size %d (should be the same)\n", RSTRING(camera->ruby_string)->len, camera->buffer_size);
-
-	camera->buffer = ALLOC_N(char, camera->buffer_size);
-	//printf("buffer: %p\n", camera->buffer);
+	// temp_buffer seems necessary, otherwise rb_str_new sometimes segfaults
+	char* temp_buffer = ALLOC_N(char, camera->buffer_size);
+	camera->ruby_string_buffer = rb_str_new(temp_buffer, camera->buffer_size);
+	rb_gc_register_address(&(camera->ruby_string_buffer));		// otherwise Ruby will delete our string!
 
 	return Data_Wrap_Struct(vCameraClass, 0, Video4Linux2_Camera_free, camera);
 }
