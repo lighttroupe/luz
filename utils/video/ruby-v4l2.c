@@ -32,7 +32,7 @@ static VALUE Video4Linux2_Camera_data(VALUE self) {
 }
 
 static VALUE Video4Linux2_Camera_free(void* p) {
-	// TODO
+	return Qnil;		// TODO
 }
 
 static VALUE Video4Linux2_Camera_new(VALUE klass) {
