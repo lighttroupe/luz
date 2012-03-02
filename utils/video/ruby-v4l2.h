@@ -17,7 +17,6 @@ extern "C" {
 typedef struct {
 		int fd;
 		struct v4l2_format format;
-		int buffer_size;
 		VALUE ruby_string_buffer;			// We use a ruby String variable to pass frames around
 } camera_t;
 

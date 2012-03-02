@@ -58,11 +58,11 @@ static VALUE Video4Linux2_Camera_new(VALUE klass) {
 	}
 
 	// Allocate a ruby String to hold frame data
-	camera->buffer_size = camera->format.fmt.pix.height * camera->format.fmt.pix.width * 3;		// RGB24 = 3 bytes per pixel (24/8)
+	int buffer_size = camera->format.fmt.pix.height * camera->format.fmt.pix.width * 3;		// RGB24 = 3 bytes per pixel (24/8)
 
 	// temp_buffer seems necessary, otherwise rb_str_new sometimes segfaults
-	char* temp_buffer = ALLOC_N(char, camera->buffer_size);
-	camera->ruby_string_buffer = rb_str_new(temp_buffer, camera->buffer_size);
+	char* temp_buffer = ALLOC_N(char, buffer_size);
+	camera->ruby_string_buffer = rb_str_new(temp_buffer, buffer_size);
 	rb_gc_register_address(&(camera->ruby_string_buffer));		// otherwise Ruby will delete our string!
 
 	return Data_Wrap_Struct(vCameraClass, 0, Video4Linux2_Camera_free, camera);
