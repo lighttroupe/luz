@@ -13,31 +13,13 @@ extern "C" {
 #include <errno.h>
 #include <malloc.h>
 
-/// data types
 typedef struct {
-		int fd;
-		struct v4l2_format format;
-		VALUE ruby_string_buffer;			// We use a ruby String variable to pass frames around
+	int fd;
+	struct v4l2_format format;
+	VALUE ruby_string_buffer;			// We use a ruby String variable to pass frames around
 } camera_t;
 
-/// function prototypes
 extern void Init_video4linux2();
-
-/*
-/// helper macros
-#define albool2rbbool(b) ((b)?(Qtrue):(Qfalse))
-
-#define RARRAY2ARRAY(rbary, ary, n, convf) \
-VALUE ___v; int ___c;\
-for(___c=0;___c<n;___c++){\
- ___v=rb_ary_entry(rbary,___c);\
- ary[___c]=convf(___v);}
-
-#define ARRAY2RARRAY(ary, rbary, n, convf) \
-int ___c; \
-for(___c=0;___c<n;___c++){\
- rb_ary_push(rbary, convf(ary[___c]));}\
-*/
 
 #ifdef __cplusplus
 }
