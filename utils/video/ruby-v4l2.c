@@ -36,14 +36,13 @@ static VALUE Video4Linux2_Camera_free(void* p) {
 }
 
 static VALUE Video4Linux2_Camera_new(VALUE klass) {
-	int fd = -1;
 	int ret = -1;
 
 	camera_t* camera = malloc(sizeof(camera_t));
+	char* device_path = "/dev/video0";		// TODO: make this selectable
 
 	// Start V4L2 using RedHat's libv4l2 wrapper, which provides RGB conversion, if needed
-	// TODO: make this selectable
-	camera->fd = v4l2_open("/dev/video0", O_RDWR | O_NONBLOCK);
+	camera->fd = v4l2_open(device_path, O_RDWR | O_NONBLOCK);
 	//printf("fd: %d\n", camera->fd);
 
 	// Apply video format
@@ -54,7 +53,7 @@ static VALUE Video4Linux2_Camera_new(VALUE klass) {
 	camera->format.fmt.pix.field = V4L2_FIELD_ANY;
 	ret = v4l2_ioctl(camera->fd, VIDIOC_S_FMT, &(camera->format));
 	if(ret != 0) {
-		printf("ioctl(fd, VIDIOC_S_FMT, ...): %d, errno: %d\n", ret, errno);
+		printf("v4l2_ioctl(camera->fd, VIDIOC_S_FMT, ...): %d, errno: %d\n", ret, errno);
 	}
 
 	// Allocate a ruby String to hold frame data
