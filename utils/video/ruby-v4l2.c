@@ -41,27 +41,25 @@ static VALUE Video4Linux2_Camera_new(VALUE klass) {
 
 	camera_t* camera = malloc(sizeof(camera_t));
 
-	// Start V4L2 using libv4l2 wrapper
+	// Start V4L2 using RedHat's libv4l2 wrapper, which provides RGB conversion, if needed
+	// TODO: make this selectable
+	camera->fd = v4l2_open("/dev/video0", O_RDWR | O_NONBLOCK);
+	//printf("fd: %d\n", camera->fd);
+
+	// Apply video format
 	camera->format.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
 	camera->format.fmt.pix.width = 320;
 	camera->format.fmt.pix.height = 240;
 	camera->format.fmt.pix.pixelformat = V4L2_PIX_FMT_RGB24;
 	camera->format.fmt.pix.field = V4L2_FIELD_ANY;
-
-	camera->fd = v4l2_open("/dev/video0", O_RDWR | O_NONBLOCK);
-	//printf("fd: %d\n", camera->fd);
-
-	// Set format
 	ret = v4l2_ioctl(camera->fd, VIDIOC_S_FMT, &(camera->format));
 	if(ret != 0) {
 		printf("ioctl(fd, VIDIOC_S_FMT, ...): %d, errno: %d\n", ret, errno);
 	}
 
 	// Allocate a ruby String to hold frame data
-	int buffer_size = camera->format.fmt.pix.height * camera->format.fmt.pix.width * 3;		// RGB24 = 3 bytes per pixel (24/8)
-
-	// temp_buffer seems necessary, otherwise rb_str_new sometimes segfaults
-	char* temp_buffer = ALLOC_N(char, buffer_size);
+	int buffer_size = camera->format.fmt.pix.height * camera->format.fmt.pix.width * 3;		// RGB24 = 24/8 = 3 bytes per pixel
+	char* temp_buffer = ALLOC_N(char, buffer_size);		// rb_str_new() sometimes segfaults with just ""
 	camera->ruby_string_buffer = rb_str_new(temp_buffer, buffer_size);
 	rb_gc_register_address(&(camera->ruby_string_buffer));		// otherwise Ruby will delete our string!
 
