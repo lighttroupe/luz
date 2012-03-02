@@ -3,10 +3,6 @@
 #ifndef RUBY_V4L2_H
 #define RUBY_V4L2_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include <linux/videodev2.h>		// pure V4l2 library file
 #include <libv4l2.h>						// wrapper providing RGB color conversion
 #include <fcntl.h>							// for O_RDWR
@@ -20,9 +16,5 @@ typedef struct {
 } camera_t;
 
 extern void Init_video4linux2();
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif
