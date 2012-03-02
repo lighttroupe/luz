@@ -7,7 +7,6 @@
 #include <libv4l2.h>						// wrapper providing RGB color conversion
 #include <fcntl.h>							// for O_RDWR
 #include <errno.h>
-#include <malloc.h>
 
 typedef struct {
 	int fd;

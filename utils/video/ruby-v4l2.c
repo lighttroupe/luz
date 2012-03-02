@@ -38,7 +38,7 @@ static VALUE Video4Linux2_Camera_free(void* p) {
 static VALUE Video4Linux2_Camera_new(VALUE klass) {
 	int ret = -1;
 
-	camera_t* camera = malloc(sizeof(camera_t));
+	camera_t* camera = ALLOC_N(camera_t, 1);
 	char* device_path = "/dev/video0";		// TODO: make this selectable
 
 	// Start V4L2 using RedHat's libv4l2 wrapper, which provides RGB conversion, if needed
