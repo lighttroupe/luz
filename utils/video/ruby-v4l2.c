@@ -68,10 +68,6 @@ static VALUE Video4Linux2_Camera_new(VALUE klass) {
 	return Data_Wrap_Struct(vCameraClass, 0, Video4Linux2_Camera_free, camera);
 }
 
-static VALUE Video4Linux2_Camera_initialize(VALUE self) {
-	return self;
-}
-
 // This function is 'main' and is discovered by Ruby automatically due to its name
 void Init_video4linux2() {
 	vModule = rb_define_module("Video4Linux2");
@@ -79,7 +75,6 @@ void Init_video4linux2() {
 
 	// Setup Camera class
 	rb_define_singleton_method(vCameraClass, "new", &Video4Linux2_Camera_new, 0);
-	rb_define_method(vCameraClass, "initialize", &Video4Linux2_Camera_initialize, 0);
 	rb_define_method(vCameraClass, "width", &Video4Linux2_Camera_width, 0);
 	rb_define_method(vCameraClass, "height", &Video4Linux2_Camera_height, 0);
 	rb_define_method(vCameraClass, "data", &Video4Linux2_Camera_data, 0);
