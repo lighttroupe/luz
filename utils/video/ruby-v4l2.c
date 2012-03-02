@@ -6,24 +6,19 @@
 VALUE vModule;
 VALUE vCameraClass;
 
-static VALUE Video4Linux2_Camera_free(void* p);
-
 static VALUE Video4Linux2_Camera_width(VALUE self) {
-	//printf("Video4Linux2_Camera_width\n");
 	camera_t* camera = NULL;
 	Data_Get_Struct(self, camera_t, camera);
 	return INT2FIX(camera->format.fmt.pix.width);
 }
 
 static VALUE Video4Linux2_Camera_height(VALUE self) {
-	//printf("Video4Linux2_Camera_height\n");
 	camera_t* camera = NULL;
 	Data_Get_Struct(self, camera_t, camera);
 	return INT2FIX(camera->format.fmt.pix.height);
 }
 
 static VALUE Video4Linux2_Camera_data(VALUE self) {
-	//printf("Video4Linux2_Camera_data\n");
 	camera_t* camera = NULL;
 	Data_Get_Struct(self, camera_t, camera);
 
@@ -36,13 +31,13 @@ static VALUE Video4Linux2_Camera_data(VALUE self) {
 		return camera->ruby_string_buffer;
 }
 
-/// + Video4Linux2::Camera#new
-static VALUE Video4Linux2_Camera_new(VALUE klass) {
-	//printf("Video4Linux2_Camera_new\n");
+static VALUE Video4Linux2_Camera_free(void* p) {
+	// TODO
+}
 
+static VALUE Video4Linux2_Camera_new(VALUE klass) {
 	int fd = -1;
 	int ret = -1;
-	errno = 0;
 
 	camera_t* camera = malloc(sizeof(camera_t));
 
@@ -75,16 +70,7 @@ static VALUE Video4Linux2_Camera_new(VALUE klass) {
 
 /// - Video4Linux2::Camera#initialize
 static VALUE Video4Linux2_Camera_initialize(VALUE self) {
-	printf("Video4Linux2_Camera_initialize\n");
 	return self;
-}
-
-static VALUE Video4Linux2_Camera_free(void* p) {
-	//printf("Video4Linux2_Camera_free\n");
-
-	if ( NULL != p ) {
-		//free((void*)p);
-	}
 }
 
 void Init_video4linux2() {
