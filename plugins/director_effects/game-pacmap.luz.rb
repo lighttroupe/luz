@@ -37,15 +37,27 @@ class Map
 			@nodeA = nodeA
 			@nodeB = nodeB
 		end
+
+		def center_point
+			[(@nodeA.x + @nodeB.x) / 2.0, (@nodeA.y + @nodeB.y) / 2.0]
+		end
+
+		def length
+			Math.sqrt((@nodeA.x - @nodeB.x)**2 + (@nodeA.y - @nodeB.y)**2)
+		end
+
+		def angle
+			Math.atan2((@nodeB.x - @nodeA.x), (@nodeB.y - @nodeA.y)) / (Math::PI*2.0)
+		end
 	end
 	
 	def initialize
 		@nodes = []
 		@paths = []
-		
+
 		# Add some test data
-		@nodes << (a=Node.new(-0.25, 0.0))
-		@nodes << (b=Node.new(0.25, 0.0))
+		@nodes << (a=Node.new(1.0, 0.0))
+		@nodes << (b=Node.new(-1.0, 0.0))
 		a.add_neighbor(b)
 		b.add_neighbor(a)
 		p = Path.new(a, b)
@@ -60,12 +72,14 @@ class DirectorEffectGamePacMap < DirectorEffect
 	setting 'hero', :actor
 	setting 'enemy', :actor
 	setting 'node', :actor
-	setting 'node_size', :float
+	setting 'node_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
+	setting 'path', :actor
 
 	#
 	# after_load is called once at startup, and again after Ctrl-Shift-R reloads
 	#
 	def after_load
+		@map = Map.new
 		super
 	end
 
@@ -81,12 +95,21 @@ class DirectorEffectGamePacMap < DirectorEffect
 	#
 	def render
 		# TODO: draw map and creatures
-		@map ||= Map.new
+		@map.paths.each { |p|
+			center = p.center_point
+			with_translation(center.first, center.last) {
+				with_roll(p.angle) {
+					with_scale(node_size / 2.0, p.length) {
+						path.render!
+					}
+				}
+			}
+		}
 
 		@map.nodes.each { |n|
-			with_translation( n.x, n.y ){
+			with_translation(n.x, n.y) {
 				with_scale(node_size,node_size){
-				node.render!
+					node.render!
 				}
 			}
 		}
