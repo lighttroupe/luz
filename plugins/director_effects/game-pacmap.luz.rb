@@ -123,12 +123,13 @@ class DirectorEffectGamePacMap < DirectorEffect
 	# render is responsible for all drawing, and must yield to continue down the effects list
 	#
 	def render
+		#
+		# Paths
+		#
 		with_offscreen_buffer { |buffer|
 			# Render to offscreen
 			buffer.using {
-				with_scale(0.5, 0.5) {
-					path.render!
-				}
+				path.render!
 			}
 
 			# Render actor with image of rendered scene as default Image
@@ -137,7 +138,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 					center = p.center_point
 					with_translation(center.first, center.last) {
 						with_roll(p.angle) {
-							with_scale(2.0 * path_size, 2.0 * p.length, 2.0 * path_size) {
+							with_scale(path_size, p.length, path_size) {
 								unit_square
 							}
 						}
@@ -146,6 +147,9 @@ class DirectorEffectGamePacMap < DirectorEffect
 			}
 		}
 
+		#
+		# Nodes
+		#
 		with_offscreen_buffer { |buffer|
 			# Render to offscreen
 			buffer.using {
@@ -163,7 +167,9 @@ class DirectorEffectGamePacMap < DirectorEffect
 			}
 		}
 
+		#
 		# Heros
+		#
 		@map.heroes.each_with_index { |h, i|
 			with_env(:child_index, i) {
 				with_translation(h.x, h.y) {
@@ -176,7 +182,9 @@ class DirectorEffectGamePacMap < DirectorEffect
 			}
 		}
 
+		#
 		# Enemies
+		#
 		@map.enemies.each_with_index { |e, i|
 			with_env(:child_index, i) {
 				with_translation(e.x, e.y) {
