@@ -93,6 +93,8 @@ class DirectorEffectGamePacMap < DirectorEffect
 	title	    'PacMap'
 	description "The PacMap game in Luz"
 
+	include Drawing
+
 	setting 'hero', :actor
 	setting 'hero_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
 	setting 'enemy', :actor
@@ -100,6 +102,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 	setting 'node', :actor
 	setting 'node_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
 	setting 'path', :actor
+	setting 'path_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
 
 	#
 	# after_load is called once at startup, and again after Ctrl-Shift-R reloads
@@ -120,21 +123,42 @@ class DirectorEffectGamePacMap < DirectorEffect
 	# render is responsible for all drawing, and must yield to continue down the effects list
 	#
 	def render
-		@map.paths.each { |p|
-			center = p.center_point
-			with_translation(center.first, center.last) {
-				with_roll(p.angle) {
-					with_scale(node_size, p.length) {
-						path.render!
+		with_offscreen_buffer { |buffer|
+			# Render to offscreen
+			buffer.using {
+				with_scale(0.5, 0.5) {
+					path.render!
+				}
+			}
+
+			# Render actor with image of rendered scene as default Image
+			buffer.with_image {
+				@map.paths.each { |p|
+					center = p.center_point
+					with_translation(center.first, center.last) {
+						with_roll(p.angle) {
+							with_scale(2.0 * path_size, 2.0 * p.length, 2.0 * path_size) {
+								unit_square
+							}
+						}
 					}
 				}
 			}
 		}
 
-		@map.nodes.each { |n|
-			with_translation(n.x, n.y) {
-				with_scale(node_size,node_size){
-					node.render!
+		with_offscreen_buffer { |buffer|
+			# Render to offscreen
+			buffer.using {
+				node.render!
+			}
+			# Render actor with image of rendered scene as default Image
+			buffer.with_image {
+				@map.nodes.each { |n|
+					with_translation(n.x, n.y) {
+						with_scale(node_size, node_size, node_size){
+							unit_square
+						}
+					}
 				}
 			}
 		}
@@ -143,7 +167,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 		@map.heroes.each_with_index { |h, i|
 			with_env(:child_index, i) {
 				with_translation(h.x, h.y) {
-					with_scale(hero_size, hero_size){
+					with_scale(hero_size, hero_size, hero_size){
 						with_roll(0.25) {
 							hero.render!
 						}
@@ -156,7 +180,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 		@map.enemies.each_with_index { |e, i|
 			with_env(:child_index, i) {
 				with_translation(e.x, e.y) {
-					with_scale(enemy_size, enemy_size){
+					with_scale(enemy_size, enemy_size, enemy_size){
 						with_roll(0.25) {
 							enemy.render!
 						}
