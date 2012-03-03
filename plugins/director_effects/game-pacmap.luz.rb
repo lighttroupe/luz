@@ -56,8 +56,8 @@ class Map
 		@paths = []
 
 		# Add some test data
-		@nodes << (a=Node.new(1.0, 0.0))
-		@nodes << (b=Node.new(-1.0, 0.0))
+		@nodes << (a=Node.new(0.2, 0.0))
+		@nodes << (b=Node.new(-0.2, 0.0))
 		a.add_neighbor(b)
 		b.add_neighbor(a)
 		p = Path.new(a, b)
@@ -99,7 +99,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 			center = p.center_point
 			with_translation(center.first, center.last) {
 				with_roll(p.angle) {
-					with_scale(node_size / 2.0, p.length) {
+					with_scale(node_size, p.length) {
 						path.render!
 					}
 				}
