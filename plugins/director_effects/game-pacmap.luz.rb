@@ -7,18 +7,16 @@ include Drawing
 
 require 'set'
 
-class Map
-	attr_accessor :nodes, :paths
-	
+class PacMap
 	class Node
 		attr_reader :x, :y, :neighbors
-		
+
 		def initialize(x, y)
 			@x = x
 			@y = y
 			@neighbors = Set.new
 		end
-	
+
 		def add_neighbor(node)
 			@neighbors << node
 		end
@@ -31,7 +29,6 @@ class Map
 			@neighbors.clear
 		end
 	end
-	
 
 	class Path
 		attr_accessor :nodeA, :nodeB
@@ -55,10 +52,21 @@ class Map
 			Math.atan2((@nodeB.x - @nodeA.x), (@nodeB.y - @nodeA.y)) / (Math::PI*2.0)
 		end
 	end
-	
+
+	class Character
+		attr_accessor :x, :y
+		def initialize(x, y)
+			@x, @y = x, y
+		end
+	end
+
+	#
+	# Map class
+	#
+	attr_accessor :nodes, :paths, :heroes, :enemies
+
 	def initialize
-		@nodes = []
-		@paths = []
+		@nodes, @paths, @heroes, @enemies = [], [], [], []
 
 		# Add some test data
 		@nodes << (a=Node.new(0.2, 0.0))
@@ -71,6 +79,12 @@ class Map
 
 		@nodes << (d=Node.new(0.2, -0.3))
 		@paths << Path.new(a, d)
+
+		@nodes << (e=Node.new(-0.2, -0.3))
+		@paths << Path.new(b, e)
+
+		@heroes << Character.new(@nodes.first.x, @nodes.first.y)
+		@enemies << Character.new(@nodes.last.x, @nodes.last.y)
 	end
 end
 
@@ -79,7 +93,9 @@ class DirectorEffectGamePacMap < DirectorEffect
 	description "The PacMap game in Luz"
 
 	setting 'hero', :actor
+	setting 'hero_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
 	setting 'enemy', :actor
+	setting 'enemy_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
 	setting 'node', :actor
 	setting 'node_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
 	setting 'path', :actor
@@ -88,7 +104,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 	# after_load is called once at startup, and again after Ctrl-Shift-R reloads
 	#
 	def after_load
-		@map = Map.new
+		@map = PacMap.new
 		super
 	end
 
@@ -118,6 +134,28 @@ class DirectorEffectGamePacMap < DirectorEffect
 			with_translation(n.x, n.y) {
 				with_scale(node_size,node_size){
 					node.render!
+				}
+			}
+		}
+
+		# Heros
+		@map.heroes.each { |h|
+			with_translation(h.x, h.y) {
+				with_scale(hero_size, hero_size){
+					with_roll(0.25) {
+						hero.render!
+					}
+				}
+			}
+		}
+
+		# Enemies
+		@map.enemies.each { |e|
+			with_translation(e.x, e.y) {
+				with_scale(enemy_size, enemy_size){
+					with_roll(0.25) {
+						enemy.render!
+					}
 				}
 			}
 		}
