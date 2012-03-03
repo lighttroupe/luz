@@ -5,6 +5,8 @@
 
 include Drawing
 
+require 'set'
+
 class Map
 	attr_accessor :nodes, :paths
 	
@@ -14,17 +16,17 @@ class Map
 		def initialize(x, y)
 			@x = x
 			@y = y
-			@neighbors = []
+			@neighbors = Set.new
 		end
-			
+	
 		def add_neighbor(node)
 			@neighbors << node
 		end
-		
+
 		def remove_neighbor(node)
 			@neighbors.delete(node)
 		end
-		
+
 		def clear_neighbors
 			@neighbors.clear
 		end
@@ -36,6 +38,9 @@ class Map
 		def initialize(nodeA, nodeB)
 			@nodeA = nodeA
 			@nodeB = nodeB
+
+			@nodeA.add_neighbor(@nodeB)
+			@nodeB.add_neighbor(@nodeA)
 		end
 
 		def center_point
@@ -58,10 +63,14 @@ class Map
 		# Add some test data
 		@nodes << (a=Node.new(0.2, 0.0))
 		@nodes << (b=Node.new(-0.2, 0.0))
-		a.add_neighbor(b)
-		b.add_neighbor(a)
-		p = Path.new(a, b)
-		@paths << p	
+		@paths << Path.new(a, b)
+
+		@nodes << (c=Node.new(0.0, 0.3))
+		@paths << Path.new(a, c)
+		@paths << Path.new(c, b)
+
+		@nodes << (d=Node.new(0.2, -0.3))
+		@paths << Path.new(a, d)
 	end
 end
 
@@ -94,7 +103,6 @@ class DirectorEffectGamePacMap < DirectorEffect
 	# render is responsible for all drawing, and must yield to continue down the effects list
 	#
 	def render
-		# TODO: draw map and creatures
 		@map.paths.each { |p|
 			center = p.center_point
 			with_translation(center.first, center.last) {
