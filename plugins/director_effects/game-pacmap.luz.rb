@@ -1,6 +1,6 @@
  ###############################################################################
  #  Copyright 2012 Ian McIntosh <ian@openanswers.org>
- #  Copyright 2012 Scott Lee Davis <skawtus@gmail.com
+ #  Copyright 2012 Scott Lee Davis <skawtus@gmail.com>
  ###############################################################################
 
 include Drawing
@@ -9,13 +9,13 @@ class Map
 	attr_accessor :nodes, :paths
 	
 	class Node
-		attr_accessor :x, :y, :neighbors
+		attr_reader :x, :y, :neighbors
 		
 		def initialize(x, y)
 			@x = x
 			@y = y
 			@neighbors = []
-			end
+		end
 			
 		def add_neighbor(node)
 			@neighbors << node
@@ -36,23 +36,21 @@ class Map
 		def initialize(nodeA, nodeB)
 			@nodeA = nodeA
 			@nodeB = nodeB
-			end
+		end
 	end
 	
 	def initialize
 		@nodes = []
 		@paths = []
-		nodeA = Node.new(-0.25,0)
-		nodeB = Node.new(0.25,0)
-		@nodes = [nodeA,nodeB]
-		nodeA.add_neighbor(nodeB)
-		nodeB.add_neighbor(nodeA)
-		p = Path.new(nodeA, nodeB)
-		@paths = [p]
 		
+		# Add some test data
+		@nodes << (a=Node.new(-0.25, 0.0))
+		@nodes << (b=Node.new(0.25, 0.0))
+		a.add_neighbor(b)
+		b.add_neighbor(a)
+		p = Path.new(a, b)
+		@paths << p	
 	end
-	
-
 end
 
 class DirectorEffectGamePacMap < DirectorEffect
@@ -63,7 +61,6 @@ class DirectorEffectGamePacMap < DirectorEffect
 	setting 'enemy', :actor
 	setting 'node', :actor
 	setting 'node_size', :float
-	
 
 	#
 	# after_load is called once at startup, and again after Ctrl-Shift-R reloads
@@ -85,6 +82,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 	def render
 		# TODO: draw map and creatures
 		@map ||= Map.new
+
 		@map.nodes.each { |n|
 			with_translation( n.x, n.y ){
 				with_scale(node_size,node_size){
@@ -92,11 +90,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 				}
 			}
 		}
-		hero.one { |hero_actor|
-			with_scale(0.1, 0.1) {
-				hero_actor.render!
-			}
-		}
+
 		yield
 	end
 end
