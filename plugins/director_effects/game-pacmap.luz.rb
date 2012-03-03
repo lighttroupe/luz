@@ -85,6 +85,7 @@ class PacMap
 
 		@heroes << Character.new(@nodes.first.x, @nodes.first.y)
 		@enemies << Character.new(@nodes.last.x, @nodes.last.y)
+		@enemies << Character.new(@nodes[2].x, @nodes[2].y)
 	end
 end
 
@@ -139,22 +140,26 @@ class DirectorEffectGamePacMap < DirectorEffect
 		}
 
 		# Heros
-		@map.heroes.each { |h|
-			with_translation(h.x, h.y) {
-				with_scale(hero_size, hero_size){
-					with_roll(0.25) {
-						hero.render!
+		@map.heroes.each_with_index { |h, i|
+			with_env(:child_index, i) {
+				with_translation(h.x, h.y) {
+					with_scale(hero_size, hero_size){
+						with_roll(0.25) {
+							hero.render!
+						}
 					}
 				}
 			}
 		}
 
 		# Enemies
-		@map.enemies.each { |e|
-			with_translation(e.x, e.y) {
-				with_scale(enemy_size, enemy_size){
-					with_roll(0.25) {
-						enemy.render!
+		@map.enemies.each_with_index { |e, i|
+			with_env(:child_index, i) {
+				with_translation(e.x, e.y) {
+					with_scale(enemy_size, enemy_size){
+						with_roll(0.25) {
+							enemy.render!
+						}
 					}
 				}
 			}
