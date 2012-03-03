@@ -3,8 +3,6 @@
  #  Copyright 2012 Scott Lee Davis <skawtus@gmail.com>
  ###############################################################################
 
-include Drawing
-
 require 'set'
 
 class PacMap
