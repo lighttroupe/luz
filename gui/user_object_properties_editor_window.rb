@@ -23,7 +23,7 @@ class UserObjectPropertiesEditorWindow < GladeWindow
 	callback :objects_tagged
 
 	def initialize(tag_model=nil)
-		super 'user_object_properties_editor_window', :widgets => [:add_tag_button, :conditions_container, :title_entry, :object_type_label, :event_combobox_container, :enable_event_condition_checkbox, :event_condition_controls_container,:event_on_radiobutton,:enable_child_index_range_checkbox,:child_index_range_controls_container,:child_index_min_spinbutton,:child_index_max_spinbutton,:tag_treeview_container,:tag_entry, :tags_container]
+		super 'user_object_properties_editor_window', :widgets => [:add_tag_button, :conditions_container, :child_conditions_container, :event_off_radiobutton, :title_entry, :object_type_label, :event_combobox_container, :enable_event_condition_checkbox, :event_condition_controls_container,:event_on_radiobutton,:enable_child_index_range_checkbox,:child_index_range_controls_container,:child_index_min_spinbutton,:child_index_max_spinbutton,:tag_treeview_container,:tag_entry, :tags_container]
 
 		on_key_press(Gdk::Keyval::GDK_Escape) { hide }
 
