@@ -1,16 +1,15 @@
-require 'glade_window'
-
 require 'ruby-git/lib/git'
 require 'logger'
 
 require 'object_liststore'
 require 'object_treeview'
+require 'glade_window'
 
 require 'unique_timeout_callback'
 
 class GitCommitterWindow < GladeWindow
 	def initialize(path)
-		super('git_committer_window')
+		super('git_committer_window', :widgets => [:list_container, :commit_button, :commit_container, :commit_message_entry, :status_label])
 		@path = path
 		@message_clear_timeout = UniqueTimeoutCallback.new(2000) { retire_message }
 
