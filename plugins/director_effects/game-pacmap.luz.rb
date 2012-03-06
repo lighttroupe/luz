@@ -89,12 +89,12 @@ class PacMap
 	# Map class
 	#
 	attr_accessor :nodes, :paths, :pellets, 
-								:power_pellets, :floating_fruit, 
-								:hero_bases, :enemy_bases, :portals, :heroes, :enemies
+								:powerpellets, :floatingfruit, 
+								:herobases, :enemybases, :portals, :heroes, :enemies
 
 	def initialize
-		@nodes, @paths, @pellets, @power_pellets, @floating_fruit,
-		@hero_bases, @enemy_bases, @portals, @heroes, @enemies = [], [], [], [], [], [], [], [], [], []
+		@nodes, @paths, @pellets, @powerpellets, @floatingfruit,
+		@herobases, @enemybases, @portals, @heroes, @enemies = [], [], [], [], [], [], [], [], [], []
 
 		# game network layout (hard coded hack for testing currently)
 		@nodes << (a=Node.new(0.2, 0.0))
@@ -114,12 +114,12 @@ class PacMap
 
 		# pellets, power_pellets, floating fruit
 		@pellets << PointPellet.new(-0.1,-0.1)
-		@power_pellets << PointPellet.new(0.1,0.1)
-		@floating_fruit << PointPellet.new( -0.1, 0.1 )
+		@powerpellets << PointPellet.new(0.1,0.1)
+		@floatingfruit << PointPellet.new( -0.1, 0.1 )
 		
 		# bases, portals
-		@hero_bases << Base.new(@nodes.first.x-0.1,@nodes.first.y-0.1)
-		@enemy_bases << Base.new(@nodes.last.x+0.1,@nodes.last.y+0.1)
+		@herobases << Base.new(@nodes.first.x-0.1,@nodes.first.y-0.1)
+		@enemybases << Base.new(@nodes.last.x+0.1,@nodes.last.y+0.1)
 		@portals << Portal.new(0.0,0.0)
 
 		# heroes and enemies
@@ -222,7 +222,128 @@ class DirectorEffectGamePacMap < DirectorEffect
 				}
 			}
 		}
+		
+		
+		#
+		# Pellets
+		#
+		with_offscreen_buffer { |buffer|
+			# Render to offscreen
+			buffer.using {
+				pellet.render!
+			}
+			# Render actor with image of rendered scene as default Image
+			buffer.with_image {
+				@map.pellets.each { |n|
+					with_translation(n.x, n.y) {
+						with_scale(pellet_size, pellet_size, pellet_size){
+							unit_square
+						}
+					}
+				}
+			}
+		}
+		
+		#
+		# Power Pellets
+		#
+		with_offscreen_buffer { |buffer|
+			# Render to offscreen
+			buffer.using {
+				powerpellet.render!
+			}
+			# Render actor with image of rendered scene as default Image
+			buffer.with_image {
+				@map.powerpellets.each { |n|
+					with_translation(n.x, n.y) {
+						with_scale(powerpellet_size, powerpellet_size, powerpellet_size){
+							unit_square
+						}
+					}
+				}
+			}
+		}
+		
+		#
+		# Floating Fruit
+		#
+		with_offscreen_buffer { |buffer|
+			# Render to offscreen
+			buffer.using {
+				floatingfruit.render!
+			}
+			# Render actor with image of rendered scene as default Image
+			buffer.with_image {
+				@map.floatingfruit.each { |n|
+					with_translation(n.x, n.y) {
+						with_scale(floatingfruit_size, floatingfruit_size, floatingfruit_size){
+							unit_square
+						}
+					}
+				}
+			}
+		}
 
+		#
+		# Hero Base
+		#
+		with_offscreen_buffer { |buffer|
+			# Render to offscreen
+			buffer.using {
+				herobase.render!
+			}
+			# Render actor with image of rendered scene as default Image
+			buffer.with_image {
+				@map.herobases.each { |n|
+					with_translation(n.x, n.y) {
+						with_scale(herobase_size, herobase_size, herobase_size){
+							unit_square
+						}
+					}
+				}
+			}
+		}
+		
+		#
+		# Enemy Base
+		#
+		with_offscreen_buffer { |buffer|
+			# Render to offscreen
+			buffer.using {
+				enemybase.render!
+			}
+			# Render actor with image of rendered scene as default Image
+			buffer.with_image {
+				@map.enemybases.each { |n|
+					with_translation(n.x, n.y) {
+						with_scale(enemybase_size, enemybase_size, enemybase_size){
+							unit_square
+						}
+					}
+				}
+			}
+		}
+
+		#
+		# Portals
+		#
+		with_offscreen_buffer { |buffer|
+			# Render to offscreen
+			buffer.using {
+				portal.render!
+			}
+			# Render actor with image of rendered scene as default Image
+			buffer.with_image {
+				@map.portals.each { |n|
+					with_translation(n.x, n.y) {
+						with_scale(portal_size, portal_size, portal_size){
+							unit_square
+						}
+					}
+				}
+			}
+		}
+				
 		#
 		# Heros
 		#
