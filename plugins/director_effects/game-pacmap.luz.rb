@@ -6,9 +6,11 @@
 require 'set'
 
 class PacMap
+	
+	#######################################
+	#  Game Network Graph construction
 	class Node
 		attr_reader :x, :y, :neighbors
-
 		def initialize(x, y)
 			@x = x
 			@y = y
@@ -50,23 +52,51 @@ class PacMap
 			Math.atan2((@nodeB.x - @nodeA.x), (@nodeB.y - @nodeA.y)) / (Math::PI*2.0)
 		end
 	end
-
+	
+	#######################################
+	#  Point collection 
+	class PointPellet
+		attr_accessor :x, :y
+		def initialize(x, y)
+			@x, @y = x, y
+		end
+	end
+	
+	#######################################
+	#  Characters, Bases and Portals
 	class Character
 		attr_accessor :x, :y
 		def initialize(x, y)
 			@x, @y = x, y
 		end
 	end
-
+	
+	class Base
+		attr_accessor :x, :y
+		def initialize(x, y)
+			@x, @y = x, y
+		end
+	end
+	
+	class Portal
+		attr_accessor :x, :y
+		def initialize(x, y)
+			@x, @y = x, y
+		end
+	end
+	
 	#
 	# Map class
 	#
-	attr_accessor :nodes, :paths, :heroes, :enemies
+	attr_accessor :nodes, :paths, :pellets, 
+								:power_pellets, :floating_fruit, 
+								:hero_bases, :enemy_bases, :portals, :heroes, :enemies
 
 	def initialize
-		@nodes, @paths, @heroes, @enemies = [], [], [], []
+		@nodes, @paths, @pellets, @power_pellets, @floating_fruit,
+		@hero_bases, @enemy_bases, @portals, @heroes, @enemies = [], [], [], [], [], [], [], [], [], []
 
-		# Add some test data
+		# game network layout (hard coded hack for testing currently)
 		@nodes << (a=Node.new(0.2, 0.0))
 		@nodes << (b=Node.new(-0.2, 0.0))
 		@paths << Path.new(a, b)
@@ -81,6 +111,18 @@ class PacMap
 		@nodes << (e=Node.new(-0.2, -0.3))
 		@paths << Path.new(b, e)
 
+
+		# pellets, power_pellets, floating fruit
+		@pellets << PointPellet.new(-0.1,-0.1)
+		@power_pellets << PointPellet.new(0.1,0.1)
+		@floating_fruit << PointPellet.new( -0.1, 0.1 )
+		
+		# bases, portals
+		@hero_bases << Base.new(@nodes.first.x-0.1,@nodes.first.y-0.1)
+		@enemy_bases << Base.new(@nodes.last.x+0.1,@nodes.last.y+0.1)
+		@portals << Portal.new(0.0,0.0)
+
+		# heroes and enemies
 		@heroes << Character.new(@nodes.first.x, @nodes.first.y)
 		@enemies << Character.new(@nodes.last.x, @nodes.last.y)
 		@enemies << Character.new(@nodes[2].x, @nodes[2].y)
@@ -93,15 +135,31 @@ class DirectorEffectGamePacMap < DirectorEffect
 
 	include Drawing
 
-	setting 'hero', :actor
-	setting 'hero_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
-	setting 'enemy', :actor
-	setting 'enemy_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
 	setting 'node', :actor
 	setting 'node_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
 	setting 'path', :actor
 	setting 'path_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
 
+	setting 'pellet', :actor
+	setting 'pellet_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
+	setting 'powerpellet', :actor
+	setting 'powerpellet_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
+	setting 'floatingfruit', :actor
+	setting 'floatingfruit_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
+		
+	setting 'herobase', :actor
+	setting 'herobase_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
+	setting 'enemybase', :actor
+	setting 'enemybase_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
+	setting 'portal', :actor
+	setting 'portal_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
+	
+		
+	setting 'hero', :actor
+	setting 'hero_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
+	setting 'enemy', :actor
+	setting 'enemy_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
+	
 	#
 	# after_load is called once at startup, and again after Ctrl-Shift-R reloads
 	#
