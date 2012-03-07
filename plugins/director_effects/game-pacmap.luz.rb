@@ -17,6 +17,25 @@ class PacMap
 			@position = Vector3.new(x, y, 0.0)
 			@place, @destination_place = place, nil
 		end
+
+		def tick(distance_per_frame)
+			if @destination_place
+				# Go!
+				vector_to_destination = (@destination_place.position - position)
+				distance_to_destination = vector_to_destination.length
+
+				if distance_to_destination < distance_per_frame
+					#puts "arrived!"
+					position.set(@destination_place.position)
+					@place, @destination_place = @destination_place, nil
+				else
+					# Move towards destination
+					self.position += (vector_to_destination.normalize * distance_per_frame)
+				end
+			else
+				@destination_place = place.neighbors.to_a.random
+			end
+		end
 	end
 
 	#
@@ -82,28 +101,9 @@ class PacMap
 	# Heroes, Enemies, Bases and Portals
 	#
 	class Hero < MapObject
-		def tick
-			if @destination_place
-				# Go!
-				hero_distance_per_frame = 0.01
-				vector_to_destination = (@destination_place.position - position)
-				distance_to_destination = vector_to_destination.length
-
-				if distance_to_destination < hero_distance_per_frame
-					# arrive
-					#puts "arrived!"
-					position.set(@destination_place.position)
-					@place, @destination_place = @destination_place, nil
-				else
-					self.position += (vector_to_destination.normalize * hero_distance_per_frame)
-					#puts position
-				end
-			else
-				@destination_place = place.neighbors.to_a.random
-			end
-			
-			
-		end
+#		def tick(distance_per_frame)
+#			super(distance_per_frame)
+#		end
 	end
 
 	class Enemy < MapObject
@@ -166,9 +166,11 @@ class DirectorEffectGamePacMap < DirectorEffect
 
 	setting 'hero', :actor
 	setting 'hero_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
+	setting 'hero_speed', :float, :range => 0.0..1.0, :default => 0.01..1.0
 
 	setting 'enemy', :actor
 	setting 'enemy_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
+	setting 'enemy_speed', :float, :range => 0.0..1.0, :default => 0.01..1.0
 
 	setting 'pellet', :actor
 	setting 'pellet_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
@@ -202,7 +204,11 @@ class DirectorEffectGamePacMap < DirectorEffect
 	def tick
 		# $env[:frame_time_delta]  see Engine#update_environment in engine/engine.rb for more data
 		@map.heroes.each_with_index { |h, i|
-			h.tick
+			h.tick(hero_speed)
+		}
+
+		@map.enemies.each_with_index { |e, i|
+			e.tick(enemy_speed)
 		}
 	end
 
