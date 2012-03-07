@@ -85,11 +85,24 @@ class PacMap
 		def tick
 			if @destination_place
 				# Go!
-				#hero_speed_per_frame = 0.01
-				
+				hero_distance_per_frame = 0.01
+				vector_to_destination = (@destination_place.position - position)
+				distance_to_destination = vector_to_destination.length
+
+				if distance_to_destination < hero_distance_per_frame
+					# arrive
+					#puts "arrived!"
+					position.set(@destination_place.position)
+					@place, @destination_place = @destination_place, nil
+				else
+					self.position += (vector_to_destination.normalize * hero_distance_per_frame)
+					#puts position
+				end
 			else
-				#@destination_place = place.neighbors.random
+				@destination_place = place.neighbors.to_a.random
 			end
+			
+			
 		end
 	end
 
