@@ -4,6 +4,7 @@
  ###############################################################################
 
 require 'set'
+require 'vector3'
 
 class PacMap
 
@@ -11,9 +12,10 @@ class PacMap
 	# Base class for all movable objects
 	#
 	class MapObject
-		attr_accessor :x, :y, :place, :destination_place
+		attr_accessor :position, :place, :destination_place
 		def initialize(x, y, place)
-			@x, @y, @place, @destination_place = x, y, place, nil
+			@position = Vector3.new(x, y, 0.0)
+			@place, @destination_place = place, nil
 		end
 	end
 
@@ -21,9 +23,9 @@ class PacMap
 	# Game Network Graph
 	#
 	class Node
-		attr_reader :x, :y, :neighbors
+		attr_reader :position, :neighbors
 		def initialize(x, y)
-			@x, @y = x, y
+			@position = Vector3.new(x, y, 0.0)
 			@neighbors = Set.new
 		end
 
@@ -51,15 +53,16 @@ class PacMap
 		end
 
 		def center_point
-			[(@nodeA.x + @nodeB.x) / 2.0, (@nodeA.y + @nodeB.y) / 2.0]
+			#[(@nodeA.position.x + @nodeB.position.x) / 2.0, (@nodeA.position.y + @nodeB.position.y) / 2.0]
+			(@nodeA.position + @nodeB.position) / 2.0
 		end
 
 		def length
-			Math.sqrt((@nodeA.x - @nodeB.x)**2 + (@nodeA.y - @nodeB.y)**2)
+			@nodeA.position.distance_to(@nodeB.position)
 		end
 
 		def angle
-			Math.atan2((@nodeB.x - @nodeA.x), (@nodeB.y - @nodeA.y)) / (Math::PI*2.0)
+			Math.atan2((@nodeB.position.x - @nodeA.position.x), (@nodeB.position.y - @nodeA.position.y)) / (Math::PI*2.0)
 		end
 	end
 
@@ -130,9 +133,9 @@ class PacMap
 		#@portals << Portal.new(0.0,0.0)
 
 		# heroes and enemies
-		@heroes << Hero.new(@nodes.first.x, @nodes.first.y, @nodes.first)
-		@enemies << Enemy.new(@nodes.last.x, @nodes.last.y, @nodes.last)
-		@enemies << Enemy.new(@nodes[2].x, @nodes[2].y, @nodes[2])
+		@heroes << Hero.new(@nodes.first.position.x, @nodes.first.position.y, @nodes.first)
+		@enemies << Enemy.new(@nodes.last.position.x, @nodes.last.position.y, @nodes.last)
+		@enemies << Enemy.new(@nodes[2].position.x, @nodes[2].position.y, @nodes[2])
 	end
 end
 
@@ -207,7 +210,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 			buffer.with_image {
 				@map.paths.each { |p|
 					center = p.center_point
-					with_translation(center.first, center.last) {
+					with_translation(center.x, center.y) {
 						with_roll(p.angle) {
 							with_scale(path_size, p.length, path_size) {
 								unit_square
@@ -229,7 +232,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 			# Render actor with image of rendered scene as default Image
 			buffer.with_image {
 				@map.nodes.each { |n|
-					with_translation(n.x, n.y) {
+					with_translation(n.position.x, n.position.y) {
 						with_scale(node_size, node_size, node_size){
 							unit_square
 						}
@@ -250,7 +253,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 			# Render actor with image of rendered scene as default Image
 			buffer.with_image {
 				@map.pellets.each { |n|
-					with_translation(n.x, n.y) {
+					with_translation(n.position.x, n.position.y) {
 						with_scale(pellet_size, pellet_size, pellet_size){
 							unit_square
 						}
@@ -270,7 +273,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 			# Render actor with image of rendered scene as default Image
 			buffer.with_image {
 				@map.powerpellets.each { |n|
-					with_translation(n.x, n.y) {
+					with_translation(n.position.x, n.position.y) {
 						with_scale(powerpellet_size, powerpellet_size, powerpellet_size){
 							unit_square
 						}
@@ -290,7 +293,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 			# Render actor with image of rendered scene as default Image
 			buffer.with_image {
 				@map.floatingfruit.each { |n|
-					with_translation(n.x, n.y) {
+					with_translation(n.position.x, n.position.y) {
 						with_scale(floatingfruit_size, floatingfruit_size, floatingfruit_size){
 							unit_square
 						}
@@ -310,7 +313,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 			# Render actor with image of rendered scene as default Image
 			buffer.with_image {
 				@map.herobases.each { |n|
-					with_translation(n.x, n.y) {
+					with_translation(n.position.x, n.position.y) {
 						with_scale(herobase_size, herobase_size, herobase_size){
 							unit_square
 						}
@@ -330,7 +333,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 			# Render actor with image of rendered scene as default Image
 			buffer.with_image {
 				@map.enemybases.each { |n|
-					with_translation(n.x, n.y) {
+					with_translation(n.position.x, n.position.y) {
 						with_scale(enemybase_size, enemybase_size, enemybase_size){
 							unit_square
 						}
@@ -350,7 +353,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 			# Render actor with image of rendered scene as default Image
 			buffer.with_image {
 				@map.portals.each { |n|
-					with_translation(n.x, n.y) {
+					with_translation(n.position.x, n.position.y) {
 						with_scale(portal_size, portal_size, portal_size){
 							unit_square
 						}
@@ -364,7 +367,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 		#
 		@map.heroes.each_with_index { |h, i|
 			with_env(:child_index, i) {
-				with_translation(h.x, h.y) {
+				with_translation(h.position.x, h.position.y) {
 					with_scale(hero_size, hero_size, hero_size){
 						with_roll(0.25) {
 							hero.render!
@@ -379,7 +382,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 		#
 		@map.enemies.each_with_index { |e, i|
 			with_env(:child_index, i) {
-				with_translation(e.x, e.y) {
+				with_translation(e.position.x, e.position.y) {
 					with_scale(enemy_size, enemy_size, enemy_size){
 						with_roll(0.25) {
 							enemy.render!
