@@ -139,16 +139,24 @@ class PacMap
 		#@pellets << Pellet.new(-0.1, -0.1)
 		#@powerpellets << Pellet.new(0.1, 0.1)
 		#@floatingfruit << Pellet.new( -0.1, 0.1)
-		
+
 		# bases, portals
-		#@herobases << Base.new(@nodes.first.x-0.1,@nodes.first.y-0.1)
+		@herobases << Base.new(@nodes.first.position.x, @nodes.first.position.y, @nodes.first)
+		@herobases << Base.new(@nodes.last.position.x, @nodes.last.position.y, @nodes.last)
 		#@enemybases << Base.new(@nodes.last.x+0.1,@nodes.last.y+0.1)
 		#@portals << Portal.new(0.0,0.0)
 
 		# heroes and enemies
-		@heroes << Hero.new(@nodes.first.position.x, @nodes.first.position.y, @nodes.first)
+		#@heroes << Hero.new(@nodes.first.position.x, @nodes.first.position.y, @nodes.first)
 		@enemies << Enemy.new(@nodes.last.position.x, @nodes.last.position.y, @nodes.last)
 		@enemies << Enemy.new(@nodes[2].position.x, @nodes[2].position.y, @nodes[2])
+	end
+
+	def spawn_heroes(count)
+		count.times {
+			base = @herobases.random
+			@heroes << Hero.new(base.place.position.x, base.place.position.y, base.place)
+		}
 	end
 end
 
@@ -165,6 +173,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 	setting 'path_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
 
 	setting 'hero', :actor
+	setting 'hero_count', :integer, :range => 1..10, :default => 1..10
 	setting 'hero_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
 	setting 'hero_speed', :float, :range => 0.0..1.0, :default => 0.01..1.0
 
@@ -195,6 +204,9 @@ class DirectorEffectGamePacMap < DirectorEffect
 	#
 	def after_load
 		@map = PacMap.new
+
+		@map.spawn_heroes(hero_count)
+
 		super
 	end
 
@@ -259,67 +271,6 @@ class DirectorEffectGamePacMap < DirectorEffect
 				}
 			}
 		}
-		
-		
-		#
-		# Pellets
-		#
-		with_offscreen_buffer { |buffer|
-			# Render to offscreen
-			buffer.using {
-				pellet.render!
-			}
-			# Render actor with image of rendered scene as default Image
-			buffer.with_image {
-				@map.pellets.each { |n|
-					with_translation(n.position.x, n.position.y) {
-						with_scale(pellet_size, pellet_size, pellet_size){
-							unit_square
-						}
-					}
-				}
-			}
-		}
-		
-		#
-		# Power Pellets
-		#
-		with_offscreen_buffer { |buffer|
-			# Render to offscreen
-			buffer.using {
-				powerpellet.render!
-			}
-			# Render actor with image of rendered scene as default Image
-			buffer.with_image {
-				@map.powerpellets.each { |n|
-					with_translation(n.position.x, n.position.y) {
-						with_scale(powerpellet_size, powerpellet_size, powerpellet_size){
-							unit_square
-						}
-					}
-				}
-			}
-		}
-		
-		#
-		# Floating Fruit
-		#
-		with_offscreen_buffer { |buffer|
-			# Render to offscreen
-			buffer.using {
-				floatingfruit.render!
-			}
-			# Render actor with image of rendered scene as default Image
-			buffer.with_image {
-				@map.floatingfruit.each { |n|
-					with_translation(n.position.x, n.position.y) {
-						with_scale(floatingfruit_size, floatingfruit_size, floatingfruit_size){
-							unit_square
-						}
-					}
-				}
-			}
-		}
 
 		#
 		# Hero Base
@@ -361,6 +312,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 			}
 		}
 
+=begin
 		#
 		# Portals
 		#
@@ -380,7 +332,68 @@ class DirectorEffectGamePacMap < DirectorEffect
 				}
 			}
 		}
-				
+
+		#
+		# Pellets
+		#
+		with_offscreen_buffer { |buffer|
+			# Render to offscreen
+			buffer.using {
+				pellet.render!
+			}
+			# Render actor with image of rendered scene as default Image
+			buffer.with_image {
+				@map.pellets.each { |n|
+					with_translation(n.position.x, n.position.y) {
+						with_scale(pellet_size, pellet_size, pellet_size){
+							unit_square
+						}
+					}
+				}
+			}
+		}
+
+		#
+		# Power Pellets
+		#
+		with_offscreen_buffer { |buffer|
+			# Render to offscreen
+			buffer.using {
+				powerpellet.render!
+			}
+			# Render actor with image of rendered scene as default Image
+			buffer.with_image {
+				@map.powerpellets.each { |n|
+					with_translation(n.position.x, n.position.y) {
+						with_scale(powerpellet_size, powerpellet_size, powerpellet_size){
+							unit_square
+						}
+					}
+				}
+			}
+		}
+
+		#
+		# Floating Fruit
+		#
+		with_offscreen_buffer { |buffer|
+			# Render to offscreen
+			buffer.using {
+				floatingfruit.render!
+			}
+			# Render actor with image of rendered scene as default Image
+			buffer.with_image {
+				@map.floatingfruit.each { |n|
+					with_translation(n.position.x, n.position.y) {
+						with_scale(floatingfruit_size, floatingfruit_size, floatingfruit_size){
+							unit_square
+						}
+					}
+				}
+			}
+		}
+=end
+
 		#
 		# Heros
 		#
