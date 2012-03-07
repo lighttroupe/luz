@@ -142,20 +142,22 @@ class PacMap
 
 		# bases, portals
 		@herobases << Base.new(@nodes.first.position.x, @nodes.first.position.y, @nodes.first)
-		@herobases << Base.new(@nodes.last.position.x, @nodes.last.position.y, @nodes.last)
-		#@enemybases << Base.new(@nodes.last.x+0.1,@nodes.last.y+0.1)
-		#@portals << Portal.new(0.0,0.0)
+		@enemybases << Base.new(@nodes.last.position.x, @nodes.last.position.y, @nodes.last)
 
-		# heroes and enemies
-		#@heroes << Hero.new(@nodes.first.position.x, @nodes.first.position.y, @nodes.first)
-		@enemies << Enemy.new(@nodes.last.position.x, @nodes.last.position.y, @nodes.last)
-		@enemies << Enemy.new(@nodes[2].position.x, @nodes[2].position.y, @nodes[2])
+		#@portals << Portal.new(0.0,0.0)
 	end
 
 	def spawn_heroes(count)
 		count.times {
 			base = @herobases.random
 			@heroes << Hero.new(base.place.position.x, base.place.position.y, base.place)
+		}
+	end
+
+	def spawn_enemies(count)
+		count.times {
+			base = @enemybases.random
+			@enemies << Enemy.new(base.place.position.x, base.place.position.y, base.place)
 		}
 	end
 end
@@ -178,6 +180,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 	setting 'hero_speed', :float, :range => 0.0..1.0, :default => 0.01..1.0
 
 	setting 'enemy', :actor
+	setting 'enemy_count', :integer, :range => 1..10, :default => 1..10
 	setting 'enemy_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
 	setting 'enemy_speed', :float, :range => 0.0..1.0, :default => 0.01..1.0
 
@@ -204,9 +207,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 	#
 	def after_load
 		@map = PacMap.new
-
-		@map.spawn_heroes(hero_count)
-
+		@spawn_countdown = 5
 		super
 	end
 
@@ -214,6 +215,14 @@ class DirectorEffectGamePacMap < DirectorEffect
 	# tick is called once per frame, before rendering
 	#
 	def tick
+		if @spawn_countdown > 0
+			@spawn_countdown -= 1
+			if @spawn_countdown == 0
+				@map.spawn_heroes(hero_count)
+				@map.spawn_enemies(enemy_count)
+			end
+		end
+
 		# $env[:frame_time_delta]  see Engine#update_environment in engine/engine.rb for more data
 		@map.heroes.each_with_index { |h, i|
 			h.tick(hero_speed)
