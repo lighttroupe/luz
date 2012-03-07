@@ -147,18 +147,14 @@ class PacMap
 		#@portals << Portal.new(0.0,0.0)
 	end
 
-	def spawn_heroes(count)
-		count.times {
-			base = @herobases.random
-			@heroes << Hero.new(base.place.position.x, base.place.position.y, base.place)
-		}
+	def spawn_hero
+		base = @herobases.random
+		@heroes << Hero.new(base.place.position.x, base.place.position.y, base.place) if base
 	end
 
-	def spawn_enemies(count)
-		count.times {
-			base = @enemybases.random
-			@enemies << Enemy.new(base.place.position.x, base.place.position.y, base.place)
-		}
+	def spawn_enemy
+		base = @enemybases.random
+		@enemies << Enemy.new(base.place.position.x, base.place.position.y, base.place) if base
 	end
 end
 
@@ -207,7 +203,6 @@ class DirectorEffectGamePacMap < DirectorEffect
 	#
 	def after_load
 		@map = PacMap.new
-		@spawn_countdown = 5
 		super
 	end
 
@@ -215,12 +210,10 @@ class DirectorEffectGamePacMap < DirectorEffect
 	# tick is called once per frame, before rendering
 	#
 	def tick
-		if @spawn_countdown > 0
-			@spawn_countdown -= 1
-			if @spawn_countdown == 0
-				@map.spawn_heroes(hero_count)
-				@map.spawn_enemies(enemy_count)
-			end
+		# Spawn, if needed
+		if $env[:frame_number] % 10 == 0		# a delay between spawns so they don't all pile up
+			@map.spawn_hero if @map.heroes.size < hero_count
+			@map.spawn_enemy if @map.enemies.size < enemy_count
 		end
 
 		# $env[:frame_time_delta]  see Engine#update_environment in engine/engine.rb for more data
