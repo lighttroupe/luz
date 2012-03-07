@@ -7,20 +7,23 @@ require 'set'
 
 class PacMap
 
-	class Point
-		attr_accessor :x, :y
-		def initialize(x, y)
-			@x, @y = x, y
+	#
+	# Base class for all movable objects
+	#
+	class MapObject
+		attr_accessor :x, :y, :place, :destination_place
+		def initialize(x, y, place)
+			@x, @y, @place, @destination_place = x, y, place, nil
 		end
 	end
 
 	#
 	# Game Network Graph
 	#
-	class Node < Point
+	class Node
 		attr_reader :x, :y, :neighbors
 		def initialize(x, y)
-			super(x, y)
+			@x, @y = x, y
 			@neighbors = Set.new
 		end
 
@@ -60,25 +63,25 @@ class PacMap
 		end
 	end
 
-	class Portal < Point
+	class Portal < MapObject
 	end
 
-	class Base < Point
+	class Base < MapObject
 	end
 
 	#
 	# Point collection 
 	#
-	class Pellet < Point
+	class Pellet < MapObject
 	end
 
 	#
 	# Heroes, Enemies, Bases and Portals
 	#
-	class Hero < Point
+	class Hero < MapObject
 	end
 
-	class Enemy < Point
+	class Enemy < MapObject
 	end
 
 	#
@@ -108,19 +111,19 @@ class PacMap
 		@paths << Path.new(b, e)
 
 		# pellets, power_pellets, floating fruit
-		@pellets << Pellet.new(-0.1, -0.1)
-		@powerpellets << Pellet.new(0.1, 0.1)
-		@floatingfruit << Pellet.new( -0.1, 0.1)
+		#@pellets << Pellet.new(-0.1, -0.1)
+		#@powerpellets << Pellet.new(0.1, 0.1)
+		#@floatingfruit << Pellet.new( -0.1, 0.1)
 		
 		# bases, portals
-		@herobases << Base.new(@nodes.first.x-0.1,@nodes.first.y-0.1)
-		@enemybases << Base.new(@nodes.last.x+0.1,@nodes.last.y+0.1)
-		@portals << Portal.new(0.0,0.0)
+		#@herobases << Base.new(@nodes.first.x-0.1,@nodes.first.y-0.1)
+		#@enemybases << Base.new(@nodes.last.x+0.1,@nodes.last.y+0.1)
+		#@portals << Portal.new(0.0,0.0)
 
 		# heroes and enemies
-		@heroes << Hero.new(@nodes.first.x, @nodes.first.y)
-		@enemies << Enemy.new(@nodes.last.x, @nodes.last.y)
-		@enemies << Enemy.new(@nodes[2].x, @nodes[2].y)
+		@heroes << Hero.new(@nodes.first.x, @nodes.first.y, @nodes.first)
+		@enemies << Enemy.new(@nodes.last.x, @nodes.last.y, @nodes.last)
+		@enemies << Enemy.new(@nodes[2].x, @nodes[2].y, @nodes[2])
 	end
 end
 
@@ -173,6 +176,8 @@ class DirectorEffectGamePacMap < DirectorEffect
 	#
 	def tick
 		# $env[:frame_time_delta]  see Engine#update_environment in engine/engine.rb for more data
+		
+		
 	end
 
 	#
