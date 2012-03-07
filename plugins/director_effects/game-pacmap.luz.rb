@@ -14,8 +14,9 @@ class PacMap
 		end
 	end
 
-	#######################################
-	#  Game Network Graph construction
+	#
+	# Game Network Graph
+	#
 	class Node < Point
 		attr_reader :x, :y, :neighbors
 		def initialize(x, y)
@@ -58,23 +59,28 @@ class PacMap
 			Math.atan2((@nodeB.x - @nodeA.x), (@nodeB.y - @nodeA.y)) / (Math::PI*2.0)
 		end
 	end
-	
-	#######################################
-	#  Point collection 
-	class PointPellet < Point
-	end
-	
-	#######################################
-	#  Characters, Bases and Portals
-	class Character < Point
-	end
-	
-	class Base < Point
-	end
-	
+
 	class Portal < Point
 	end
-	
+
+	class Base < Point
+	end
+
+	#
+	# Point collection 
+	#
+	class Pellet < Point
+	end
+
+	#
+	# Heroes, Enemies, Bases and Portals
+	#
+	class Hero < Point
+	end
+
+	class Enemy < Point
+	end
+
 	#
 	# Map class
 	#
@@ -101,11 +107,10 @@ class PacMap
 		@nodes << (e=Node.new(-0.2, -0.3))
 		@paths << Path.new(b, e)
 
-
 		# pellets, power_pellets, floating fruit
-		@pellets << PointPellet.new(-0.1,-0.1)
-		@powerpellets << PointPellet.new(0.1,0.1)
-		@floatingfruit << PointPellet.new( -0.1, 0.1 )
+		@pellets << Pellet.new(-0.1, -0.1)
+		@powerpellets << Pellet.new(0.1, 0.1)
+		@floatingfruit << Pellet.new( -0.1, 0.1)
 		
 		# bases, portals
 		@herobases << Base.new(@nodes.first.x-0.1,@nodes.first.y-0.1)
@@ -113,9 +118,9 @@ class PacMap
 		@portals << Portal.new(0.0,0.0)
 
 		# heroes and enemies
-		@heroes << Character.new(@nodes.first.x, @nodes.first.y)
-		@enemies << Character.new(@nodes.last.x, @nodes.last.y)
-		@enemies << Character.new(@nodes[2].x, @nodes[2].y)
+		@heroes << Hero.new(@nodes.first.x, @nodes.first.y)
+		@enemies << Enemy.new(@nodes.last.x, @nodes.last.y)
+		@enemies << Enemy.new(@nodes[2].x, @nodes[2].y)
 	end
 end
 
