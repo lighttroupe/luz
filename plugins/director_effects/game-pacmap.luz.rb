@@ -6,14 +6,20 @@
 require 'set'
 
 class PacMap
-	
+
+	class Point
+		attr_accessor :x, :y
+		def initialize(x, y)
+			@x, @y = x, y
+		end
+	end
+
 	#######################################
 	#  Game Network Graph construction
-	class Node
+	class Node < Point
 		attr_reader :x, :y, :neighbors
 		def initialize(x, y)
-			@x = x
-			@y = y
+			super(x, y)
 			@neighbors = Set.new
 		end
 
@@ -55,34 +61,18 @@ class PacMap
 	
 	#######################################
 	#  Point collection 
-	class PointPellet
-		attr_accessor :x, :y
-		def initialize(x, y)
-			@x, @y = x, y
-		end
+	class PointPellet < Point
 	end
 	
 	#######################################
 	#  Characters, Bases and Portals
-	class Character
-		attr_accessor :x, :y
-		def initialize(x, y)
-			@x, @y = x, y
-		end
+	class Character < Point
 	end
 	
-	class Base
-		attr_accessor :x, :y
-		def initialize(x, y)
-			@x, @y = x, y
-		end
+	class Base < Point
 	end
 	
-	class Portal
-		attr_accessor :x, :y
-		def initialize(x, y)
-			@x, @y = x, y
-		end
+	class Portal < Point
 	end
 	
 	#
@@ -137,29 +127,34 @@ class DirectorEffectGamePacMap < DirectorEffect
 
 	setting 'node', :actor
 	setting 'node_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
+
 	setting 'path', :actor
 	setting 'path_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
 
+	setting 'hero', :actor
+	setting 'hero_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
+
+	setting 'enemy', :actor
+	setting 'enemy_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
+
 	setting 'pellet', :actor
 	setting 'pellet_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
+
 	setting 'powerpellet', :actor
 	setting 'powerpellet_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
+
 	setting 'floatingfruit', :actor
 	setting 'floatingfruit_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
 		
 	setting 'herobase', :actor
 	setting 'herobase_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
+
 	setting 'enemybase', :actor
 	setting 'enemybase_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
+
 	setting 'portal', :actor
 	setting 'portal_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
-	
-		
-	setting 'hero', :actor
-	setting 'hero_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
-	setting 'enemy', :actor
-	setting 'enemy_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
-	
+
 	#
 	# after_load is called once at startup, and again after Ctrl-Shift-R reloads
 	#
@@ -303,7 +298,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 				}
 			}
 		}
-		
+
 		#
 		# Enemy Base
 		#
