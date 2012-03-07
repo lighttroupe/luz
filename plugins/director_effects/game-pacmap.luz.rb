@@ -79,6 +79,15 @@ class PacMap
 	# Heroes, Enemies, Bases and Portals
 	#
 	class Hero < MapObject
+		def tick
+			if @destination_place
+				# Go!
+				#hero_speed_per_frame = 0.01
+				
+			else
+				#@destination_place = place.neighbors.random
+			end
+		end
 	end
 
 	class Enemy < MapObject
@@ -176,8 +185,9 @@ class DirectorEffectGamePacMap < DirectorEffect
 	#
 	def tick
 		# $env[:frame_time_delta]  see Engine#update_environment in engine/engine.rb for more data
-		
-		
+		@map.heroes.each_with_index { |h, i|
+			h.tick
+		}
 	end
 
 	#
