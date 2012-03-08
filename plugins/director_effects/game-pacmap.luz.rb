@@ -104,6 +104,27 @@ class PacMap
 #		def tick(distance_per_frame)
 #			super(distance_per_frame)
 #		end
+		def tick(distance_per_frame)
+			if @destination_place
+				# Go!
+				vector_to_destination = (@destination_place.position - position)
+				distance_to_destination = vector_to_destination.length
+
+				if distance_to_destination < distance_per_frame
+					#puts "arrived!"
+					position.set(@destination_place.position)
+					@place, @destination_place = @destination_place, nil
+				else
+					# Move towards destination
+					self.position += (vector_to_destination.normalize * distance_per_frame)
+				end
+			else
+				#@destination_place = place.neighbors.to_a.random
+
+			end
+		end
+		
+
 	end
 
 	class Enemy < MapObject
@@ -156,6 +177,15 @@ class PacMap
 		base = @enemybases.random
 		@enemies << Enemy.new(base.place.position.x, base.place.position.y, base.place) if base
 	end
+	
+	def spawn_pellets
+	
+		#iterate over all path's, put pellets on them.
+		path = @paths.random
+		@pellets << Pellet.new(0,0,nil)
+		
+	end
+	
 end
 
 class DirectorEffectGamePacMap < DirectorEffect
@@ -164,6 +194,11 @@ class DirectorEffectGamePacMap < DirectorEffect
 
 	include Drawing
 
+	setting 'up', :button, :summary => true
+	setting 'left', :button, :summary => true
+	setting 'down', :button, :summary => true
+	setting 'right', :button, :summary => true
+	
 	setting 'node', :actor
 	setting 'node_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
 
@@ -216,6 +251,16 @@ class DirectorEffectGamePacMap < DirectorEffect
 			@map.spawn_enemy if @map.enemies.size < enemy_count
 		end
 
+		# Span pellets, if needed
+		if $env[:frame_number] % 10 == 0
+			@map.spawn_pellets if @map.pellets.size == 0
+		end
+
+
+
+		#handle inputs from controller elements
+		puts up.value #+ ' ' +down.value + ' ' + left.value + ' ' + right.value
+		
 		# $env[:frame_time_delta]  see Engine#update_environment in engine/engine.rb for more data
 		@map.heroes.each_with_index { |h, i|
 			h.tick(hero_speed)
@@ -334,6 +379,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 				}
 			}
 		}
+=end
 
 		#
 		# Pellets
@@ -355,6 +401,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 			}
 		}
 
+=begin
 		#
 		# Power Pellets
 		#
