@@ -192,12 +192,14 @@ class PacMap
 			division_chunk = 1.0 / divisions
 
 			divisions.to_i.times { |i|
-			
-				pellet_position = p.nodeB.position
+		
+				path_vec = p.nodeB.position - p.nodeA.position
+				hypotenuse = i * division_chunk
+				path_vec *= hypotenuse
 				
-				pellet_position *= i * division_chunk
+				#puts hypotenuse
 				
-				@pellets << Pellet.new( pellet_position.x, pellet_position.y, nil ) 
+				@pellets << Pellet.new( path_vec.x+p.nodeA.position.x, path_vec.y+p.nodeA.position.y, nil ) 
 			}
 
 			
