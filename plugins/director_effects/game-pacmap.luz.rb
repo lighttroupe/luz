@@ -190,11 +190,16 @@ class PacMap
 			
 			#normalize divisions
 			division_chunk = 1.0 / divisions
-			puts division_chunk
-			
 
-			@pellets << Pellet.new( (p.nodeB.position.x + p.nodeA.position.x)/2,
-															(p.nodeB.position.y + p.nodeA.position.y)/2, nil ) 
+			divisions.to_i.times { |i|
+			
+				pellet_position = p.nodeB.position
+				
+				pellet_position *= i * division_chunk
+				
+				@pellets << Pellet.new( pellet_position.x, pellet_position.y, nil ) 
+			}
+
 			
 			
 			
