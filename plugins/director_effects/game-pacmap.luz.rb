@@ -180,14 +180,23 @@ class PacMap
 	
 	def spawn_pellets
 	
+		#how to use powerpellet_size to dictate spread on path?
+		
 		@paths.each {  |p|
-			#@pellets << Pellet.new(0,0,nil)
-			#p.nodeA
-			#p.nodeB
-			center = p.center_point
-			@pellets << Pellet.new( center.x, center.y, nil)
-			#@pellets << Pellet.new( (p.nodeB.position.x + p.nodeA.position.x)/2,
-			#												(p.nodeB.position.y + p.nodeA.position.y)/2, nil ) 
+			
+			#determine divisions from length
+			powerpellet_size = 0.03 #HACKED!  how to get at this variable?
+			divisions = p.length / powerpellet_size
+			
+			#normalize divisions
+			division_chunk = 1.0 / divisions
+			puts division_chunk
+			
+
+			@pellets << Pellet.new( (p.nodeB.position.x + p.nodeA.position.x)/2,
+															(p.nodeB.position.y + p.nodeA.position.y)/2, nil ) 
+			
+			
 			
 		}
 
