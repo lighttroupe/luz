@@ -20,12 +20,11 @@ class PacMap
 
 		def tick(distance_per_frame)
 			if @destination_place
-				# Go!
 				vector_to_destination = (@destination_place.position - position)
 				distance_to_destination = vector_to_destination.length
 
+				# Arrived?
 				if distance_to_destination < distance_per_frame
-					#puts "arrived!"
 					position.set(@destination_place.position)
 					@place, @destination_place = @destination_place, nil
 				else
@@ -72,7 +71,6 @@ class PacMap
 		end
 
 		def center_point
-			#[(@nodeA.position.x + @nodeB.position.x) / 2.0, (@nodeA.position.y + @nodeB.position.y) / 2.0]
 			(@nodeA.position + @nodeB.position) / 2.0
 		end
 
@@ -101,30 +99,6 @@ class PacMap
 	# Heroes, Enemies, Bases and Portals
 	#
 	class Hero < MapObject
-#		def tick(distance_per_frame)
-#			super(distance_per_frame)
-#		end
-		def tick(distance_per_frame)
-			if @destination_place
-				# Go!
-				vector_to_destination = (@destination_place.position - position)
-				distance_to_destination = vector_to_destination.length
-
-				if distance_to_destination < distance_per_frame
-					#puts "arrived!"
-					position.set(@destination_place.position)
-					@place, @destination_place = @destination_place, nil
-				else
-					# Move towards destination
-					self.position += (vector_to_destination.normalize * distance_per_frame)
-				end
-			else
-				#@destination_place = place.neighbors.to_a.random
-
-			end
-		end
-		
-
 	end
 
 	class Enemy < MapObject
@@ -133,8 +107,7 @@ class PacMap
 	#
 	# Map class
 	#
-	attr_accessor :nodes, :paths, :pellets, 
-								:powerpellets, :floatingfruit, 
+	attr_accessor :nodes, :paths, :pellets, :powerpellets, :floatingfruit, 
 								:herobases, :enemybases, :portals, :heroes, :enemies
 
 	def initialize
@@ -177,38 +150,25 @@ class PacMap
 		base = @enemybases.random
 		@enemies << Enemy.new(base.place.position.x, base.place.position.y, base.place) if base
 	end
-	
+
 	def spawn_pellets
-	
-		#how to use powerpellet_size to dictate spread on path?
-		
+		# TODO: how to use powerpellet_size to determine pellet spread?
 		@paths.each {  |p|
-			
-			#determine divisions from length
-			powerpellet_size = 0.03 #HACKED!  how to get at this variable?
+			# determine divisions from length
+			powerpellet_size = 0.03 # HACKED!  how to get at this variable?
 			divisions = p.length / powerpellet_size
-			
+
 			#normalize divisions
 			division_chunk = 1.0 / divisions
 
 			divisions.to_i.times { |i|
-		
 				path_vec = p.nodeB.position - p.nodeA.position
 				hypotenuse = i * division_chunk
 				path_vec *= hypotenuse
-				
-				#puts hypotenuse
-				
 				@pellets << Pellet.new( path_vec.x+p.nodeA.position.x, path_vec.y+p.nodeA.position.y, nil ) 
 			}
-
-			
-			
-			
 		}
-
 	end
-	
 end
 
 class DirectorEffectGamePacMap < DirectorEffect
@@ -221,7 +181,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 	setting 'left', :button, :summary => true
 	setting 'down', :button, :summary => true
 	setting 'right', :button, :summary => true
-	
+
 	setting 'node', :actor
 	setting 'node_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
 
@@ -246,7 +206,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 
 	setting 'floatingfruit', :actor
 	setting 'floatingfruit_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
-		
+
 	setting 'herobase', :actor
 	setting 'herobase_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
 
@@ -281,7 +241,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 
 		#handle inputs from controller elements
 		#puts up.value #+ ' ' +down.value + ' ' + left.value + ' ' + right.value
-		
+
 		# $env[:frame_time_delta]  see Engine#update_environment in engine/engine.rb for more data
 		@map.heroes.each_with_index { |h, i|
 			h.tick(hero_speed)
@@ -299,7 +259,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 		#
 		# Paths
 		#
-		with_offscreen_buffer { |buffer|
+		with_offscreen_buffer(:medium) { |buffer|
 			# Render to offscreen
 			buffer.using {
 				path.render!
@@ -323,7 +283,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 		#
 		# Nodes
 		#
-		with_offscreen_buffer { |buffer|
+		with_offscreen_buffer(:medium) { |buffer|
 			# Render to offscreen
 			buffer.using {
 				node.render!
@@ -343,7 +303,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 		#
 		# Hero Base
 		#
-		with_offscreen_buffer { |buffer|
+		with_offscreen_buffer(:medium) { |buffer|
 			# Render to offscreen
 			buffer.using {
 				herobase.render!
@@ -363,7 +323,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 		#
 		# Enemy Base
 		#
-		with_offscreen_buffer { |buffer|
+		with_offscreen_buffer(:medium) { |buffer|
 			# Render to offscreen
 			buffer.using {
 				enemybase.render!
@@ -405,7 +365,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 		#
 		# Pellets
 		#
-		with_offscreen_buffer { |buffer|
+		with_offscreen_buffer(:small) { |buffer|
 			# Render to offscreen
 			buffer.using {
 				pellet.render!
