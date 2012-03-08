@@ -180,10 +180,17 @@ class PacMap
 	
 	def spawn_pellets
 	
-		#iterate over all path's, put pellets on them.
-		path = @paths.random
-		@pellets << Pellet.new(0,0,nil)
-		
+		@paths.each {  |p|
+			#@pellets << Pellet.new(0,0,nil)
+			#p.nodeA
+			#p.nodeB
+			center = p.center_point
+			@pellets << Pellet.new( center.x, center.y, nil)
+			#@pellets << Pellet.new( (p.nodeB.position.x + p.nodeA.position.x)/2,
+			#												(p.nodeB.position.y + p.nodeA.position.y)/2, nil ) 
+			
+		}
+
 	end
 	
 end
@@ -256,10 +263,8 @@ class DirectorEffectGamePacMap < DirectorEffect
 			@map.spawn_pellets if @map.pellets.size == 0
 		end
 
-
-
 		#handle inputs from controller elements
-		puts up.value #+ ' ' +down.value + ' ' + left.value + ' ' + right.value
+		#puts up.value #+ ' ' +down.value + ' ' + left.value + ' ' + right.value
 		
 		# $env[:frame_time_delta]  see Engine#update_environment in engine/engine.rb for more data
 		@map.heroes.each_with_index { |h, i|
