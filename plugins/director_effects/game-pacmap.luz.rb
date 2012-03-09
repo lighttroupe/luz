@@ -63,25 +63,22 @@ class PacMap
 	end
 
 	class Path
-		attr_accessor :node_a, :node_b
+		attr_accessor :node_a, :node_b, :length, :angle, :center_point
 
 		def initialize(node_a, node_b)
 			@node_a, @node_b = node_a, node_b
 
 			@node_a.add_neighbor(@node_b)
 			@node_b.add_neighbor(@node_a)
+			calculate!
 		end
 
-		def center_point
-			(@node_a.position + @node_b.position) / 2.0
-		end
+		def calculate!
+			vector = (@node_b.position - @node_a.position)
 
-		def length
-			@node_a.position.distance_to(@node_b.position)
-		end
-
-		def angle
-			Math.atan2((@node_b.position.x - @node_a.position.x), (@node_b.position.y - @node_a.position.y)) / (Math::PI*2.0)
+			@length = vector.length
+			@angle = vector.fuzzy_angle
+			@center_point = (@node_a.position + @node_b.position) / 2.0
 		end
 	end
 
