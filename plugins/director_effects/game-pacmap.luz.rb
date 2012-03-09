@@ -173,7 +173,7 @@ class PacMap
 			# Layout pellets
 			pellet_count.times { |i|
 				position = start_position + (step * i)
-				@pellets << Pellet.new(position.x, position.y, nil)
+				@pellets << Pellet.new(position.x, position.y, path)
 			}
 		}
 	end
