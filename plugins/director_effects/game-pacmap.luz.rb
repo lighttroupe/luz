@@ -13,6 +13,7 @@ class PacMap
 	#
 	class MapObject
 		attr_accessor :position, :place, :destination_place
+
 		def initialize(x, y, place)
 			@position = Vector3.new(x, y, 0.0)
 			@place, @destination_place = place, nil
@@ -42,6 +43,7 @@ class PacMap
 	#
 	class Node
 		attr_reader :position, :neighbors
+
 		def initialize(x, y)
 			@position = Vector3.new(x, y, 0.0)
 			@neighbors = Set.new
@@ -61,25 +63,25 @@ class PacMap
 	end
 
 	class Path
-		attr_accessor :nodeA, :nodeB
-		def initialize(nodeA, nodeB)
-			@nodeA = nodeA
-			@nodeB = nodeB
+		attr_accessor :node_a, :node_b
 
-			@nodeA.add_neighbor(@nodeB)
-			@nodeB.add_neighbor(@nodeA)
+		def initialize(node_a, node_b)
+			@node_a, @node_b = node_a, node_b
+
+			@node_a.add_neighbor(@node_b)
+			@node_b.add_neighbor(@node_a)
 		end
 
 		def center_point
-			(@nodeA.position + @nodeB.position) / 2.0
+			(@node_a.position + @node_b.position) / 2.0
 		end
 
 		def length
-			@nodeA.position.distance_to(@nodeB.position)
+			@node_a.position.distance_to(@node_b.position)
 		end
 
 		def angle
-			Math.atan2((@nodeB.position.x - @nodeA.position.x), (@nodeB.position.y - @nodeA.position.y)) / (Math::PI*2.0)
+			Math.atan2((@node_b.position.x - @node_a.position.x), (@node_b.position.y - @node_a.position.y)) / (Math::PI*2.0)
 		end
 	end
 
@@ -90,13 +92,7 @@ class PacMap
 	end
 
 	#
-	# Point collection 
-	#
-	class Pellet < MapObject
-	end
-
-	#
-	# Heroes, Enemies, Bases and Portals
+	# Characters
 	#
 	class Hero < MapObject
 	end
@@ -104,17 +100,22 @@ class PacMap
 	class Enemy < MapObject
 	end
 
+	class Pellet < MapObject
+	end
+
 	#
 	# Map class
 	#
-	attr_accessor :nodes, :paths, :pellets, :powerpellets, :floatingfruit, 
-								:herobases, :enemybases, :portals, :heroes, :enemies
+	attr_accessor :nodes, :paths, :portals, :herobases, :enemybases,
+								:heroes, :enemies, :pellets, :powerpellets, :floatingfruit
 
 	def initialize
-		@nodes, @paths, @pellets, @powerpellets, @floatingfruit,
-		@herobases, @enemybases, @portals, @heroes, @enemies = [], [], [], [], [], [], [], [], [], []
+		@nodes, @paths, @portals, @herobases, @enemybases = [], [], [], [], []
+		@pellets, @powerpellets, @heroes, @enemies, @floatingfruit = [], [], [], [], []
 
+		#
 		# game network layout (hard coded hack for testing currently)
+		#
 		@nodes << (a=Node.new(0.2, 0.0))
 		@nodes << (b=Node.new(-0.2, 0.0))
 		@paths << Path.new(a, b)
@@ -129,18 +130,14 @@ class PacMap
 		@nodes << (e=Node.new(-0.2, -0.3))
 		@paths << Path.new(b, e)
 
-		# pellets, power_pellets, floating fruit
-		#@pellets << Pellet.new(-0.1, -0.1)
-		#@powerpellets << Pellet.new(0.1, 0.1)
-		#@floatingfruit << Pellet.new( -0.1, 0.1)
-
 		# bases, portals
 		@herobases << Base.new(@nodes.first.position.x, @nodes.first.position.y, @nodes.first)
 		@enemybases << Base.new(@nodes.last.position.x, @nodes.last.position.y, @nodes.last)
-
-		#@portals << Portal.new(0.0,0.0)
 	end
 
+	#
+	# Spawning
+	#
 	def spawn_hero
 		base = @herobases.random
 		@heroes << Hero.new(base.place.position.x, base.place.position.y, base.place) if base
@@ -162,10 +159,10 @@ class PacMap
 			division_chunk = 1.0 / divisions
 
 			divisions.to_i.times { |i|
-				path_vec = p.nodeB.position - p.nodeA.position
+				path_vec = p.node_b.position - p.node_a.position
 				hypotenuse = i * division_chunk
 				path_vec *= hypotenuse
-				@pellets << Pellet.new( path_vec.x+p.nodeA.position.x, path_vec.y+p.nodeA.position.y, nil ) 
+				@pellets << Pellet.new( path_vec.x+p.node_a.position.x, path_vec.y+p.node_a.position.y, nil ) 
 			}
 		}
 	end
@@ -221,6 +218,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 	#
 	def after_load
 		@map = PacMap.new
+		@map.spawn_pellets
 		super
 	end
 
@@ -228,25 +226,16 @@ class DirectorEffectGamePacMap < DirectorEffect
 	# tick is called once per frame, before rendering
 	#
 	def tick
-		# Spawn, if needed
+		# Spawn if needed
 		if $env[:frame_number] % 10 == 0		# a delay between spawns so they don't all pile up
 			@map.spawn_hero if @map.heroes.size < hero_count
 			@map.spawn_enemy if @map.enemies.size < enemy_count
 		end
 
-		# Span pellets, if needed
-		if $env[:frame_number] % 10 == 0
-			@map.spawn_pellets if @map.pellets.size == 0
-		end
-
-		#handle inputs from controller elements
-		#puts up.value #+ ' ' +down.value + ' ' + left.value + ' ' + right.value
-
-		# $env[:frame_time_delta]  see Engine#update_environment in engine/engine.rb for more data
+		# Tick characters
 		@map.heroes.each_with_index { |h, i|
 			h.tick(hero_speed)
 		}
-
 		@map.enemies.each_with_index { |e, i|
 			e.tick(enemy_speed)
 		}
