@@ -162,11 +162,14 @@ class PacMap
 		@enemies << Enemy.new(base.place.position.x, base.place.position.y, base.place) if base
 	end
 
-	def spawn_pellets!(pellet_spacing)
+	def spawn_pellets!(pellet_spacing, node_size)
 		@paths.each { |path|
-			pellet_count = (path.length / pellet_spacing).floor
+			start_position = (path.node_a.position + (path.vector.normalize * (node_size / 2.0)))
+			end_position = (path.node_b.position - (path.vector.normalize * (node_size / 2.0)))
+			vector = end_position - start_position
+			pellet_count = (vector.length / pellet_spacing).floor
 			pellet_count.times { |i|
-				position = path.node_a.position + ((path.vector / pellet_count) * i)
+				position = start_position + ((vector / pellet_count) * i)
 				@pellets << Pellet.new(position.x, position.y, nil)
 			}
 		}
@@ -259,7 +262,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 	end
 
 	def start_game!
-		@map.spawn_pellets!(pellet_spacing)
+		@map.spawn_pellets!(pellet_spacing, node_size)
 		@state = :game
 	end
 
