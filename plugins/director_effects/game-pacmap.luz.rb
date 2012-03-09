@@ -164,11 +164,6 @@ class DirectorEffectGamePacMap < DirectorEffect
 
 	include Drawing
 
-	setting 'up', :button, :summary => true
-	setting 'left', :button, :summary => true
-	setting 'down', :button, :summary => true
-	setting 'right', :button, :summary => true
-
 	setting 'node', :actor
 	setting 'node_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
 
