@@ -53,13 +53,13 @@ class PacMap
 			@neighbors << node
 		end
 
-		def remove_neighbor(node)
-			@neighbors.delete(node)
-		end
+		#def remove_neighbor(node)
+		#	@neighbors.delete(node)
+		#end
 
-		def clear_neighbors
-			@neighbors.clear
-		end
+		#def clear_neighbors
+		#	@neighbors.clear
+		#end
 	end
 
 	class Path
