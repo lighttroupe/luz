@@ -145,11 +145,9 @@ class PacMap
 		@enemies << Enemy.new(base.place.position.x, base.place.position.y, base.place) if base
 	end
 
-	def spawn_pellets
-		powerpellet_size = 0.03		# HACK: get from plugin
-
+	def spawn_pellets!(pellet_spacing)
 		@paths.each { |path|
-			pellet_count = (path.length / powerpellet_size).floor
+			pellet_count = (path.length / pellet_spacing).floor
 			pellet_count.times { |i|
 				position = path.node_a.position + ((path.vector / pellet_count) * i)
 				@pellets << Pellet.new(position.x, position.y, nil)
@@ -182,6 +180,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 
 	setting 'pellet', :actor
 	setting 'pellet_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
+	setting 'pellet_spacing', :float, :range => 0.0..1.0, :default => 0.03..1.0, :simple => true
 
 	setting 'powerpellet', :actor
 	setting 'powerpellet_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
@@ -203,7 +202,6 @@ class DirectorEffectGamePacMap < DirectorEffect
 	#
 	def after_load
 		@map = PacMap.new
-		@map.spawn_pellets
 		@state = :pregame
 		super
 	end
@@ -232,6 +230,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 	end
 
 	def start_game!
+		@map.spawn_pellets!(pellet_spacing)
 		@state = :game
 	end
 
