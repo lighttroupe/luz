@@ -164,12 +164,15 @@ class PacMap
 
 	def spawn_pellets!(pellet_spacing, node_size)
 		@paths.each { |path|
-			start_position = (path.node_a.position + (path.vector.normalize * (node_size / 2.0)))
-			end_position = (path.node_b.position - (path.vector.normalize * (node_size / 2.0)))
-			vector = end_position - start_position
-			pellet_count = (vector.length / pellet_spacing).floor
+			usable_length = (path.length - node_size)		# avoid placing pellets over nodes (node_size/2 on each end)
+			pellet_count = (usable_length / pellet_spacing).floor
+			padding = (usable_length - ((pellet_count - 1) * pellet_spacing))		# -1 because pellet spacing is between nodes ie 3 (*--*--*) has pellet_spacing*2
+			start_position = (path.node_a.position + (path.vector.normalize * ((node_size / 2.0) + (padding / 2.0))))		# half spacing on each side
+			step = (path.vector.normalize * pellet_spacing)
+
+			# Layout pellets
 			pellet_count.times { |i|
-				position = start_position + ((vector / pellet_count) * i)
+				position = start_position + (step * i)
 				@pellets << Pellet.new(position.x, position.y, nil)
 			}
 		}
