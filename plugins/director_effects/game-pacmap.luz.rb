@@ -149,7 +149,7 @@ class PacMap
 		powerpellet_size = 0.03		# HACK: get from plugin
 
 		@paths.each { |path|
-			pellet_count = (path.length / powerpellet_size).to_i
+			pellet_count = (path.length / powerpellet_size).floor
 			pellet_count.times { |i|
 				position = path.node_a.position + ((path.vector / pellet_count) * i)
 				@pellets << Pellet.new(position.x, position.y, nil)
