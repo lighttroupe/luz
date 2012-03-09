@@ -146,10 +146,10 @@ class PacMap
 	end
 
 	def spawn_pellets
-		# TODO: how to use powerpellet_size to determine pellet spread?
+		powerpellet_size = 0.03		# HACK: get from plugin
+
 		@paths.each {  |p|
 			# determine divisions from length
-			powerpellet_size = 0.03 # HACKED!  how to get at this variable?
 			divisions = p.length / powerpellet_size
 
 			#normalize divisions
