@@ -42,7 +42,7 @@ class PacMap
 					self.position += (vector_to_destination.normalize * distance_per_frame)
 				end
 			else
-				@destination_place = place.neighbors.to_a.random
+				@destination_place = place.random_neighbor
 			end
 		end
 
@@ -59,7 +59,7 @@ class PacMap
 	# Game Network Graph
 	#
 	class Node
-		attr_reader :position, :neighbors
+		attr_reader :position
 
 		def initialize(x, y)
 			@position = Vector3.new(x, y, 0.0)
@@ -68,6 +68,10 @@ class PacMap
 
 		def add_neighbor(node)
 			@neighbors << node
+		end
+
+		def random_neighbor
+			@neighbors.to_a.random
 		end
 
 		#def remove_neighbor(node)
@@ -197,14 +201,14 @@ class DirectorEffectGamePacMap < DirectorEffect
 	setting 'path_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
 
 	setting 'hero', :actor
-	setting 'hero_count', :integer, :range => 1..10, :default => 1..10
 	setting 'hero_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
 	setting 'hero_speed', :float, :range => 0.0..1.0, :default => 0.01..1.0
+	setting 'hero_count', :integer, :range => 1..10, :default => 1..10
 
 	setting 'enemy', :actor
-	setting 'enemy_count', :integer, :range => 1..10, :default => 1..10
 	setting 'enemy_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
 	setting 'enemy_speed', :float, :range => 0.0..1.0, :default => 0.01..1.0
+	setting 'enemy_count', :integer, :range => 1..10, :default => 1..10
 
 	setting 'pellet', :actor
 	setting 'pellet_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
@@ -468,7 +472,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 		@map.heroes.each_with_index { |h, i|
 			h.with_env_for_actor {
 				with_env(:child_index, i) {
-					character_angle_setting.with_value(h.angle) {
+					character_angle_variable_setting.with_value(h.angle) {
 						with_translation(h.position.x, h.position.y) {
 							with_scale(hero_size, hero_size, hero_size){
 								hero.render!
@@ -485,7 +489,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 		@map.enemies.each_with_index { |e, i|
 			e.with_env_for_actor {
 				with_env(:child_index, i) {
-					character_angle_setting.with_value(e.angle) {
+					character_angle_variable_setting.with_value(e.angle) {
 						with_translation(e.position.x, e.position.y) {
 							with_scale(enemy_size, enemy_size, enemy_size){
 								enemy.render!
