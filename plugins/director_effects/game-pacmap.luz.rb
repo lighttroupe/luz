@@ -12,7 +12,7 @@ class PacMap
 	# Base class for all movable objects
 	#
 	class MapObject
-		attr_accessor :position, :place, :destination_place
+		attr_accessor :position, :place, :destination_place, :angle
 
 		include Engine::MethodsForUserObject
 
@@ -21,6 +21,7 @@ class PacMap
 			@place, @destination_place = place, nil
 			@entered_at, @enter_time = $env[:frame_time], 0.2		# TODO: configurable?
 			@exited_at, @exit_time = nil, 0.5		# TODO: configurable?
+			@angle = 0.0
 		end
 
 		def tick(distance_per_frame)
@@ -29,6 +30,8 @@ class PacMap
 			elsif @destination_place
 				vector_to_destination = (@destination_place.position - position)
 				distance_to_destination = vector_to_destination.length
+
+				@angle = vector_to_destination.fuzzy_angle % 1.0		# maintain in 0.0..1.0 range for use in Variable
 
 				# Arrived?
 				if distance_to_destination < distance_per_frame
@@ -215,6 +218,8 @@ class DirectorEffectGamePacMap < DirectorEffect
 
 	setting 'portal', :actor
 	setting 'portal_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
+
+	setting 'character_angle_variable', :variable
 
 	#
 	# after_load is called once at startup, and again after Ctrl-Shift-R reloads
@@ -457,9 +462,9 @@ class DirectorEffectGamePacMap < DirectorEffect
 		@map.heroes.each_with_index { |h, i|
 			h.with_env_for_actor {
 				with_env(:child_index, i) {
-					with_translation(h.position.x, h.position.y) {
-						with_scale(hero_size, hero_size, hero_size){
-							with_roll(0.25) {
+					character_angle_setting.with_value(h.angle) {
+						with_translation(h.position.x, h.position.y) {
+							with_scale(hero_size, hero_size, hero_size){
 								hero.render!
 							}
 						}
@@ -474,9 +479,9 @@ class DirectorEffectGamePacMap < DirectorEffect
 		@map.enemies.each_with_index { |e, i|
 			e.with_env_for_actor {
 				with_env(:child_index, i) {
-					with_translation(e.position.x, e.position.y) {
-						with_scale(enemy_size, enemy_size, enemy_size){
-							with_roll(0.25) {
+					character_angle_setting.with_value(e.angle) {
+						with_translation(e.position.x, e.position.y) {
+							with_scale(enemy_size, enemy_size, enemy_size){
 								enemy.render!
 							}
 						}
