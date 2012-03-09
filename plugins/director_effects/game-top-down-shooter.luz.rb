@@ -20,7 +20,7 @@ include Drawing
 
 class DirectorEffectGameTopDownShooter < DirectorEffect
 	title				'Top Down Shooter'
-	description ""
+	description ''
 
 	setting 'ship', :actor
 	setting 'ship_size', :float, :range => 0.001..1.0, :default => 0.1..1.0
