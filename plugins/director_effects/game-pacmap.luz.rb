@@ -214,41 +214,46 @@ class DirectorEffectGamePacMap < DirectorEffect
 	def tick
 		case @state
 		when :pregame
-			start_game if players_ready?
+			start_game! if players_ready?
 
 		when :game
-			# Spawn if needed
-			if $env[:frame_number] % 10 == 0		# a delay between spawns so they don't all pile up
-				@map.spawn_hero if @map.heroes.size < hero_count
-				@map.spawn_enemy if @map.enemies.size < enemy_count
-			end
+			game_tick
 
-			# Tick characters
-			@map.heroes.each { |hero|
-				hero.tick(hero_speed)
-			}
-			@map.enemies.each { |enemy|
-				enemy.tick(enemy_speed)
-			}
 		when :postgame
 			@countdown -= 1
-			start_pregame if @countdown == 0
+			start_pregame! if @countdown == 0
 		else
 			raise "unhandled game state #{@state}"
 		end
-	end
-
-	def start_game
-		@state = :game
 	end
 
 	def players_ready?
 		true
 	end
 
-	def end_game
+	def start_game!
+		@state = :game
+	end
+
+	def game_tick
+		# Spawn if needed
+		if $env[:frame_number] % 10 == 0		# a delay between spawns so they don't all pile up
+			@map.spawn_hero if @map.heroes.size < hero_count
+			@map.spawn_enemy if @map.enemies.size < enemy_count
+		end
+
+		# Tick characters
+		@map.heroes.each { |hero|
+			hero.tick(hero_speed)
+		}
+		@map.enemies.each { |enemy|
+			enemy.tick(enemy_speed)
+		}
+	end
+
+	def end_game!
 		@state = :postgame
-		@countdown = 30
+		@countdown = 30		# TODO: time based?
 	end
 
 	#
