@@ -14,13 +14,19 @@ class PacMap
 	class MapObject
 		attr_accessor :position, :place, :destination_place
 
+		include Engine::MethodsForUserObject
+
 		def initialize(x, y, place)
 			@position = Vector3.new(x, y, 0.0)
 			@place, @destination_place = place, nil
+			@entered_at, @enter_time = $env[:frame_time], 0.2		# TODO: configurable?
+			@exited_at, @exit_time = nil, 0.5		# TODO: configurable?
 		end
 
 		def tick(distance_per_frame)
-			if @destination_place
+			if @exited_at
+				# nothing
+			elsif @destination_place
 				vector_to_destination = (@destination_place.position - position)
 				distance_to_destination = vector_to_destination.length
 
@@ -35,6 +41,14 @@ class PacMap
 			else
 				@destination_place = place.neighbors.to_a.random
 			end
+		end
+
+		def with_env_for_actor
+			enter = (@entered_at) ? (($env[:frame_time] - @entered_at) / @enter_time) : 1.0
+			exit = (@exited_at) ? (($env[:frame_time] - @exited_at) / @exit_time) : 0.0
+			with_enter_and_exit(enter, exit) {
+				yield
+			}
 		end
 	end
 
@@ -154,6 +168,11 @@ class PacMap
 			}
 		}
 	end
+
+	def exit_characters!
+		@heroes.each { |hero| hero.exited_at ||= $env[:frame_time] }
+		@enemies.each { |hero| hero.exited_at ||= $env[:frame_time] }
+	end
 end
 
 class DirectorEffectGamePacMap < DirectorEffect
@@ -202,7 +221,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 	#
 	def after_load
 		@map = PacMap.new
-		@state = :pregame
+		start_pregame!
 		super
 	end
 
@@ -223,6 +242,11 @@ class DirectorEffectGamePacMap < DirectorEffect
 		else
 			raise "unhandled game state #{@state}"
 		end
+	end
+
+	def start_pregame!
+		@state = :pregame
+		@map.exit_characters!
 	end
 
 	def players_ready?
@@ -431,11 +455,13 @@ class DirectorEffectGamePacMap < DirectorEffect
 		# Heros
 		#
 		@map.heroes.each_with_index { |h, i|
-			with_env(:child_index, i) {
-				with_translation(h.position.x, h.position.y) {
-					with_scale(hero_size, hero_size, hero_size){
-						with_roll(0.25) {
-							hero.render!
+			h.with_env_for_actor {
+				with_env(:child_index, i) {
+					with_translation(h.position.x, h.position.y) {
+						with_scale(hero_size, hero_size, hero_size){
+							with_roll(0.25) {
+								hero.render!
+							}
 						}
 					}
 				}
@@ -446,11 +472,13 @@ class DirectorEffectGamePacMap < DirectorEffect
 		# Enemies
 		#
 		@map.enemies.each_with_index { |e, i|
-			with_env(:child_index, i) {
-				with_translation(e.position.x, e.position.y) {
-					with_scale(enemy_size, enemy_size, enemy_size){
-						with_roll(0.25) {
-							enemy.render!
+			e.with_env_for_actor {
+				with_env(:child_index, i) {
+					with_translation(e.position.x, e.position.y) {
+						with_scale(enemy_size, enemy_size, enemy_size){
+							with_roll(0.25) {
+								enemy.render!
+							}
 						}
 					}
 				}
