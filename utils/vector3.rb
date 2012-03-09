@@ -80,7 +80,7 @@ class Vector3
 	end
 
 	def vector_to(point)
-		point - self
+		(point - self)
 	end
 
 	def to_vector
@@ -88,7 +88,7 @@ class Vector3
 	end
 
 	def zero?
-		@x == 0.0 and @y == 0.0 and @z == 0.0
+		(@x == 0.0 and @y == 0.0 and @z == 0.0)
 	end
 
 	def to_s
