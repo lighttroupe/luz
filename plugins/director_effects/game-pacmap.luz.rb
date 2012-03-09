@@ -63,7 +63,7 @@ class PacMap
 	end
 
 	class Path
-		attr_accessor :node_a, :node_b, :length, :angle, :center_point
+		attr_accessor :node_a, :node_b, :vector, :length, :angle, :center_point
 
 		def initialize(node_a, node_b)
 			@node_a, @node_b = node_a, node_b
@@ -74,10 +74,10 @@ class PacMap
 		end
 
 		def calculate!
-			vector = (@node_b.position - @node_a.position)
+			@vector = (@node_b.position - @node_a.position)
 
-			@length = vector.length
-			@angle = vector.fuzzy_angle
+			@length = @vector.length
+			@angle = @vector.fuzzy_angle
 			@center_point = (@node_a.position + @node_b.position) / 2.0
 		end
 	end
@@ -148,18 +148,11 @@ class PacMap
 	def spawn_pellets
 		powerpellet_size = 0.03		# HACK: get from plugin
 
-		@paths.each {  |p|
-			# determine divisions from length
-			divisions = p.length / powerpellet_size
-
-			#normalize divisions
-			division_chunk = 1.0 / divisions
-
-			divisions.to_i.times { |i|
-				path_vec = p.node_b.position - p.node_a.position
-				hypotenuse = i * division_chunk
-				path_vec *= hypotenuse
-				@pellets << Pellet.new( path_vec.x+p.node_a.position.x, path_vec.y+p.node_a.position.y, nil ) 
+		@paths.each { |path|
+			pellet_count = (path.length / powerpellet_size).to_i
+			pellet_count.times { |i|
+				position = path.node_a.position + ((path.vector / pellet_count) * i)
+				@pellets << Pellet.new(position.x, position.y, nil)
 			}
 		}
 	end
