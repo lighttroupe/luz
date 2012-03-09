@@ -159,8 +159,8 @@ class PacMap
 end
 
 class DirectorEffectGamePacMap < DirectorEffect
-	title	    'PacMap'
-	description "The PacMap game in Luz"
+	title				'PacMap'
+	description 'PacMan, Luz-style.'
 
 	include Drawing
 
