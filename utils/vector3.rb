@@ -98,4 +98,9 @@ class Vector3
 	def left
 		Vector3.new(@y, -@x, @z)
 	end
+
+	TWO_PI = (Math::PI * 2.0)
+	def fuzzy_angle
+		Math.atan2(@x, @y) / (TWO_PI)
+	end
 end
