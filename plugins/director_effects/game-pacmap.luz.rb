@@ -53,6 +53,14 @@ class PacMap
 				yield
 			}
 		end
+
+		def exit!
+			@exited_at ||= $env[:frame_time]
+		end
+
+		def exiting?
+			!@exited_at.nil?
+		end
 	end
 
 	#
@@ -73,14 +81,6 @@ class PacMap
 		def random_neighbor
 			@neighbors.to_a.random
 		end
-
-		#def remove_neighbor(node)
-		#	@neighbors.delete(node)
-		#end
-
-		#def clear_neighbors
-		#	@neighbors.clear
-		#end
 	end
 
 	class Path
@@ -96,7 +96,6 @@ class PacMap
 
 		def calculate!
 			@vector = (@node_b.position - @node_a.position)
-
 			@length = @vector.length
 			@angle = @vector.fuzzy_angle
 			@center_point = (@node_a.position + @node_b.position) / 2.0
@@ -183,8 +182,13 @@ class PacMap
 	end
 
 	def exit_characters!
-		@heroes.each { |hero| hero.exited_at ||= $env[:frame_time] }
-		@enemies.each { |hero| hero.exited_at ||= $env[:frame_time] }
+		@heroes.each { |hero| hero.exit! }
+		@enemies.each { |hero| hero.exit! }
+	end
+
+	def remove_characters!
+		@heroes.clear
+		@enemies.clear
 	end
 end
 
@@ -254,6 +258,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 		when :postgame
 			@countdown -= 1
 			start_pregame! if @countdown == 0
+
 		else
 			raise "unhandled game state #{@state}"
 		end
@@ -261,7 +266,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 
 	def start_pregame!
 		@state = :pregame
-		@map.exit_characters!
+		@map.remove_characters!
 	end
 
 	def players_ready?
@@ -281,15 +286,25 @@ class DirectorEffectGamePacMap < DirectorEffect
 		end
 
 		# Tick characters
+		hit_distance = (hero_size / 2) - (pellet_size / 2)
 		@map.heroes.each { |hero|
 			hero.tick(hero_speed)
+
+			# Heroes vs Pellets
+			@map.pellets.delete_if { |pellet|
+				hero.position.distance_to(pellet.position) < hit_distance
+			} unless hero.exiting?
 		}
 		@map.enemies.each { |enemy|
 			enemy.tick(enemy_speed)
 		}
+
+		# Heroes win?
+		end_game! if @map.pellets.empty?
 	end
 
 	def end_game!
+		@map.exit_characters!
 		@state = :postgame
 		@countdown = 30		# TODO: time based?
 	end
