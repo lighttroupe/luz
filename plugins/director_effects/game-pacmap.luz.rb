@@ -362,8 +362,10 @@ class DirectorEffectGamePacMap < DirectorEffect
 		#
 		# Portals
 		#
-		render_list_via_offscreen_buffer(@map.portals, portal_size, :medium) {
-			portal.render!
+		@map.portals.each_with_index { |p, i|
+			with_character_setup(p, portal_size, i) {
+				portal.render!
+			}
 		}
 =end
 
