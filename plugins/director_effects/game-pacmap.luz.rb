@@ -325,144 +325,53 @@ class DirectorEffectGamePacMap < DirectorEffect
 		#
 		# Nodes
 		#
-		with_offscreen_buffer(:medium) { |buffer|
-			# Render to offscreen
-			buffer.using {
-				node.render!
-			}
-			# Render actor with image of rendered scene as default Image
-			buffer.with_image {
-				@map.nodes.each { |n|
-					with_translation(n.position.x, n.position.y) {
-						with_scale(node_size, node_size, node_size){
-							unit_square
-						}
-					}
-				}
-			}
+		render_list_via_offscreen_buffer(@map.nodes, node_size, :medium) {
+			node.render!
 		}
 
 		#
 		# Hero Base
 		#
-		with_offscreen_buffer(:medium) { |buffer|
-			# Render to offscreen
-			buffer.using {
-				herobase.render!
-			}
-			# Render actor with image of rendered scene as default Image
-			buffer.with_image {
-				@map.herobases.each { |n|
-					with_translation(n.position.x, n.position.y) {
-						with_scale(herobase_size, herobase_size, herobase_size){
-							unit_square
-						}
-					}
-				}
-			}
+		render_list_via_offscreen_buffer(@map.herobases, herobase_size, :medium) {
+			herobase.render!
 		}
 
 		#
 		# Enemy Base
 		#
-		with_offscreen_buffer(:medium) { |buffer|
-			# Render to offscreen
-			buffer.using {
-				enemybase.render!
-			}
-			# Render actor with image of rendered scene as default Image
-			buffer.with_image {
-				@map.enemybases.each { |n|
-					with_translation(n.position.x, n.position.y) {
-						with_scale(enemybase_size, enemybase_size, enemybase_size){
-							unit_square
-						}
-					}
-				}
-			}
+		render_list_via_offscreen_buffer(@map.enemybases, enemybase_size, :medium) {
+			enemybase.render!
 		}
 
 =begin
 		#
 		# Portals
 		#
-		with_offscreen_buffer { |buffer|
-			# Render to offscreen
-			buffer.using {
-				portal.render!
-			}
-			# Render actor with image of rendered scene as default Image
-			buffer.with_image {
-				@map.portals.each { |n|
-					with_translation(n.position.x, n.position.y) {
-						with_scale(portal_size, portal_size, portal_size){
-							unit_square
-						}
-					}
-				}
-			}
+		render_list_via_offscreen_buffer(@map.portals, portal_size, :medium) {
+			portal.render!
 		}
 =end
 
 		#
 		# Pellets
 		#
-		with_offscreen_buffer(:small) { |buffer|
-			# Render to offscreen
-			buffer.using {
-				pellet.render!
-			}
-			# Render actor with image of rendered scene as default Image
-			buffer.with_image {
-				@map.pellets.each { |n|
-					with_translation(n.position.x, n.position.y) {
-						with_scale(pellet_size, pellet_size, pellet_size){
-							unit_square
-						}
-					}
-				}
-			}
+		render_list_via_offscreen_buffer(@map.pellets, pellet_size, :small) {
+			pellet.render!
 		}
 
 =begin
 		#
 		# Power Pellets
 		#
-		with_offscreen_buffer { |buffer|
-			# Render to offscreen
-			buffer.using {
-				powerpellet.render!
-			}
-			# Render actor with image of rendered scene as default Image
-			buffer.with_image {
-				@map.powerpellets.each { |n|
-					with_translation(n.position.x, n.position.y) {
-						with_scale(powerpellet_size, powerpellet_size, powerpellet_size){
-							unit_square
-						}
-					}
-				}
-			}
+		render_list_via_offscreen_buffer(@map.powerpellets, powerpellet_size, :small) {
+			powerpellet.render!
 		}
 
 		#
 		# Floating Fruit
 		#
-		with_offscreen_buffer { |buffer|
-			# Render to offscreen
-			buffer.using {
-				floatingfruit.render!
-			}
-			# Render actor with image of rendered scene as default Image
-			buffer.with_image {
-				@map.floatingfruit.each { |n|
-					with_translation(n.position.x, n.position.y) {
-						with_scale(floatingfruit_size, floatingfruit_size, floatingfruit_size){
-							unit_square
-						}
-					}
-				}
-			}
+		render_list_via_offscreen_buffer(@map.floatingfruits, floatingfruit_size, :small) {
+			floatingfruit.render!
 		}
 =end
 
@@ -470,16 +379,8 @@ class DirectorEffectGamePacMap < DirectorEffect
 		# Heros
 		#
 		@map.heroes.each_with_index { |h, i|
-			h.with_env_for_actor {
-				with_env(:child_index, i) {
-					character_angle_variable_setting.with_value(h.angle) {
-						with_translation(h.position.x, h.position.y) {
-							with_scale(hero_size, hero_size, hero_size){
-								hero.render!
-							}
-						}
-					}
-				}
+			with_character_setup(h, hero_size, i) {
+				hero.render!
 			}
 		}
 
@@ -487,19 +388,47 @@ class DirectorEffectGamePacMap < DirectorEffect
 		# Enemies
 		#
 		@map.enemies.each_with_index { |e, i|
-			e.with_env_for_actor {
-				with_env(:child_index, i) {
-					character_angle_variable_setting.with_value(e.angle) {
-						with_translation(e.position.x, e.position.y) {
-							with_scale(enemy_size, enemy_size, enemy_size){
-								enemy.render!
-							}
+			with_character_setup(e, enemy_size, i) {
+				enemy.render!
+			}
+		}
+
+		yield
+	end
+
+	#
+	# render helpers
+	#
+	def render_list_via_offscreen_buffer(characters, size, buffer_size)
+		with_offscreen_buffer(buffer_size) { |buffer|
+			# Render to offscreen
+			buffer.using {
+				yield
+			}
+			# Render actor with image of rendered scene as default Image
+			buffer.with_image {
+				characters.each { |character|
+					with_translation(character.position.x, character.position.y) {
+						with_scale(size, size, size){
+							unit_square
 						}
 					}
 				}
 			}
 		}
+	end
 
-		yield
+	def with_character_setup(character, size, index)
+		character.with_env_for_actor {
+			with_env(:child_index, index) {
+				character_angle_variable_setting.with_value(character.angle) {
+					with_translation(character.position.x, character.position.y) {
+						with_scale(size, size, size){
+							yield
+						}
+					}
+				}
+			}
+		}
 	end
 end
