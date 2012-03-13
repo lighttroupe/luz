@@ -260,6 +260,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 	setting 'enemy_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
 	setting 'enemy_speed', :float, :range => 0.0..1.0, :default => 0.01..1.0
 	setting 'enemy_count', :integer, :range => 1..10, :default => 1..10
+	setting 'first_enemy_input_variable', :variable
 
 	setting 'pellet', :actor
 	setting 'pellet_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
@@ -326,17 +327,21 @@ class DirectorEffectGamePacMap < DirectorEffect
 	end
 
 	def superpellet_active?
-		true
+		false
 	end
 
 	def update_character_inputs!
 		first_index = $engine.project.variables.index(first_hero_input_variable_setting.variable)
-		return unless first_index
-
 		@map.heroes.each_with_index { |hero, index|
 			x_variable, y_variable = $engine.project.variables[first_index + (index * 2)], $engine.project.variables[first_index + (index * 2) + 1]
 			hero.set_controls(x_variable.value - 0.5, y_variable.value - 0.5) if x_variable and y_variable
-		}
+		} if first_index
+
+		first_index = $engine.project.variables.index(first_enemy_input_variable_setting.variable)
+		@map.enemies.each_with_index { |enemy, index|
+			x_variable, y_variable = $engine.project.variables[first_index + (index * 2)], $engine.project.variables[first_index + (index * 2) + 1]
+			enemy.set_controls(x_variable.value - 0.5, y_variable.value - 0.5) if x_variable and y_variable
+		} if first_index
 	end
 
 	def game_tick
