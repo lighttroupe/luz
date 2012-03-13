@@ -278,6 +278,10 @@ class DirectorEffectGamePacMap < DirectorEffect
 		@state = :game
 	end
 
+	def superpellet_active?
+		true
+	end
+
 	def game_tick
 		# Spawn if needed
 		if $env[:frame_number] % 10 == 0		# a delay between spawns so they don't all pile up
@@ -297,10 +301,24 @@ class DirectorEffectGamePacMap < DirectorEffect
 			steps.times {
 				hero.tick(hero_speed / steps)
 
-				# Heroes vs Pellets
-				@map.pellets.delete_if { |pellet|
-					hero.position.distance_to(pellet.position) < hit_distance
-				} unless hero.exiting?
+				unless hero.exiting?
+					# Heroes vs Pellets
+					@map.pellets.delete_if { |pellet|
+						hero.position.distance_to(pellet.position) < hit_distance
+					} unless hero.exiting?
+
+					# Heroes vs Enemies
+					@map.enemies.each { |enemy|
+						if hero.position.distance_to(enemy.position) < hit_distance
+							# Hit enemy
+							if superpellet_active?
+								enemy.exit!
+							else
+								
+							end
+						end
+					}
+				end
 			}
 		}
 		@map.enemies.each { |enemy|
