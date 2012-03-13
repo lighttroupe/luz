@@ -85,6 +85,13 @@ class PacMap
 		def random_neighbor
 			@neighbors.to_a.random
 		end
+
+		def each_neighbor_with_fuzzy_angle
+			@neighbors.each { |node|
+				angle = position.vector_to(node.position).fuzzy_angle
+				yield node, angle
+			}
+		end
 	end
 
 	class Path
@@ -112,16 +119,41 @@ class PacMap
 	class Base < MapObject
 	end
 
+	class Pellet < MapObject
+	end
+
 	#
 	# Characters
 	#
-	class Hero < MapObject
+	class ControllableCharacter < MapObject
+		def set_controls(x, y)
+			vector = Vector3.new(x, y, 0.0)
+			if vector.length > 0.0
+				@input_angle = vector.fuzzy_angle
+			else
+				@input_angle = nil
+			end
+		end
+
+		CHARACTER_ALLOWABLE_ANGLE_DEVIATION = 0.25		# TODO: comment this
+		def choose_destination!
+			return unless @input_angle
+
+			best_node = nil
+			best_angle_difference = nil
+			place.each_neighbor_with_fuzzy_angle { |node, angle|
+				angle_difference = (@input_angle - angle).abs % 1.0
+				angle_difference = (1.0 - angle_difference) if angle_difference > 0.5
+				best_node, best_angle_difference = node, angle_difference if (best_angle_difference.nil? or (angle_difference < best_angle_difference))
+			}
+			@destination_place = best_node if best_angle_difference <= CHARACTER_ALLOWABLE_ANGLE_DEVIATION		# TODO: constant
+		end
 	end
 
-	class Enemy < MapObject
+	class Hero < ControllableCharacter
 	end
 
-	class Pellet < MapObject
+	class Enemy < ControllableCharacter
 	end
 
 	#
@@ -212,6 +244,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 	setting 'hero_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
 	setting 'hero_speed', :float, :range => 0.0..1.0, :default => 0.01..1.0
 	setting 'hero_count', :integer, :range => 1..10, :default => 1..10
+	setting 'first_hero_input_variable', :variable
 
 	setting 'enemy', :actor
 	setting 'enemy_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
@@ -286,12 +319,24 @@ class DirectorEffectGamePacMap < DirectorEffect
 		true
 	end
 
+	def update_character_inputs!
+		first_index = $engine.project.variables.index(first_hero_input_variable_setting.variable)
+		return unless first_index
+
+		@map.heroes.each_with_index { |hero, index|
+			x_variable, y_variable = $engine.project.variables[first_index + (index * 2)], $engine.project.variables[first_index + (index * 2) + 1]
+			hero.set_controls(x_variable.value - 0.5, y_variable.value - 0.5) if x_variable and y_variable
+		}
+	end
+
 	def game_tick
 		# Spawn if needed
 		if $env[:frame_number] % 10 == 0		# a delay between spawns so they don't all pile up
 			@map.spawn_hero if @map.heroes.size < hero_count
 			@map.spawn_enemy if @map.enemies.size < enemy_count
 		end
+
+		update_character_inputs!
 
 		#
 		# Tick characters
