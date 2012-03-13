@@ -42,8 +42,12 @@ class PacMap
 					self.position += (vector_to_destination.normalize * distance_per_frame)
 				end
 			else
-				@destination_place = place.random_neighbor
+				choose_destination!
 			end
+		end
+
+		def choose_destination!
+			@destination_place = place.random_neighbor
 		end
 
 		def with_env_for_actor
