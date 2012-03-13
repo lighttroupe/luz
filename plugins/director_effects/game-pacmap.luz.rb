@@ -285,15 +285,23 @@ class DirectorEffectGamePacMap < DirectorEffect
 			@map.spawn_enemy if @map.enemies.size < enemy_count
 		end
 
+		#
 		# Tick characters
-		hit_distance = (hero_size / 2) - (pellet_size / 2)
-		@map.heroes.each { |hero|
-			hero.tick(hero_speed)
+		#
+		hit_distance = (hero_size / 2)
 
-			# Heroes vs Pellets
-			@map.pellets.delete_if { |pellet|
-				hero.position.distance_to(pellet.position) < hit_distance
-			} unless hero.exiting?
+		# do long distances in multiple steps to avoid jumping over things in one big update
+		steps = (hero_speed / pellet_spacing).floor + 1		# TODO: tweak this formula
+
+		@map.heroes.each { |hero|
+			steps.times {
+				hero.tick(hero_speed / steps)
+
+				# Heroes vs Pellets
+				@map.pellets.delete_if { |pellet|
+					hero.position.distance_to(pellet.position) < hit_distance
+				} unless hero.exiting?
+			}
 		}
 		@map.enemies.each { |enemy|
 			enemy.tick(enemy_speed)
