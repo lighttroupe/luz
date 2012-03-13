@@ -27,27 +27,29 @@ class PacMap
 		def tick(distance_per_frame)
 			if @exited_at
 				# nothing
-			elsif @destination_place
-				vector_to_destination = (@destination_place.position - position)
-				distance_to_destination = vector_to_destination.length
-
-				@angle = vector_to_destination.fuzzy_angle % 1.0		# maintain in 0.0..1.0 range for use in Variable
-
-				# Arrived?
-				if distance_to_destination < distance_per_frame
-					position.set(@destination_place.position)
-					@place, @destination_place = @destination_place, nil
-				else
-					# Move towards destination
-					self.position += (vector_to_destination.normalize * distance_per_frame)
-				end
 			else
 				choose_destination!
+
+				if @destination_place
+					vector_to_destination = (@destination_place.position - position)
+					distance_to_destination = vector_to_destination.length
+
+					@angle = vector_to_destination.fuzzy_angle % 1.0		# maintain in 0.0..1.0 range for use in Variable
+
+					# Arrived?
+					if distance_to_destination < distance_per_frame
+						position.set(@destination_place.position)
+						@place, @destination_place = @destination_place, nil
+					else
+						# Move towards destination
+						self.position += (vector_to_destination.normalize * distance_per_frame)
+					end
+				end
 			end
 		end
 
 		def choose_destination!
-			@destination_place = place.random_neighbor
+			@destination_place ||= place.random_neighbor
 		end
 
 		def with_env_for_actor
@@ -135,18 +137,26 @@ class PacMap
 			end
 		end
 
-		CHARACTER_ALLOWABLE_ANGLE_DEVIATION = 0.25		# TODO: comment this
+		CHARACTER_ALLOWABLE_NODE_ANGLE_DEVIATION = 0.23		# less than 0.25, so right-key doesn't choose down-path
+		CHARACTER_ALLOWABLE_PATH_ANGLE_DEVIATION = 0.23		# less than 0.25, so perpendicular-input doesn't flip directions every frame
 		def choose_destination!
 			return unless @input_angle
 
-			best_node = nil
-			best_angle_difference = nil
-			place.each_neighbor_with_fuzzy_angle { |node, angle|
-				angle_difference = (@input_angle - angle).abs % 1.0
+			if @destination_place
+				backward_angle = position.vector_to(@place.position).fuzzy_angle
+				angle_difference = (@input_angle - backward_angle).abs % 1.0
 				angle_difference = (1.0 - angle_difference) if angle_difference > 0.5
-				best_node, best_angle_difference = node, angle_difference if (best_angle_difference.nil? or (angle_difference < best_angle_difference))
-			}
-			@destination_place = best_node if best_angle_difference <= CHARACTER_ALLOWABLE_ANGLE_DEVIATION		# TODO: constant
+				@place, @destination_place = @destination_place, @place if angle_difference <= CHARACTER_ALLOWABLE_PATH_ANGLE_DEVIATION		# reverse!
+			else
+				best_node = nil
+				best_angle_difference = nil
+				place.each_neighbor_with_fuzzy_angle { |node, angle|
+					angle_difference = (@input_angle - angle).abs % 1.0
+					angle_difference = (1.0 - angle_difference) if angle_difference > 0.5
+					best_node, best_angle_difference = node, angle_difference if (best_angle_difference.nil? or (angle_difference < best_angle_difference))
+				}
+				@destination_place = best_node if best_angle_difference <= CHARACTER_ALLOWABLE_NODE_ANGLE_DEVIATION
+			end
 		end
 	end
 
