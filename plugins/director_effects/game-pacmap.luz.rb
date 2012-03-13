@@ -34,7 +34,7 @@ class PacMap
 					vector_to_destination = (@destination_place.position - position)
 					distance_to_destination = vector_to_destination.length
 
-					@angle = vector_to_destination.fuzzy_angle % 1.0		# maintain in 0.0..1.0 range for use in Variable
+					@angle = vector_to_destination.fuzzy_angle if distance_to_destination > 0.0		# maintain in 0.0..1.0 range for use in Variable
 
 					# Arrived?
 					if distance_to_destination < distance_per_frame
