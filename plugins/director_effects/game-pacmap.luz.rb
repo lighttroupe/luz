@@ -292,10 +292,9 @@ class DirectorEffectGamePacMap < DirectorEffect
 		#
 		# Tick characters
 		#
-		hit_distance = (hero_size / 2)
-
-		# do long distances in multiple steps to avoid jumping over things in one big update
-		steps = (hero_speed / pellet_spacing).floor + 1		# TODO: tweak this formula
+		hit_distance = (hero_size / 2)									# pellets are considered points for the purpose of collisions
+		max_step_distance = hero_size										# this ensures complete hero hit coverage of the line
+		steps = (hero_speed / max_step_distance).ceil		# speed is distance covered in one update
 
 		@map.heroes.each { |hero|
 			steps.times {
@@ -314,7 +313,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 							if superpellet_active?
 								enemy.exit!
 							else
-								
+								hero.exit!
 							end
 						end
 					}
