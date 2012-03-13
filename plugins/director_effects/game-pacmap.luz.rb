@@ -155,7 +155,7 @@ class PacMap
 					angle_difference = (1.0 - angle_difference) if angle_difference > 0.5
 					best_node, best_angle_difference = node, angle_difference if (best_angle_difference.nil? or (angle_difference < best_angle_difference))
 				}
-				@destination_place = best_node if best_angle_difference <= CHARACTER_ALLOWABLE_NODE_ANGLE_DEVIATION
+				@destination_place = best_node if best_angle_difference <= CHARACTER_ALLOWABLE_NODE_ANGLE_DEVIATION		# choose new destination
 			end
 		end
 	end
