@@ -298,7 +298,8 @@ class DirectorEffectGamePacMap < DirectorEffect
 	def tick
 		case @state
 		when :pregame
-			start_game! if players_ready?
+			@countdown -= 1
+			start_game! if @countdown == 0
 
 		when :game
 			game_tick
@@ -315,10 +316,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 	def start_pregame!
 		@state = :pregame
 		@map.remove_characters!
-	end
-
-	def players_ready?
-		true
+		@countdown = 30
 	end
 
 	def start_game!
