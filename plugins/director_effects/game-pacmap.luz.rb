@@ -366,7 +366,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 					# Heroes vs Pellets
 					@map.pellets.delete_if { |pellet|
 						hero.position.distance_to(pellet.position) < hit_distance
-					} unless hero.exiting?
+					}
 
 					# Heroes vs Enemies
 					@map.enemies.each { |enemy|
