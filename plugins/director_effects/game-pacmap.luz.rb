@@ -367,10 +367,15 @@ class DirectorEffectGamePacMap < DirectorEffect
 			if @edit_selection
 				node = hit_test_nodes(point, not_node=@edit_selection)
 				if node
-					@edit_selection.neighbors.each { |neighbor_node|
-						@map.paths << PacMap::Path.new(neighbor_node, node)
-						#node.neighbors << neighbor_node
-					}
+					if node.neighbors.include? @edit_selection
+						# just delete it
+					else
+						@edit_selection.neighbors.each { |neighbor_node|
+							@map.paths << PacMap::Path.new(neighbor_node, node)
+							#node.neighbors << neighbor_node
+						}
+					end
+
 					delete_node(@edit_selection)
 				end
 				@edit_selection = nil
