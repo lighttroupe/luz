@@ -78,7 +78,7 @@ class PacMap
 	# Game Network Graph
 	#
 	class Node
-		attr_reader :position
+		attr_reader :position, :neighbors
 
 		def initialize(x, y)
 			@position = Vector3.new(x, y, 0.0)
@@ -308,8 +308,9 @@ class DirectorEffectGamePacMap < DirectorEffect
 		super
 	end
 
-	def hit_test_nodes(point)
+	def hit_test_nodes(point, not_node=nil)
 		@map.nodes.find { |node|
+			next if node == not_node
 			(node.position.distance_to(point) < (node_size / 2))
 		}
 	end
@@ -341,7 +342,6 @@ class DirectorEffectGamePacMap < DirectorEffect
 				# Double click?
 				if ($env[:frame_time] - @edit_click_time) <= DOUBLE_CLICK_TIME
 					nearest_node = find_nearest_node(point)
-					
 
 					new_node = PacMap::Node.new(point.x, point.y)
 					@map.nodes << new_node
@@ -363,7 +363,25 @@ class DirectorEffectGamePacMap < DirectorEffect
 				@edit_selection.position.set(point_with_offset.x, point_with_offset.y, 0.0)
 				update_after_editing!
 			end
+		else
+			if @edit_selection
+				node = hit_test_nodes(point, not_node=@edit_selection)
+				if node
+					@edit_selection.neighbors.each { |neighbor_node|
+						@map.paths << PacMap::Path.new(neighbor_node, node)
+						#node.neighbors << neighbor_node
+					}
+					delete_node(@edit_selection)
+				end
+				@edit_selection = nil
+			end
 		end
+	end
+
+	def delete_node(node)
+		@map.nodes.each { |n| n.neighbors.delete(node) }
+		@map.paths.delete_if { |p| (p.node_a == node or p.node_b == node) }
+		@map.nodes.delete(node)
 	end
 
 	#
