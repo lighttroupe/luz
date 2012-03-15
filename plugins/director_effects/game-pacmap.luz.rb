@@ -298,10 +298,12 @@ class DirectorEffectGamePacMap < DirectorEffect
 	#
 	# after_load is called once at startup, and again after Ctrl-Shift-R reloads
 	#
+	DOUBLE_CLICK_TIME = 0.2
 	def after_load
 		@map = PacMap.new
 		@edit_selection = nil
 		@edit_selection_offset = nil
+		@edit_click_time = nil
 		start_pregame!
 		super
 	end
@@ -310,6 +312,16 @@ class DirectorEffectGamePacMap < DirectorEffect
 		@map.nodes.find { |node|
 			(node.position.distance_to(point) < (node_size / 2))
 		}
+	end
+
+	def find_nearest_node(point)
+		nearest_node = nil
+		nearest_distance = nil
+		@map.nodes.each { |node|
+			distance = node.position.distance_to(point)
+			nearest_node, nearest_distance = node, distance if (nearest_distance.nil? or distance < nearest_distance)
+		}
+		nearest_node
 	end
 
 	def update_after_editing!
@@ -324,7 +336,27 @@ class DirectorEffectGamePacMap < DirectorEffect
 		if edit_click.on_this_frame?
 			@edit_selection = hit_test_nodes(point)
 			@edit_selection_offset = (@edit_selection.position - point) if @edit_selection
-			puts "hit: #{@edit_selection}"
+
+			if @edit_click_time
+				# Double click?
+				if ($env[:frame_time] - @edit_click_time) <= DOUBLE_CLICK_TIME
+					nearest_node = find_nearest_node(point)
+					
+
+					new_node = PacMap::Node.new(point.x, point.y)
+					@map.nodes << new_node
+
+					if nearest_node and nearest_node.position.distance_to(new_node.position) < (node_size / 2)
+						@map.paths << PacMap::Path.new(nearest_node, new_node)
+					end
+
+					# Auto-select new node
+					@edit_selection = new_node
+					@edit_selection_offset = Vector3.new(0.0, 0.0, 0.0)
+				end
+			end
+			@edit_click_time = $env[:frame_time]
+			#puts "hit: #{@edit_selection}"
 		elsif edit_click.now?
 			if @edit_selection
 				point_with_offset = point + @edit_selection_offset
