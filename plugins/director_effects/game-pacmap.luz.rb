@@ -118,6 +118,18 @@ class PacMap
 			@angle = @vector.fuzzy_angle
 			@center_point = (@node_a.position + @node_b.position) / 2.0
 		end
+
+		def hit?(point, radius)
+			a = point.x - @node_a.position.x
+			b = point.y - @node_a.position.y
+			c = @node_b.position.x - @node_a.position.x
+			d = @node_b.position.y - @node_a.position.y
+
+			dist = (a * d - c * b).abs / (c * c + d * d).square_root
+
+			# radius is half-width of the line
+			(dist <= radius) and (@center_point.distance_to(point) < (@length / 2.0))
+		end
 	end
 
 	class Portal < MapObject
@@ -315,14 +327,10 @@ class DirectorEffectGamePacMap < DirectorEffect
 		}
 	end
 
-	def find_nearest_node(point)
-		nearest_node = nil
-		nearest_distance = nil
-		@map.nodes.each { |node|
-			distance = node.position.distance_to(point)
-			nearest_node, nearest_distance = node, distance if (nearest_distance.nil? or distance < nearest_distance)
+	def hit_test_paths(point)
+		@map.paths.find { |path|
+			path.hit?(point, path_size / 2)
 		}
-		nearest_node
 	end
 
 	def update_after_editing!
@@ -341,15 +349,30 @@ class DirectorEffectGamePacMap < DirectorEffect
 			if @edit_click_time
 				# Double click?
 				if ($env[:frame_time] - @edit_click_time) <= DOUBLE_CLICK_TIME
-					nearest_node = find_nearest_node(point)
+					hit_path = hit_test_paths(point)
+					hit_node = hit_test_nodes(point)
 
-					new_node = PacMap::Node.new(point.x, point.y)
-					@map.nodes << new_node
+					if hit_node
+						new_node = PacMap::Node.new(point.x, point.y)
+						@map.nodes << new_node
+						@map.paths << PacMap::Path.new(hit_node, new_node)
 
-					if nearest_node and nearest_node.position.distance_to(new_node.position) < (node_size / 2)
-						@map.paths << PacMap::Path.new(nearest_node, new_node)
+					elsif hit_path
+						# Each side loses a neighbor
+						hit_path.node_a.neighbors.delete(hit_path.node_b)
+						hit_path.node_b.neighbors.delete(hit_path.node_a)
+
+						# Bisect path with a new node
+						new_node = PacMap::Node.new(point.x, point.y)
+						@map.paths << PacMap::Path.new(hit_path.node_a, new_node)
+						@map.paths << PacMap::Path.new(new_node, hit_path.node_b)
+						@map.paths.delete(hit_path)
+						@map.nodes << new_node
+
+					else
+						new_node = PacMap::Node.new(point.x, point.y)
+						@map.nodes << new_node
 					end
-
 					# Auto-select new node
 					@edit_selection = new_node
 					@edit_selection_offset = Vector3.new(0.0, 0.0, 0.0)
@@ -365,22 +388,27 @@ class DirectorEffectGamePacMap < DirectorEffect
 			end
 		else
 			if @edit_selection
+				# Dropped onto an existing node?
 				node = hit_test_nodes(point, not_node=@edit_selection)
 				if node
-					if node.neighbors.include? @edit_selection
-						# just delete it
-					else
-						@edit_selection.neighbors.each { |neighbor_node|
+					# node gets all of @edit_selection's neighbors
+					@edit_selection.neighbors.each { |neighbor_node|
+						if find_path_by_nodes(neighbor_node, node)
+							neighbor_node.neighbors << node
+							node.neighbors << neighbor_node
+						else
 							@map.paths << PacMap::Path.new(neighbor_node, node)
-							#node.neighbors << neighbor_node
-						}
-					end
-
+						end
+					}
 					delete_node(@edit_selection)
 				end
 				@edit_selection = nil
 			end
 		end
+	end
+
+	def find_path_by_nodes(node_a, node_b)
+		@map.paths.find { |path| (path.node_a == node_a and path.node_b == node_b) or (path.node_a == node_b and path.node_b == node_a) }
 	end
 
 	def delete_node(node)
