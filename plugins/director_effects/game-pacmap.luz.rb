@@ -19,6 +19,7 @@ class PacMap
 		def initialize(x, y, place)
 			@position = Vector3.new(x, y, 0.0)
 			@place, @destination_place = place, nil
+			move_to_place!
 			@entered_at, @enter_time = $env[:frame_time], 0.2		# TODO: configurable?
 			@exited_at, @exit_time = nil, 0.5		# TODO: configurable?
 			@angle = 0.0
@@ -66,6 +67,10 @@ class PacMap
 
 		def exiting?
 			!@exited_at.nil?
+		end
+
+		def move_to_place!
+			@position = @place.position.dup if @place.respond_to? :position
 		end
 	end
 
@@ -244,6 +249,13 @@ class DirectorEffectGamePacMap < DirectorEffect
 
 	include Drawing
 
+	setting 'edit_x', :float, :range => -0.5..0.5, :default => -0.5..0.5
+	setting 'edit_x', :float, :range => -0.5..0.5, :default => -0.5..0.5
+	setting 'edit_y', :float, :range => -0.5..0.5, :default => -0.5..0.5
+	setting 'edit_click', :event
+	setting 'edit_crosshair', :actor
+	setting 'edit_mode', :event
+
 	setting 'node', :actor
 	setting 'node_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
 
@@ -288,14 +300,50 @@ class DirectorEffectGamePacMap < DirectorEffect
 	#
 	def after_load
 		@map = PacMap.new
+		@edit_selection = nil
+		@edit_selection_offset = nil
 		start_pregame!
 		super
+	end
+
+	def hit_test_nodes(point)
+		@map.nodes.find { |node|
+			(node.position.distance_to(point) < (node_size / 2))
+		}
+	end
+
+	def update_after_editing!
+		@map.paths.each { |path| path.calculate! }
+		@map.herobases.each { |base| base.move_to_place! }
+		@map.enemybases.each { |base| base.move_to_place! }
+	end
+
+	def handle_editing
+		point = Vector3.new(edit_x, edit_y, 0.0)
+
+		if edit_click.on_this_frame?
+			@edit_selection = hit_test_nodes(point)
+			@edit_selection_offset = (@edit_selection.position - point) if @edit_selection
+			puts "hit: #{@edit_selection}"
+		elsif edit_click.now?
+			if @edit_selection
+				point_with_offset = point + @edit_selection_offset
+				@edit_selection.position.set(point_with_offset.x, point_with_offset.y, 0.0)
+				update_after_editing!
+			end
+		end
 	end
 
 	#
 	# tick is called once per frame, before rendering
 	#
 	def tick
+		if edit_mode.now?
+			end_game! if edit_mode.on_this_frame?
+			handle_editing
+			return
+		end
+
 		case @state
 		when :pregame
 			@countdown -= 1
@@ -392,6 +440,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 
 	def end_game!
 		@map.exit_characters!
+		@map.pellets.clear
 		@state = :postgame
 		@countdown = 30		# TODO: time based?
 	end
@@ -461,7 +510,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 		#
 		render_list_via_offscreen_buffer(@map.pellets, pellet_size, :small) {
 			pellet.render!
-		}
+		} unless edit_mode.now?
 
 =begin
 		#
@@ -486,7 +535,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 			with_character_setup(h, hero_size, i) {
 				hero.render!
 			}
-		}
+		} unless edit_mode.now?
 
 		#
 		# Enemies
@@ -495,7 +544,11 @@ class DirectorEffectGamePacMap < DirectorEffect
 			with_character_setup(e, enemy_size, i) {
 				enemy.render!
 			}
-		}
+		} unless edit_mode.now?
+
+		with_translation(edit_x, edit_y) {
+			edit_crosshair.render!
+		} if edit_mode.now?
 
 		yield
 	end
