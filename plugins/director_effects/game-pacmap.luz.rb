@@ -193,9 +193,10 @@ class PacMap
 		@nodes, @paths, @portals, @herobases, @enemybases = [], [], [], [], []
 		@pellets, @powerpellets, @heroes, @enemies, @floatingfruit = [], [], [], [], []
 
-		#
-		# game network layout (hard coded hack for testing currently)
-		#
+		add_demo_data
+	end
+
+	def add_demo_data
 		@nodes << (a=Node.new(0.2, 0.0))
 		@nodes << (b=Node.new(-0.2, 0.0))
 		@paths << Path.new(a, b)
@@ -218,12 +219,12 @@ class PacMap
 	#
 	# Spawning
 	#
-	def spawn_hero
+	def spawn_hero!
 		base = @herobases.random
 		@heroes << Hero.new(base.place.position.x, base.place.position.y, base.place) if base
 	end
 
-	def spawn_enemy
+	def spawn_enemy!
 		base = @enemybases.random
 		@enemies << Enemy.new(base.place.position.x, base.place.position.y, base.place) if base
 	end
@@ -476,8 +477,8 @@ class DirectorEffectGamePacMap < DirectorEffect
 	def game_tick
 		# Spawn if needed
 		if $env[:frame_number] % 10 == 0		# a delay between spawns so they don't all pile up
-			@map.spawn_hero if @map.heroes.size < hero_count
-			@map.spawn_enemy if @map.enemies.size < enemy_count
+			@map.spawn_hero! if @map.heroes.size < hero_count
+			@map.spawn_enemy! if @map.enemies.size < enemy_count
 		end
 
 		update_character_inputs!
