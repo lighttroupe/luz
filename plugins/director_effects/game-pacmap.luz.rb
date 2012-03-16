@@ -107,6 +107,7 @@ class PacMap
 		def initialize(node_a, node_b)
 			@node_a, @node_b = node_a, node_b
 
+			# Notify nodes of connectivity
 			@node_a.add_neighbor(@node_b)
 			@node_b.add_neighbor(@node_a)
 			calculate!
@@ -119,16 +120,14 @@ class PacMap
 			@center_point = (@node_a.position + @node_b.position) / 2.0
 		end
 
-		def hit?(point, radius)
+		def hit?(point, radius)		# radius is half-width of the line
 			a = point.x - @node_a.position.x
 			b = point.y - @node_a.position.y
 			c = @node_b.position.x - @node_a.position.x
 			d = @node_b.position.y - @node_a.position.y
+			distance = (a * d - c * b).abs / (c * c + d * d).square_root
 
-			dist = (a * d - c * b).abs / (c * c + d * d).square_root
-
-			# radius is half-width of the line
-			(dist <= radius) and (@center_point.distance_to(point) < (@length / 2.0))
+			(distance <= radius) and (@center_point.distance_to(point) < (@length / 2.0))
 		end
 	end
 
@@ -157,14 +156,16 @@ class PacMap
 		CHARACTER_ALLOWABLE_NODE_ANGLE_DEVIATION = 0.23		# less than 0.25, so right-key doesn't choose down-path
 		CHARACTER_ALLOWABLE_PATH_ANGLE_DEVIATION = 0.23		# less than 0.25, so perpendicular-input doesn't flip directions every frame
 		def choose_destination!
-			return unless @input_angle
+			return unless @input_angle		# no movement unless direction chosen
 
 			if @destination_place
+				# The only thing player can do while on a path is reverse direction
 				backward_angle = position.vector_to(@place.position).fuzzy_angle
 				angle_difference = (@input_angle - backward_angle).abs % 1.0
 				angle_difference = (1.0 - angle_difference) if angle_difference > 0.5
 				@place, @destination_place = @destination_place, @place if angle_difference <= CHARACTER_ALLOWABLE_PATH_ANGLE_DEVIATION		# reverse!
 			else
+				# Choose best-matching neighbor node
 				best_node = nil
 				best_angle_difference = nil
 				place.each_neighbor_with_fuzzy_angle { |node, angle|
@@ -193,10 +194,10 @@ class PacMap
 		@nodes, @paths, @portals, @herobases, @enemybases = [], [], [], [], []
 		@pellets, @powerpellets, @heroes, @enemies, @floatingfruit = [], [], [], [], []
 
-		add_demo_data
+		add_demo_data!
 	end
 
-	def add_demo_data
+	def add_demo_data!
 		@nodes << (a=Node.new(0.2, 0.0))
 		@nodes << (b=Node.new(-0.2, 0.0))
 		@paths << Path.new(a, b)
@@ -642,15 +643,15 @@ class DirectorEffectGamePacMap < DirectorEffect
 	#
 	def render_list_via_offscreen_buffer(characters, size, buffer_size)
 		with_offscreen_buffer(buffer_size) { |buffer|
-			# Render to offscreen
+			# Render once into offscreen buffer (caller is responsible for actual rendering)
 			buffer.using {
 				yield
 			}
-			# Render actor with image of rendered scene as default Image
+			# Render a rectangle for each character using above buffer as texture
 			buffer.with_image {
 				characters.each { |character|
 					with_translation(character.position.x, character.position.y) {
-						with_scale(size, size, size){
+						with_scale(size, size, size) {
 							unit_square
 						}
 					}
@@ -664,7 +665,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 			with_env(:child_index, index) {
 				character_angle_variable_setting.with_value(character.angle) {
 					with_translation(character.position.x, character.position.y) {
-						with_scale(size, size, size){
+						with_scale(size, size, size) {
 							yield
 						}
 					}
