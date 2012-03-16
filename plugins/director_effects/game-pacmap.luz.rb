@@ -267,6 +267,26 @@ class PacMap
 		@heroes.clear
 		@enemies.clear
 	end
+
+	#
+	# Hit testing
+	#
+	def hit_test_nodes(point, node_size, not_node=nil)
+		@nodes.find { |node|
+			next if node == not_node
+			(node.position.distance_to(point) < (node_size / 2))
+		}
+	end
+
+	def hit_test_paths(point, path_size)
+		@paths.find { |path|
+			path.hit?(point, path_size / 2)
+		}
+	end
+
+	def find_path_by_nodes(node_a, node_b)
+		@paths.find { |path| (path.node_a == node_a and path.node_b == node_b) or (path.node_a == node_b and path.node_b == node_a) }
+	end
 end
 
 class DirectorEffectGamePacMap < DirectorEffect
@@ -332,37 +352,17 @@ class DirectorEffectGamePacMap < DirectorEffect
 		super
 	end
 
-	#
-	# Hit testing
-	#
-	def hit_test_nodes(point, not_node=nil)
-		@map.nodes.find { |node|
-			next if node == not_node
-			(node.position.distance_to(point) < (node_size / 2))
-		}
-	end
-
-	def hit_test_paths(point)
-		@map.paths.find { |path|
-			path.hit?(point, path_size / 2)
-		}
-	end
-
-	def find_path_by_nodes(node_a, node_b)
-		@map.paths.find { |path| (path.node_a == node_a and path.node_b == node_b) or (path.node_a == node_b and path.node_b == node_a) }
-	end
-
 	def handle_editing
 		point = Vector3.new(edit_x, edit_y, 0.0)
 
 		if edit_click.on_this_frame?		# newly down?
-			@edit_selection = hit_test_nodes(point)
+			@edit_selection = @map.hit_test_nodes(point, node_size)
 			@edit_selection_offset = (@edit_selection.position - point) if @edit_selection
 
 			# double click?
 			if (@edit_click_time and (($env[:frame_time] - @edit_click_time) <= DOUBLE_CLICK_TIME))
-				hit_path = hit_test_paths(point)
-				hit_node = hit_test_nodes(point)
+				hit_path = @map.hit_test_paths(point, path_size)
+				hit_node = @map.hit_test_nodes(point, node_size)
 
 				# test hit nodes first, since they're drawn above paths
 				if hit_node
@@ -410,10 +410,10 @@ class DirectorEffectGamePacMap < DirectorEffect
 			# mouse not down-- is it a drop?
 			if @edit_selection
 				# Dropped onto an existing node?
-				if (node=hit_test_nodes(point, not_node=@edit_selection))
+				if (node=@map.hit_test_nodes(point, node_size, not_node=@edit_selection))
 					# node gets all of @edit_selection's neighbors
 					@edit_selection.neighbors.each { |neighbor_node|
-						if find_path_by_nodes(neighbor_node, node)
+						if @map.find_path_by_nodes(neighbor_node, node)
 							neighbor_node.neighbors << node
 							node.neighbors << neighbor_node
 						else
@@ -455,9 +455,9 @@ class DirectorEffectGamePacMap < DirectorEffect
 	end
 
 	def start_pregame!
-		@state = :pregame
 		@map.remove_characters!
 		@countdown = 30
+		@state = :pregame
 	end
 
 	def start_game!
@@ -534,17 +534,22 @@ class DirectorEffectGamePacMap < DirectorEffect
 	def end_game!
 		@map.exit_characters!
 		@map.pellets.clear
-		@state = :postgame
 		@countdown = 30		# TODO: time based?
+		@state = :postgame
 	end
 
 	#
 	# render is responsible for all drawing, and must yield to continue down the effects list
 	#
 	def render
-		#
+		render_map
+		render_characters unless edit_mode.now?
+		render_edit_controls if edit_mode.now?
+		yield
+	end
+
+	def render_map
 		# Paths
-		#
 		with_offscreen_buffer(:medium) { |buffer|
 			# Render to offscreen
 			buffer.using {
@@ -566,84 +571,68 @@ class DirectorEffectGamePacMap < DirectorEffect
 			}
 		}
 
-		#
 		# Nodes
-		#
 		render_list_via_offscreen_buffer(@map.nodes, node_size, :medium) {
 			node.render!
 		}
 
-		#
 		# Hero Base
-		#
 		render_list_via_offscreen_buffer(@map.herobases, herobase_size, :medium) {
 			herobase.render!
 		}
 
-		#
 		# Enemy Base
-		#
 		render_list_via_offscreen_buffer(@map.enemybases, enemybase_size, :medium) {
 			enemybase.render!
 		}
 
 =begin
-		#
 		# Portals
-		#
 		@map.portals.each_with_index { |p, i|
 			with_character_setup(p, portal_size, i) {
 				portal.render!
 			}
 		}
 =end
+	end
 
-		#
+	def render_characters
 		# Pellets
-		#
 		render_list_via_offscreen_buffer(@map.pellets, pellet_size, :small) {
 			pellet.render!
-		} unless edit_mode.now?
+		}
 
 =begin
-		#
 		# Power Pellets
-		#
 		render_list_via_offscreen_buffer(@map.powerpellets, powerpellet_size, :small) {
 			powerpellet.render!
 		}
 
-		#
 		# Floating Fruit
-		#
 		render_list_via_offscreen_buffer(@map.floatingfruits, floatingfruit_size, :small) {
 			floatingfruit.render!
 		}
 =end
 
-		#
 		# Heros
-		#
 		@map.heroes.each_with_index { |h, i|
 			with_character_setup(h, hero_size, i) {
 				hero.render!
 			}
-		} unless edit_mode.now?
+		}
 
-		#
 		# Enemies
-		#
 		@map.enemies.each_with_index { |e, i|
 			with_character_setup(e, enemy_size, i) {
 				enemy.render!
 			}
-		} unless edit_mode.now?
+		}
+	end
 
+	def render_edit_controls
 		with_translation(edit_x, edit_y) {
 			edit_crosshair.render!
-		} if edit_mode.now?
-
-		yield
+		}
 	end
 
 	#
