@@ -217,6 +217,12 @@ class PacMap
 		@enemybases << Base.new(@nodes.last.position.x, @nodes.last.position.y, @nodes.last)
 	end
 
+	def delete_node(node)
+		@nodes.each { |n| n.neighbors.delete(node) }
+		@paths.delete_if { |p| (p.node_a == node or p.node_b == node) }
+		@nodes.delete(node)
+	end
+
 	#
 	# Spawning
 	#
@@ -320,6 +326,9 @@ class DirectorEffectGamePacMap < DirectorEffect
 		super
 	end
 
+	#
+	# Hit testing
+	#
 	def hit_test_nodes(point, not_node=nil)
 		@map.nodes.find { |node|
 			next if node == not_node
@@ -331,6 +340,10 @@ class DirectorEffectGamePacMap < DirectorEffect
 		@map.paths.find { |path|
 			path.hit?(point, path_size / 2)
 		}
+	end
+
+	def find_path_by_nodes(node_a, node_b)
+		@map.paths.find { |path| (path.node_a == node_a and path.node_b == node_b) or (path.node_a == node_b and path.node_b == node_a) }
 	end
 
 	def update_after_editing!
@@ -407,21 +420,11 @@ class DirectorEffectGamePacMap < DirectorEffect
 							@map.paths << PacMap::Path.new(neighbor_node, node)
 						end
 					}
-					delete_node(@edit_selection)
+					@map.delete_node(@edit_selection)
 				end
 				@edit_selection = nil
 			end
 		end
-	end
-
-	def find_path_by_nodes(node_a, node_b)
-		@map.paths.find { |path| (path.node_a == node_a and path.node_b == node_b) or (path.node_a == node_b and path.node_b == node_a) }
-	end
-
-	def delete_node(node)
-		@map.nodes.each { |n| n.neighbors.delete(node) }
-		@map.paths.delete_if { |p| (p.node_a == node or p.node_b == node) }
-		@map.nodes.delete(node)
 	end
 
 	#
