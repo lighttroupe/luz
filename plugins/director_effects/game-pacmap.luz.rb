@@ -26,7 +26,7 @@ class PacMap
 		end
 
 		def tick(distance_per_frame)
-			if @exited_at
+			if exiting?
 				# nothing
 			else
 				choose_destination!
