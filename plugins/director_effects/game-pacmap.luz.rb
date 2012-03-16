@@ -129,6 +129,10 @@ class PacMap
 
 			(distance <= radius) and (@center_point.distance_to(point) < (@length / 2.0))
 		end
+
+		def has_nodes?(a, b)
+			(@node_a == a and @node_b == b) or (@node_a == b and @node_b == a)
+		end
 	end
 
 	class Portal < MapObject
@@ -285,7 +289,7 @@ class PacMap
 	end
 
 	def find_path_by_nodes(node_a, node_b)
-		@paths.find { |path| (path.node_a == node_a and path.node_b == node_b) or (path.node_a == node_b and path.node_b == node_a) }
+		@paths.find { |path| path.has_nodes?(node_a, node_b) }
 	end
 end
 
