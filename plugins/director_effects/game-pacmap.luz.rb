@@ -223,6 +223,12 @@ class PacMap
 		@nodes.delete(node)
 	end
 
+	def update_after_editing!
+		@paths.each { |path| path.calculate! }
+		@herobases.each { |base| base.move_to_place! }
+		@enemybases.each { |base| base.move_to_place! }
+	end
+
 	#
 	# Spawning
 	#
@@ -346,12 +352,6 @@ class DirectorEffectGamePacMap < DirectorEffect
 		@map.paths.find { |path| (path.node_a == node_a and path.node_b == node_b) or (path.node_a == node_b and path.node_b == node_a) }
 	end
 
-	def update_after_editing!
-		@map.paths.each { |path| path.calculate! }
-		@map.herobases.each { |base| base.move_to_place! }
-		@map.enemybases.each { |base| base.move_to_place! }
-	end
-
 	def handle_editing
 		point = Vector3.new(edit_x, edit_y, 0.0)
 
@@ -404,7 +404,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 			if @edit_selection
 				point_with_offset = point + @edit_selection_offset
 				@edit_selection.position.set(point_with_offset.x, point_with_offset.y, 0.0)
-				update_after_editing!
+				@map.update_after_editing!
 			end
 		else
 			# mouse not down-- is it a drop?
