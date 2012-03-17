@@ -356,10 +356,11 @@ class DirectorEffectGamePacMap < DirectorEffect
 	setting 'edit_crosshair', :actor
 	setting 'edit_mode', :event
 
+	DOUBLE_CLICK_TIME = 0.2
+
 	#
 	# after_load is called once at startup, and again after Ctrl-Shift-R reloads
 	#
-	DOUBLE_CLICK_TIME = 0.2
 	def save_map!
 		final_path = File.join($engine.project.file_path, map_file_path)
 		tmp_path = final_path + '.tmp'
