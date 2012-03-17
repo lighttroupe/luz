@@ -299,13 +299,6 @@ class DirectorEffectGamePacMap < DirectorEffect
 
 	include Drawing
 
-	setting 'edit_x', :float, :range => -0.5..0.5, :default => -0.5..0.5
-	setting 'edit_x', :float, :range => -0.5..0.5, :default => -0.5..0.5
-	setting 'edit_y', :float, :range => -0.5..0.5, :default => -0.5..0.5
-	setting 'edit_click', :event
-	setting 'edit_crosshair', :actor
-	setting 'edit_mode', :event
-
 	setting 'node', :actor
 	setting 'node_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
 
@@ -344,6 +337,13 @@ class DirectorEffectGamePacMap < DirectorEffect
 	setting 'portal_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
 
 	setting 'character_angle_variable', :variable
+
+	setting 'edit_x', :float, :range => -0.5..0.5, :default => -0.5..0.5
+	setting 'edit_x', :float, :range => -0.5..0.5, :default => -0.5..0.5
+	setting 'edit_y', :float, :range => -0.5..0.5, :default => -0.5..0.5
+	setting 'edit_click', :event
+	setting 'edit_crosshair', :actor
+	setting 'edit_mode', :event
 
 	#
 	# after_load is called once at startup, and again after Ctrl-Shift-R reloads
