@@ -330,7 +330,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 
 	setting 'pellet', :actor
 	setting 'pellet_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
-	setting 'pellet_spacing', :float, :range => 0.0..1.0, :default => 0.03..1.0, :simple => true
+	setting 'pellet_spacing', :float, :range => 0.001..1.0, :default => 0.03..1.0, :simple => true
 
 	setting 'powerpellet', :actor
 	setting 'powerpellet_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
