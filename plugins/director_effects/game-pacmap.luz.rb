@@ -379,7 +379,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 			start_game! if @countdown == 0
 
 		when :game
-			game_tick
+			game_tick!
 
 		when :postgame
 			@countdown -= 1
@@ -419,7 +419,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 		} if first_index
 	end
 
-	def game_tick
+	def game_tick!
 		# Spawn if needed
 		if $env[:frame_number] % 10 == 0		# a delay between spawns so they don't all pile up
 			@map.spawn_hero! if @map.heroes.size < hero_count
