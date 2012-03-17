@@ -360,13 +360,6 @@ class DirectorEffectGamePacMap < DirectorEffect
 	# after_load is called once at startup, and again after Ctrl-Shift-R reloads
 	#
 	DOUBLE_CLICK_TIME = 0.2
-	def after_load
-		@map = PacMap.new
-		@edit_selection, @edit_selection_offset, @edit_click_time = nil, nil, nil
-		start_pregame!
-		super
-	end
-
 	def save_map!
 		final_path = File.join($engine.project.file_path, map_file_path)
 		tmp_path = final_path + '.tmp'
@@ -382,23 +375,30 @@ class DirectorEffectGamePacMap < DirectorEffect
 		final_path = File.join($engine.project.file_path, map_file_path)
 		File.open(final_path) { |file|
 			@map = YAML.load(file)
-			return true
 		}
-		return false
+		@map ||= PacMap.new		# ensure some map is present
 	end
 
 	#
 	# tick is called once per frame, before rendering
 	#
 	def tick
-		if edit_mode.now?
-			end_game! if edit_mode.on_this_frame?
-			handle_editing
-			save_map! if save_map.on_this_frame?
-			load_map! if load_map.on_this_frame?
-			return
+		unless @map
+			load_map!
+			start_pregame!
 		end
 
+		if edit_mode.now?
+			end_game! if edit_mode.on_this_frame?		# End game upon entering edit mode
+			save_map! if save_map.on_this_frame?		# Save and Load only work while in edit mode
+			load_map! if load_map.on_this_frame?
+			tick_edit_mode
+		else
+			tick_live_mode
+		end
+	end
+
+	def tick_live_mode
 		case @state
 		when :pregame
 			@countdown -= 1
@@ -637,7 +637,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 	#
 	# Live-editing methods
 	#
-	def handle_editing
+	def tick_edit_mode
 		point = Vector3.new(edit_x, edit_y, 0.0)
 
 		if edit_click.on_this_frame?		# newly down?
