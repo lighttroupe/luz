@@ -356,81 +356,6 @@ class DirectorEffectGamePacMap < DirectorEffect
 		super
 	end
 
-	def handle_editing
-		point = Vector3.new(edit_x, edit_y, 0.0)
-
-		if edit_click.on_this_frame?		# newly down?
-			@edit_selection = @map.hit_test_nodes(point, node_size)
-			@edit_selection_offset = (@edit_selection.position - point) if @edit_selection
-
-			# double click?
-			if (@edit_click_time and (($env[:frame_time] - @edit_click_time) <= DOUBLE_CLICK_TIME))
-				hit_path = @map.hit_test_paths(point, path_size)
-				hit_node = @map.hit_test_nodes(point, node_size)
-
-				# test hit nodes first, since they're drawn above paths
-				if hit_node
-					# double-clicking a node creates a new node and new path, connected to clicked node
-					new_node = PacMap::Node.new(point.x, point.y)
-					@map.nodes << new_node
-					@map.paths << PacMap::Path.new(hit_node, new_node)
-					# NOTE: set as the @edit_selection below
-
-				elsif hit_path
-					# double-clicking a path splits it with a new node
-
-					# each side loses a neighbor
-					hit_path.node_a.neighbors.delete(hit_path.node_b)
-					hit_path.node_b.neighbors.delete(hit_path.node_a)
-
-					# bisect path with a new node
-					new_node = PacMap::Node.new(point.x, point.y)
-					@map.paths << PacMap::Path.new(hit_path.node_a, new_node)
-					@map.paths << PacMap::Path.new(new_node, hit_path.node_b)
-					@map.paths.delete(hit_path)
-					@map.nodes << new_node
-
-				else
-					# double-clicking empty space creates a new unattached node
-					new_node = PacMap::Node.new(point.x, point.y)
-					@map.nodes << new_node
-				end
-
-				# Auto-select new node
-				@edit_selection = new_node
-				@edit_selection_offset = Vector3.new(0.0, 0.0, 0.0)
-			end
-
-			@edit_click_time = $env[:frame_time]
-
-		elsif edit_click.now?		# still down?
-			# dragging with mouse down
-			if @edit_selection
-				point_with_offset = point + @edit_selection_offset
-				@edit_selection.position.set(point_with_offset.x, point_with_offset.y, 0.0)
-				@map.update_after_editing!
-			end
-		else
-			# mouse not down-- is it a drop?
-			if @edit_selection
-				# Dropped onto an existing node?
-				if (node=@map.hit_test_nodes(point, node_size, not_node=@edit_selection))
-					# node gets all of @edit_selection's neighbors
-					@edit_selection.neighbors.each { |neighbor_node|
-						if @map.find_path_by_nodes(neighbor_node, node)
-							neighbor_node.neighbors << node
-							node.neighbors << neighbor_node
-						else
-							@map.paths << PacMap::Path.new(neighbor_node, node)
-						end
-					}
-					@map.delete_node(@edit_selection)
-				end
-				@edit_selection = nil
-			end
-		end
-	end
-
 	#
 	# tick is called once per frame, before rendering
 	#
@@ -673,5 +598,80 @@ class DirectorEffectGamePacMap < DirectorEffect
 				}
 			}
 		}
+	end
+
+	def handle_editing
+		point = Vector3.new(edit_x, edit_y, 0.0)
+
+		if edit_click.on_this_frame?		# newly down?
+			@edit_selection = @map.hit_test_nodes(point, node_size)
+			@edit_selection_offset = (@edit_selection.position - point) if @edit_selection
+
+			# double click?
+			if (@edit_click_time and (($env[:frame_time] - @edit_click_time) <= DOUBLE_CLICK_TIME))
+				hit_path = @map.hit_test_paths(point, path_size)
+				hit_node = @map.hit_test_nodes(point, node_size)
+
+				# test hit nodes first, since they're drawn above paths
+				if hit_node
+					# double-clicking a node creates a new node and new path, connected to clicked node
+					new_node = PacMap::Node.new(point.x, point.y)
+					@map.nodes << new_node
+					@map.paths << PacMap::Path.new(hit_node, new_node)
+					# NOTE: set as the @edit_selection below
+
+				elsif hit_path
+					# double-clicking a path splits it with a new node
+
+					# each side loses a neighbor
+					hit_path.node_a.neighbors.delete(hit_path.node_b)
+					hit_path.node_b.neighbors.delete(hit_path.node_a)
+
+					# bisect path with a new node
+					new_node = PacMap::Node.new(point.x, point.y)
+					@map.paths << PacMap::Path.new(hit_path.node_a, new_node)
+					@map.paths << PacMap::Path.new(new_node, hit_path.node_b)
+					@map.paths.delete(hit_path)
+					@map.nodes << new_node
+
+				else
+					# double-clicking empty space creates a new unattached node
+					new_node = PacMap::Node.new(point.x, point.y)
+					@map.nodes << new_node
+				end
+
+				# Auto-select new node
+				@edit_selection = new_node
+				@edit_selection_offset = Vector3.new(0.0, 0.0, 0.0)
+			end
+
+			@edit_click_time = $env[:frame_time]
+
+		elsif edit_click.now?		# still down?
+			# dragging with mouse down
+			if @edit_selection
+				point_with_offset = point + @edit_selection_offset
+				@edit_selection.position.set(point_with_offset.x, point_with_offset.y, 0.0)
+				@map.update_after_editing!
+			end
+		else
+			# mouse not down-- is it a drop?
+			if @edit_selection
+				# Dropped onto an existing node?
+				if (node=@map.hit_test_nodes(point, node_size, not_node=@edit_selection))
+					# node gets all of @edit_selection's neighbors
+					@edit_selection.neighbors.each { |neighbor_node|
+						if @map.find_path_by_nodes(neighbor_node, node)
+							neighbor_node.neighbors << node
+							node.neighbors << neighbor_node
+						else
+							@map.paths << PacMap::Path.new(neighbor_node, node)
+						end
+					}
+					@map.delete_node(@edit_selection)
+				end
+				@edit_selection = nil
+			end
+		end
 	end
 end
