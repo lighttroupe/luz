@@ -306,6 +306,10 @@ class DirectorEffectGamePacMap < DirectorEffect
 
 	include Drawing
 
+	setting 'map_file_path', :string, :summary => true
+	setting 'save_map', :event
+	setting 'load_map', :event
+
 	setting 'node', :actor
 	setting 'node_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
 
@@ -363,6 +367,26 @@ class DirectorEffectGamePacMap < DirectorEffect
 		super
 	end
 
+	def save_map!
+		final_path = File.join($engine.project.file_path, map_file_path)
+		tmp_path = final_path + '.tmp'
+		File.open(tmp_path, 'w+') { |tmp_file|
+			tmp_file.write(ZAML.dump(@map))
+			File.mv(tmp_path, final_path)
+			return true
+		}
+		return false
+	end
+
+	def load_map!
+		final_path = File.join($engine.project.file_path, map_file_path)
+		File.open(final_path) { |file|
+			@map = YAML.load(file)
+			return true
+		}
+		return false
+	end
+
 	#
 	# tick is called once per frame, before rendering
 	#
@@ -370,6 +394,8 @@ class DirectorEffectGamePacMap < DirectorEffect
 		if edit_mode.now?
 			end_game! if edit_mode.on_this_frame?
 			handle_editing
+			save_map! if save_map.on_this_frame?
+			load_map! if load_map.on_this_frame?
 			return
 		end
 
