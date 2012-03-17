@@ -7,9 +7,8 @@ require 'set'
 require 'vector3'
 
 class PacMap
-
 	#
-	# Base class for all movable objects
+	# MapObject: base class for all movable objects
 	#
 	class MapObject
 		attr_accessor :position, :place, :destination_place, :angle
@@ -53,7 +52,7 @@ class PacMap
 			@destination_place ||= place.random_neighbor
 		end
 
-		def with_env_for_actor
+		def with_enter_and_exit_for_actor
 			enter = (@entered_at) ? (($env[:frame_time] - @entered_at) / @enter_time) : 1.0
 			exit = (@exited_at) ? (($env[:frame_time] - @exited_at) / @exit_time) : 0.0
 			with_enter_and_exit(enter, exit) {
@@ -87,6 +86,10 @@ class PacMap
 
 		def add_neighbor(node)
 			@neighbors << node
+		end
+
+		def remove_neighbor(node)
+			@neighbors.delete(node)
 		end
 
 		def random_neighbor
@@ -128,6 +131,10 @@ class PacMap
 			distance = (a * d - c * b).abs / (c * c + d * d).square_root
 
 			(distance <= radius) and (@center_point.distance_to(point) < (@length / 2.0))
+		end
+
+		def has_node?(node)
+			(@node_a == node or @node_b == node)
 		end
 
 		def has_nodes?(a, b)
@@ -189,7 +196,7 @@ class PacMap
 	end
 
 	#
-	# Map class
+	# PacMap class
 	#
 	attr_accessor :nodes, :paths, :portals, :herobases, :enemybases,
 								:heroes, :enemies, :pellets, :powerpellets, :floatingfruit
@@ -222,8 +229,8 @@ class PacMap
 	end
 
 	def delete_node(node)
-		@nodes.each { |n| n.neighbors.delete(node) }
-		@paths.delete_if { |p| (p.node_a == node or p.node_b == node) }
+		@nodes.each { |n| n.remove_neighbor(node) }
+		@paths.delete_if { |p| p.has_node?(node) }
 		@nodes.delete(node)
 	end
 
@@ -420,10 +427,13 @@ class DirectorEffectGamePacMap < DirectorEffect
 		end
 
 		update_character_inputs!
+		tick_characters!
 
-		#
-		# Tick characters
-		#
+		# Heroes win?
+		end_game! if @map.pellets.empty?
+	end
+
+	def tick_characters!
 		hit_distance = (hero_size / 2)									# pellets are considered points for the purpose of collisions
 		max_step_distance = hero_size										# this ensures complete hero hit coverage of the line
 		steps = (hero_speed / max_step_distance).ceil		# speed is distance covered in one update
@@ -455,9 +465,6 @@ class DirectorEffectGamePacMap < DirectorEffect
 		@map.enemies.each { |enemy|
 			enemy.tick(enemy_speed)
 		}
-
-		# Heroes win?
-		end_game! if @map.pellets.empty?
 	end
 
 	def end_game!
@@ -586,8 +593,9 @@ class DirectorEffectGamePacMap < DirectorEffect
 		}
 	end
 
+	# setup global state, position and scale for rendering actor
 	def with_character_setup(character, size, index)
-		character.with_env_for_actor {
+		character.with_enter_and_exit_for_actor {
 			with_env(:child_index, index) {
 				character_angle_variable_setting.with_value(character.angle) {
 					with_translation(character.position.x, character.position.y) {
@@ -600,78 +608,85 @@ class DirectorEffectGamePacMap < DirectorEffect
 		}
 	end
 
+	#
+	# Live-editing methods
+	#
 	def handle_editing
 		point = Vector3.new(edit_x, edit_y, 0.0)
 
 		if edit_click.on_this_frame?		# newly down?
-			@edit_selection = @map.hit_test_nodes(point, node_size)
-			@edit_selection_offset = (@edit_selection.position - point) if @edit_selection
-
 			# double click?
 			if (@edit_click_time and (($env[:frame_time] - @edit_click_time) <= DOUBLE_CLICK_TIME))
-				hit_path = @map.hit_test_paths(point, path_size)
-				hit_node = @map.hit_test_nodes(point, node_size)
-
-				# test hit nodes first, since they're drawn above paths
-				if hit_node
-					# double-clicking a node creates a new node and new path, connected to clicked node
-					new_node = PacMap::Node.new(point.x, point.y)
-					@map.nodes << new_node
-					@map.paths << PacMap::Path.new(hit_node, new_node)
-					# NOTE: set as the @edit_selection below
-
-				elsif hit_path
-					# double-clicking a path splits it with a new node
-
-					# each side loses a neighbor
-					hit_path.node_a.neighbors.delete(hit_path.node_b)
-					hit_path.node_b.neighbors.delete(hit_path.node_a)
-
-					# bisect path with a new node
-					new_node = PacMap::Node.new(point.x, point.y)
-					@map.paths << PacMap::Path.new(hit_path.node_a, new_node)
-					@map.paths << PacMap::Path.new(new_node, hit_path.node_b)
-					@map.paths.delete(hit_path)
-					@map.nodes << new_node
-
-				else
-					# double-clicking empty space creates a new unattached node
-					new_node = PacMap::Node.new(point.x, point.y)
-					@map.nodes << new_node
-				end
-
-				# Auto-select new node
-				@edit_selection = new_node
-				@edit_selection_offset = Vector3.new(0.0, 0.0, 0.0)
+				handle_double_click(point)
+			else
+				@edit_selection = @map.hit_test_nodes(point, node_size)
+				@edit_selection_offset = (@edit_selection.position - point) if @edit_selection
+				@edit_click_time = $env[:frame_time]
 			end
-
-			@edit_click_time = $env[:frame_time]
 
 		elsif edit_click.now?		# still down?
-			# dragging with mouse down
-			if @edit_selection
-				point_with_offset = point + @edit_selection_offset
-				@edit_selection.position.set(point_with_offset.x, point_with_offset.y, 0.0)
-				@map.update_after_editing!
-			end
+			handle_editing_drag(point) if @edit_selection
 		else
-			# mouse not down-- is it a drop?
-			if @edit_selection
-				# Dropped onto an existing node?
-				if (node=@map.hit_test_nodes(point, node_size, not_node=@edit_selection))
-					# node gets all of @edit_selection's neighbors
-					@edit_selection.neighbors.each { |neighbor_node|
-						if @map.find_path_by_nodes(neighbor_node, node)
-							neighbor_node.neighbors << node
-							node.neighbors << neighbor_node
-						else
-							@map.paths << PacMap::Path.new(neighbor_node, node)
-						end
-					}
-					@map.delete_node(@edit_selection)
-				end
-				@edit_selection = nil
-			end
+			handle_editing_drop(point) if @edit_selection
+			@edit_selection = nil
 		end
+	end
+
+	def handle_double_click(point)
+		new_node = nil
+
+		# test hit nodes first, since they're drawn above paths
+		if (hit_node = @map.hit_test_nodes(point, node_size))
+			# double-clicking a node creates a new node and new path, connected to clicked node
+			new_node = PacMap::Node.new(point.x, point.y)
+			@map.nodes << new_node
+			@map.paths << PacMap::Path.new(hit_node, new_node)
+			# NOTE: set as the @edit_selection below
+
+		elsif (hit_path = @map.hit_test_paths(point, path_size))
+			# double-clicking a path splits it with a new node
+
+			# each side loses a neighbor
+			hit_path.node_a.neighbors.delete(hit_path.node_b)
+			hit_path.node_b.neighbors.delete(hit_path.node_a)
+
+			# bisect path with a new node
+			new_node = PacMap::Node.new(point.x, point.y)
+			@map.paths << PacMap::Path.new(hit_path.node_a, new_node)
+			@map.paths << PacMap::Path.new(new_node, hit_path.node_b)
+			@map.paths.delete(hit_path)
+			@map.nodes << new_node
+
+		else
+			# double-clicking empty space creates a new unattached node
+			new_node = PacMap::Node.new(point.x, point.y)
+			@map.nodes << new_node
+		end
+
+		# Auto-select new node
+		@edit_selection = new_node
+		@edit_selection_offset = Vector3.new(0.0, 0.0, 0.0)
+	end
+
+	def handle_editing_drag(point)
+		point_with_offset = point + @edit_selection_offset
+		@edit_selection.position.set(point_with_offset.x, point_with_offset.y, 0.0)
+		@map.update_after_editing!
+	end
+
+	def handle_editing_drop(point)
+		node = @map.hit_test_nodes(point, node_size, not_node=@edit_selection)
+		return unless node
+
+		# node gets all of @edit_selection's neighbors
+		@edit_selection.neighbors.each { |neighbor_node|
+			if @map.find_path_by_nodes(neighbor_node, node)
+				neighbor_node.neighbors << node
+				node.neighbors << neighbor_node
+			else
+				@map.paths << PacMap::Path.new(neighbor_node, node)
+			end
+		}
+		@map.delete_node(@edit_selection)
 	end
 end
