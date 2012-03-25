@@ -379,21 +379,29 @@ class DirectorEffectGamePacMap < DirectorEffect
 	# after_load is called once at startup, and again after Ctrl-Shift-R reloads
 	#
 	def save_map!
-		final_path = File.join($engine.project.file_path, map_file_path)
-		tmp_path = final_path + '.tmp'
-		File.open(tmp_path, 'w+') { |tmp_file|
-			tmp_file.write(ZAML.dump(@map))
-			File.mv(tmp_path, final_path)
-			return true
-		}
+		puts "Saving map..."
+		begin
+			final_path = File.join($engine.project.file_path, map_file_path)
+			tmp_path = final_path + '.tmp'
+			File.open(tmp_path, 'w+') { |tmp_file|
+				tmp_file.write(ZAML.dump(@map))
+				File.mv(tmp_path, final_path)
+				return true
+			}
+		rescue Exception => e
+		end
 		return false
 	end
 
 	def load_map!
-		final_path = File.join($engine.project.file_path, map_file_path)
-		File.open(final_path) { |file|
-			@map = YAML.load(file)
-		}
+		puts "Loading map..."
+		begin
+			final_path = File.join($engine.project.file_path, map_file_path)
+			File.open(final_path) { |file|
+				@map = YAML.load(file)
+			}
+		rescue Exception => e
+		end
 		@map ||= PacMap.new		# ensure some map is present
 	end
 
