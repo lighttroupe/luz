@@ -6,9 +6,13 @@
 require 'set'
 require 'vector3'
 
+# 
+# PacMap: base game login class, handles character, network layout, game logic, hit testing and character input
+#
 class PacMap
+
 	#
-	# MapObject: base class for all movable objects
+	# MapObject: base class for all movable objects (e.g. objects that move between Nodes along Path's
 	#
 	class MapObject
 		attr_accessor :position, :place, :destination_place, :angle
@@ -24,6 +28,9 @@ class PacMap
 			@angle = 0.0
 		end
 
+		#
+		# tick: per timestep iteration of game logic
+		#
 		def tick(distance_per_frame)
 			if exiting?
 				# nothing
@@ -48,6 +55,7 @@ class PacMap
 			end
 		end
 
+		
 		def choose_destination!
 			@destination_place ||= place.random_neighbor
 		end
@@ -74,7 +82,7 @@ class PacMap
 	end
 
 	#
-	# Game Network Graph
+	# Graph Network Node
 	#
 	class Node
 		attr_reader :position, :neighbors
@@ -104,6 +112,9 @@ class PacMap
 		end
 	end
 
+	#
+	# Graph Network Path
+	#
 	class Path
 		attr_accessor :node_a, :node_b, :vector, :length, :angle, :center_point
 
@@ -142,12 +153,15 @@ class PacMap
 		end
 	end
 
+	# Special Node that handles spatial transfereances of other types of MapObjects
 	class Portal < MapObject
 	end
 
+	# Special Node that provides spawn points for Hero's and enemis
 	class Base < MapObject
 	end
 
+	# Point based system for Hero's to collect while avoiding enemies when not power charged
 	class Pellet < MapObject
 	end
 
@@ -300,6 +314,9 @@ class PacMap
 	end
 end
 
+#
+# Base level Director Effect plugin linking to pacmap game class: handles render, game tick, all game settings and parameter inputs
+#
 class DirectorEffectGamePacMap < DirectorEffect
 	title				'PacMap'
 	description 'PacMan, Luz-style.'
@@ -362,21 +379,29 @@ class DirectorEffectGamePacMap < DirectorEffect
 	# after_load is called once at startup, and again after Ctrl-Shift-R reloads
 	#
 	def save_map!
-		final_path = File.join($engine.project.file_path, map_file_path)
-		tmp_path = final_path + '.tmp'
-		File.open(tmp_path, 'w+') { |tmp_file|
-			tmp_file.write(ZAML.dump(@map))
-			File.mv(tmp_path, final_path)
-			return true
-		}
+		puts "Saving map..."
+		begin
+			final_path = File.join($engine.project.file_path, map_file_path)
+			tmp_path = final_path + '.tmp'
+			File.open(tmp_path, 'w+') { |tmp_file|
+				tmp_file.write(ZAML.dump(@map))
+				File.mv(tmp_path, final_path)
+				return true
+			}
+		rescue Exception => e
+		end
 		return false
 	end
 
 	def load_map!
-		final_path = File.join($engine.project.file_path, map_file_path)
-		File.open(final_path) { |file|
-			@map = YAML.load(file)
-		}
+		puts "Loading map..."
+		begin
+			final_path = File.join($engine.project.file_path, map_file_path)
+			File.open(final_path) { |file|
+				@map = YAML.load(file)
+			}
+		rescue Exception => e
+		end
 		@map ||= PacMap.new		# ensure some map is present
 	end
 
