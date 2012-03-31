@@ -62,6 +62,7 @@ static VALUE Video4Linux2_Camera_new(VALUE klass) {
 	camera->ruby_string_buffer = rb_str_new(temp_buffer, buffer_size);
 	rb_gc_register_address(&(camera->ruby_string_buffer));		// otherwise Ruby will delete our string!
 
+	// TODO: free ALLOC_N ?
 	return Data_Wrap_Struct(vCameraClass, 0, Video4Linux2_Camera_free, camera);
 }
 
