@@ -25,11 +25,12 @@ class ActorEffectImageSpriteProgress < ActorEffect
 	setting 'image', :image, :summary => true
 	setting 'number', :integer, :range => 1..256, :default => 1..2
 	setting 'progress', :float, :range => 0.0..1.0, :default => 0.0..1.0
+	setting 'direction', :select, :options => [[:auto, 'Auto'],[:horizontal, 'Horizontal'],[:vertical, 'Vertical']], :default => :auto
 
 	def render
 		image.using {
 			# wide images are animated horizontally, tall ones vertically
-			if image.width > image.height
+			if (direction == :horizontal) or ((direction == :auto) and (image.width > image.height))
 				with_texture_scale_and_translate(1.0 / number, 1, number.choose_index_by_fuzzy(progress), 0) {
 					yield
 				}
