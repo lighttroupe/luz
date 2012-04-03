@@ -337,8 +337,9 @@ class Engine
 		GL.Enable(GL::BLEND)
 		GL.BlendFunc(GL::SRC_ALPHA, GL::ONE_MINUS_SRC_ALPHA)
 
-		GL.Enable(GL::POLYGON_SMOOTH)
-		GL.Hint(GL::POLYGON_SMOOTH_HINT, GL::NICEST)
+		# POLYGON_SMOOTH causes seams on NVidia hardware
+		#GL.Enable(GL::POLYGON_SMOOTH)
+		#GL.Hint(GL::POLYGON_SMOOTH_HINT, GL::NICEST)
 
 		GL.ShadeModel(GL::FLAT)			# TODO: probably want to change this
 
