@@ -24,7 +24,7 @@ class UserObjectSettingSelect < UserObjectSetting
 	end
 
 	def after_load
-		@selected ||= @options[:default]
+		@selected = @options[:default] unless @options[:options].find { |o| o.first == @selected }
 	end
 
 	def widget
