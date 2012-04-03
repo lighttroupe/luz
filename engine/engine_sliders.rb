@@ -56,7 +56,7 @@ module EngineSliders
 		end
 		return v
 	end
-	
+
 	def new_slider_notify_if_needed(name)
 		return if @slider_values[name]
 		@slider_values[name] = 0.0				# Otherwise we'll new_slider_notify endlessly...
