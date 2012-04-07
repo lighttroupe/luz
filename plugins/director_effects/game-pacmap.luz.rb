@@ -156,6 +156,11 @@ class PacMap
 
 	# Special Node that handles spatial transfereances of other types of MapObjects
 	class Portal < MapObject
+		attr_accessor :number
+		def initialize(number, x, y, place)
+			super(x, y, place)
+			@number = number
+		end
 	end
 
 	# Special Node that provides spawn points for Hero's and enemis
@@ -263,8 +268,14 @@ class PacMap
 		elsif @herobases.delete(node.special)
 			@enemybases << (node.special = Base.new(node.position.x, node.position.y, node))
 		elsif @enemybases.delete(node.special)
+			@portals << (node.special = Portal.new(find_next_free_portal_number, node.position.x, node.position.y, node))
+		elsif @portals.delete(node.special)
 			node.special = nil
 		end
+	end
+
+	def find_next_free_portal_number
+		(0..100).each { |i| return i unless @portals.count { |p| p.number == i } == 2 }
 	end
 
 	#
@@ -588,14 +599,12 @@ class DirectorEffectGamePacMap < DirectorEffect
 			enemybase.render!
 		}
 
-=begin
 		# Portals
 		@map.portals.each_with_index { |p, i|
-			with_character_setup(p, portal_size, i) {
+			with_character_setup(p, portal_size, p.number) {		# integer division FTW
 				portal.render!
 			}
 		}
-=end
 	end
 
 	def render_characters
