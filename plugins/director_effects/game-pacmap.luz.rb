@@ -176,6 +176,10 @@ class PacMap
 	class Pellet < MapObject
 	end
 
+	class PowerPellet < MapObject
+		boolean_accessor :used
+	end
+
 	#
 	# Characters
 	#
@@ -275,6 +279,8 @@ class PacMap
 		elsif @enemybases.delete(node.special)
 			@portals << (node.special = Portal.new(find_next_free_portal_number, node.position.x, node.position.y, node))
 		elsif @portals.delete(node.special)
+			@powerpellets << (node.special = PowerPellet.new(node.position.x, node.position.y, node))
+		elsif @powerpellets.delete(node.special)
 			node.special = nil
 		end
 	end
@@ -485,10 +491,20 @@ class DirectorEffectGamePacMap < DirectorEffect
 	def start_game!
 		@map.spawn_pellets!(pellet_spacing, node_size)
 		@state = :game
+		@superpellet_countdown = 0
+		@map.powerpellets.each { |powerpellet| powerpellet.not_used! }
 	end
 
 	def superpellet_active?
-		false
+		@superpellet_countdown > 0
+	end
+
+	def superpellet_count_down!
+		@superpellet_countdown -= 1 if @superpellet_countdown > 0
+	end
+
+	def superpellet!
+		@superpellet_countdown += 300
 	end
 
 	def update_character_inputs!
@@ -515,6 +531,8 @@ class DirectorEffectGamePacMap < DirectorEffect
 		update_character_inputs!
 		tick_characters!
 
+		superpellet_count_down!
+
 		# Heroes win?
 		end_game! if @map.pellets.empty?
 	end
@@ -534,9 +552,17 @@ class DirectorEffectGamePacMap < DirectorEffect
 						hero.position.distance_to(pellet.position) < hit_distance
 					}
 
+					# Heroes vs PowerPellets
+					@map.powerpellets.each { |powerpellet|
+						if (!powerpellet.used?) and (hero.position.distance_to(powerpellet.position) < hit_distance)
+							powerpellet.used!
+							superpellet!
+						end
+					}
+
 					# Heroes vs Enemies
 					@map.enemies.each { |enemy|
-						if hero.position.distance_to(enemy.position) < hit_distance
+						if (!enemy.exiting?) and (hero.position.distance_to(enemy.position) < hit_distance)
 							# Hit enemy
 							if superpellet_active?
 								enemy.exit!
@@ -628,8 +654,16 @@ class DirectorEffectGamePacMap < DirectorEffect
 
 		# Portals
 		@map.portals.each_with_index { |p, i|
-			with_character_setup(p, portal_size, p.number) {		# integer division FTW
+			with_character_setup(p, portal_size, p.number) {
 				portal.render!
+			}
+		}
+
+		# Power Pellets
+		@map.powerpellets.each_with_index { |p, i|
+			next if p.used?
+			with_character_setup(p, powerpellet_size, i) {
+				powerpellet.render!
 			}
 		}
 	end
@@ -641,11 +675,6 @@ class DirectorEffectGamePacMap < DirectorEffect
 		}
 
 =begin
-		# Power Pellets
-		render_list_via_offscreen_buffer(@map.powerpellets, powerpellet_size, :small) {
-			powerpellet.render!
-		}
-
 		# Floating Fruit
 		render_list_via_offscreen_buffer(@map.floatingfruits, floatingfruit_size, :small) {
 			floatingfruit.render!
