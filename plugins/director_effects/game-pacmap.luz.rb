@@ -559,6 +559,15 @@ class DirectorEffectGamePacMap < DirectorEffect
 		}
 		@map.enemies.each { |enemy|
 			enemy.tick(enemy_speed)
+
+			# Enemies vs Portals
+			@map.portals.each { |portal|
+				if (enemy.destination_place == portal.place) and (enemy.position.distance_to(portal.position) < hit_distance)
+					if (other_portal = @map.other_portal(portal))
+						enemy.warp_to(other_portal.place)
+					end
+				end
+			}
 		}
 	end
 
