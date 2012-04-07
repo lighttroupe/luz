@@ -22,6 +22,7 @@ class PacMap
 		def initialize(x, y, place)
 			@position = Vector3.new(x, y, 0.0)
 			@place, @destination_place = place, nil
+			@place.special = self if @place.respond_to? :special
 			move_to_place!
 			@entered_at, @enter_time = $env[:frame_time], 0.2		# TODO: configurable?
 			@exited_at, @exit_time = nil, 0.5		# TODO: configurable?
@@ -55,7 +56,6 @@ class PacMap
 			end
 		end
 
-		
 		def choose_destination!
 			@destination_place ||= place.random_neighbor
 		end
@@ -86,6 +86,7 @@ class PacMap
 	#
 	class Node
 		attr_reader :position, :neighbors
+		attr_accessor :special
 
 		def initialize(x, y)
 			@position = Vector3.new(x, y, 0.0)
@@ -246,12 +247,24 @@ class PacMap
 		@nodes.each { |n| n.remove_neighbor(node) }
 		@paths.delete_if { |p| p.has_node?(node) }
 		@nodes.delete(node)
+		@herobases.delete(node.special)
+		@enemybases.delete(node.special)
 	end
 
 	def update_after_editing!
 		@paths.each { |path| path.calculate! }
 		@herobases.each { |base| base.move_to_place! }
 		@enemybases.each { |base| base.move_to_place! }
+	end
+
+	def cycle_node_special!(node)
+		if node.special.nil?
+			@herobases << (node.special = Base.new(node.position.x, node.position.y, node))
+		elsif @herobases.delete(node.special)
+			@enemybases << (node.special = Base.new(node.position.x, node.position.y, node))
+		elsif @enemybases.delete(node.special)
+			node.special = nil
+		end
 	end
 
 	#
@@ -370,6 +383,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 	setting 'edit_x', :float, :range => -0.5..0.5, :default => -0.5..0.5
 	setting 'edit_y', :float, :range => -0.5..0.5, :default => -0.5..0.5
 	setting 'edit_click', :event
+	setting 'special_click', :event
 	setting 'edit_crosshair', :actor
 	setting 'edit_mode', :event
 
@@ -678,9 +692,16 @@ class DirectorEffectGamePacMap < DirectorEffect
 
 		elsif edit_click.now?		# still down?
 			handle_editing_drag(point) if @edit_selection
+
 		else
 			handle_editing_drop(point) if @edit_selection
 			@edit_selection = nil
+		end
+
+		if special_click.on_this_frame?
+			if (node = @map.hit_test_nodes(point, node_size))
+				@map.cycle_node_special!(node)
+			end
 		end
 	end
 
