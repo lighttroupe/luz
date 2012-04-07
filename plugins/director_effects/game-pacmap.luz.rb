@@ -29,6 +29,11 @@ class PacMap
 			@angle = 0.0
 		end
 
+		def warp_to(place)
+			@place, @destination_place = place, nil
+			move_to_place!
+		end
+
 		#
 		# tick: per timestep iteration of game logic
 		#
@@ -276,6 +281,10 @@ class PacMap
 
 	def find_next_free_portal_number
 		(0..100).each { |i| return i unless @portals.count { |p| p.number == i } == 2 }
+	end
+
+	def other_portal(portal)
+		@portals.find { |p| (p != portal) and (p.number == portal.number) }
 	end
 
 	#
@@ -533,6 +542,15 @@ class DirectorEffectGamePacMap < DirectorEffect
 								enemy.exit!
 							else
 								hero.exit!
+							end
+						end
+					}
+
+					# Heroes vs Portals
+					@map.portals.each { |portal|
+						if (hero.destination_place == portal.place) and (hero.position.distance_to(portal.position) < hit_distance)
+							if (other_portal = @map.other_portal(portal))
+								hero.warp_to(other_portal.place)
 							end
 						end
 					}
