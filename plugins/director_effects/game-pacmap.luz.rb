@@ -22,10 +22,16 @@ class PacMap
 		def initialize(x, y, place)
 			@position = Vector3.new(x, y, 0.0)
 			@place, @destination_place = place, nil
+			@place.special = self if @place.respond_to? :special
 			move_to_place!
 			@entered_at, @enter_time = $env[:frame_time], 0.2		# TODO: configurable?
 			@exited_at, @exit_time = nil, 0.5		# TODO: configurable?
 			@angle = 0.0
+		end
+
+		def warp_to(place)
+			@place, @destination_place = place, nil
+			move_to_place!
 		end
 
 		#
@@ -55,7 +61,6 @@ class PacMap
 			end
 		end
 
-		
 		def choose_destination!
 			@destination_place ||= place.random_neighbor
 		end
@@ -86,6 +91,7 @@ class PacMap
 	#
 	class Node
 		attr_reader :position, :neighbors
+		attr_accessor :special
 
 		def initialize(x, y)
 			@position = Vector3.new(x, y, 0.0)
@@ -155,6 +161,11 @@ class PacMap
 
 	# Special Node that handles spatial transfereances of other types of MapObjects
 	class Portal < MapObject
+		attr_accessor :number
+		def initialize(number, x, y, place)
+			super(x, y, place)
+			@number = number
+		end
 	end
 
 	# Special Node that provides spawn points for Hero's and enemis
@@ -163,6 +174,10 @@ class PacMap
 
 	# Point based system for Hero's to collect while avoiding enemies when not power charged
 	class Pellet < MapObject
+	end
+
+	class PowerPellet < MapObject
+		boolean_accessor :used
 	end
 
 	#
@@ -246,12 +261,36 @@ class PacMap
 		@nodes.each { |n| n.remove_neighbor(node) }
 		@paths.delete_if { |p| p.has_node?(node) }
 		@nodes.delete(node)
+		@herobases.delete(node.special)
+		@enemybases.delete(node.special)
 	end
 
 	def update_after_editing!
 		@paths.each { |path| path.calculate! }
 		@herobases.each { |base| base.move_to_place! }
 		@enemybases.each { |base| base.move_to_place! }
+	end
+
+	def cycle_node_special!(node)
+		if node.special.nil?
+			@herobases << (node.special = Base.new(node.position.x, node.position.y, node))
+		elsif @herobases.delete(node.special)
+			@enemybases << (node.special = Base.new(node.position.x, node.position.y, node))
+		elsif @enemybases.delete(node.special)
+			@portals << (node.special = Portal.new(find_next_free_portal_number, node.position.x, node.position.y, node))
+		elsif @portals.delete(node.special)
+			@powerpellets << (node.special = PowerPellet.new(node.position.x, node.position.y, node))
+		elsif @powerpellets.delete(node.special)
+			node.special = nil
+		end
+	end
+
+	def find_next_free_portal_number
+		(0..100).each { |i| return i unless @portals.count { |p| p.number == i } == 2 }
+	end
+
+	def other_portal(portal)
+		@portals.find { |p| (p != portal) and (p.number == portal.number) }
 	end
 
 	#
@@ -370,6 +409,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 	setting 'edit_x', :float, :range => -0.5..0.5, :default => -0.5..0.5
 	setting 'edit_y', :float, :range => -0.5..0.5, :default => -0.5..0.5
 	setting 'edit_click', :event
+	setting 'special_click', :event
 	setting 'edit_crosshair', :actor
 	setting 'edit_mode', :event
 
@@ -451,10 +491,20 @@ class DirectorEffectGamePacMap < DirectorEffect
 	def start_game!
 		@map.spawn_pellets!(pellet_spacing, node_size)
 		@state = :game
+		@superpellet_countdown = 0
+		@map.powerpellets.each { |powerpellet| powerpellet.not_used! }
 	end
 
 	def superpellet_active?
-		false
+		@superpellet_countdown > 0
+	end
+
+	def superpellet_count_down!
+		@superpellet_countdown -= 1 if @superpellet_countdown > 0
+	end
+
+	def superpellet!
+		@superpellet_countdown += 300
 	end
 
 	def update_character_inputs!
@@ -481,6 +531,8 @@ class DirectorEffectGamePacMap < DirectorEffect
 		update_character_inputs!
 		tick_characters!
 
+		superpellet_count_down!
+
 		# Heroes win?
 		end_game! if @map.pellets.empty?
 	end
@@ -500,9 +552,17 @@ class DirectorEffectGamePacMap < DirectorEffect
 						hero.position.distance_to(pellet.position) < hit_distance
 					}
 
+					# Heroes vs PowerPellets
+					@map.powerpellets.each { |powerpellet|
+						if (!powerpellet.used?) and (hero.position.distance_to(powerpellet.position) < hit_distance)
+							powerpellet.used!
+							superpellet!
+						end
+					}
+
 					# Heroes vs Enemies
 					@map.enemies.each { |enemy|
-						if hero.position.distance_to(enemy.position) < hit_distance
+						if (!enemy.exiting?) and (hero.position.distance_to(enemy.position) < hit_distance)
 							# Hit enemy
 							if superpellet_active?
 								enemy.exit!
@@ -511,11 +571,29 @@ class DirectorEffectGamePacMap < DirectorEffect
 							end
 						end
 					}
+
+					# Heroes vs Portals
+					@map.portals.each { |portal|
+						if (hero.destination_place == portal.place) and (hero.position.distance_to(portal.position) < hit_distance)
+							if (other_portal = @map.other_portal(portal))
+								hero.warp_to(other_portal.place)
+							end
+						end
+					}
 				end
 			}
 		}
 		@map.enemies.each { |enemy|
 			enemy.tick(enemy_speed)
+
+			# Enemies vs Portals
+			@map.portals.each { |portal|
+				if (enemy.destination_place == portal.place) and (enemy.position.distance_to(portal.position) < hit_distance)
+					if (other_portal = @map.other_portal(portal))
+						enemy.warp_to(other_portal.place)
+					end
+				end
+			}
 		}
 	end
 
@@ -574,14 +652,20 @@ class DirectorEffectGamePacMap < DirectorEffect
 			enemybase.render!
 		}
 
-=begin
 		# Portals
 		@map.portals.each_with_index { |p, i|
-			with_character_setup(p, portal_size, i) {
+			with_character_setup(p, portal_size, p.number) {
 				portal.render!
 			}
 		}
-=end
+
+		# Power Pellets
+		@map.powerpellets.each_with_index { |p, i|
+			next if p.used?
+			with_character_setup(p, powerpellet_size, i) {
+				powerpellet.render!
+			}
+		}
 	end
 
 	def render_characters
@@ -591,11 +675,6 @@ class DirectorEffectGamePacMap < DirectorEffect
 		}
 
 =begin
-		# Power Pellets
-		render_list_via_offscreen_buffer(@map.powerpellets, powerpellet_size, :small) {
-			powerpellet.render!
-		}
-
 		# Floating Fruit
 		render_list_via_offscreen_buffer(@map.floatingfruits, floatingfruit_size, :small) {
 			floatingfruit.render!
@@ -678,9 +757,16 @@ class DirectorEffectGamePacMap < DirectorEffect
 
 		elsif edit_click.now?		# still down?
 			handle_editing_drag(point) if @edit_selection
+
 		else
 			handle_editing_drop(point) if @edit_selection
 			@edit_selection = nil
+		end
+
+		if special_click.on_this_frame?
+			if (node = @map.hit_test_nodes(point, node_size))
+				@map.cycle_node_special!(node)
+			end
 		end
 	end
 

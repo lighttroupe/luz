@@ -57,10 +57,11 @@ module Kernel
 		puts "#{TAB * $section_nesting_level}- #{name} Done (%0.2fs)" % (Time.now - time)
 	end
 
-	def timer(name='Timer')
+	def timer(name='Timer', options=nil)
 		t = Time.new
 		yield
-		puts sprintf("%s: %02.5f seconds\n", name, Time.new - t)
+		delta = (Time.new - t)
+		puts sprintf("%s: %02.5f seconds\n", name, delta) if (options.nil? or (options[:if_over] and delta > options[:if_over].to_f))
 	end
 
 	def max(a,b)
@@ -109,6 +110,15 @@ end
 class Class
 	def inherited_from?(klass)
 		self.ancestors.include?(klass) and self != klass		# NOTE: ancestors[] includes the class itself
+	end
+end
+
+def optional_require(file)
+	begin
+		require file
+		return true
+	rescue LoadError
+		return false
 	end
 end
 

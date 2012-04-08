@@ -16,27 +16,21 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-require 'user_object_setting'
+class VariableInputSliderSpring < VariableInput
+	title				"Slider Spring"
+	description "Acts as if a spring of a chosen strength is pulling the current value to the chosen slider value."
 
-class UserObjectSettingSelect < UserObjectSetting
-	def to_yaml_properties
-		['@selected'] + super
-	end
+	setting :slider, :slider, :summary => true
 
-	def after_load
-		@selected = @options[:default] unless @options[:options].find { |o| o.first == @selected }
-	end
+	setting :spring_strength, :float, :range => 0.0..2.0, :default => 0.1..1.0
+	setting :spring_damper, :float, :range => 0.0..1.0, :default => 0.9..1.0
 
-	def widget
-		return create_combobox(:selected, @options[:options])
-	end
+	def value
+		delta = (slider - last_value)
 
-	def immediate_value
-		@selected
-	end
+		# Accelerate
+		@velocity = (((@velocity || 0.0) * spring_damper) + (delta * spring_strength))
 
-	def summary
-		option = @options[:options].find { |o| o.first == @selected }		# format: [[:sym, 'name'], ...]
-		summary_format((option ? option.last : @selected).to_s)
+		last_value + @velocity
 	end
 end

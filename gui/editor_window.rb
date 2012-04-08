@@ -521,8 +521,10 @@ private
 
 		fps = $settings['performer-fps']
 
+		ruby_executable = $settings['use-ruby-one-nine'] ? 'ruby1.9.1' : 'ruby'
+
 		# Launch Performer, then pause the editor.  Read from Performer so that its buffer doesn't fill.  NOTE: save output?
-		printf("Executing: %s\n", cmd = "./#{PERFORMER_EXECUTABLE_NAME} --fullscreen --width #{width} --height #{height} --frames-per-second #{fps} \"#{project_file_path}\"")
+		printf("Executing: %s\n", cmd = "#{ruby_executable} ./#{PERFORMER_EXECUTABLE_NAME} --fullscreen --width #{width} --height #{height} --frames-per-second #{fps} \"#{project_file_path}\"")
 
 		open("|#{cmd}") { |f| sleep 1 ; pause ; begin ; while s=f.readpartial(1024) ; puts s ; end ; rescue Exception => e ; unpause ; end ; }	# NOTE: the 'sleep 1' lets the Performer take over the screen before we make changes in the GUI when we pause (fewer changes = better)
 	end

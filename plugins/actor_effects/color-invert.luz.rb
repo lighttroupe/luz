@@ -16,27 +16,23 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-require 'user_object_setting'
+class ActorEffectColorInvert < ActorEffect
+	title				"Color Invert"
+	description "Inverts set color."
 
-class UserObjectSettingSelect < UserObjectSetting
-	def to_yaml_properties
-		['@selected'] + super
-	end
+	setting 'amount', :float, :range => 0.0..1.0, :default => 1.0..1.0
 
-	def after_load
-		@selected = @options[:default] unless @options[:options].find { |o| o.first == @selected }
-	end
+	def render
+		return yield if amount == 0.0
 
-	def widget
-		return create_combobox(:selected, @options[:options])
-	end
-
-	def immediate_value
-		@selected
-	end
-
-	def summary
-		option = @options[:options].find { |o| o.first == @selected }		# format: [[:sym, 'name'], ...]
-		summary_format((option ? option.last : @selected).to_s)
+		c = current_color
+		@a ||= []
+		@a[0] = amount.scale(c.red, 1.0-c.red)
+		@a[1] = amount.scale(c.green, 1.0-c.green)
+		@a[2] = amount.scale(c.blue, 1.0-c.blue)
+		@a[3] = 1.0
+		with_color(@a) {
+			yield
+		}
 	end
 end

@@ -16,27 +16,23 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-require 'user_object_setting'
+class ActorEffectThemeScrubChildren < ActorEffect
+	title				"Theme Scrub Children"
+	description "Smoothly blends chosen theme onto children with chosen offset."
 
-class UserObjectSettingSelect < UserObjectSetting
-	def to_yaml_properties
-		['@selected'] + super
-	end
+	setting 'theme', :theme
+	setting 'amount', :float, :range => 0.0..1.0, :default => 1.0..1.0
+	setting 'offset', :float, :range => -1000..1000, :default => 0..1
 
-	def after_load
-		@selected = @options[:default] unless @options[:options].find { |o| o.first == @selected }
-	end
+	def render
+		return yield if (theme.nil? or theme.empty? or amount == 0.0)
 
-	def widget
-		return create_combobox(:selected, @options[:options])
-	end
-
-	def immediate_value
-		@selected
-	end
-
-	def summary
-		option = @options[:options].find { |o| o.first == @selected }		# format: [[:sym, 'name'], ...]
-		summary_format((option ? option.last : @selected).to_s)
+		index, scrub = (child_index + offset).divmod(1.0)
+		style_a, style_b = theme.style(index), theme.style(index+1)
+		style_a.using_amount(amount) {
+			style_b.using_amount(scrub * amount) {
+				yield
+			}
+		}
 	end
 end

@@ -45,6 +45,15 @@ module GL
 		end
 	end
 
+	# Generates display list (using yield block)
+	# call like   display_list = GL.RenderCached(display_list) { GL.calls... }
+	def self.RenderCached(list)
+		list ||= RenderToList { yield }		# Generate, if necessary
+		return nil unless list						# For nested calls to RenderToList
+		GL.CallList(list)
+		return list
+	end
+
 	def self.RenderToList
 		if $rendering_to_list
 			# OpenGL can't define lists recursively, so instead we include the

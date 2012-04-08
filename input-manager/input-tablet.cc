@@ -141,6 +141,9 @@ bool InputTablet::update()
 		for(axis_index=0 ; axis_index < motion_event->axes_count && axis_index < MAX_DEVICE_AXES ; axis_index++) {
 			int axis_value = motion_event->axis_data[axis_index];
 
+			// Sometimes XInput sends us axis data shifted.  Unshift it.
+			axis_index += motion_event->first_axis;
+
 			// Send if axis changed
 			if(axis_value != m_axis_values[axis_index]) {
 				float value = scale_and_expand_limits(axis_value, &(m_axis_limits[axis_index]));
