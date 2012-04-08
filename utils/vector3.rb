@@ -101,6 +101,7 @@ class Vector3
 
 	TWO_PI = (Math::PI * 2.0)
 	def fuzzy_angle
+		return 0.0 if (@x == 0.0 && @y == 0.0)
 		Math.atan2(@x, @y) / (TWO_PI) % 1.0
 	end
 end
