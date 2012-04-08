@@ -294,13 +294,17 @@ class PacMap
 	# Spawning
 	#
 	def spawn_hero!
-		base = @herobases.random
-		@heroes << Hero.new(base.place.position.x, base.place.position.y, base.place) if base
+		if (base = @herobases.random)
+			@heroes << Hero.new(base.place.position.x, base.place.position.y, base.place)
+			$engine.on_button_press('Game / Hero Spawn', 1)
+		end
 	end
 
 	def spawn_enemy!
-		base = @enemybases.random
-		@enemies << Enemy.new(base.place.position.x, base.place.position.y, base.place) if base
+		if (base = @enemybases.random)
+			@enemies << Enemy.new(base.place.position.x, base.place.position.y, base.place)
+			$engine.on_button_press('Game / Enemy Spawn', 1)
+		end
 	end
 
 	def spawn_pellets!(pellet_spacing, node_size)
@@ -317,6 +321,7 @@ class PacMap
 				@pellets << Pellet.new(position.x, position.y, path)
 			}
 		}
+		$engine.on_button_press('Game / Pellets Spawn', 1) unless @pellets.empty?
 	end
 
 	def exit_characters!
@@ -484,6 +489,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 		@map.remove_characters!
 		@countdown = 30
 		@state = :pregame
+		$engine.on_button_press('Game / Pregame', 1)
 	end
 
 	def start_game!
@@ -491,6 +497,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 		@state = :game
 		@superpellet_countdown = 0
 		@map.powerpellets.each { |powerpellet| powerpellet.not_used! }
+		$engine.on_button_press('Game / Start', 1)
 	end
 
 	def superpellet_active?
@@ -499,9 +506,11 @@ class DirectorEffectGamePacMap < DirectorEffect
 
 	def superpellet_count_down!
 		@superpellet_countdown -= 1 if @superpellet_countdown > 0
+		$engine.on_button_up('Game / Super Pellet') if @superpellet_countdown == 0
 	end
 
 	def superpellet!
+		$engine.on_button_down('Game / Super Pellet')
 		@superpellet_countdown += 300
 	end
 
@@ -547,7 +556,10 @@ class DirectorEffectGamePacMap < DirectorEffect
 				unless hero.exiting?
 					# Heroes vs Pellets
 					@map.pellets.delete_if { |pellet|
-						hero.position.distance_to(pellet.position) < hit_distance
+						if hero.position.distance_to(pellet.position) < hit_distance
+							$engine.on_button_press('Game / Pellet', 1)
+							true
+						end
 					}
 
 					# Heroes vs PowerPellets
@@ -563,8 +575,10 @@ class DirectorEffectGamePacMap < DirectorEffect
 						if (!enemy.exiting?) and (hero.position.distance_to(enemy.position) < hit_distance)
 							# Hit enemy
 							if superpellet_active?
+								$engine.on_button_press('Game / Enemy Killed', 1)
 								enemy.exit!
 							else
+								$engine.on_button_press('Game / Hero Killed', 1)
 								hero.exit!
 							end
 						end
@@ -574,6 +588,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 					@map.portals.each { |portal|
 						if (hero.destination_place == portal.place) and (hero.position.distance_to(portal.position) < hit_distance)
 							if (other_portal = @map.other_portal(portal))
+								$engine.on_button_press('Game / Hero Portal', 1)
 								hero.warp_to(other_portal.place)
 							end
 						end
@@ -588,6 +603,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 			@map.portals.each { |portal|
 				if (enemy.destination_place == portal.place) and (enemy.position.distance_to(portal.position) < hit_distance)
 					if (other_portal = @map.other_portal(portal))
+						$engine.on_button_press('Game / Enemy Portal', 1)
 						enemy.warp_to(other_portal.place)
 					end
 				end
