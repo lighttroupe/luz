@@ -13,7 +13,7 @@ require 'fileutils'
 class PacMap
 
 	#
-	# MapObject: base class for all movable objects (e.g. objects that move between Nodes along Path's
+	# MapObject: base class for all movable objects (e.g. objects that live on Nodes and Paths)
 	#
 	class MapObject
 		attr_accessor :position, :place, :destination_place, :angle
@@ -23,7 +23,7 @@ class PacMap
 		def initialize(x, y, place)
 			@position = Vector3.new(x, y, 0.0)
 			@place, @destination_place = place, nil
-			@place.special = self if @place.respond_to? :special
+			@place.special = self if @place.respond_to? :special=
 			move_to_place!
 			@entered_at, @enter_time = $env[:frame_time], 0.2		# TODO: configurable?
 			@exited_at, @exit_time = nil, 0.5		# TODO: configurable?
@@ -277,6 +277,8 @@ class PacMap
 			@powerpellets << (node.special = PowerPellet.new(node.position.x, node.position.y, node))
 		elsif @powerpellets.delete(node.special)
 			node.special = nil
+		else
+			node.special = nil		# clear any wonkyness
 		end
 	end
 
@@ -422,7 +424,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 			}
 		rescue Exception => e
 			puts 'Map save failed:'
-			e.report!
+			e.report
 		end
 		return false
 	end
@@ -436,7 +438,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 			}
 		rescue Exception => e
 			puts 'Map Load failed:'
-			e.report!
+			e.report
 		end
 		@map ||= PacMap.new		# ensure some map is present
 	end
