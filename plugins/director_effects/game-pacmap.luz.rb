@@ -5,6 +5,7 @@
 
 require 'set'
 require 'vector3'
+require 'fileutils'
 
 # 
 # PacMap: base game login class, handles character, network layout, game logic, hit testing and character input
@@ -410,28 +411,32 @@ class DirectorEffectGamePacMap < DirectorEffect
 	DOUBLE_CLICK_TIME = 0.2
 
 	def save_map!
-		puts "Saving map..."
 		begin
 			final_path = File.join($engine.project.file_path, map_file_path)
+			puts "Saving map to '#{final_path}' ..."
 			tmp_path = final_path + '.tmp'
 			File.open(tmp_path, 'w+') { |tmp_file|
 				tmp_file.write(ZAML.dump(@map))
-				File.mv(tmp_path, final_path)
+				FileUtils.mv(tmp_path, final_path)
 				return true
 			}
 		rescue Exception => e
+			puts 'Map save failed:'
+			e.report!
 		end
 		return false
 	end
 
 	def load_map!
-		puts "Loading map..."
 		begin
 			final_path = File.join($engine.project.file_path, map_file_path)
+			puts "Loading map from '#{final_path}'..."
 			File.open(final_path) { |file|
 				@map = YAML.load(file)
 			}
 		rescue Exception => e
+			puts 'Map Load failed:'
+			e.report!
 		end
 		@map ||= PacMap.new		# ensure some map is present
 	end
