@@ -213,7 +213,7 @@ class PacMap
 					angle_difference = (1.0 - angle_difference) if angle_difference > 0.5
 					best_node, best_angle_difference = node, angle_difference if (best_angle_difference.nil? or (angle_difference < best_angle_difference))
 				}
-				@destination_place = best_node if best_angle_difference <= CHARACTER_ALLOWABLE_NODE_ANGLE_DEVIATION		# choose new destination
+				@destination_place = best_node if best_angle_difference && best_angle_difference <= CHARACTER_ALLOWABLE_NODE_ANGLE_DEVIATION		# choose new destination
 			end
 		end
 	end
@@ -240,19 +240,8 @@ class PacMap
 	end
 
 	def add_demo_data!
-		@nodes << (a=Node.new(0.2, 0.0))
-		@nodes << (b=Node.new(-0.2, 0.0))
-		@paths << Path.new(a, b)
-
-		@nodes << (c=Node.new(0.0, 0.3))
-		@paths << Path.new(a, c)
-		@paths << Path.new(c, b)
-
-		@nodes << (d=Node.new(0.2, -0.3))
-		@paths << Path.new(a, d)
-
-		@nodes << (e=Node.new(-0.2, -0.3))
-		@paths << Path.new(b, e)
+		@nodes << (a=Node.new(-0.25, 0.0))
+		@nodes << (b=Node.new( 0.25, 0.0))
 
 		# bases, portals
 		@herobases << Base.new(@nodes.first.position.x, @nodes.first.position.y, @nodes.first)
@@ -420,9 +409,6 @@ class DirectorEffectGamePacMap < DirectorEffect
 
 	DOUBLE_CLICK_TIME = 0.2
 
-	#
-	# after_load is called once at startup, and again after Ctrl-Shift-R reloads
-	#
 	def save_map!
 		puts "Saving map..."
 		begin
