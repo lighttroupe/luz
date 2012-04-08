@@ -230,6 +230,8 @@ class PacMap
 	attr_accessor :nodes, :paths, :portals, :herobases, :enemybases,
 								:heroes, :enemies, :pellets, :powerpellets, :floatingfruit
 
+	NODE_SPECIALS = [:portals, :herobases, :enemybases, :powerpellets, :floatingfruit]
+
 	def initialize
 		@nodes, @paths, @portals, @herobases, @enemybases = [], [], [], [], []
 		@pellets, @powerpellets, @heroes, @enemies, @floatingfruit = [], [], [], [], []
@@ -267,8 +269,11 @@ class PacMap
 
 	def update_after_editing!
 		@paths.each { |path| path.calculate! }
-		@herobases.each { |base| base.move_to_place! }
-		@enemybases.each { |base| base.move_to_place! }
+		each_node_special { |special| special.move_to_place! }
+	end
+
+	def each_node_special
+		NODE_SPECIALS.each { |type| self.send(type).each { |obj| yield obj } }
 	end
 
 	def cycle_node_special!(node)
