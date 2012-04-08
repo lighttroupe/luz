@@ -185,6 +185,8 @@ class PacMap
 	# Characters
 	#
 	class ControllableCharacter < MapObject
+		boolean_accessor :ai_mode
+
 		def set_controls(x, y)
 			vector = Vector3.new(x, y, 0.0)
 			if vector.length > 0.0
@@ -197,6 +199,7 @@ class PacMap
 		CHARACTER_ALLOWABLE_NODE_ANGLE_DEVIATION = 0.23		# less than 0.25, so right-key doesn't choose down-path
 		CHARACTER_ALLOWABLE_PATH_ANGLE_DEVIATION = 0.23		# less than 0.25, so perpendicular-input doesn't flip directions every frame
 		def choose_destination!
+			return super if ai_mode?
 			return unless @input_angle		# no movement unless direction chosen
 
 			if @destination_place
@@ -302,7 +305,7 @@ class PacMap
 
 	def spawn_enemy!
 		if (base = @enemybases.random)
-			@enemies << Enemy.new(base.place.position.x, base.place.position.y, base.place)
+			@enemies << Enemy.new(base.place.position.x, base.place.position.y, base.place)		#.set_ai_mode(true)
 			$engine.on_button_press('Game / Enemy Spawn', 1)
 		end
 	end
