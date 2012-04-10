@@ -63,7 +63,7 @@ class PacMap
 		end
 
 		def choose_destination!
-			@destination_node ||= node.random_neighbor
+			@destination_node ||= node.random_neighbor		# default implementation is a random wander
 		end
 
 		def with_enter_and_exit_for_actor
