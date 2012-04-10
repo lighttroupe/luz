@@ -400,6 +400,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 
 	setting 'powerpellet', :actor
 	setting 'powerpellet_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
+	setting 'powerpellet_time', :timespan, :default => [4, :seconds]
 
 	setting 'floatingfruit', :actor
 	setting 'floatingfruit_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
@@ -503,23 +504,31 @@ class DirectorEffectGamePacMap < DirectorEffect
 	def start_game!
 		@map.spawn_pellets!(pellet_spacing, node_size)
 		@state = :game
-		@superpellet_countdown = 0
+		@powerpellet_time_remaining = 0.0
 		@map.powerpellets.each { |powerpellet| powerpellet.not_used! }
 		$engine.on_button_press('Game / Start', 1)
 	end
 
-	def superpellet_active?
-		@superpellet_countdown > 0
+	def powerpellet_active?
+		@powerpellet_time_remaining > 0.0
 	end
 
-	def superpellet_count_down!
-		@superpellet_countdown -= 1 if @superpellet_countdown > 0
-		$engine.on_button_up('Game / Super Pellet') if @superpellet_countdown == 0
+	POWERPELLET_STEP_TIME = (1.0 / 30.0)
+	def powerpellet_count_down!
+		return if @powerpellet_time_remaining == 0.0
+		if @powerpellet_time_remaining <= POWERPELLET_STEP_TIME
+			@powerpellet_time_remaining = 0.0
+			$engine.on_button_up('Game / Powerpellet')
+		else
+			@powerpellet_time_remaining -= POWERPELLET_STEP_TIME
+		end
+		$engine.on_slider_change('Game / Powerpellet Time', (@powerpellet_time_remaining / powerpellet_time.to_seconds))
 	end
 
-	def superpellet!
-		$engine.on_button_down('Game / Super Pellet')
-		@superpellet_countdown += 300
+	def powerpellet!
+		$engine.on_button_down('Game / Powerpellet')
+		@powerpellet_time_remaining = powerpellet_time.to_seconds
+		$engine.on_slider_change('Game / Powerpellet Time', 1.0)
 	end
 
 	def update_character_inputs!
@@ -546,7 +555,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 		update_character_inputs!
 		tick_characters!
 
-		superpellet_count_down!
+		powerpellet_count_down!
 
 		# Heroes win?
 		end_game! if @map.pellets.empty?
@@ -574,7 +583,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 					@map.powerpellets.each { |powerpellet|
 						if (!powerpellet.used?) and (hero.position.distance_to_within?(powerpellet.position, hit_distance))
 							powerpellet.used!
-							superpellet!
+							powerpellet!
 						end
 					}
 
@@ -582,7 +591,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 					@map.enemies.each { |enemy|
 						if (!enemy.exiting?) and (hero.position.distance_to_within?(enemy.position, hit_distance))
 							# Hit enemy
-							if superpellet_active?
+							if powerpellet_active?
 								$engine.on_button_press('Game / Enemy Killed', 1)
 								enemy.exit!
 							else
@@ -666,7 +675,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 			node.render!
 		}
 
-		# Power Pellets
+		# PowerPellets
 		@map.powerpellets.each_with_index { |p, i|
 			next if p.used?
 			with_character_setup(p, powerpellet_size, i) {
