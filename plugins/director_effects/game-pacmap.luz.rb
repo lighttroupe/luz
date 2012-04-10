@@ -91,7 +91,7 @@ class PacMap
 	# Graph Network Node
 	#
 	class Node
-		attr_reader :position, :neighbors
+		attr_reader :position
 		attr_accessor :special
 
 		def initialize(x, y)
@@ -100,7 +100,7 @@ class PacMap
 		end
 
 		def add_neighbor(node)
-			@neighbors << node
+			@neighbors << node unless (node == self)
 		end
 
 		def remove_neighbor(node)
@@ -111,7 +111,12 @@ class PacMap
 			@neighbors.to_a.random
 		end
 
+		def each_neighbor
+			@neighbors.each { |n| yield n }
+		end
+
 		def each_neighbor_with_fuzzy_angle
+			@neighbors.delete(self)		# HACK to remove bad data from some saved maps
 			@neighbors.each { |node|
 				angle = position.vector_to(node.position).fuzzy_angle
 				yield node, angle
@@ -148,7 +153,7 @@ class PacMap
 			d = @node_b.position.y - @node_a.position.y
 			distance = (a * d - c * b).abs / (c * c + d * d).square_root
 
-			(distance <= radius) and (@center_point.distance_to(point) < (@length / 2.0))
+			(distance <= radius) and (@center_point.distance_to_within?(point, (@length / 2.0)))
 		end
 
 		def has_node?(node)
@@ -200,7 +205,7 @@ class PacMap
 		CHARACTER_ALLOWABLE_PATH_ANGLE_DEVIATION = 0.23		# less than 0.25, so perpendicular-input doesn't flip directions every frame
 		def choose_destination!
 			return super if ai_mode?
-			return unless @input_angle		# no movement unless direction chosen
+			return if @input_angle.nil?		# no movement unless direction chosen
 
 			if @destination_place
 				# The only thing player can do while on a path is reverse direction
@@ -214,10 +219,10 @@ class PacMap
 				best_angle_difference = nil
 				place.each_neighbor_with_fuzzy_angle { |node, angle|
 					angle_difference = (@input_angle - angle).abs % 1.0
-					angle_difference = (1.0 - angle_difference) if angle_difference > 0.5
-					best_node, best_angle_difference = node, angle_difference if (best_angle_difference.nil? or (angle_difference < best_angle_difference))
+					angle_difference = (1.0 - angle_difference) if angle_difference > 0.5		# can't really be > 0.5 difference on a 0.0..1.0 circle!
+					best_node, best_angle_difference = node, angle_difference if (best_angle_difference.nil? || (angle_difference < best_angle_difference))
 				}
-				@destination_place = best_node if best_angle_difference && best_angle_difference <= CHARACTER_ALLOWABLE_NODE_ANGLE_DEVIATION		# choose new destination
+				@destination_place = best_node if (best_angle_difference && best_angle_difference <= CHARACTER_ALLOWABLE_NODE_ANGLE_DEVIATION)		# choose new destination
 			end
 		end
 	end
@@ -305,7 +310,7 @@ class PacMap
 
 	def spawn_enemy!
 		if (base = @enemybases.random)
-			@enemies << Enemy.new(base.place.position.x, base.place.position.y, base.place)		#.set_ai_mode(true)
+			@enemies << Enemy.new(base.place.position.x, base.place.position.y, base.place).set_ai_mode(true)
 			$engine.on_button_press('Game / Enemy Spawn', 1)
 		end
 	end
@@ -343,7 +348,7 @@ class PacMap
 	def hit_test_nodes(point, node_size, not_node=nil)
 		@nodes.find { |node|
 			next if node == not_node
-			(node.position.distance_to(point) < (node_size / 2))
+			(node.position.distance_to_within?(point, (node_size / 2)))
 		}
 	end
 
@@ -559,7 +564,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 				unless hero.exiting?
 					# Heroes vs Pellets
 					@map.pellets.delete_if { |pellet|
-						if hero.position.distance_to(pellet.position) < hit_distance
+						if hero.position.distance_to_within?(pellet.position, hit_distance) 
 							$engine.on_button_press('Game / Pellet', 1)
 							true
 						end
@@ -567,7 +572,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 
 					# Heroes vs PowerPellets
 					@map.powerpellets.each { |powerpellet|
-						if (!powerpellet.used?) and (hero.position.distance_to(powerpellet.position) < hit_distance)
+						if (!powerpellet.used?) and (hero.position.distance_to_within?(powerpellet.position, hit_distance))
 							powerpellet.used!
 							superpellet!
 						end
@@ -575,7 +580,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 
 					# Heroes vs Enemies
 					@map.enemies.each { |enemy|
-						if (!enemy.exiting?) and (hero.position.distance_to(enemy.position) < hit_distance)
+						if (!enemy.exiting?) and (hero.position.distance_to_within?(enemy.position, hit_distance))
 							# Hit enemy
 							if superpellet_active?
 								$engine.on_button_press('Game / Enemy Killed', 1)
@@ -589,7 +594,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 
 					# Heroes vs Portals
 					@map.portals.each { |portal|
-						if (hero.destination_place == portal.place) and (hero.position.distance_to(portal.position) < hit_distance)
+						if (hero.destination_place == portal.place) and (hero.position.distance_to_within?(portal.position, hit_distance))
 							if (other_portal = @map.other_portal(portal))
 								$engine.on_button_press('Game / Hero Portal', 1)
 								hero.warp_to(other_portal.place)
@@ -604,7 +609,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 
 			# Enemies vs Portals
 			@map.portals.each { |portal|
-				if (enemy.destination_place == portal.place) and (enemy.position.distance_to(portal.position) < hit_distance)
+				if (enemy.destination_place == portal.place) and (enemy.position.distance_to_within?(portal.position, hit_distance))
 					if (other_portal = @map.other_portal(portal))
 						$engine.on_button_press('Game / Enemy Portal', 1)
 						enemy.warp_to(other_portal.place)
@@ -625,13 +630,15 @@ class DirectorEffectGamePacMap < DirectorEffect
 	# render is responsible for all drawing, and must yield to continue down the effects list
 	#
 	def render
-		render_map
+		render_map_lower
 		render_characters unless edit_mode.now?
+		render_map_upper
 		render_edit_controls if edit_mode.now?
+
 		yield
 	end
 
-	def render_map
+	def render_map_lower
 		# Paths
 		with_offscreen_buffer(:medium) { |buffer|
 			# Render to offscreen
@@ -659,6 +666,16 @@ class DirectorEffectGamePacMap < DirectorEffect
 			node.render!
 		}
 
+		# Power Pellets
+		@map.powerpellets.each_with_index { |p, i|
+			next if p.used?
+			with_character_setup(p, powerpellet_size, i) {
+				powerpellet.render!
+			}
+		}
+	end
+
+	def render_map_upper
 		# Hero Base
 		render_list_via_offscreen_buffer(@map.herobases, herobase_size, :medium) {
 			herobase.render!
@@ -673,14 +690,6 @@ class DirectorEffectGamePacMap < DirectorEffect
 		@map.portals.each_with_index { |p, i|
 			with_character_setup(p, portal_size, p.number) {
 				portal.render!
-			}
-		}
-
-		# Power Pellets
-		@map.powerpellets.each_with_index { |p, i|
-			next if p.used?
-			with_character_setup(p, powerpellet_size, i) {
-				powerpellet.render!
 			}
 		}
 	end
@@ -802,8 +811,8 @@ class DirectorEffectGamePacMap < DirectorEffect
 			# double-clicking a path splits it with a new node
 
 			# each side loses a neighbor
-			hit_path.node_a.neighbors.delete(hit_path.node_b)
-			hit_path.node_b.neighbors.delete(hit_path.node_a)
+			hit_path.node_a.remove_neighbor(hit_path.node_b)
+			hit_path.node_b.remove_neighbor(hit_path.node_a)
 
 			# bisect path with a new node
 			new_node = PacMap::Node.new(point.x, point.y)
@@ -834,10 +843,10 @@ class DirectorEffectGamePacMap < DirectorEffect
 		return unless node
 
 		# node gets all of @edit_selection's neighbors
-		@edit_selection.neighbors.each { |neighbor_node|
+		@edit_selection.each_neighbor { |neighbor_node|
 			if @map.find_path_by_nodes(neighbor_node, node)
-				neighbor_node.neighbors << node
-				node.neighbors << neighbor_node
+				neighbor_node.add_neighbor(node)
+				node.add_neighbor(neighbor_node)
 			else
 				@map.paths << PacMap::Path.new(neighbor_node, node)
 			end
