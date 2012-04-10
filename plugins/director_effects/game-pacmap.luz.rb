@@ -16,23 +16,23 @@ class PacMap
 	# MapObject: base class for all movable objects (e.g. objects that live on Nodes and Paths)
 	#
 	class MapObject
-		attr_accessor :position, :place, :destination_place, :angle
+		attr_accessor :position, :node, :destination_node, :angle
 
 		include Engine::MethodsForUserObject
 
-		def initialize(x, y, place)
+		def initialize(x, y, node)
 			@position = Vector3.new(x, y, 0.0)
-			@place, @destination_place = place, nil
-			@place.special = self if @place.respond_to? :special=
-			move_to_place!
+			@node, @destination_node = node, nil
+			@node.special = self if @node.respond_to? :special=
+			move_to_node!
 			@entered_at, @enter_time = $env[:frame_time], 0.2		# TODO: configurable?
 			@exited_at, @exit_time = nil, 0.5		# TODO: configurable?
 			@angle = 0.0
 		end
 
-		def warp_to(place)
-			@place, @destination_place = place, nil
-			move_to_place!
+		def warp_to(node)
+			@node, @destination_node = node, nil
+			move_to_node!
 		end
 
 		#
@@ -44,16 +44,16 @@ class PacMap
 			else
 				choose_destination!
 
-				if @destination_place
-					vector_to_destination = (@destination_place.position - position)
+				if @destination_node
+					vector_to_destination = (@destination_node.position - position)
 					distance_to_destination = vector_to_destination.length
 
 					@angle = vector_to_destination.fuzzy_angle if distance_to_destination > 0.0		# maintain in 0.0..1.0 range for use in Variable
 
 					# Arrived?
 					if distance_to_destination < distance_per_frame
-						position.set(@destination_place.position)
-						@place, @destination_place = @destination_place, nil
+						position.set(@destination_node.position)
+						@node, @destination_node = @destination_node, nil
 					else
 						# Move towards destination
 						self.position += (vector_to_destination.normalize * distance_per_frame)
@@ -63,7 +63,7 @@ class PacMap
 		end
 
 		def choose_destination!
-			@destination_place ||= place.random_neighbor
+			@destination_node ||= node.random_neighbor
 		end
 
 		def with_enter_and_exit_for_actor
@@ -82,8 +82,8 @@ class PacMap
 			!@exited_at.nil?
 		end
 
-		def move_to_place!
-			@position = @place.position.dup if @place.respond_to? :position
+		def move_to_node!
+			@position = @node.position.dup if @node.respond_to? :position
 		end
 	end
 
@@ -168,8 +168,8 @@ class PacMap
 	# Special Node that handles spatial transfereances of other types of MapObjects
 	class Portal < MapObject
 		attr_accessor :number
-		def initialize(number, x, y, place)
-			super(x, y, place)
+		def initialize(number, x, y, node)
+			super(x, y, node)
 			@number = number
 		end
 	end
@@ -207,22 +207,22 @@ class PacMap
 			return super if ai_mode?
 			return if @input_angle.nil?		# no movement unless direction chosen
 
-			if @destination_place
+			if @destination_node
 				# The only thing player can do while on a path is reverse direction
-				backward_angle = position.vector_to(@place.position).fuzzy_angle
+				backward_angle = position.vector_to(@node.position).fuzzy_angle
 				angle_difference = (@input_angle - backward_angle).abs % 1.0
 				angle_difference = (1.0 - angle_difference) if angle_difference > 0.5
-				@place, @destination_place = @destination_place, @place if angle_difference <= CHARACTER_ALLOWABLE_PATH_ANGLE_DEVIATION		# reverse!
+				@node, @destination_node = @destination_node, @node if angle_difference <= CHARACTER_ALLOWABLE_PATH_ANGLE_DEVIATION		# reverse!
 			else
 				# Choose best-matching neighbor node
 				best_node = nil
 				best_angle_difference = nil
-				place.each_neighbor_with_fuzzy_angle { |node, angle|
+				node.each_neighbor_with_fuzzy_angle { |node, angle|
 					angle_difference = (@input_angle - angle).abs % 1.0
 					angle_difference = (1.0 - angle_difference) if angle_difference > 0.5		# can't really be > 0.5 difference on a 0.0..1.0 circle!
 					best_node, best_angle_difference = node, angle_difference if (best_angle_difference.nil? || (angle_difference < best_angle_difference))
 				}
-				@destination_place = best_node if (best_angle_difference && best_angle_difference <= CHARACTER_ALLOWABLE_NODE_ANGLE_DEVIATION)		# choose new destination
+				@destination_node = best_node if (best_angle_difference && best_angle_difference <= CHARACTER_ALLOWABLE_NODE_ANGLE_DEVIATION)		# choose new destination
 			end
 		end
 	end
@@ -267,7 +267,7 @@ class PacMap
 
 	def update_after_editing!
 		@paths.each { |path| path.calculate! }
-		each_node_special { |special| special.move_to_place! }
+		each_node_special { |special| special.move_to_node! }
 	end
 
 	def each_node_special
@@ -303,14 +303,14 @@ class PacMap
 	#
 	def spawn_hero!
 		if (base = @herobases.random)
-			@heroes << Hero.new(base.place.position.x, base.place.position.y, base.place)
+			@heroes << Hero.new(base.node.position.x, base.node.position.y, base.node)
 			$engine.on_button_press('Game / Hero Spawn', 1)
 		end
 	end
 
 	def spawn_enemy!
 		if (base = @enemybases.random)
-			@enemies << Enemy.new(base.place.position.x, base.place.position.y, base.place).set_ai_mode(true)
+			@enemies << Enemy.new(base.node.position.x, base.node.position.y, base.node).set_ai_mode(true)
 			$engine.on_button_press('Game / Enemy Spawn', 1)
 		end
 	end
@@ -603,10 +603,10 @@ class DirectorEffectGamePacMap < DirectorEffect
 
 					# Heroes vs Portals
 					@map.portals.each { |portal|
-						if (hero.destination_place == portal.place) and (hero.position.distance_to_within?(portal.position, hit_distance))
+						if (hero.destination_node == portal.node) and (hero.position.distance_to_within?(portal.position, hit_distance))
 							if (other_portal = @map.other_portal(portal))
 								$engine.on_button_press('Game / Hero Portal', 1)
-								hero.warp_to(other_portal.place)
+								hero.warp_to(other_portal.node)
 							end
 						end
 					}
@@ -618,10 +618,10 @@ class DirectorEffectGamePacMap < DirectorEffect
 
 			# Enemies vs Portals
 			@map.portals.each { |portal|
-				if (enemy.destination_place == portal.place) and (enemy.position.distance_to_within?(portal.position, hit_distance))
+				if (enemy.destination_node == portal.node) and (enemy.position.distance_to_within?(portal.position, hit_distance))
 					if (other_portal = @map.other_portal(portal))
 						$engine.on_button_press('Game / Enemy Portal', 1)
-						enemy.warp_to(other_portal.place)
+						enemy.warp_to(other_portal.node)
 					end
 				end
 			}
