@@ -16,7 +16,7 @@ class PacMap
 	# MapObject: base class for all movable objects (e.g. objects that live on Nodes and Paths)
 	#
 	class MapObject
-		attr_accessor :position, :node, :destination_node, :angle
+		attr_accessor :position, :node, :destination_node, :path, :angle
 
 		include Engine::MethodsForUserObject
 
@@ -129,14 +129,20 @@ class PacMap
 	#
 	class Path
 		attr_accessor :node_a, :node_b, :vector, :length, :angle, :center_point
+		attr_reader :pellets
 
 		def initialize(node_a, node_b)
 			@node_a, @node_b = node_a, node_b
+			clear_pellets!
 
 			# Notify nodes of connectivity
 			@node_a.add_neighbor(@node_b)
 			@node_b.add_neighbor(@node_a)
 			calculate!
+		end
+
+		def clear_pellets!
+			@pellets = []
 		end
 
 		def calculate!
@@ -163,6 +169,14 @@ class PacMap
 		def has_nodes?(a, b)
 			(@node_a == a and @node_b == b) or (@node_a == b and @node_b == a)
 		end
+
+		def add_pellet(p)
+			@pellets << p
+		end
+
+		def remove_pellet(p)
+			@pellets.delete(p)
+		end
 	end
 
 	# Special Node that handles spatial transfereances of other types of MapObjects
@@ -180,6 +194,11 @@ class PacMap
 
 	# Point based system for Hero's to collect while avoiding enemies when not power charged
 	class Pellet < MapObject
+		def initialize(x, y, path)
+			@path = path
+			@path.pellets << self
+			super
+		end
 	end
 
 	class PowerPellet < MapObject
@@ -317,6 +336,7 @@ class PacMap
 
 	def spawn_pellets!(pellet_spacing, node_size)
 		@paths.each { |path|
+			path.clear_pellets!
 			usable_length = (path.length - node_size)		# avoid placing pellets over nodes (node_size/2 on each end)
 			pellet_count = (usable_length / pellet_spacing).floor
 			padding = (usable_length - ((pellet_count - 1) * pellet_spacing))		# -1 because pellet spacing is between nodes ie 3 (*--*--*) has pellet_spacing*2
@@ -385,13 +405,13 @@ class DirectorEffectGamePacMap < DirectorEffect
 	setting 'hero', :actor
 	setting 'hero_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
 	setting 'hero_speed', :float, :range => 0.0..1.0, :default => 0.01..1.0
-	setting 'hero_count', :integer, :range => 1..10, :default => 1..10
+	setting 'hero_count', :integer, :range => 0..10, :default => 1..10
 	setting 'first_hero_input_variable', :variable
 
 	setting 'enemy', :actor
 	setting 'enemy_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
 	setting 'enemy_speed', :float, :range => 0.0..1.0, :default => 0.01..1.0
-	setting 'enemy_count', :integer, :range => 1..10, :default => 1..10
+	setting 'enemy_count', :integer, :range => 0..10, :default => 1..10
 	setting 'first_enemy_input_variable', :variable
 
 	setting 'pellet', :actor
@@ -496,15 +516,16 @@ class DirectorEffectGamePacMap < DirectorEffect
 
 	def start_pregame!
 		@map.remove_characters!
-		@countdown = 30
+		@countdown = 120
 		@state = :pregame
 		$engine.on_button_press('Game / Pregame', 1)
+		@powerpellet_time_remaining = 0.0
+		$engine.on_slider_change('Game / Powerpellet Time', 0.0)
 	end
 
 	def start_game!
 		@map.spawn_pellets!(pellet_spacing, node_size)
 		@state = :game
-		@powerpellet_time_remaining = 0.0
 		@map.powerpellets.each { |powerpellet| powerpellet.not_used! }
 		$engine.on_button_press('Game / Start', 1)
 	end
@@ -572,12 +593,15 @@ class DirectorEffectGamePacMap < DirectorEffect
 
 				unless hero.exiting?
 					# Heroes vs Pellets
-					@map.pellets.delete_if { |pellet|
-						if hero.position.distance_to_within?(pellet.position, hit_distance) 
-							$engine.on_button_press('Game / Pellet', 1)
-							true
-						end
-					}
+					if (path = @map.find_path_by_nodes(hero.node, hero.destination_node))
+						path.pellets.delete_if { |pellet|
+							if hero.position.distance_to_within?(pellet.position, hit_distance) 
+								@map.pellets.delete(pellet)
+								$engine.on_button_press('Game / Pellet', 1)
+								true
+							end
+						}
+					end
 
 					# Heroes vs PowerPellets
 					@map.powerpellets.each { |powerpellet|
@@ -631,7 +655,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 	def end_game!
 		@map.exit_characters!
 		@map.pellets.clear
-		@countdown = 30		# TODO: time based?
+		@countdown = 120		# TODO: time based?
 		@state = :postgame
 	end
 
