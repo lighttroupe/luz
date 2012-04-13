@@ -25,7 +25,13 @@ class DirectorEffectDMXElationOctostrip < DirectorEffect
 			dmx.add(3, 255 * green)
 			dmx.add(4, 255 * blue)
 
-			dmx.set(5, 0)		# TODO: strobe (001-255 1-20 hz)
+			if strobe == 0.0
+				dmx.set(5, 0)		# TODO: strobe (001-255 1-20 hz)
+			else
+				dmx.set(5, 1 + (strobe * 254))
+			end
+
+
 			dmx.set(6, 0)
 		}
 	end
