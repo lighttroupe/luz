@@ -329,7 +329,7 @@ class PacMap
 
 	def spawn_enemy!
 		if (base = @enemybases.random)
-			@enemies << Enemy.new(base.node.position.x, base.node.position.y, base.node).set_ai_mode(true)
+			@enemies << Enemy.new(base.node.position.x, base.node.position.y, base.node)#.set_ai_mode(true)
 			$engine.on_button_press('Game / Enemy Spawn', 1)
 		end
 	end
@@ -466,13 +466,13 @@ class DirectorEffectGamePacMap < DirectorEffect
 	def load_map!
 		begin
 			final_path = File.join($engine.project.file_path, map_file_path)
-			puts "Loading map from '#{final_path}'..."
+			puts "Map loading from '#{final_path}'..."
 			File.open(final_path) { |file|
 				@map = YAML.load(file)
 			}
 		rescue Exception => e
-			puts 'Map Load failed:'
-			e.report
+			puts 'Map loading failed.'
+			@map = PacMap.new		# clear Cloned map if map file is missing
 		end
 		@map ||= PacMap.new		# ensure some map is present
 	end
@@ -823,8 +823,21 @@ class DirectorEffectGamePacMap < DirectorEffect
 		end
 
 		if special_click.on_this_frame?
-			if (node = @map.hit_test_nodes(point, node_size))
-				@map.cycle_node_special!(node)
+			# double special click?
+			if (@edit_click_time and (($env[:frame_time] - @edit_click_time) <= DOUBLE_CLICK_TIME))
+				if (hit_path = @map.hit_test_paths(point, path_size))
+					@map.paths.delete(hit_path)
+
+					# each side loses a neighbor
+					hit_path.node_a.remove_neighbor(hit_path.node_b)
+					hit_path.node_b.remove_neighbor(hit_path.node_a)
+				end
+			else
+				if (node = @map.hit_test_nodes(point, node_size))
+					@map.cycle_node_special!(node)
+				else
+					@edit_click_time = $env[:frame_time]
+				end
 			end
 		end
 	end
