@@ -46,6 +46,9 @@ class Engine
 	require 'engine_dmx'
 	include EngineDMX
 
+	require 'engine_sound'
+	include EngineSound
+
 	module MethodsForUserObject
 		def first_frame?
 			$env[:frame_number] == 1
