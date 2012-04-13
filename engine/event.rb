@@ -90,7 +90,7 @@ class Event < ParentUserObject
 private
 
 	def collect_input_values
-		effects.collect_non_nil { |input| input.do_value if input.enabled? }
+		effects.collect_non_nil { |input| input.do_value if input.usable? }
 	end
 
 	def combine_inputs(inputs)

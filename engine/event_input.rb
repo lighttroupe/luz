@@ -18,7 +18,7 @@
 
 require 'user_object'
 
-class EventInput < UserObject
+class EventInput < ChildUserObject
 	attr_reader :current_value, :last_activation_time		# for use by plugins
 
 	def after_load

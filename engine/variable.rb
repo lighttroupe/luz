@@ -74,7 +74,7 @@ class Variable < ParentUserObject
 	end
 
 	def collect_input_values
-		return effects.collect_non_nil { |input| input.do_value if input.enabled? }
+		return effects.collect_non_nil { |input| input.do_value if input.usable? }
 	end
 
 	def combine_inputs(inputs)

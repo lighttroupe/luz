@@ -18,7 +18,7 @@
 
 require 'user_object'
 
-class VariableInput < UserObject
+class VariableInput < ChildUserObject
 	attr_reader :current_value, :last_value
 
 	def after_load
