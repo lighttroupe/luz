@@ -1,0 +1,9 @@
+extconf.rb
+openal.h
+openal.c
+openal_al.h
+openal_al.c
+openal_alc.h
+openal_alc.c
+openal_alut.h
+openal_alut.c
