@@ -36,7 +36,7 @@ class Color
 
 	def set(color)
 		if color.is_a?(Array)
-			@red, @green, @blue, @alpha = color[0], color[1], color[2], (color[3] || 1.0)
+			@red, @green, @blue, @alpha = color[0].clamp(0.0, 1.0), color[1].clamp(0.0, 1.0), color[2].clamp(0.0, 1.0), (color[3] || 1.0).clamp(0.0, 1.0)
 		elsif color.is_a?(Color)
 			@red, @green, @blue, @alpha = color.red, color.green, color.blue, color.alpha
 		end
@@ -105,5 +105,72 @@ class Color
 			red, green, blue, alpha = $1, $2, $3, $4
 		end
 		self
+	end
+
+	# Returns the HSL colour encoding of the RGB value.
+	def to_hsl
+		min   = [@red, @green, @blue].min
+		max   = [@red, @green, @blue].max
+		delta = (max - min).to_f
+		lum   = (max + min) / 2.0
+
+		if delta <= 1e-5  # close to 0.0, so it's a grey
+			hue = 0
+			sat = 0
+		else
+			if (lum - 0.5) <= 1e-5
+				sat = delta / (max + min).to_f
+			else
+				sat = delta / (2 - max - min).to_f
+			end
+
+			if @red == max
+				hue = (@green - @blue) / delta.to_f
+			elsif @green == max
+				hue = (2.0 + @blue - @red) / delta.to_f
+			elsif (@blue - max) <= 1e-5
+				hue = (4.0 + @red - @green) / delta.to_f
+			end
+			hue /= 6.0
+
+			hue += 1 if hue < 0
+			hue -= 1 if hue > 1
+		end
+
+		return [hue, sat, lum]
+	end
+
+	def from_hsl(hue, sat, lum, ignored = nil)
+		return set([0.0,0.0,0.0]) if lum == 0.0				# if luminosity is zero, the colour is always black
+		return set([1.0,1.0,1.0]) if lum == 1.0				# if luminosity is one, the colour is always white
+		return set([lum, lum, lum]) if sat <= 1e-5		# if saturation is zero, the colour is always a greyscale colour
+
+		if (lum - 0.5) < 1e-5
+			tmp2 = lum * (1.0 + sat.to_f)
+		else
+			tmp2 = lum + sat - (lum * sat.to_f)
+		end
+		tmp1 = 2.0 * lum - tmp2
+
+		t3 = [ hue + 1.0 / 3.0, hue, hue - 1.0 / 3.0 ]
+		t3 = t3.map { |tmp3|
+			tmp3 += 1.0 if tmp3 < 1e-5
+			tmp3 -= 1.0 if (tmp3 - 1.0) > 1e-5
+			tmp3
+		}
+
+		rgb = t3.map do |tmp3|
+			if ((6.0 * tmp3) - 1.0) < 1e-5
+				tmp1 + ((tmp2 - tmp1) * tmp3 * 6.0)
+			elsif ((2.0 * tmp3) - 1.0) < 1e-5
+				tmp2
+			elsif ((3.0 * tmp3) - 2.0) < 1e-5
+				tmp1 + (tmp2 - tmp1) * ((2 / 3.0) - tmp3) * 6.0
+			else
+				tmp1
+			end
+		end
+
+		set(rgb)
 	end
 end
