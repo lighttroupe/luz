@@ -82,6 +82,10 @@ class PacMap
 			!@exited_at.nil?
 		end
 
+		def exited?
+			(@exited_at) ? (($env[:frame_time] - @exited_at) > @exit_time) : false
+		end
+
 		def move_to_node!
 			@position = @node.position.dup if @node.respond_to? :position
 		end
@@ -264,7 +268,12 @@ class PacMap
 		@nodes, @paths, @portals, @herobases, @enemybases = [], [], [], [], []
 		@pellets, @powerpellets, @heroes, @enemies, @floatingfruit = [], [], [], [], []
 
-		add_demo_data!
+		#add_demo_data!
+	end
+
+	def clean!
+		@herobases.delete_if { |base| @nodes.find {|node| node.special == base}.nil? }
+		@enemybases.delete_if { |base| @nodes.find {|node| node.special == base}.nil? }
 	end
 
 	def add_demo_data!
@@ -327,9 +336,10 @@ class PacMap
 		end
 	end
 
-	def spawn_enemy!
+	def spawn_enemy!(ai_mode)
 		if (base = @enemybases.random)
-			@enemies << Enemy.new(base.node.position.x, base.node.position.y, base.node)#.set_ai_mode(true)
+			@enemies << (new_enemy=Enemy.new(base.node.position.x, base.node.position.y, base.node))
+			new_enemy.set_ai_mode(ai_mode == :random)
 			$engine.on_button_press('Game / Enemy Spawn', 1)
 		end
 	end
@@ -413,6 +423,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 	setting 'enemy_speed', :float, :range => 0.0..1.0, :default => 0.01..1.0
 	setting 'enemy_count', :integer, :range => 0..10, :default => 1..10
 	setting 'first_enemy_input_variable', :variable
+	setting 'ai_mode', :select, :default => :off, :options => [[:off, 'Off'], [:random, 'Random'], [:seek, 'Seek']]
 
 	setting 'pellet', :actor
 	setting 'pellet_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
@@ -469,6 +480,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 			puts "Map loading from '#{final_path}'..."
 			File.open(final_path) { |file|
 				@map = YAML.load(file)
+				@map.clean!
 			}
 		rescue Exception => e
 			puts 'Map loading failed.'
@@ -547,7 +559,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 	end
 
 	def powerpellet!
-		$engine.on_button_down('Game / Powerpellet')
+		$engine.on_button_down('Game / Powerpellet', 1)
 		@powerpellet_time_remaining = powerpellet_time.to_seconds
 		$engine.on_slider_change('Game / Powerpellet Time', 1.0)
 	end
@@ -570,7 +582,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 		# Spawn if needed
 		if $env[:frame_number] % 10 == 0		# a delay between spawns so they don't all pile up
 			@map.spawn_hero! if @map.heroes.size < hero_count
-			@map.spawn_enemy! if @map.enemies.size < enemy_count
+			@map.spawn_enemy!(ai_mode) if @map.enemies.size < enemy_count
 		end
 
 		update_character_inputs!
@@ -579,7 +591,10 @@ class DirectorEffectGamePacMap < DirectorEffect
 		powerpellet_count_down!
 
 		# Heroes win?
-		end_game! if @map.pellets.empty?
+		if @map.pellets.empty?
+			$engine.on_button_press('Game / Hero Win', 1)
+			end_game!
+		end
 	end
 
 	def tick_characters!
@@ -587,11 +602,17 @@ class DirectorEffectGamePacMap < DirectorEffect
 		max_step_distance = hero_size										# this ensures complete hero hit coverage of the line
 		steps = (hero_speed / max_step_distance).ceil		# speed is distance covered in one update
 
+		active_hero = false
 		@map.heroes.each { |hero|
 			steps.times {
 				hero.tick(hero_speed / steps)
 
-				unless hero.exiting?
+				if hero.exiting?
+					active_hero = true unless hero.exited?
+
+				else
+					active_hero = true
+
 					# Heroes vs Pellets
 					if (path = @map.find_path_by_nodes(hero.node, hero.destination_node))
 						path.pellets.delete_if { |pellet|
@@ -637,6 +658,12 @@ class DirectorEffectGamePacMap < DirectorEffect
 				end
 			}
 		}
+
+		unless (active_hero or @map.heroes.empty?)
+			$engine.on_button_press('Game / Enemy Win', 1)
+			end_game!
+		end
+
 		@map.enemies.each { |enemy|
 			enemy.tick(enemy_speed)
 
