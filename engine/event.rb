@@ -46,7 +46,16 @@ class Event < ParentUserObject
 		super
 	end
 
+	# This allows plugins to communicate to UserObjects by setting a value for an Event
+	def with_value(new_value)
+		current_value = @temporary_value
+		@temporary_value = new_value
+		yield
+		@temporary_value = current_value
+	end
+
 	def now?
+		return @temporary_value unless @temporary_value.nil?		# NOTE: only now? supports this
 		@current_value
 	end
 
