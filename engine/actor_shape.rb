@@ -98,42 +98,6 @@ class ActorShape < Actor
 				GLU.TessEndContour($tessalator)
 			}
 			GLU.TessEndPolygon($tessalator)
-
-			#options[:shape].each_with_index { |shape, index|
-				#next if shape.size < 3
-
-				#GL.FrontFace(index.is_odd? ? GL::CCW : GL::CW)
-				#GL.Begin(GL::TRIANGLE_STRIP)
-					## step to every other index (0,2,4,etc.)
-					#0.step(shape.size-1, POINTS_PER_VERTEX) { |points_index|
-						#v = shape[points_index, POINTS_PER_VERTEX]		# gets [x,y]
-						#tc = texture_coord(v).dup
-						#tc[0] = tc[0]	+ RADIUS
-						#tc[1] = -(tc[1] - RADIUS)
-
-						#v3d = v + [-z_width]
-						#GL.TexCoord(tc) ; GL.Vertex(v3d)
-
-						#v3d = v + [z_width]
-						#GL.TexCoord(tc) ; GL.Vertex(v3d)
-					#}
-				#GL.End
-			#}
-
-			#GL.FrontFace(GL::CW)
-			#GLU.TessBeginPolygon($tessalator, nil)
-			#options[:shape].each { |shape|
-				#next if shape.size < 3
-				#GLU.TessBeginContour($tessalator)
-					## step to every other index (0,2,4,etc.)
-					#0.step(shape.size-1, POINTS_PER_VERTEX) { |points_index|
-						#v = shape[points_index, POINTS_PER_VERTEX]		# gets [x,y]
-						#v3d = v + [-z_width]
-						#GLU.TessVertex($tessalator, v3d, v3d)
-					#}
-				#GLU.TessEndContour($tessalator)
-			#}
-			#GLU.TessEndPolygon($tessalator)
 		else
 			throw "unhandled shape type '#{options[:type]}'"
 		end
