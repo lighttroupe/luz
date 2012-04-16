@@ -47,6 +47,8 @@ load_directory(Dir.pwd + '/utils/addons/', '**.rb')
 require 'addons_gl'
 
 class LuzEditor < Application
+	attr_reader :width, :height
+
 	def initialize
 		super
 
@@ -67,6 +69,8 @@ class LuzEditor < Application
 		$gui = GUI.new
 		$gui.create_treeview_models
 		$gui.create_windows		# Remove this, create windows separately
+
+		@width, @height = $gui.window_width, $gui.window_height
 
 		$engine.load_plugins
 		$engine.add_default_objects
