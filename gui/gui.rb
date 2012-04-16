@@ -34,6 +34,8 @@ class GUI
 	pipe :negative_message, :editor_window
 	pipe :retire_message, :editor_window
 
+	attr_reader :window_width, :window_height
+
 	GTK_TO_LUZ_BUTTON_NAMES = {'Control_L' => 'Left Control', 'Control_R' => 'Right Control', 'Alt_L' => 'Left Alt', 'Alt_R' => 'Right Alt', 'Shift_L' => 'Left Shift', 'Shift_R' => 'Right Shift', 'bracketleft' => 'Left Bracket', 'bracketright' => 'Right Bracket', 'BackSpace' => 'Backspace'}
 
 	def initialize
@@ -88,6 +90,7 @@ class GUI
 			@editor_window = EditorWindow.new
 			@editor_window.show
 		}
+		@window_width, @window_height = Gdk::Screen.default.width, Gdk::Screen.default.height
 	end
 
 	def long_process(text='Doing something important...')
