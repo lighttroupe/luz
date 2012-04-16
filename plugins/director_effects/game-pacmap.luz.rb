@@ -63,7 +63,16 @@ class PacMap
 		end
 
 		def choose_destination!
-			@destination_node ||= node.random_neighbor		# default implementation is a random wander
+			choose_random_destination!
+		end
+
+		def choose_random_destination!
+			@destination_node ||= node.random_neighbor
+		end
+
+		def path_find(from_node, to_node)
+			#closed = Set.new							# set of nodes already evaluated
+			#open = Set.new([from_node])		# set of tentative nodes to be evaluated
 		end
 
 		def with_enter_and_exit_for_actor
@@ -213,7 +222,7 @@ class PacMap
 	# Characters
 	#
 	class ControllableCharacter < MapObject
-		boolean_accessor :ai_mode
+		attr_accessor :ai_mode
 
 		def set_controls(x, y)
 			vector = Vector3.new(x, y, 0.0)
@@ -227,7 +236,10 @@ class PacMap
 		CHARACTER_ALLOWABLE_NODE_ANGLE_DEVIATION = 0.23		# less than 0.25, so right-key doesn't choose down-path
 		CHARACTER_ALLOWABLE_PATH_ANGLE_DEVIATION = 0.23		# less than 0.25, so perpendicular-input doesn't flip directions every frame
 		def choose_destination!
-			return super if ai_mode?
+			choose_destination_by_input_angle!
+		end
+
+		def choose_destination_by_input_angle!
 			return if @input_angle.nil?		# no movement unless direction chosen
 
 			if @destination_node
@@ -254,6 +266,49 @@ class PacMap
 	end
 
 	class Enemy < ControllableCharacter
+		attr_accessor :map, :plugin		# hacks
+
+		def find_nearest_hero
+			best_hero = nil
+			best_distance = nil
+			@map.heroes.each { |hero|
+				next if hero.exiting?
+				distance = position.distance_squared_to(hero.position)		# no need for sqrt
+				best_hero, best_distance = hero, distance if (best_distance.nil? or distance < best_distance)
+			}
+			return best_hero
+		end
+
+		def seek_ai
+			if plugin.powerpellet_active?
+				# Strategy: opposite direction of below strategy
+				if(hero = @map.find_nearest_hero)
+					@input_angle = hero.position.vector_to(position).fuzzy_angle
+					choose_destination_by_input_angle!
+				end
+			else
+				# Strategy: choose nearest hero and best direction to get to them
+				if(hero = find_nearest_hero)
+					@input_angle = position.vector_to(hero.position).fuzzy_angle
+					choose_destination_by_input_angle!
+				end
+			end
+		end
+
+		def choose_destination!
+			return if @destination_node
+
+			case ai_mode
+			when :random
+				return choose_random_destination!
+			when :seek
+				return seek_ai
+			when :off
+				super
+			else
+				raise "unhandled"
+			end
+		end
 	end
 
 	#
@@ -336,10 +391,12 @@ class PacMap
 		end
 	end
 
-	def spawn_enemy!(ai_mode)
+	def spawn_enemy!(plugin, ai_mode)
 		if (base = @enemybases.random)
 			@enemies << (new_enemy=Enemy.new(base.node.position.x, base.node.position.y, base.node))
-			new_enemy.set_ai_mode(ai_mode == :random)
+			new_enemy.ai_mode = ai_mode
+			new_enemy.map = self
+			new_enemy.plugin = plugin
 			$engine.on_button_press('Game / Enemy Spawn', 1)
 		end
 	end
@@ -582,7 +639,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 		# Spawn if needed
 		if $env[:frame_number] % 10 == 0		# a delay between spawns so they don't all pile up
 			@map.spawn_hero! if @map.heroes.size < hero_count
-			@map.spawn_enemy!(ai_mode) if @map.enemies.size < enemy_count
+			@map.spawn_enemy!(self, ai_mode) if @map.enemies.size < enemy_count
 		end
 
 		update_character_inputs!
