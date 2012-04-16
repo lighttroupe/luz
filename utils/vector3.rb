@@ -79,6 +79,10 @@ class Vector3
 		((@x - point.x).squared + (@y - point.y).squared + (@z - point.z).squared).square_root
 	end
 
+	def distance_squared_to(point)
+		((@x - point.x).squared + (@y - point.y).squared + (@z - point.z).squared)
+	end
+
 	def distance_to_within?(point, distance)
 		((@x - point.x)**2 + (@y - point.y)**2 + (@z - point.z)**2) < (distance**2)
 	end
