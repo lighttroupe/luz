@@ -296,12 +296,12 @@ class PacMap
 		end
 
 		def choose_destination!
-			return if @destination_node
-
 			case ai_mode
 			when :random
+				return if @destination_node
 				return choose_random_destination!
 			when :seek
+				return if @destination_node
 				return seek_ai
 			when :off
 				super
