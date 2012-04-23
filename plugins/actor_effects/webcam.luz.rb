@@ -1,8 +1,12 @@
 # Copyright 2012 Ian McIntosh
 
+$webcams ||= {}
+
 class ActorEffectWebcam < ActorEffect
 	title				"Webcam"
 	description ""
+
+	setting 'number', :integer, :range => 1..10, :summary => 'camera %'
 
 	def after_load
 		require 'video/video4linux2.so'
@@ -11,8 +15,8 @@ class ActorEffectWebcam < ActorEffect
 	end
 
 	def render
-		$webcam ||= Video4Linux2::Camera.new
-		$webcam.with_frame(offset=0) {
+		$webcams[number-1] ||= Video4Linux2::Camera.new("/dev/video#{number-1}", 1024, 768)
+		$webcams[number-1].with_frame(offset=0) {
 			yield
 		}
 	end

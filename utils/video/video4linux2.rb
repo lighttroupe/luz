@@ -5,7 +5,7 @@ module Video4Linux2
 			@width ||= self.width
 			@height ||= self.height
 
-			new_data = $webcam.data
+			new_data = self.data
 			@image.from_rgb8(new_data, @width, @height) if new_data
 
 			@image.using {

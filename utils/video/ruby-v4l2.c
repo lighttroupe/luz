@@ -35,11 +35,11 @@ static VALUE Video4Linux2_Camera_free(void* p) {
 	return Qnil;		// TODO
 }
 
-static VALUE Video4Linux2_Camera_new(VALUE klass) {
+static VALUE Video4Linux2_Camera_new(VALUE klass, VALUE v_device_path, VALUE v_width, VALUE v_height) {
 	int ret = -1;
 
 	camera_t* camera = ALLOC_N(camera_t, 1);
-	char* device_path = "/dev/video0";		// TODO: make this selectable
+	char* device_path = RSTRING(v_device_path)->ptr;		// eg. "/dev/video0"
 
 	// Start V4L2 using RedHat's libv4l2 wrapper, which provides RGB conversion, if needed
 	camera->fd = v4l2_open(device_path, O_RDWR | O_NONBLOCK);
@@ -47,8 +47,8 @@ static VALUE Video4Linux2_Camera_new(VALUE klass) {
 
 	// Apply video format
 	camera->format.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
-	camera->format.fmt.pix.width = 320;
-	camera->format.fmt.pix.height = 240;
+	camera->format.fmt.pix.width = NUM2INT(v_width);
+	camera->format.fmt.pix.height = NUM2INT(v_height);
 	camera->format.fmt.pix.pixelformat = V4L2_PIX_FMT_RGB24;
 	camera->format.fmt.pix.field = V4L2_FIELD_ANY;
 	ret = v4l2_ioctl(camera->fd, VIDIOC_S_FMT, &(camera->format));
@@ -72,7 +72,7 @@ void Init_video4linux2() {
 	vCameraClass = rb_define_class_under(vModule, "Camera", rb_cObject);
 
 	// Setup Camera class
-	rb_define_singleton_method(vCameraClass, "new", &Video4Linux2_Camera_new, 0);
+	rb_define_singleton_method(vCameraClass, "new", &Video4Linux2_Camera_new, 3);
 	rb_define_method(vCameraClass, "width", &Video4Linux2_Camera_width, 0);
 	rb_define_method(vCameraClass, "height", &Video4Linux2_Camera_height, 0);
 	rb_define_method(vCameraClass, "data", &Video4Linux2_Camera_data, 0);
