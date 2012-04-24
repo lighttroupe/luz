@@ -33,7 +33,9 @@ load_directory(File.join(Dir.pwd, 'utils', 'addons'), '**.rb')
 Gtk.init
 Gtk::RC.parse(DEFAULT_GTK_RC_FILE)
 
+base_directory = (ARGV[0] || '.')
+
 require 'git_committer_window'
-$committer_window = GitCommitterWindow.new('.')
+$committer_window = GitCommitterWindow.new(base_directory)
 $committer_window.show
 Gtk.main
