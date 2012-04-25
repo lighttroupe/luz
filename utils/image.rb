@@ -125,6 +125,10 @@ class Image
 	end
 
 	def texture_id
+		if proc=@load_proc
+			@load_proc = nil
+			proc.call
+		end
 		@opengl_texture_id
 	end
 
