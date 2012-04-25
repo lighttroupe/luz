@@ -23,7 +23,7 @@ static VALUE Video4Linux2_Camera_data(VALUE self) {
 	Data_Get_Struct(self, camera_t, camera);
 
 	// Read frame data right into the String's memory (ptr) and return it
-	ssize_t size = v4l2_read(camera->fd, RSTRING(camera->ruby_string_buffer)->ptr, RSTRING(camera->ruby_string_buffer)->len);
+	ssize_t size = v4l2_read(camera->fd, RSTRING_PTR(camera->ruby_string_buffer), RSTRING_LEN(camera->ruby_string_buffer));
 
 	if(size == -1)
 		return Qnil;
@@ -39,7 +39,7 @@ static VALUE Video4Linux2_Camera_new(VALUE klass, VALUE v_device_path, VALUE v_w
 	int ret = -1;
 
 	camera_t* camera = ALLOC_N(camera_t, 1);
-	char* device_path = RSTRING(v_device_path)->ptr;		// eg. "/dev/video0"
+	char* device_path = RSTRING_PTR(v_device_path);		// eg. "/dev/video0"
 
 	// Start V4L2 using RedHat's libv4l2 wrapper, which provides RGB conversion, if needed
 	camera->fd = v4l2_open(device_path, O_RDWR | O_NONBLOCK);
