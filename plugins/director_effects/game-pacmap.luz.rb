@@ -598,7 +598,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 
 	def start_pregame!
 		@map.remove_characters!
-		@countdown = 120
+		@countdown = 80
 		@state = :pregame
 		$engine.on_button_press('Game / Pregame', 1)
 		@powerpellet_time_remaining = 0.0
