@@ -36,5 +36,7 @@ class DirectorEffectActorCycle < DirectorEffect
 
 		low_index = @current_spot.floor
 		crossfade_render(actors.one(low_index), actors.one(low_index+1), (@current_spot - low_index))
+
+		yield
 	end
 end
