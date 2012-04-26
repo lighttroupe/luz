@@ -23,7 +23,6 @@ class PacMap
 		def initialize(x, y, node)
 			@position = Vector3.new(x, y, 0.0)
 			@node, @destination_node = node, nil
-			@node.special = self if @node.respond_to? :special=
 			move_to_node!
 			@entered_at, @enter_time = $env[:frame_time], 0.2		# TODO: configurable?
 			@exited_at, @exit_time = nil, 0.5		# TODO: configurable?
@@ -192,8 +191,16 @@ class PacMap
 		end
 	end
 
+	# Base class for "specials" that sit on nodes
+	class MapObjectSpecial < MapObject
+		def initialize(x, y, node)
+			super
+			@node.special = self #if @node.respond_to?(:special=)
+		end
+	end
+
 	# Special Node that handles spatial transfereances of other types of MapObjects
-	class Portal < MapObject
+	class Portal < MapObjectSpecial
 		attr_accessor :number
 		def initialize(number, x, y, node)
 			super(x, y, node)
@@ -202,7 +209,7 @@ class PacMap
 	end
 
 	# Special Node that provides spawn points for Hero's and enemis
-	class Base < MapObject
+	class Base < MapObjectSpecial
 	end
 
 	# Point based system for Hero's to collect while avoiding enemies when not power charged
@@ -214,7 +221,7 @@ class PacMap
 		end
 	end
 
-	class PowerPellet < MapObject
+	class PowerPellet < MapObjectSpecial
 		boolean_accessor :used
 	end
 
@@ -326,9 +333,16 @@ class PacMap
 		#add_demo_data!
 	end
 
+	def find_node_by_special(special)
+		@nodes.find { |node| node.special == special }
+	end
+
+	def each_array_of_specials
+		NODE_SPECIALS.each { |sym| yield send(sym) }
+	end
+
 	def clean!
-		@herobases.delete_if { |base| @nodes.find {|node| node.special == base}.nil? }
-		@enemybases.delete_if { |base| @nodes.find {|node| node.special == base}.nil? }
+		each_array_of_specials { |array| array.delete_if { |special| find_node_by_special(special).nil? } }
 	end
 
 	def add_demo_data!
@@ -344,8 +358,7 @@ class PacMap
 		@nodes.each { |n| n.remove_neighbor(node) }
 		@paths.delete_if { |p| p.has_node?(node) }
 		@nodes.delete(node)
-		@herobases.delete(node.special)
-		@enemybases.delete(node.special)
+		each_array_of_specials { |array| array.delete(node.special) } if node.special
 	end
 
 	def update_after_editing!
@@ -359,13 +372,13 @@ class PacMap
 
 	def cycle_node_special!(node)
 		if node.special.nil?
-			@herobases << (node.special = Base.new(node.position.x, node.position.y, node))
+			@herobases << Base.new(node.position.x, node.position.y, node)
 		elsif @herobases.delete(node.special)
-			@enemybases << (node.special = Base.new(node.position.x, node.position.y, node))
+			@enemybases << Base.new(node.position.x, node.position.y, node)
 		elsif @enemybases.delete(node.special)
-			@portals << (node.special = Portal.new(find_next_free_portal_number, node.position.x, node.position.y, node))
+			@portals << Portal.new(find_next_free_portal_number, node.position.x, node.position.y, node)
 		elsif @portals.delete(node.special)
-			@powerpellets << (node.special = PowerPellet.new(node.position.x, node.position.y, node))
+			@powerpellets << PowerPellet.new(node.position.x, node.position.y, node)
 		elsif @powerpellets.delete(node.special)
 			node.special = nil
 		else
