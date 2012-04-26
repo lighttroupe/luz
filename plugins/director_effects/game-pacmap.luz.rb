@@ -24,14 +24,18 @@ class PacMap
 			@position = Vector3.new(x, y, 0.0)
 			@node, @destination_node = node, nil
 			move_to_node!
-			@entered_at, @enter_time = $env[:frame_time], 0.2		# TODO: configurable?
-			@exited_at, @exit_time = nil, 0.5		# TODO: configurable?
+			reset_enter_exit!
 			@angle = 0.0
 		end
 
 		def warp_to(node)
 			@node, @destination_node = node, nil
 			move_to_node!
+		end
+
+		def reset_enter_exit!
+			@entered_at, @enter_time = $env[:frame_time], 0.2		# TODO: configurable?
+			@exited_at, @exit_time = nil, 0.5		# TODO: configurable?
 		end
 
 		#
@@ -486,12 +490,14 @@ class DirectorEffectGamePacMap < DirectorEffect
 	setting 'hero_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
 	setting 'hero_speed', :float, :range => 0.0..1.0, :default => 0.01..1.0
 	setting 'hero_count', :integer, :range => 0..10, :default => 1..10
+	setting 'hero_respawns', :integer, :range => 0..1000, :default => 0..10
 	setting 'first_hero_input_variable', :variable
 
 	setting 'enemy', :actor
 	setting 'enemy_size', :float, :range => 0.0..1.0, :default => 0.03..1.0
 	setting 'enemy_speed', :float, :range => 0.0..1.0, :default => 0.01..1.0
 	setting 'enemy_count', :integer, :range => 0..10, :default => 1..10
+	setting 'enemy_respawns', :integer, :range => 0..1000, :default => 0..10
 	setting 'first_enemy_input_variable', :variable
 	setting 'ai_mode', :select, :default => :off, :options => [[:off, 'Off'], [:random, 'Random'], [:seek, 'Seek']]
 
@@ -608,6 +614,8 @@ class DirectorEffectGamePacMap < DirectorEffect
 	def start_game!
 		@map.spawn_pellets!(pellet_spacing, node_size)
 		@state = :game
+		@hero_respawns_remaining = hero_respawns
+		@enemy_respawns_remaining = enemy_respawns
 		@map.powerpellets.each { |powerpellet| powerpellet.not_used! }
 		$engine.on_button_press('Game / Start', 1)
 	end
@@ -667,6 +675,20 @@ class DirectorEffectGamePacMap < DirectorEffect
 		end
 	end
 
+	def respawn_hero!(hero)
+		if(base = @map.herobases.random)
+			hero.warp_to(base.node)
+			hero.reset_enter_exit!
+		end
+	end
+
+	def respawn_enemy!(enemy)
+		if(base = @map.enemybases.random)
+			enemy.warp_to(base.node)
+			enemy.reset_enter_exit!
+		end
+	end
+
 	def tick_characters!
 		hit_distance = (hero_size / 2)									# pellets are considered points for the purpose of collisions
 		max_step_distance = hero_size										# this ensures complete hero hit coverage of the line
@@ -678,7 +700,16 @@ class DirectorEffectGamePacMap < DirectorEffect
 				hero.tick(hero_speed / steps)
 
 				if hero.exiting?
-					active_hero = true unless hero.exited?
+					if hero.exited?
+						# respawn?
+						if @hero_respawns_remaining > 0
+							respawn_hero!(hero)
+							@hero_respawns_remaining -= 1
+							active_hero = true
+						end
+					else
+						active_hero = true
+					end
 
 				else
 					active_hero = true
@@ -729,6 +760,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 			}
 		}
 
+		# No more heroes?
 		unless (active_hero or @map.heroes.empty?)
 			$engine.on_button_press('Game / Enemy Win', 1)
 			end_game!
@@ -736,6 +768,14 @@ class DirectorEffectGamePacMap < DirectorEffect
 
 		@map.enemies.each { |enemy|
 			enemy.tick(enemy_speed)
+
+			if enemy.exited?
+				# respawn?
+				if (@enemy_respawns_remaining > 0) && (!powerpellet_active?)		# no enemy respawning while powerpellet active
+					respawn_enemy!(enemy)
+					@enemy_respawns_remaining -= 1
+				end
+			end
 
 			# Enemies vs Portals
 			@map.portals.each { |portal|
