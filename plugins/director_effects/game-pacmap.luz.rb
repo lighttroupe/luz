@@ -769,23 +769,23 @@ class DirectorEffectGamePacMap < DirectorEffect
 		@map.enemies.each { |enemy|
 			enemy.tick(enemy_speed)
 
+			# Respawn Enemy?
 			if enemy.exited?
-				# respawn?
 				if (@enemy_respawns_remaining > 0) && (!powerpellet_active?)		# no enemy respawning while powerpellet active
 					respawn_enemy!(enemy)
 					@enemy_respawns_remaining -= 1
 				end
-			end
-
-			# Enemies vs Portals
-			@map.portals.each { |portal|
-				if (enemy.destination_node == portal.node) and (enemy.position.distance_to_within?(portal.position, hit_distance))
-					if (other_portal = @map.other_portal(portal))
-						$engine.on_button_press('Game / Enemy Portal', 1)
-						enemy.warp_to(other_portal.node)
+			else
+				# Enemies vs Portals
+				@map.portals.each { |portal|
+					if (enemy.destination_node == portal.node) and (enemy.position.distance_to_within?(portal.position, hit_distance))
+						if (other_portal = @map.other_portal(portal))
+							$engine.on_button_press('Game / Enemy Portal', 1)
+							enemy.warp_to(other_portal.node)
+						end
 					end
-				end
-			}
+				}
+			end
 		}
 	end
 
