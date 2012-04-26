@@ -752,7 +752,7 @@ class DirectorEffectGamePacMap < DirectorEffect
 	def end_game!
 		@map.exit_characters!
 		@map.pellets.clear
-		@countdown = 120		# TODO: time based?
+		@countdown = 80		# TODO: time based?
 		@state = :postgame
 	end
 
