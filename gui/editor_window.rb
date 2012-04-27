@@ -510,6 +510,14 @@ private
 			return negative_message('Saving project failed.') unless $engine.project.save_copy_to_path(project_file_path)
 		end
 
+# TODO: TEMPORARY HACK FOR RENN FAYRE
+if $webcams
+	puts "pre close"
+	$webcams.each { |num, camera| camera.close }
+	puts "post close"
+	$webcams.clear
+end
+
 		# determine resolution to use
 		fullscreen_resolution = $settings['performer-resolution']
 
