@@ -1,0 +1,23 @@
+#!/usr/bin/env ruby
+require 'fileutils'
+
+puts 'Getting needed software to build V4L...'
+`sudo apt-get -y install ruby1.9.1 ruby1.8-dev ruby1.9.1-dev libv4l-dev`
+
+puts 'Building V4L for Ruby 1.8...'
+FileUtils.rm_f '1.8/video4linux2.so'
+`ruby1.8 extconf.rb`
+`make clean`
+`make`
+
+FileUtils.mkdir_p '1.8'
+FileUtils.mv 'video4linux2.so', '1.8/video4linux2.so'
+
+puts 'Building V4L for Ruby 1.9...'
+FileUtils.rm_f '1.9/video4linux2.so'
+`ruby1.9.1 extconf.rb`
+`make clean`
+`make`
+
+FileUtils.mkdir_p '1.9'
+FileUtils.mv 'video4linux2.so', '1.9/video4linux2.so'

@@ -31,8 +31,8 @@ static VALUE Video4Linux2_Camera_data(VALUE self) {
 		return camera->ruby_string_buffer;
 }
 
-static VALUE Video4Linux2_Camera_free(void* p) {
-	return Qnil;		// TODO
+static VALUE Video4Linux2_Camera_free(VALUE self) {
+	return Qnil;
 }
 
 static VALUE Video4Linux2_Camera_new(VALUE klass, VALUE v_device_path, VALUE v_width, VALUE v_height) {
@@ -66,6 +66,13 @@ static VALUE Video4Linux2_Camera_new(VALUE klass, VALUE v_device_path, VALUE v_w
 	return Data_Wrap_Struct(vCameraClass, 0, Video4Linux2_Camera_free, camera);
 }
 
+static VALUE Video4Linux2_Camera_close(VALUE self) {
+	camera_t* camera = NULL;
+	Data_Get_Struct(self, camera_t, camera);
+	v4l2_close(camera->fd);
+	return Qnil;
+}
+
 // This function is 'main' and is discovered by Ruby automatically due to its name
 void Init_video4linux2() {
 	vModule = rb_define_module("Video4Linux2");
@@ -76,4 +83,5 @@ void Init_video4linux2() {
 	rb_define_method(vCameraClass, "width", &Video4Linux2_Camera_width, 0);
 	rb_define_method(vCameraClass, "height", &Video4Linux2_Camera_height, 0);
 	rb_define_method(vCameraClass, "data", &Video4Linux2_Camera_data, 0);
+	rb_define_method(vCameraClass, "close", &Video4Linux2_Camera_close, 0);
 }
