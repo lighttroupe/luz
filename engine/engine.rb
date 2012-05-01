@@ -128,7 +128,7 @@ class Engine
 	###################################################################
 	# Init / Shutdown
 	###################################################################
-	def initialize
+	def initialize(options = {})
 		@simulation_speed = 1.0
 		@paused = false
 		@frame_number, @time = 0, 0.0
@@ -151,10 +151,22 @@ class Engine
 
 		@perspective = [-0.5, 0.5, -0.5, 0.5]
 
-		@message_bus = MessageBus.new.listen(MESSAGE_BUS_IP, MESSAGE_BUS_PORT)
-		@message_bus.on_button_down(&method(:on_button_down))
-		@message_bus.on_button_up(&method(:on_button_up))
-		@message_bus.on_slider_change(&method(:on_slider_change))
+		@message_buses = []
+		add_message_bus(options[:listen_ip] || MESSAGE_BUS_IP, options[:listen_port] || MESSAGE_BUS_PORT)
+
+		@message_buses.last.add_relay_port(options[:relay_port]) if(options[:relay_port])
+	end
+
+	def reset_time!
+		@time = 0.0
+	end
+
+	def add_message_bus(ip, port)
+		message_bus = MessageBus.new.listen(ip, port)
+		message_bus.on_button_down(&method(:on_button_down))
+		message_bus.on_button_up(&method(:on_button_up))
+		message_bus.on_slider_change(&method(:on_slider_change))
+		@message_buses << message_bus
 	end
 
 	def add_to_engine_time(amount)
@@ -397,7 +409,7 @@ private
 		@add_to_engine_time = 0.0
 
 		# Update inputs
-		@message_bus.update
+		@message_buses.each { |bus| bus.update }
 
 		update_environment
 
