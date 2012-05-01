@@ -30,8 +30,8 @@ end
 class OSCServer
 	READ_LIMIT = 1024*8   # any big number (NOTE: too big and read_nonblock sometimes takes a really long time...)
 
-	attr_reader :ignored_message_count
-	attr_reader :error_count
+	attr_reader :ignored_message_count, :error_count
+	attr_accessor :relay_port
 
 	def initialize
 		@socket = UDPSocket.new.set_reuse_address_flag
@@ -40,9 +40,6 @@ class OSCServer
 	end
 
 	def listen(address, port)
-		# Multicast receiving.
-		# The first IP is a multicast address group to join.
-		# The second is a local interface.  0.0.0.0 means any.
 		ip = IPAddr.new(address).hton + IPAddr.new('0.0.0.0').hton
 		@socket.setsockopt(Socket::IPPROTO_IP, Socket::IP_ADD_MEMBERSHIP, ip) rescue Errno::ENODEV	# don't die if there are no networks present to do this on
 		@socket.bind(Socket::INADDR_ANY, port)
@@ -59,6 +56,10 @@ class OSCServer
 
 				OSC::Packet.decode(data) { |address, args| on_new_message(address, args) }
 				max_packets -= 1 if max_packets
+
+				# Relaying of received data to work around single-UDP-receiver-at-a-time problem when running both editor and performer on same pc
+				@socket.send(data, 0, "127.0.0.1", @relay_port) if @relay_port
+
 				return if max_packets == 0
 			}
 		rescue Errno::EAGAIN
