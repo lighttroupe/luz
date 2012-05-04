@@ -486,6 +486,15 @@ private
 
 	attr_reader :current_file_path
 
+	def on_play_in_window_button_clicked
+		return negative_message('Save project first.') if (@current_file_path.nil? or $engine.project_changed?)
+		begin
+			run_performer!(fullscreen=false)
+		rescue Exception => e
+			EasyDialog.new(self, :icon => :error, :header => "Run Windowed Failed", :body => e.to_s, :buttons => [[:ok, 'OK', :ok]]).show
+		end
+	end
+
 	def on_play_button_clicked
 		begin
 			run_performer!
@@ -494,7 +503,7 @@ private
 		end
 	end
 
-	def run_performer!
+	def run_performer!(fullscreen=true)
 		if @current_file_path
 			if $engine.project_changed?
 				# save to temporary file in current location (ensures that resources can be loaded)
@@ -512,9 +521,7 @@ private
 
 # TODO: TEMPORARY HACK FOR RENN FAYRE
 if $webcams
-	puts "pre close"
 	$webcams.each { |num, camera| camera.close }
-	puts "post close"
 	$webcams.clear
 end
 
@@ -531,10 +538,20 @@ end
 
 		ruby_executable = $settings['use-ruby-one-nine'] ? 'ruby1.9.1' : 'ruby'
 
-		# Launch Performer, then pause the editor.  Read from Performer so that its buffer doesn't fill.  NOTE: save output?
-		printf("Executing: %s\n", cmd = "#{ruby_executable} ./#{PERFORMER_EXECUTABLE_NAME} --fullscreen --width #{width} --height #{height} --frames-per-second #{fps} \"#{project_file_path}\"")
+		if fullscreen
+			# Launch Performer, then pause the editor.  Read from Performer so that its buffer doesn't fill.  NOTE: save output?
+			printf("Executing: %s\n", cmd = "#{ruby_executable} ./#{PERFORMER_EXECUTABLE_NAME} --fullscreen --width #{width} --height #{height} --frames-per-second #{fps} \"#{project_file_path}\"")
+			open("|#{cmd}") { |f| sleep 1 ; pause ; begin ; while s=f.readpartial(1024) ; puts s ; end ; rescue Exception => e ; unpause ; end ; }	# NOTE: the 'sleep 1' lets the Performer take over the screen before we make changes in the GUI when we pause (fewer changes = better)
+		else
+			# Add a second message bus port-- a hack to get around UDP broadcast receiving limit of one listening process (latest opened)
+			relay_port = MESSAGE_BUS_PORT + 10
+			$engine.add_message_bus(MESSAGE_BUS_IP, relay_port) unless @second_message_bus_opened
+			@second_message_bus_opened = true
 
-		open("|#{cmd}") { |f| sleep 1 ; pause ; begin ; while s=f.readpartial(1024) ; puts s ; end ; rescue Exception => e ; unpause ; end ; }	# NOTE: the 'sleep 1' lets the Performer take over the screen before we make changes in the GUI when we pause (fewer changes = better)
+			# Launch Windowed
+			printf("Executing: %s\n", cmd = "#{ruby_executable} ./#{PERFORMER_EXECUTABLE_NAME} --window --relay #{relay_port} --width #{width} --height #{height} --frames-per-second #{fps} \"#{project_file_path}\"")
+			fork { exec(cmd) }
+		end
 	end
 
 	def on_show_preferences_menuitem_activate
@@ -613,8 +630,12 @@ end
 		positive_message "#{ObjectSpace.object_count} objects, #{ObjectSpace.object_count(Gtk::Widget)} Gtk+ widgets"
 	end
 
-	def on_garbage_collect
-		positive_message "(Cleanup took #{start = Time.now ; $application.do_gc ; Time.now - start} seconds.)"
+	def on_git_committer
+		if @current_file_path
+			open("|./luz_git_committer.rb \"#{$engine.project.file_path}\"")
+		else
+			negative_message('No project loaded.')
+		end
 	end
 
 	def on_edit_plugin_source_activate
