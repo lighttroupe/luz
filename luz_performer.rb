@@ -43,7 +43,7 @@ class LuzPerformer
 
 	SDL_TO_LUZ_BUTTON_NAMES = {'`' => 'Grave', '\\' => 'Backslash', '[' => 'Left Bracket', ']' => 'Right Bracket', ';' => 'Semicolon', "'" => 'Apostrophe', '/' => 'Slash', '.' => 'Period', ',' => 'Comma', '-' => 'Minus', '=' => 'Equal', 'left ctrl' => 'Left Control', 'right ctrl' => 'Right Control'}
 
-	attr_accessor :width, :height, :fullscreen, :border, :bits_per_pixel, :frames_per_second
+	attr_accessor :width, :height, :fullscreen, :border, :bits_per_pixel, :frames_per_second, :relay_port
 	boolean_accessor :finished, :escape_quits
 
 	def initialize
@@ -87,7 +87,7 @@ class LuzPerformer
 
 		# Create Luz Engine
 		require 'engine'
-		$engine = Engine.new
+		$engine = Engine.new(:relay_port => @relay_port)
 		$engine.post_initialize
 		$engine.load_plugins
 
@@ -219,6 +219,9 @@ options = OptionParser.new do |opts|
 	end
 	opts.on("--borderless", "Borderless") do
 		$application.border = false
+	end
+	opts.on("--relay <number>", Integer, 'Relay all received input to this local UDP port number') do |port|
+		$application.relay_port = port.to_i
 	end
 	opts.on("--record", "Record Mode") do
 		@record_video = true
