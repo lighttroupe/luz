@@ -68,6 +68,7 @@ class Engine
 
 		def with_env(var, value)
 			old_value = $env[var]
+			return yield if (value == old_value)
 			$env[var] = value			# TODO: make cumulative += version
 			yield
 			$env[var] = old_value
@@ -75,6 +76,7 @@ class Engine
 
 		def with_enter_and_exit(enter, exit)
 			old_enter, old_exit = $env[:enter], $env[:exit]
+			return yield if (enter == old_enter && exit == old_exit)
 			$env[:enter], $env[:exit] = enter.clamp(0.0, 1.0), exit.clamp(0.0, 1.0)
 			yield
 			$env[:enter], $env[:exit] = old_enter, old_exit
@@ -108,6 +110,11 @@ class Engine
 	attr_accessor :director, :theme, :simulation_speed, :frame_number
 	attr_reader :project, :background_color
 	boolean_accessor :paused
+
+	def paused=(pause)
+		project.effects.each { |effect| effect.pause if effect.respond_to? :pause } if pause and !@paused
+		@paused = pause
+	end
 
 	def beat!
 		@beat_detector.beat!(@frame_time)
@@ -152,9 +159,10 @@ class Engine
 		@perspective = [-0.5, 0.5, -0.5, 0.5]
 
 		@message_buses = []
-		add_message_bus(options[:listen_ip] || MESSAGE_BUS_IP, options[:listen_port] || MESSAGE_BUS_PORT)
-
-		@message_buses.last.add_relay_port(options[:relay_port]) if(options[:relay_port])
+		if defined? MessageBus
+			add_message_bus(options[:listen_ip] || MESSAGE_BUS_IP, options[:listen_port] || MESSAGE_BUS_PORT)
+			@message_buses.last.relay_port = options[:relay_port] if options[:relay_port]
+		end
 	end
 
 	def reset_time!
