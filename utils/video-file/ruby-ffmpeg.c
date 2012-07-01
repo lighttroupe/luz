@@ -10,9 +10,7 @@ int g_ffmpeg_initialized = 0;
 static void init_ffmpeg() {
 	if(g_ffmpeg_initialized == 1) { return; }
 	printf("ruby-ffmpeg: initializing...\n");
-	// Register all formats and codecs
-	av_register_all();
-
+	av_register_all();		// Register all formats and codecs
 	g_ffmpeg_initialized = 1;
 }
 
@@ -29,6 +27,43 @@ static VALUE FFmpeg_File_height(VALUE self) {
 }
 
 static VALUE FFmpeg_File_data(VALUE self) {
+	video_file_t* video_file = NULL;
+	Data_Get_Struct(self, video_file_t, video_file);
+
+	AVFrame picture;
+
+	int frame_finished = 0;
+	while(av_read_frame(video_file->pFormatCtx, &(video_file->packet)) >= 0) {
+		// Is this a packet from the video stream?
+		if(video_file->packet.stream_index == video_file->video_index) {
+			// Decode video frame
+			avcodec_decode_video2(video_file->pCodecCtx, video_file->pFrame, &frame_finished, &(video_file->packet));
+
+			// Did we get a video frame?
+			if(frame_finished > 0) {
+
+				int
+					width   = video_file->pCodecCtx->width,
+					height  = video_file->pCodecCtx->height,
+					width2  = ( width  + 1 ) / 2,
+					height2 = ( height + 1 ) / 2,
+					widtha  = ( width  + 7 ) & ~0x7,
+					width2a = ( width2 + 7 ) & ~0x7;
+
+					picture.data[0] = (uint8_t *)RSTRING_PTR(video_file->ruby_string_buffer);
+					picture.data[2] = (uint8_t *)RSTRING_PTR(video_file->ruby_string_buffer) + widtha * height;
+					picture.data[1] = (uint8_t *)picture.data[2] + width2a * height2;
+					picture.linesize[0] = widtha;
+					picture.linesize[1] = width2a;
+					picture.linesize[2] = width2a;
+
+				 sws_scale( video_file->sws_context, (video_file->pFrame->data), video_file->pFrame->linesize, 0,
+										 video_file->pCodecCtx->height, picture.data, picture.linesize );
+
+				return video_file->ruby_string_buffer;
+			}
+		}
+	}
 	return Qnil;
 }
 
@@ -64,16 +99,15 @@ static VALUE FFmpeg_File_new(VALUE klass, VALUE v_file_path) {
 
 	dump_format(video_file->pFormatCtx, 0, file_path, 0);
 
-	int video_index = -1;
 	int i;
 	for(i=0; i<(video_file->pFormatCtx->nb_streams); i++) {
 		if(video_file->pFormatCtx->streams[i]->codec->codec_type == CODEC_TYPE_VIDEO) {
-			video_index = i;
+			video_file->video_index = i;
 			break;
 		}
 	}
 
-	video_file->pCodecCtx = video_file->pFormatCtx->streams[video_index]->codec;
+	video_file->pCodecCtx = video_file->pFormatCtx->streams[video_file->video_index]->codec;
 
 	// Find the decoder for the video stream
 	video_file->pCodec = avcodec_find_decoder(video_file->pCodecCtx->codec_id);
@@ -85,8 +119,27 @@ static VALUE FFmpeg_File_new(VALUE klass, VALUE v_file_path) {
 	if(avcodec_open(video_file->pCodecCtx, video_file->pCodec) < 0)
 		return Qnil;
 
-	video_file->width = 1;
-	video_file->height = 5;
+	video_file->sws_context = sws_getContext( video_file->pCodecCtx->width, video_file->pCodecCtx->height,
+																 video_file->pCodecCtx->pix_fmt,
+																 video_file->pCodecCtx->width, video_file->pCodecCtx->height,
+																 PIX_FMT_YUV420P, SWS_FAST_BILINEAR, 0, 0, 0 );
+
+	video_file->pFrame = avcodec_alloc_frame();
+	video_file->pFrameRGB = avcodec_alloc_frame();
+
+	int buffer_size = avpicture_get_size(PIX_FMT_RGB24, video_file->pCodecCtx->width, video_file->pCodecCtx->height);
+
+// TODO: do we need to use av_malloc ... uint8_t* buffer = (uint8_t *)av_malloc(numBytes * sizeof(uint8_t));
+
+	char* temp_buffer = ALLOC_N(char, buffer_size);		// rb_str_new() sometimes segfaults with just ""
+	video_file->ruby_string_buffer = rb_str_new(temp_buffer, buffer_size);
+	rb_gc_register_address(&(video_file->ruby_string_buffer));		// otherwise Ruby will delete our string!
+
+	printf("ruby-ffmpeg: frame size: %d\n", buffer_size);
+
+	// "Assign appropriate parts of buffer to image planes in pFrameRGB"
+	// "Note that pFrameRGB is an AVFrame, but AVFrame is a superset of AVPicture"
+	avpicture_fill((AVPicture *)(video_file->pFrameRGB), RSTRING_PTR(video_file->ruby_string_buffer), PIX_FMT_RGB24, video_file->pCodecCtx->width, video_file->pCodecCtx->height);
 
 	//
 	// ?

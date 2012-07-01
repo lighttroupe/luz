@@ -12,14 +12,21 @@
 
 typedef struct {
 	int fd;
-	VALUE ruby_string_buffer;			// We use a ruby String variable to pass frames around
 
 	AVFormatContext *pFormatCtx;
 	AVCodecContext  *pCodecCtx;
 	AVCodec         *pCodec;
 
+	int video_index;
+
 	AVFrame         *pFrame; 
+
+	struct SwsContext *sws_context;
+
 	AVFrame         *pFrameRGB;
+
+	VALUE ruby_string_buffer;			// We use a ruby String variable to pass frames around
+
 	AVPacket        packet;
 
 } video_file_t;
