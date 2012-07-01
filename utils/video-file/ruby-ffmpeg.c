@@ -9,7 +9,7 @@ int g_ffmpeg_initialized = 0;
 
 static void init_ffmpeg() {
 	if(g_ffmpeg_initialized == 1) { return; }
-	printf("Initializing FFmpeg...\n");
+	printf("ruby-ffmpeg: initializing...\n");
 	// Register all formats and codecs
 	av_register_all();
 
@@ -19,13 +19,13 @@ static void init_ffmpeg() {
 static VALUE FFmpeg_File_width(VALUE self) {
 	video_file_t* video_file = NULL;
 	Data_Get_Struct(self, video_file_t, video_file);
-	return INT2FIX(video_file->width);
+	return INT2FIX(video_file->pCodecCtx->width);
 }
 
 static VALUE FFmpeg_File_height(VALUE self) {
 	video_file_t* video_file = NULL;
 	Data_Get_Struct(self, video_file_t, video_file);
-	return INT2FIX(video_file->height);
+	return INT2FIX(video_file->pCodecCtx->height);
 }
 
 static VALUE FFmpeg_File_data(VALUE self) {
@@ -54,8 +54,36 @@ static VALUE FFmpeg_File_new(VALUE klass, VALUE v_file_path) {
 	//
 	// Open video file
 	//
+	printf("ruby-ffmpeg: opening %s...\n", file_path);
+
 	if(av_open_input_file(&(video_file->pFormatCtx), file_path, NULL, 0, NULL) != 0)
-		return Qnil; // Couldn't open file
+		return Qnil;
+
+	if(av_find_stream_info(video_file->pFormatCtx) < 0)
+		return Qnil;
+
+	dump_format(video_file->pFormatCtx, 0, file_path, 0);
+
+	int video_index = -1;
+	int i;
+	for(i=0; i<(video_file->pFormatCtx->nb_streams); i++) {
+		if(video_file->pFormatCtx->streams[i]->codec->codec_type == CODEC_TYPE_VIDEO) {
+			video_index = i;
+			break;
+		}
+	}
+
+	video_file->pCodecCtx = video_file->pFormatCtx->streams[video_index]->codec;
+
+	// Find the decoder for the video stream
+	video_file->pCodec = avcodec_find_decoder(video_file->pCodecCtx->codec_id);
+	if(video_file->pCodec == NULL) {
+		fprintf(stderr, "Unsupported codec!\n");
+		return Qnil;
+	}
+
+	if(avcodec_open(video_file->pCodecCtx, video_file->pCodec) < 0)
+		return Qnil;
 
 	video_file->width = 1;
 	video_file->height = 5;

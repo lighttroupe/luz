@@ -17,12 +17,10 @@ typedef struct {
 	AVFormatContext *pFormatCtx;
 	AVCodecContext  *pCodecCtx;
 	AVCodec         *pCodec;
+
 	AVFrame         *pFrame; 
 	AVFrame         *pFrameRGB;
 	AVPacket        packet;
-
-	int width;
-	int height;
 
 } video_file_t;
 
