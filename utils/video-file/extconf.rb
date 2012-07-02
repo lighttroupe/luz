@@ -1,11 +1,11 @@
 #!/usr/bin/env ruby
 require 'mkmf'
 
-dir_config('avformat');
+dir_config('ffmpeg');
 
 if have_library('avformat', 'av_open_input_file') &&
 	have_library('swscale', 'sws_getContext')
-  create_makefile('avformat');
+	create_makefile('ffmpeg');
 else
-  raise 'No avformat library found.'
+	raise 'Missing needed development libraries (avformat, swscale).'
 end

@@ -7,7 +7,7 @@ VALUE vModule;
 VALUE vFileClass;
 int g_ffmpeg_initialized = 0;
 
-static void init_ffmpeg() {
+static void lazy_init_ffmpeg() {
 	if(g_ffmpeg_initialized == 1) { return; }
 	printf("ruby-ffmpeg: initializing...\n");
 	av_register_all();		// Register all formats and codecs
@@ -54,7 +54,7 @@ static VALUE FFmpeg_File_free(VALUE self) {
 }
 
 static VALUE FFmpeg_File_new(VALUE klass, VALUE v_file_path) {
-	init_ffmpeg();		// lazy init
+	lazy_init_ffmpeg();
 	char* file_path = RSTRING_PTR(v_file_path);		// eg. "/dev/video0"
 
 	video_file_t* video_file = ALLOC_N(video_file_t, 1);
@@ -124,7 +124,7 @@ static VALUE FFmpeg_File_close(VALUE self) {
 }
 
 // This function is 'main' and is discovered by Ruby automatically due to its name
-void Init_avformat() {
+void Init_ffmpeg() {
 	vModule = rb_define_module("FFmpeg");
 	vFileClass = rb_define_class_under(vModule, "File", rb_cObject);
 
