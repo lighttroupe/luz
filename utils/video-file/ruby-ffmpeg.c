@@ -30,8 +30,6 @@ static VALUE FFmpeg_File_data(VALUE self) {
 	video_file_t* video_file = NULL;
 	Data_Get_Struct(self, video_file_t, video_file);
 
-	AVFrame picture;
-
 	int frame_finished = 0;
 	while(av_read_frame(video_file->av_format_context, &(video_file->packet)) >= 0) {
 		// Is this a packet from the video stream?
@@ -46,7 +44,8 @@ static VALUE FFmpeg_File_data(VALUE self) {
 			}
 		}
 	}
-	return Qnil;
+	av_seek_frame(video_file->av_format_context, -1, 0, 0);
+	return Qnil;		// TODO: better to now decode a new frame?
 }
 
 static VALUE FFmpeg_File_free(VALUE self) {
