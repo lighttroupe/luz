@@ -15,7 +15,7 @@ class ActorEffectVideoFile < ActorEffect
 
 	def reload_if_needed
 		if file_name != @file_name
-			if File.exist? (path=File.join($engine.project.file_path, file_name))
+			if $engine.project.file_path && File.exist? (path=File.join($engine.project.file_path, file_name))
 				if (file = FFmpeg::File.new(path))
 					@file = file
 				end
