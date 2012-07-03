@@ -81,6 +81,9 @@ static VALUE FFmpeg_File_new(VALUE klass, VALUE v_file_path) {
 	}
 	video_file->av_codec_context = video_file->av_format_context->streams[video_file->video_index]->codec;
 
+	// Calculations
+	video_file->time_base_per_frame = ((int64_t)(video_file->av_codec_context->time_base.num) * AV_TIME_BASE) / (int64_t)(video_file->av_codec_context->time_base.den);
+
 	// Find decoder for video stream
 	video_file->av_codec = avcodec_find_decoder(video_file->av_codec_context->codec_id);
 	if(video_file->av_codec == NULL) {
@@ -118,6 +121,23 @@ static VALUE FFmpeg_File_new(VALUE klass, VALUE v_file_path) {
 	return Data_Wrap_Struct(vFileClass, 0, FFmpeg_File_free, video_file);
 }
 
+static VALUE FFmpeg_File_seek_to_frame(VALUE self, VALUE vFrameIndex) {
+	video_file_t* video_file = NULL;
+	Data_Get_Struct(self, video_file_t, video_file);
+	int frameIndex = NUM2INT(vFrameIndex);
+
+	if(!(video_file->av_format_context)) {
+		return Qfalse;
+	}
+
+	int64_t seekTarget = (int64_t)(frameIndex) * video_file->time_base_per_frame;
+
+	if(av_seek_frame(video_file->av_format_context, -1, seekTarget, AVSEEK_FLAG_ANY) < 0) {
+		return Qfalse;
+	}
+	return Qtrue;
+}
+
 static VALUE FFmpeg_File_close(VALUE self) {
 	return Qnil;
 }
@@ -132,5 +152,6 @@ void Init_ffmpeg() {
 	rb_define_method(vFileClass, "width", &FFmpeg_File_width, 0);
 	rb_define_method(vFileClass, "height", &FFmpeg_File_height, 0);
 	rb_define_method(vFileClass, "data", &FFmpeg_File_data, 0);
+	rb_define_method(vFileClass, "seek_to_frame", &FFmpeg_File_seek_to_frame, 1);
 	rb_define_method(vFileClass, "close", &FFmpeg_File_close, 0);
 }

@@ -7,6 +7,7 @@ class ActorEffectVideoFile < ActorEffect
 	description ""
 
 	setting 'file_name', :string
+	#setting 'progress', :float, :range => 0.0..1.0
 
 	def after_load
 		require 'video-file/ffmpeg'
@@ -28,6 +29,7 @@ class ActorEffectVideoFile < ActorEffect
 		reload_if_needed
 		return yield unless @file
 
+		#@file.seek_to_frame(progress * 500)
 		@file.with_frame {
 			yield
 		}
