@@ -19,26 +19,26 @@ module EngineImages
 		with_watch(file_path) {
 			@images_cache[file_path] ||= []		# this is what's returned, so this should not be replaced with a new []
 
-			case File.extname(file_path).downcase
-			when '.png', '.jpg', '.jpeg', '.bmp'
-				@images_cache[file_path][0] ||= Image.new
-				timer("load #{path}", :if_over => 0.1) {
+			timer("load #{path}", :if_over => 0.1) {
+				case File.extname(file_path).downcase
+				when '.png', '.jpg', '.jpeg', '.bmp'
+					@images_cache[file_path][0] ||= Image.new
 					@images_cache[file_path][0].from_image_file_path(file_path)
-				}
-				ret = @images_cache[file_path]
-			when '.gif'
-				begin
-					list = Magick::ImageList.new(file_path).coalesce
-					image_list = @images_cache[file_path]
-					list.each_with_index { |rmagick_image, index| image_list[index] ||= Image.new ; image_list[index].load_from_rmagick_image(rmagick_image) }
-					ret = image_list
-				rescue
+					ret = @images_cache[file_path]
+				when '.gif'
+					begin
+						list = Magick::ImageList.new(file_path).coalesce
+						image_list = @images_cache[file_path]
+						list.each_with_index { |rmagick_image, index| image_list[index] ||= Image.new ; image_list[index].load_from_rmagick_image(rmagick_image) }
+						ret = image_list
+					rescue
+						ret = false
+					end
+				else
+					puts "unhandled image file type for #{file_path}"
 					ret = false
 				end
-			else
-				puts "unhandled image file type for #{file_path}"
-				ret = false
-			end
+			}
 		}
 		return ret
 	end
