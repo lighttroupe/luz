@@ -17,13 +17,13 @@ static void lazy_init_ffmpeg() {
 static VALUE FFmpeg_File_width(VALUE self) {
 	video_file_t* video_file = NULL;
 	Data_Get_Struct(self, video_file_t, video_file);
-	return INT2FIX(video_file->pCodecCtx->width);
+	return INT2FIX(video_file->av_codec_context->width);
 }
 
 static VALUE FFmpeg_File_height(VALUE self) {
 	video_file_t* video_file = NULL;
 	Data_Get_Struct(self, video_file_t, video_file);
-	return INT2FIX(video_file->pCodecCtx->height);
+	return INT2FIX(video_file->av_codec_context->height);
 }
 
 static VALUE FFmpeg_File_data(VALUE self) {
@@ -33,15 +33,15 @@ static VALUE FFmpeg_File_data(VALUE self) {
 	AVFrame picture;
 
 	int frame_finished = 0;
-	while(av_read_frame(video_file->pFormatCtx, &(video_file->packet)) >= 0) {
+	while(av_read_frame(video_file->av_format_context, &(video_file->packet)) >= 0) {
 		// Is this a packet from the video stream?
 		if(video_file->packet.stream_index == video_file->video_index) {
 			// Decode video frame
-			avcodec_decode_video2(video_file->pCodecCtx, video_file->pFrame, &frame_finished, &(video_file->packet));
+			avcodec_decode_video2(video_file->av_codec_context, video_file->av_frame, &frame_finished, &(video_file->packet));
 
 			// Did we get a video frame?
 			if(frame_finished > 0) {
-				sws_scale(video_file->sws_context, (video_file->pFrame->data), video_file->pFrame->linesize, 0, video_file->pCodecCtx->height, video_file->pFrameRGB->data, video_file->pFrameRGB->linesize);
+				sws_scale(video_file->sws_context, (video_file->av_frame->data), video_file->av_frame->linesize, 0, video_file->av_codec_context->height, video_file->av_frame_rgb->data, video_file->av_frame_rgb->linesize);
 				return video_file->ruby_string_buffer;
 			}
 		}
@@ -64,45 +64,45 @@ static VALUE FFmpeg_File_new(VALUE klass, VALUE v_file_path) {
 	//
 	printf("ruby-ffmpeg: opening %s...\n", file_path);
 
-	if(av_open_input_file(&(video_file->pFormatCtx), file_path, NULL, 0, NULL) != 0)
+	if(av_open_input_file(&(video_file->av_format_context), file_path, NULL, 0, NULL) != 0)
 		return Qnil;
 
-	if(av_find_stream_info(video_file->pFormatCtx) < 0)
+	if(av_find_stream_info(video_file->av_format_context) < 0)
 		return Qnil;
 
-	dump_format(video_file->pFormatCtx, 0, file_path, 0);		// console debug output
+	dump_format(video_file->av_format_context, 0, file_path, 0);		// console debug output
 
 	// Find video stream
 	int i;
-	for(i=0; i<(video_file->pFormatCtx->nb_streams); i++) {
-		if(video_file->pFormatCtx->streams[i]->codec->codec_type == CODEC_TYPE_VIDEO) {
+	for(i=0; i<(video_file->av_format_context->nb_streams); i++) {
+		if(video_file->av_format_context->streams[i]->codec->codec_type == CODEC_TYPE_VIDEO) {
 			video_file->video_index = i;
 			break;
 		}
 	}
-	video_file->pCodecCtx = video_file->pFormatCtx->streams[video_file->video_index]->codec;
+	video_file->av_codec_context = video_file->av_format_context->streams[video_file->video_index]->codec;
 
 	// Find decoder for video stream
-	video_file->pCodec = avcodec_find_decoder(video_file->pCodecCtx->codec_id);
-	if(video_file->pCodec == NULL) {
+	video_file->av_codec = avcodec_find_decoder(video_file->av_codec_context->codec_id);
+	if(video_file->av_codec == NULL) {
 		fprintf(stderr, "Unsupported codec!\n");
 		return Qnil;
 	}
 
-	if(avcodec_open(video_file->pCodecCtx, video_file->pCodec) < 0)
+	if(avcodec_open(video_file->av_codec_context, video_file->av_codec) < 0)
 		return Qnil;
 
 	// Get scaling context (eg. YUV=>RGB)
-	video_file->sws_context = sws_getContext(video_file->pCodecCtx->width, video_file->pCodecCtx->height,	// input size
-																video_file->pCodecCtx->pix_fmt,
-																video_file->pCodecCtx->width, video_file->pCodecCtx->height,	// output size
+	video_file->sws_context = sws_getContext(video_file->av_codec_context->width, video_file->av_codec_context->height,	// input size
+																video_file->av_codec_context->pix_fmt,
+																video_file->av_codec_context->width, video_file->av_codec_context->height,	// output size
 																//PIX_FMT_YUV420P, SWS_FAST_BILINEAR, 0, 0, 0 );
 																PIX_FMT_RGB24, SWS_FAST_BILINEAR, 0, 0, 0 );
 
-	video_file->pFrame = avcodec_alloc_frame();
-	video_file->pFrameRGB = avcodec_alloc_frame();
+	video_file->av_frame = avcodec_alloc_frame();
+	video_file->av_frame_rgb = avcodec_alloc_frame();
 
-	int buffer_size = avpicture_get_size(PIX_FMT_RGB24, video_file->pCodecCtx->width, video_file->pCodecCtx->height);
+	int buffer_size = avpicture_get_size(PIX_FMT_RGB24, video_file->av_codec_context->width, video_file->av_codec_context->height);
 
 // TODO: doesn't seem to need to use av_malloc ... uint8_t* buffer = (uint8_t *)av_malloc(numBytes * sizeof(uint8_t));
 
@@ -112,9 +112,9 @@ static VALUE FFmpeg_File_new(VALUE klass, VALUE v_file_path) {
 
 	printf("ruby-ffmpeg: frame size: %d\n", buffer_size);
 
-	// "Assign appropriate parts of buffer to image planes in pFrameRGB"
-	// "Note that pFrameRGB is an AVFrame, but AVFrame is a superset of AVPicture"
-	avpicture_fill((AVPicture *)(video_file->pFrameRGB), RSTRING_PTR(video_file->ruby_string_buffer), PIX_FMT_RGB24, video_file->pCodecCtx->width, video_file->pCodecCtx->height);
+	// "Assign appropriate parts of buffer to image planes in av_frame_rgb"
+	// "Note that av_frame_rgb is an AVFrame, but AVFrame is a superset of AVPicture"
+	avpicture_fill((AVPicture *)(video_file->av_frame_rgb), RSTRING_PTR(video_file->ruby_string_buffer), PIX_FMT_RGB24, video_file->av_codec_context->width, video_file->av_codec_context->height);
 
 	return Data_Wrap_Struct(vFileClass, 0, FFmpeg_File_free, video_file);
 }

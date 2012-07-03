@@ -12,23 +12,15 @@
 
 typedef struct {
 	int fd;
-
-	AVFormatContext *pFormatCtx;
-	AVCodecContext  *pCodecCtx;
-	AVCodec         *pCodec;
-
-	int video_index;
-
-	AVFrame         *pFrame; 
-
+	AVFormatContext *av_format_context;
+	AVCodecContext *av_codec_context;
+	AVCodec *av_codec;
+	int video_index;							// index of the first video stream in a file
+	AVPacket packet;
+	AVFrame *av_frame;
 	struct SwsContext *sws_context;
-
-	AVFrame         *pFrameRGB;
-
+	AVFrame *av_frame_rgb;
 	VALUE ruby_string_buffer;			// We use a ruby String variable to pass frames around
-
-	AVPacket        packet;
-
 } video_file_t;
 
 extern void Init_avformat();
