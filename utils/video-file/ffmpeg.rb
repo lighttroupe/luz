@@ -14,9 +14,20 @@ module FFmpeg
 	class File
 		def with_frame(offset=0)
 			@image ||= Image.new
+			@frame_index ||= 0
+			@last_frame_load ||= 0
 
-			new_data = self.data
-			@image.from_rgb8(new_data, self.width, self.height) if new_data
+			# Get next frame
+			if @last_frame_load < $env[:frame_number]
+				if(new_data = self.data)
+					@image.from_rgb8(new_data, self.width, self.height)
+					@frame_index += 1
+				else
+					self.seek_to_frame(0)
+					@frame_index = 0
+				end
+				@last_frame_load = $env[:frame_number]
+			end
 
 			@image.using {
 				yield

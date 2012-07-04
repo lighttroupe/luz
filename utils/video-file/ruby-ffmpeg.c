@@ -50,7 +50,6 @@ static VALUE FFmpeg_File_data(VALUE self) {
 			}
 		}
 	}
-	av_seek_frame(video_file->av_format_context, -1, 0, 0);
 	return Qnil;		// TODO: better to now decode a new frame?
 }
 
