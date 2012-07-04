@@ -7,24 +7,10 @@ class ActorEffectVideoFile < ActorEffect
 	description ""
 
 	setting 'file_name', :string
-	#setting 'progress', :float, :range => 0.0..1.0
-	setting 'play', :event
-
 
 	def after_load
 		require 'video-file/ffmpeg'
 		super
-	end
-
-	def reload_if_needed
-		if file_name != @file_name
-			if $engine.project.file_path && File.exist? (path=File.join($engine.project.file_path, file_name))
-				if (file = FFmpeg::File.new(path))
-					@file = file
-				end
-			end
-			@file_name = file_name
-		end
 	end
 
 	def tick
@@ -38,5 +24,18 @@ class ActorEffectVideoFile < ActorEffect
 		@file.with_frame {
 			yield
 		}
+	end
+
+private
+
+	def reload_if_needed
+		if file_name != @file_name
+			if $engine.project.file_path && File.exist?(path=File.join($engine.project.file_path, file_name))
+				if (file = FFmpeg::File.new(path))
+					@file = file
+				end
+			end
+			@file_name = file_name
+		end
 	end
 end
