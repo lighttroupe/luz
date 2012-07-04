@@ -26,6 +26,12 @@ static VALUE FFmpeg_File_height(VALUE self) {
 	return INT2FIX(video_file->av_codec_context->height);
 }
 
+static VALUE FFmpeg_File_frame_count(VALUE self) {
+	video_file_t* video_file = NULL;
+	Data_Get_Struct(self, video_file_t, video_file);
+	return INT2FIX(video_file->frame_count);
+}
+
 static VALUE FFmpeg_File_data(VALUE self) {
 	video_file_t* video_file = NULL;
 	Data_Get_Struct(self, video_file_t, video_file);
@@ -80,8 +86,6 @@ static VALUE FFmpeg_File_new(VALUE klass, VALUE v_file_path) {
 		}
 	}
 	video_file->av_codec_context = video_file->av_format_context->streams[video_file->video_index]->codec;
-
-	// Calculations
 	video_file->time_base_per_frame = ((int64_t)(video_file->av_codec_context->time_base.num) * AV_TIME_BASE) / (int64_t)(video_file->av_codec_context->time_base.den);
 
 	// Find decoder for video stream
@@ -118,21 +122,30 @@ static VALUE FFmpeg_File_new(VALUE klass, VALUE v_file_path) {
 	// "Note that av_frame_rgb is an AVFrame, but AVFrame is a superset of AVPicture"
 	avpicture_fill((AVPicture *)(video_file->av_frame_rgb), RSTRING_PTR(video_file->ruby_string_buffer), PIX_FMT_RGB24, video_file->av_codec_context->width, video_file->av_codec_context->height);
 
+	video_file->frame_count = video_file->av_format_context->streams[video_file->video_index]->nb_frames;
+	if(video_file->frame_count == AV_NOPTS_VALUE) {
+		// Alternate method of determining frame count: seek to end and measure duration
+		video_file->frame_count = video_file->av_format_context->streams[video_file->video_index]->duration / video_file->time_base_per_frame;
+		if(video_file->frame_count == AV_NOPTS_VALUE) {
+			// TODO: Seek to end and measure?
+		}
+	}
+
 	return Data_Wrap_Struct(vFileClass, 0, FFmpeg_File_free, video_file);
 }
 
 static VALUE FFmpeg_File_seek_to_frame(VALUE self, VALUE vFrameIndex) {
 	video_file_t* video_file = NULL;
 	Data_Get_Struct(self, video_file_t, video_file);
-	int frameIndex = NUM2INT(vFrameIndex);
+	int frame_index = NUM2INT(vFrameIndex);
 
 	if(!(video_file->av_format_context)) {
 		return Qfalse;
 	}
 
-	int64_t seekTarget = (int64_t)(frameIndex) * video_file->time_base_per_frame;
+	int64_t seek_target = (int64_t)(frame_index) * video_file->time_base_per_frame;
 
-	if(av_seek_frame(video_file->av_format_context, -1, seekTarget, AVSEEK_FLAG_ANY) < 0) {
+	if(av_seek_frame(video_file->av_format_context, -1, seek_target, AVSEEK_FLAG_ANY) < 0) {
 		return Qfalse;
 	}
 	return Qtrue;
@@ -151,6 +164,7 @@ void Init_ffmpeg() {
 	rb_define_singleton_method(vFileClass, "new", &FFmpeg_File_new, 1);
 	rb_define_method(vFileClass, "width", &FFmpeg_File_width, 0);
 	rb_define_method(vFileClass, "height", &FFmpeg_File_height, 0);
+	rb_define_method(vFileClass, "frame_count", &FFmpeg_File_frame_count, 0);
 	rb_define_method(vFileClass, "data", &FFmpeg_File_data, 0);
 	rb_define_method(vFileClass, "seek_to_frame", &FFmpeg_File_seek_to_frame, 1);
 	rb_define_method(vFileClass, "close", &FFmpeg_File_close, 0);
