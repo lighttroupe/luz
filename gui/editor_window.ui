@@ -635,16 +635,6 @@
                                               </object>
                                             </child>
                                             <child>
-                                              <object class="GtkMenuItem" id="garbage_collect1">
-                                                <property name="visible">True</property>
-                                                <property name="can_focus">False</property>
-                                                <property name="use_action_appearance">False</property>
-                                                <property name="label" translatable="yes">GIT Committer</property>
-                                                <accelerator key="u" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
-                                                <signal name="activate" handler="on_git_committer" swapped="no"/>
-                                              </object>
-                                            </child>
-                                            <child>
                                               <object class="GtkMenuItem" id="edit_plugin_source">
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">False</property>

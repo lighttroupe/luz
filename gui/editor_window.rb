@@ -630,14 +630,6 @@ end
 		positive_message "#{ObjectSpace.object_count} objects, #{ObjectSpace.object_count(Gtk::Widget)} Gtk+ widgets"
 	end
 
-	def on_git_committer
-		if @current_file_path
-			open("|./luz_git_committer.rb \"#{$engine.project.file_path}\"")
-		else
-			negative_message('No project loaded.')
-		end
-	end
-
 	def on_edit_plugin_source_activate
 		user_objects = @active_editor_window.selected_user_objects
 		return negative_message('Select an object first.') unless user_objects and !user_objects.empty?
