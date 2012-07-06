@@ -104,7 +104,7 @@ class RenderWindow < GladeWindow
 		#
 		# Recording
 		#
-		command = ("./luz_performer.rb --record --width #{width} --height #{height} --frames-per-second #{fps} \"#{project_path}\"")
+		command = ("#{ruby_executable} ./luz_performer.rb --record --width #{width} --height #{height} --frames-per-second #{fps} \"#{project_path}\"")
 
 		puts "Running: #{command}"
 
@@ -148,6 +148,10 @@ class RenderWindow < GladeWindow
 		@terminal.feed("$ #{argv.join(' ')}\n\r")
 
 		@terminal.fork_command(command, argv)
+	end
+
+	def ruby_executable
+		$settings['use-ruby-one-nine'] ? 'ruby1.9.1' : 'ruby'
 	end
 
 	def video_type

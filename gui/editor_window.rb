@@ -536,8 +536,6 @@ end
 
 		fps = $settings['performer-fps']
 
-		ruby_executable = $settings['use-ruby-one-nine'] ? 'ruby1.9.1' : 'ruby'
-
 		if fullscreen
 			# Launch Performer, then pause the editor.  Read from Performer so that its buffer doesn't fill.  NOTE: save output?
 			printf("Executing: %s\n", cmd = "#{ruby_executable} ./#{PERFORMER_EXECUTABLE_NAME} --fullscreen --width #{width} --height #{height} --frames-per-second #{fps} \"#{project_file_path}\"")
@@ -552,6 +550,10 @@ end
 			printf("Executing: %s\n", cmd = "#{ruby_executable} ./#{PERFORMER_EXECUTABLE_NAME} --window --relay #{relay_port} --width #{width} --height #{height} --frames-per-second #{fps} \"#{project_file_path}\"")
 			fork { exec(cmd) }
 		end
+	end
+
+	def ruby_executable
+		$settings['use-ruby-one-nine'] ? 'ruby1.9.1' : 'ruby'
 	end
 
 	def on_show_preferences_menuitem_activate

@@ -23,6 +23,7 @@ $LOAD_PATH.unshift('./utils').unshift('./gui').unshift('.')
 
 DEFAULT_GTK_RC_FILE = 'luz.rc'
 
+require 'constants'
 require 'gtk2'
 require 'reloadable_require'
 require 'addons_ruby'
@@ -31,6 +32,10 @@ require 'exception_addons'
 
 Gtk.init
 Gtk::RC.parse(DEFAULT_GTK_RC_FILE)
+
+require 'settings'
+settings_path = File.join(Dir.home, SETTINGS_DIRECTORY, SETTINGS_FILENAME)
+$settings = Settings.new.load(settings_path)
 
 require 'render_window'
 $render_window = RenderWindow.new
