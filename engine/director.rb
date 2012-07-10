@@ -74,13 +74,28 @@ class Director < ParentUserObject
 			if (offscreen_render_actor.present? and not $env[:hit_test] and not $env[:stage])
 				with_offscreen_buffer { |buffer|
 					# render scene to offscreen buffer
+					aspect_scale = $env[:aspect_scale]
 					buffer.using {
-						render_scene_recursive
+						if aspect_scale
+							# make sure our 1x1 shape fills screen by rendering smaller... 
+							with_scale(1.0/aspect_scale, 1.0/aspect_scale) {
+								render_scene_recursive
+							}
+						else
+							render_scene_recursive
+						end
 					}
 
 					# render chosen actor using offscreen buffer as a texture
 					buffer.with_image {
-						offscreen_render_actor.render
+						if aspect_scale
+							# ...and scaling larger on display
+							with_scale(aspect_scale, aspect_scale) {
+								offscreen_render_actor.render
+							}
+						else
+							offscreen_render_actor.render
+						end
 					}
 				}
 			else
@@ -89,21 +104,22 @@ class Director < ParentUserObject
 		}
 	end
 
-	def render_scene_recursive(effect_index = 0, options = {})
+	def render_scene_recursive(effect_index = 0, options = {}, &proc)
 		if (effect_index and effect = effects[effect_index])
 			if !effect.usable?
-				render_scene_recursive(effect_index + 1, options)		# Skip this effect
+				render_scene_recursive(effect_index + 1, options, &proc)		# Skip this effect
 			else
 				$engine.user_object_try(effect) {
 					effect.resolve_settings
 					effect.tick!
 					effect.render {
-						render_scene_recursive(effect_index + 1, options)
+						render_scene_recursive(effect_index + 1, options, &proc)
 					}
 				}
 			end
 		else
 			# reached bottom of list inside yields
+			yield if block_given?
 		end
 	end
 end

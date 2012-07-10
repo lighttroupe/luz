@@ -34,6 +34,8 @@ class Image
 
 			GL.TexParameter(GL::TEXTURE_2D, GL::TEXTURE_MAG_FILTER, GL::LINEAR) #GL::NEAREST)
 			GL.TexParameter(GL::TEXTURE_2D, GL::TEXTURE_MIN_FILTER, GL::LINEAR) #GL::NEAREST)
+
+			#GL.TexParameter(GL::TEXTURE_2D, GL::GENERATE_MIPMAP, GL::TRUE)
 		}
 	end
 
@@ -67,8 +69,8 @@ class Image
 		@load_proc = Proc.new { from_rgba8(@rgba_data, @width, @height) }
 		self
 	end
-	###################################################################
 
+	###################################################################
 	# Copying pixel data to OpenGL
 	###################################################################
 

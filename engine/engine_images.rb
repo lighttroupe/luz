@@ -17,7 +17,7 @@ module EngineImages
 
 		ret = nil
 		with_watch(file_path) {
-			@images_cache[file_path] ||= []		# this is what's returned, so this should not be replaced with a new []
+			@images_cache[file_path] ||= []		# DO NOT replace with [] as that would invalidate external object references
 
 			timer("load #{path}", :if_over => 0.1) {
 				case File.extname(file_path).downcase
@@ -41,29 +41,5 @@ module EngineImages
 			}
 		}
 		return ret
-	end
- 
-	if optional_require 'rb-inotify'
-		$notifier ||= INotify::Notifier.new
-
-		def with_watch(file_path)
-			# Load file
-			if yield
-
-				# Add a watch, and when it fires, yield again
-				$notifier.watch(file_path, :close_write) {
-					puts "Reloading #{file_path} ..."
-					yield
-				}
-
-				$notifier_io = [$notifier.to_io]
-				$engine.on_frame_end { $notifier.process if IO.select($notifier_io, nil, nil, 0) } unless $notifier_callback_set
-				$notifier_callback_set = true
-			end
-		end
-	else
-		def with_watch(file_path)
-			yield
-		end
 	end
 end

@@ -27,6 +27,14 @@ module DrawingTransformations
 			}
 		end
 	end
+	def with_translation_unsafe(x, y, z=0.0)
+		if x == 0.0 and y == 0.0 and z == 0.0
+			yield
+		else
+			GL.Translate(x, y, z)
+			yield
+		end
+	end
 	#conditional :with_translation
 
 	# Variation of translate, moves "forward" (towards higher Y values)
@@ -63,6 +71,11 @@ module DrawingTransformations
 			yield
 		}
 	end
+	def with_roll_unsafe(amount, x=0.0, y=0.0, z=1.0)
+		return yield if amount == 0.0
+		GL.Rotate(amount * FUZZY_TO_DEGREES, x, y, z) 	# Rotate around the Z axis
+		yield
+	end
 
 	def with_pitch(amount)
 		return yield if amount == 0.0
@@ -94,6 +107,13 @@ module DrawingTransformations
 			GL.Scale(x, y, z)
 			yield
 		}
+	end
+	def with_scale_unsafe(x, y=nil, z=nil)
+		y ||= x
+		z ||= 1.0
+		return yield if x == 1.0 and y == 1.0 and z == 1.0
+		GL.Scale(x, y, z)
+		yield
 	end
 	#conditional :with_scale
 
