@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="512"
+   height="512"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.1 r9760"
+   sodipodi:docname="cage.svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.4"
+     inkscape:cx="240.40602"
+     inkscape:cy="145.21881"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:window-width="1440"
+     inkscape:window-height="869"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:snap-global="false">
+    <inkscape:grid
+       type="xygrid"
+       id="grid3590" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-540.36218)">
+    <rect
+       style="color:#000000;fill:#00ff00;fill-opacity:0.65948277;fill-rule:nonzero;stroke:#08fc2f;stroke-width:0;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect3008"
+       width="115.12405"
+       height="78.678055"
+       x="397.30176"
+       y="940.61017">
+      <desc
+         id="desc3012">trigger: yes
+on-touch: Test / Pass</desc>
+    </rect>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 268.70058,25.106473 210.40759,3.243717 16.84699,446.97979 C 294.83856,493.95716 306.51684,442.47726 143.5941,510.98974 107.94986,525.9789 66.236909,493.84257 28.284271,510.32998 L 33.335034,26.116626 z"
+       id="path3010"
+       inkscape:connector-curvature="0"
+       transform="translate(0,540.36218)"
+       sodipodi:nodetypes="cccsccc">
+      <desc
+         id="desc4135">friction: 2</desc>
+    </path>
+    <rect
+       style="color:#000000;fill:#000000;fill-opacity:0.49785408;fill-rule:nonzero;stroke:#08fc2f;stroke-width:0;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect2985-5"
+       width="28.040611"
+       height="28.040607"
+       x="99.312393"
+       y="974.22351">
+      <desc
+         id="desc3006-9">mass: 1
+friction: 1
+shape: circle
+render-actor: black circle</desc>
+    </rect>
+    <rect
+       style="color:#000000;fill:#ffff00;fill-opacity:1;fill-rule:nonzero;stroke:#08fc2f;stroke-width:0;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect2985-5-5"
+       width="37.637058"
+       height="37.637054"
+       x="95.130386"
+       y="999.88745">
+      <desc
+         id="desc3006-9-8">mass: 1
+shape: circle
+render-actor: black circle
+
+rotational-velocity-control-variable: always
+rotational-velocity-control-max: -1.5</desc>
+    </rect>
+    <g
+       id="g3979"
+       transform="translate(-56.514952,102.24793)">
+      <desc
+         id="desc3984">mass: 2
+moment-of-inertia: 10</desc>
+      <path
+         style="fill:#000000;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 137.75955,913.33994 12.87944,-19.44544 4.04061,4.04061 -9.09137,16.66752 z"
+         id="path4005"
+         inkscape:connector-curvature="0" />
+      <path
+         style="fill:#000000;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 185.23672,898.94526 3.03046,-4.29315 13.38452,19.69798 -6.31346,0.25254 z"
+         id="path4007"
+         inkscape:connector-curvature="0" />
+      <path
+         style="fill:#000000;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 160.23544,945.66482 2.77792,-5.80838 14.89975,-0.25254 3.78808,6.56599 z"
+         id="path4009"
+         inkscape:connector-curvature="0" />
+      <path
+         style="fill:#000000;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 141.04255,935.05822 0.25253,-22.98097 1.51523,0.25253 0.50508,22.22336 z"
+         id="path4011"
+         inkscape:connector-curvature="0" />
+      <path
+         style="fill:#000000;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 140.85314,935.24762 22.03395,8.9651 0.82075,-2.0203 -20.39245,-7.76555 z"
+         id="path4013"
+         inkscape:connector-curvature="0" />
+      <path
+         style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 169.89902,884.88578 18.76541,13.26831 -1.06891,1.10323 -18.57261,-12.21438 z"
+         id="path4011-7"
+         inkscape:connector-curvature="0" />
+      <path
+         style="fill:#000000;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 169.85083,884.62229 -19.89888,13.03468 1.19587,1.8235 17.97898,-12.36577 z"
+         id="path4013-6"
+         inkscape:connector-curvature="0" />
+      <path
+         style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 199.31183,935.01597 -21.05748,9.20712 -0.39199,-1.48528 20.05558,-9.58678 z"
+         id="path4011-0"
+         inkscape:connector-curvature="0" />
+      <path
+         style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 199.56231,935.11089 -0.8742,-23.77191 -2.17913,0.0813 1.29383,21.78261 z"
+         id="path4013-4"
+         inkscape:connector-curvature="0" />
+    </g>
+    <rect
+       style="color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect4079"
+       width="1.7410715"
+       height="1.7410715"
+       x="112.42879"
+       y="987.53839">
+      <desc
+         id="desc4081">pin: yes</desc>
+    </rect>
+    <rect
+       style="color:#000000;fill:#000000;fill-opacity:0.49785408;fill-rule:nonzero;stroke:#08fc2f;stroke-width:0;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect2985-5-4"
+       width="28.040611"
+       height="28.040607"
+       x="71.517456"
+       y="1022.6545">
+      <desc
+         id="desc3006-9-17">mass: 1
+friction: 1
+shape: circle
+render-actor: black circle</desc>
+    </rect>
+    <rect
+       style="color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect4079-1"
+       width="1.7410715"
+       height="1.7410715"
+       x="84.63385"
+       y="1035.9695">
+      <desc
+         id="desc4081-0">pin: yes</desc>
+    </rect>
+    <rect
+       style="color:#000000;fill:#000000;fill-opacity:0.49785408;fill-rule:nonzero;stroke:#08fc2f;stroke-width:0;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect2985-5-2"
+       width="28.040611"
+       height="28.040607"
+       x="128.086"
+       y="1022.1494">
+      <desc
+         id="desc3006-9-86">mass: 1
+friction: 1
+shape: circle
+render-actor: black circle</desc>
+    </rect>
+    <rect
+       style="color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect4079-5"
+       width="1.7410715"
+       height="1.7410715"
+       x="141.20238"
+       y="1035.4644">
+      <desc
+         id="desc4081-5">pin: yes</desc>
+    </rect>
+  </g>
+</svg>

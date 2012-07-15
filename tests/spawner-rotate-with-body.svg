@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="512"
+   height="512"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.1 r9760"
+   sodipodi:docname="spawner-rotate-with-body.svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.4"
+     inkscape:cx="281.85531"
+     inkscape:cy="191.90638"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1440"
+     inkscape:window-height="869"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-540.36218)">
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.04218888px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 1.0101525,1061.4536 c 2.19437,-6.061 34.0127345,-289.91383 34.0127345,-289.91383 0,0 12.069036,-229.30463 243.575073,-228.29447 231.50603,1.01015 276.49062,180.8173 276.49062,180.8173 l 1.09719,330.3199 z"
+       id="path4778"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccsccc" />
+    <g
+       id="g5354">
+      <rect
+         inkscape:transform-center-x="-0.28000314"
+         transform="matrix(0.99999616,0.00277155,-0.00277155,0.99999616,0,0)"
+         inkscape:transform-center-y="-101.01486"
+         y="809.38751"
+         x="468.94107"
+         height="230.82581"
+         width="28.884201"
+         id="rect4035"
+         style="color:#000000;fill:#aa0000;fill-opacity:0.65948277;fill-rule:nonzero;stroke:#00ffff;stroke-width:3.44039273;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new">
+        <desc
+           id="desc4037">mass: 1
+elasticity: 1
+
+</desc>
+      </rect>
+      <rect
+         y="759.92303"
+         x="472.75137"
+         height="45.456863"
+         width="17.172594"
+         id="rect4828"
+         style="color:#000000;fill:#de8787;fill-opacity:0.47441861;fill-rule:nonzero;stroke:#000000;stroke-width:1;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new">
+        <desc
+           id="desc4830">spawner: yes
+spawner-event: event
+rotate-with-body: yes
+mass: 1
+velocity-y: 1
+collision-type: rod</desc>
+      </rect>
+    </g>
+    <rect
+       style="color:#000000;fill:#00ff00;fill-opacity:0.47441861000000002;fill-rule:nonzero;stroke:#000000;stroke-width:1;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect4838"
+       width="63.63961"
+       height="28.284271"
+       x="269.71072"
+       y="477.65482"
+       transform="translate(0,540.36218)">
+      <desc
+         id="desc4840">trigger: yes
+on-touch: Level / Event</desc>
+    </rect>
+    <rect
+       style="color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect4822"
+       width="13.131983"
+       height="13.131983"
+       x="473.97214"
+       y="1019.0272">
+      <desc
+         id="desc4824">pin: yes</desc>
+    </rect>
+    <path
+       style="fill:#ac9393;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 482.34784,724.56767 27.27412,104.55079 0,-105.56094 z"
+       id="path5360"
+       inkscape:connector-curvature="0">
+      <desc
+         id="desc5362">mass: 5</desc>
+    </path>
+    <rect
+       style="color:#000000;fill:#00ff00;fill-opacity:0.47441861;fill-rule:nonzero;stroke:#000000;stroke-width:1;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect4838-8"
+       width="63.63961"
+       height="28.284271"
+       x="12.465906"
+       y="1018.22">
+      <desc
+         id="desc4840-8">trigger: yes
+on-touch: Test / Pass
+collides-with: rod</desc>
+    </rect>
+  </g>
+</svg>

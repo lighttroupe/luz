@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="512"
+   height="512"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.1 r9760"
+   sodipodi:docname="angle-control-3.svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.9899495"
+     inkscape:cx="352.3283"
+     inkscape:cy="278.30144"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:window-width="1366"
+     inkscape:window-height="691"
+     inkscape:window-x="0"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1"
+     inkscape:snap-global="true">
+    <inkscape:grid
+       type="xygrid"
+       id="grid3010" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-540.36218)">
+    <rect
+       style="color:#000000;fill:#00ff00;fill-opacity:0.65948277;fill-rule:nonzero;stroke:#08fc2f;stroke-width:0;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect3008"
+       width="260"
+       height="29.999998"
+       x="110"
+       y="552.36218">
+      <desc
+         id="desc3012">trigger: yes
+
+on-touch: Test / Pass</desc>
+    </rect>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 532.35039,513.01015 0,-509.1168803 -533.3605425,0 0,510.1270403 z"
+       id="path4144"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccc"
+       transform="translate(0,540.36218)">
+      <desc
+         id="desc4045">elasticity: 0</desc>
+    </path>
+    <rect
+       style="opacity:0.67901234;fill:#c8b7b7;fill-opacity:1;stroke:none;display:inline"
+       id="rect4698"
+       width="16"
+       height="152"
+       x="234"
+       y="890.36218">
+      <desc
+         id="desc4700">mass: 1
+
+moment-of-inertia: infinite
+
+position-control-y-variable: every second
+position-control-y-min: 0.0
+position-control-y-max: 0.55
+
+</desc>
+    </rect>
+    <rect
+       style="opacity:0.67901234;fill:#483737;fill-opacity:1;stroke:none;display:inline"
+       id="rect4702"
+       width="32"
+       height="96"
+       x="226"
+       y="810.36218">
+      <desc
+         id="desc4704">mass: 1
+
+angle-control-variable: every second
+angle-control-min: 0.15
+angle-control-max: 0.35
+
+angle-control-strength: 1.0</desc>
+    </rect>
+    <rect
+       style="opacity:0.67901234;fill:#000080;fill-opacity:1;stroke:none;display:inline"
+       id="rect4626"
+       width="2"
+       height="2"
+       x="241"
+       y="891.36218">
+      <desc
+         id="desc4628">pin: yes</desc>
+    </rect>
+    <rect
+       style="color:#000000;fill:#ff0000;fill-opacity:0.70689655;fill-rule:nonzero;stroke:#ff0000;stroke-width:5.4030633;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect4240-4"
+       width="140"
+       height="445.22906"
+       x="70"
+       y="597.13312">
+      <desc
+         id="desc4242-3">trigger: yes
+on-touch: Test / Fail</desc>
+    </rect>
+    <rect
+       y="597.13312"
+       x="330"
+       height="445.22906"
+       width="140"
+       id="rect3043"
+       style="color:#000000;fill:#ff0000;fill-opacity:0.70689655;fill-rule:nonzero;stroke:#ff0000;stroke-width:5.4030633;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new">
+      <desc
+         id="desc3045">trigger: yes
+on-touch: Test / Fail</desc>
+    </rect>
+  </g>
+</svg>
