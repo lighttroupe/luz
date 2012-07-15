@@ -161,7 +161,15 @@ module OSC
 			address = decode_string(io)
 
 			# A comma begins list of "tags" (parameter types)
-			if io.getc == ?,
+			if address == HASH_BUNDLE
+				b = Bundle.new(decode_timetag(io))
+				until io.eof?
+					l = io.getn(4).unpack(INT32_PACK_FORMAT)[0]
+					s = io.getn(l)
+					decode(s, &proc)
+				end
+
+			elsif io.getc == ?,
 				tags = decode_string(io)
 
 				# Simply hardcoded support for two types of single-parameter messages
@@ -270,7 +278,9 @@ module OSC
 			s = OSCString.new(HASH_BUNDLE).encode
 			s << encode_timetag(@timetag)
 			s << @args.collect{|x|
-			x2 = x.encode; [x2.size].pack(INT32_PACK_FORMAT) + x2}.join
+				x2 = x.encode
+				[x2.size].pack(INT32_PACK_FORMAT) + x2
+			}.join
 		end
 
 		extend Forwardable
