@@ -230,7 +230,7 @@ class DirectorEffectGamePhysicsPuzzle < DirectorEffect
 		return shutdown! if ($env[:game_level_shutdown])
 
 		# Level is live-reloadable
-		do_reload if ((reload.on_this_frame? and ($env[:enter] == 1.0 and $env[:exit] == 0.0)) or $env[:game_level_reset]) # or @previous_tick_frame_number != $env[:frame_number]-1)
+		do_reload if ((reload.on_this_frame?) or $env[:game_level_reset]) # or @previous_tick_frame_number != $env[:frame_number]-1)
 
 		# Lazy-loading of level and layers
 		load_level(level_file_path) unless @level
