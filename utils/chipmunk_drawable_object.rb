@@ -14,6 +14,8 @@ class DrawableObject
 		@options = @level_object.options		# for easy access
 
 		@exit_still = (@options[:exit_still] == YES)
+		@on_exit = @options[:on_exit]
+		$engine.new_button_notify_if_needed(@on_exit) if @on_exit
 
 		@activation_variable = find_variable_by_name(@options[:activation_variable])
 		@activation = 0.0
@@ -175,6 +177,9 @@ class DrawableObject
 
 		# Play exit sound
 		$sound.play(@options[:exit_sound], :at => (@body ? @body.p : nil), :volume => as_float(@options[:exit_sound_volume], 1.0), :pitch => as_float(@options[:exit_sound_pitch], 1.0)) if $sound and @options[:exit_sound]
+
+		# Exit button press
+		$engine.on_button_press(@on_exit, 1) if @on_exit
 
 		# End looping sound
 		$sound.stop_by_id(@sound_id) if $sound and @sound_id
