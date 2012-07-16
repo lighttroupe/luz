@@ -137,6 +137,8 @@ class ChipmunkPhysicsSimulator
 		# Map Feature: 'render-actor' and 'render-effects' for layers
 		@render_actor = find_actor_by_name(options[:render_actor] || options[:render_on_actor])		# still support old name
 		@actor_effects = find_actor_by_name(options[:actor_effects])
+
+		$engine.init_sound!
 	end
 
 	#
