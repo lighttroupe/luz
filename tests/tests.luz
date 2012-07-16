@@ -855,7 +855,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test image rotation
+      title: image rotation
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -1167,7 +1167,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test image rotation in groups
+      title: image rotation in groups
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -1477,7 +1477,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test basic object
+      title: basic object
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -1787,7 +1787,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test pin angle-limit 2
+      title: pin angle-limit 2
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -2097,7 +2097,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test concave object
+      title: concave object
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -2407,7 +2407,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test concave object 2
+      title: concave object 2
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -2717,7 +2717,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test concave object 3
+      title: concave object 3
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -3027,7 +3027,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test concave object 4
+      title: concave object 4
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -3337,7 +3337,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test winch
+      title: winch
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -3647,7 +3647,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test winch 2
+      title: winch 2
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -3957,7 +3957,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test winch-speed
+      title: winch-speed
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -4267,7 +4267,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test if-event
+      title: if-event
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -4577,7 +4577,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test while-event
+      title: while-event
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -4887,7 +4887,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test while-not-event
+      title: while-not-event
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -5197,7 +5197,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test while-not-event spawner
+      title: while-not-event spawner
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -5817,7 +5817,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test copy-from
+      title: copy-from
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -6127,7 +6127,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test copy-from in group
+      title: copy-from in group
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -6437,7 +6437,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test copy-from-spawner
+      title: copy-from-spawner
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -6747,7 +6747,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test copy-from-trigger
+      title: copy-from-trigger
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -7057,7 +7057,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test copy-from-trigger-chain
+      title: copy-from-trigger-chain
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -7367,7 +7367,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test polygon
+      title: polygon
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -7677,7 +7677,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test circle
+      title: circle
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -7987,7 +7987,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test oval
+      title: oval
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -8297,7 +8297,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test oval 2
+      title: oval 2
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -8607,7 +8607,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test static rectangle
+      title: static rectangle
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -8917,7 +8917,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test surface velocity
+      title: surface velocity
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -9227,7 +9227,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test wall elasticity
+      title: wall elasticity
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -9537,7 +9537,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test wall friction
+      title: wall friction
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -9847,7 +9847,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test group friction
+      title: group friction
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -10157,7 +10157,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test velocity-x
+      title: velocity-x
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -10467,7 +10467,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test force-x
+      title: force-x
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -10777,7 +10777,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test force-y
+      title: force-y
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -11087,7 +11087,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test force-control-forward
+      title: force-control-forward
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -11397,7 +11397,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test rotational velocity
+      title: rotational velocity
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -11707,7 +11707,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test rotational force
+      title: rotational force
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -12017,7 +12017,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test pin 1
+      title: pin 1
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -12327,7 +12327,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test pin 2
+      title: pin 2
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -12637,7 +12637,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test pin group numbering
+      title: pin group numbering
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -12947,7 +12947,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test pin group numbering 2
+      title: pin group numbering 2
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -13257,7 +13257,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test pin rotation
+      title: pin rotation
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -13567,7 +13567,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test pin break-on-event
+      title: pin break-on-event
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -13877,7 +13877,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test pin break-on-force
+      title: pin break-on-force
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -14187,7 +14187,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test pin removal
+      title: pin removal
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -14497,7 +14497,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test pin angle-limit
+      title: pin angle-limit
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -14807,7 +14807,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test maximum collision intensity
+      title: maximum collision intensity
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -15117,7 +15117,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test no collisions group
+      title: no collisions group
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -15427,7 +15427,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test spring
+      title: spring
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -15737,7 +15737,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test spring 2
+      title: spring 2
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -16047,7 +16047,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test chain
+      title: chain
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -16357,7 +16357,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test spring-stiffness
+      title: spring-stiffness
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -16667,7 +16667,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test springboard
+      title: springboard
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -16977,7 +16977,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test springboard 2
+      title: springboard 2
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -17287,7 +17287,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test springboard 3
+      title: springboard 3
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -17597,7 +17597,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test gear
+      title: gear
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -17907,7 +17907,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test spawner
+      title: spawner
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -18217,7 +18217,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test spawner-rotate-with-body
+      title: spawner-rotate-with-body
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -18527,7 +18527,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test spawner-rotate-with-body-2
+      title: spawner-rotate-with-body-2
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -18837,7 +18837,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test spawner with spawner
+      title: spawner with spawner
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -19147,7 +19147,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test wall on-touch
+      title: wall on-touch
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -19457,7 +19457,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test on-touch-type
+      title: on-touch-type
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -19767,7 +19767,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test wall on touch type
+      title: wall on touch type
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -20077,7 +20077,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test pass-left
+      title: pass-left
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -20387,7 +20387,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test trigger overlap-impulse
+      title: trigger overlap-impulse
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -20697,7 +20697,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test trigger touch-impulse
+      title: trigger touch-impulse
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -21007,7 +21007,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test trigger polygon
+      title: trigger polygon
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -21317,7 +21317,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test trigger on-overlap
+      title: trigger on-overlap
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -21627,7 +21627,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test trigger destroy-on-touch
+      title: trigger destroy-on-touch
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -21937,7 +21937,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test trigger destroy-on-touch-TYPE
+      title: trigger destroy-on-touch-TYPE
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -22247,7 +22247,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test trigger slider-across-y
+      title: trigger slider-across-y
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -22557,7 +22557,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test trigger slider-across-x
+      title: trigger slider-across-x
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -22867,7 +22867,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test trigger touch-impulse-forward
+      title: trigger touch-impulse-forward
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -23177,7 +23177,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test trigger touch-impulse-forward 2
+      title: trigger touch-impulse-forward 2
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -23487,7 +23487,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test trigger slider-radial
+      title: trigger slider-radial
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -23797,7 +23797,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test body relative trigger
+      title: body relative trigger
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -24107,7 +24107,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test die-on-touch
+      title: die-on-touch
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -24417,7 +24417,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test die-on-touch 2
+      title: die-on-touch 2
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -24727,7 +24727,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test destroy-on-touch vs wall
+      title: destroy-on-touch vs wall
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -25037,7 +25037,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test object destroy-on-touch
+      title: object destroy-on-touch
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -25347,7 +25347,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test object destroy-on-touch-TYPE
+      title: object destroy-on-touch-TYPE
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -25657,7 +25657,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test group object destroy-on-touch-TYPE
+      title: group object destroy-on-touch-TYPE
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -25967,7 +25967,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test object damage-on-touch
+      title: object damage-on-touch
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -26277,7 +26277,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test object damage-multiplier
+      title: object damage-multiplier
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -26587,7 +26587,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test explosion-force
+      title: explosion-force
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -26897,7 +26897,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test explosion-force negative
+      title: explosion-force negative
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -27207,7 +27207,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test explosion-damage
+      title: explosion-damage
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -27517,7 +27517,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test jump
+      title: jump
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -27827,7 +27827,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test jump 2
+      title: jump 2
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -28137,7 +28137,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test jump 3
+      title: jump 3
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -28447,7 +28447,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test grouped physical objects
+      title: grouped physical objects
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -28757,7 +28757,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test spawned grouped physical objects
+      title: spawned grouped physical objects
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -29067,7 +29067,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test spawner die with group
+      title: spawner die with group
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -29377,7 +29377,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test position control
+      title: position control
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -29687,7 +29687,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test force control
+      title: force control
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -29997,7 +29997,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test rotational velocity control
+      title: rotational velocity control
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -30307,7 +30307,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test motor-rate
+      title: motor-rate
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -30617,7 +30617,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test motor-rate-variable
+      title: motor-rate-variable
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -30927,7 +30927,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test motor-force
+      title: motor-force
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -31237,7 +31237,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test angle control
+      title: angle control
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -31547,7 +31547,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test angle control 2
+      title: angle control 2
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -31857,7 +31857,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test gravity sleep
+      title: gravity sleep
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -32222,7 +32222,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test gravity sleep 2
+      title: gravity sleep 2
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -32532,7 +32532,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test vehicle
+      title: vehicle
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -32842,7 +32842,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test vehicle 2
+      title: vehicle 2
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -33152,7 +33152,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test vehicle 3
+      title: vehicle 3
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -33462,7 +33462,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test vehicle 4
+      title: vehicle 4
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -33772,7 +33772,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test vehicle 5
+      title: vehicle 5
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -34082,7 +34082,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test vehicle 6
+      title: vehicle 6
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -34392,7 +34392,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test render 1
+      title: render 1
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -34702,7 +34702,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test render 2
+      title: render 2
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
@@ -35012,7 +35012,7 @@
             activation_curve: 
             activation_value: 1.0
             activation_variable: 
-      title: test render 3
+      title: render 3
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
