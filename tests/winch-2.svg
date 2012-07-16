@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="512"
+   height="512"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.1 r9760"
+   sodipodi:docname="winch-2.svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.98994949"
+     inkscape:cx="303.35225"
+     inkscape:cy="210.92319"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1440"
+     inkscape:window-height="869"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-540.36218)">
+    <rect
+       style="color:#000000;fill:#ffff00;fill-opacity:1;fill-rule:nonzero;stroke:#08fc2f;stroke-width:0;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect2985"
+       width="75.761444"
+       height="74.751289"
+       x="224.25386"
+       y="824.06769">
+      <desc
+         id="desc3006">mass: 1</desc>
+    </rect>
+    <rect
+       style="color:#000000;fill:#00ff00;fill-opacity:0.65948277;fill-rule:nonzero;stroke:#08fc2f;stroke-width:0;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect3008"
+       width="168.69547"
+       height="110.10663"
+       x="182.83762"
+       y="552.33667">
+      <desc
+         id="desc3012">trigger: yes
+on-touch: Test / Pass</desc>
+    </rect>
+    <path
+       style="fill:#ffff00;stroke:#00ffff;stroke-width:4.9000001;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="M 30.304576,1011.9561 264.65997,862.45347"
+       id="path3864"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc">
+      <desc
+         id="desc3866">winch: yes
+winch-length-variable: always
+winch-length-max: 1.5
+render: yes</desc>
+    </path>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M -85.862967,513.01015 648.51794,512"
+       id="path2991"
+       inkscape:connector-curvature="0"
+       transform="translate(0,540.36218)">
+      <desc
+         id="desc2993">friction: 0.0</desc>
+    </path>
+    <path
+       style="fill:#ffff00;stroke:#00ffff;stroke-width:4.9000001;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="M 496.99505,1011.9561 262.63966,862.45347"
+       id="path3864-5"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc">
+      <desc
+         id="desc3866-2">winch: yes
+winch-length-variable: always
+winch-length-max: 1.5
+render: yes</desc>
+    </path>
+  </g>
+</svg>

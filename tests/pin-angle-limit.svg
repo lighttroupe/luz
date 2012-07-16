@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="512"
+   height="512"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.1 r9760"
+   sodipodi:docname="pin-angle-limit.svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.98994949"
+     inkscape:cx="116.9791"
+     inkscape:cy="210.92319"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1440"
+     inkscape:window-height="869"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-540.36218)">
+    <rect
+       style="color:#000000;fill:#ffff00;fill-opacity:1;fill-rule:nonzero;stroke:#08fc2f;stroke-width:0;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect2985"
+       width="75.761444"
+       height="74.751289"
+       x="378.80719"
+       y="569.50922">
+      <desc
+         id="desc3006">mass: 1
+collision-type: yellow</desc>
+    </rect>
+    <rect
+       style="color:#000000;fill:#00ff00;fill-opacity:0.65948277;fill-rule:nonzero;stroke:#08fc2f;stroke-width:0;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect3008"
+       width="275.77164"
+       height="30.304577"
+       x="230.31479"
+       y="1014.9866">
+      <desc
+         id="desc3012">trigger: yes
+collides-with: yellow
+on-touch: Test / Pass</desc>
+    </rect>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M -85.862967,513.01015 648.51794,512"
+       id="path2991"
+       inkscape:connector-curvature="0"
+       transform="translate(0,540.36218)">
+      <desc
+         id="desc2993">friction: 0.0</desc>
+    </path>
+    <rect
+       style="color:#000000;fill:#000000;fill-opacity:0.85581395999999998;fill-rule:nonzero;stroke:#04fff2;stroke-width:4;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect3086"
+       width="37.375645"
+       height="90.913727"
+       x="475.78186"
+       y="420.07611"
+       transform="translate(0,540.36218)">
+      <desc
+         id="desc3088">solid: yes
+collisions: yes</desc>
+    </rect>
+    <rect
+       style="color:#000000;fill:#000000;fill-opacity:0.85581396;fill-rule:nonzero;stroke:#04fff2;stroke-width:4;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect3090"
+       width="44.446762"
+       height="284.8631"
+       x="233.34525"
+       y="147.33493"
+       transform="translate(0,540.36218)">
+      <desc
+         id="desc3092">mass: 1
+velocity-x: 0.15</desc>
+    </rect>
+    <rect
+       style="color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:4;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect3082"
+       width="9.0913725"
+       height="10.101525"
+       x="248.90363"
+       y="945.28088">
+      <desc
+         id="desc3084">pin: yes
+angle-limit-min: 0.0
+angle-limit-max: 0.05
+</desc>
+    </rect>
+  </g>
+</svg>

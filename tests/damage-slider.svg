@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="512"
+   height="512"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.1 r9760"
+   sodipodi:docname="damage-slider.svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.4"
+     inkscape:cx="311.39555"
+     inkscape:cy="273.62569"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:window-width="1366"
+     inkscape:window-height="691"
+     inkscape:window-x="0"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1"
+     showguides="true"
+     inkscape:guide-bbox="true">
+    <inkscape:grid
+       type="xygrid"
+       id="grid6115" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-540.36218)">
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 501.42862,690.93361 373.9771,640.8564 12.857146,600.93359 c -5.85448,-0.6472 -10,420.00011 -10,420.00011 L 360,972.36218 520.00002,930.93361 z"
+       id="path4184"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccscccc" />
+    <rect
+       style="color:#000000;fill:#00ff00;fill-opacity:0.65948277;fill-rule:nonzero;stroke:#08fc2f;stroke-width:0;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect3008"
+       width="60"
+       height="50.000046"
+       x="400"
+       y="892.36218">
+      <desc
+         id="desc3012">trigger: yes
+on-touch: Test / Pass</desc>
+    </rect>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 21.42895,1089.5047 -20,-520.00006"
+       id="path6156"
+       inkscape:connector-curvature="0" />
+    <rect
+       style="color:#000000;fill:#2b1100;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2.82842708;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect3014"
+       width="140"
+       height="20"
+       x="45"
+       y="797.36218">
+      <desc
+         id="desc3784">mass: 10
+
+takes-damage: yes
+damage-slider: Level / Activation 1
+render-actor: damage demo</desc>
+    </rect>
+    <rect
+       style="color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:4;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect3786"
+       width="10"
+       height="10"
+       x="50"
+       y="802.36218">
+      <desc
+         id="desc3788">pin: yes</desc>
+    </rect>
+    <rect
+       style="color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:4;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect3786-6"
+       width="10"
+       height="10"
+       x="170"
+       y="802.36218">
+      <desc
+         id="desc3788-5">pin: yes</desc>
+    </rect>
+    <path
+       style="fill:#ff0000;fill-opacity:1;stroke:none;display:inline;enable-background:new"
+       d="m 74.05544,779.50464 c 0,0.73225 -0.58796,1.32585 -1.31324,1.32585 -0.72529,0 -1.31325,-0.5936 -1.31325,-1.32585 0,-0.73223 0.58796,-1.32583 1.31325,-1.32583 0.72528,0 1.31324,0.5936 1.31324,1.32583 z"
+       id="path4166-4-4-8-6"
+       inkscape:connector-curvature="0">
+      <desc
+         id="desc4214-6-91-7-5">mass: 1
+
+die-on-touch: yes
+damage-on-touch: 0.1</desc>
+    </path>
+    <path
+       style="fill:#ff0000;fill-opacity:1;stroke:none;display:inline;enable-background:new"
+       d="m 84.05544,769.50464 c 0,0.73225 -0.58796,1.32585 -1.31324,1.32585 -0.72529,0 -1.31325,-0.5936 -1.31325,-1.32585 0,-0.73223 0.58796,-1.32583 1.31325,-1.32583 0.72528,0 1.31324,0.5936 1.31324,1.32583 z"
+       id="path4166-4-4-8-6-7"
+       inkscape:connector-curvature="0">
+      <desc
+         id="desc4214-6-91-7-5-3">mass: 1
+
+die-on-touch: yes
+damage-on-touch: 0.1</desc>
+    </path>
+    <path
+       style="fill:#ff0000;fill-opacity:1;stroke:none;display:inline;enable-background:new"
+       d="m 102.74219,753.17879 c 0,0.73225 -0.58796,1.32585 -1.31324,1.32585 -0.72529,0 -1.31325,-0.5936 -1.31325,-1.32585 0,-0.73223 0.58796,-1.32583 1.31325,-1.32583 0.72528,0 1.31324,0.5936 1.31324,1.32583 z"
+       id="path4166-4-4-8-6-79"
+       inkscape:connector-curvature="0">
+      <desc
+         id="desc4214-6-91-7-5-2">mass: 1
+
+die-on-touch: yes
+damage-on-touch: 0.1</desc>
+    </path>
+    <path
+       style="fill:#ff0000;fill-opacity:1;stroke:none;display:inline;enable-background:new"
+       d="m 126.42895,744.50464 c 0,0.73225 -0.58796,1.32585 -1.31324,1.32585 -0.72529,0 -1.31325,-0.5936 -1.31325,-1.32585 0,-0.73223 0.58796,-1.32583 1.31325,-1.32583 0.72528,0 1.31324,0.5936 1.31324,1.32583 z"
+       id="path4166-4-4-8-6-3"
+       inkscape:connector-curvature="0">
+      <desc
+         id="desc4214-6-91-7-5-32">mass: 1
+
+die-on-touch: yes
+damage-on-touch: 0.1</desc>
+    </path>
+    <path
+       style="fill:#ff0000;fill-opacity:1;stroke:none;display:inline;enable-background:new"
+       d="m 141.42895,734.50464 c 0,0.73225 -0.58796,1.32585 -1.31324,1.32585 -0.72529,0 -1.31325,-0.5936 -1.31325,-1.32585 0,-0.73223 0.58796,-1.32583 1.31325,-1.32583 0.72528,0 1.31324,0.5936 1.31324,1.32583 z"
+       id="path4166-4-4-8-6-796"
+       inkscape:connector-curvature="0">
+      <desc
+         id="desc4214-6-91-7-5-6">mass: 1
+
+die-on-touch: yes
+damage-on-touch: 0.1</desc>
+    </path>
+    <path
+       style="fill:#ff0000;fill-opacity:1;stroke:none;display:inline;enable-background:new"
+       d="m 146.42895,659.50464 c 0,0.73225 -0.58796,1.32585 -1.31324,1.32585 -0.72529,0 -1.31325,-0.5936 -1.31325,-1.32585 0,-0.73223 0.58796,-1.32583 1.31325,-1.32583 0.72528,0 1.31324,0.5936 1.31324,1.32583 z"
+       id="path4166-4-4-8-6-6"
+       inkscape:connector-curvature="0">
+      <desc
+         id="desc4214-6-91-7-5-8">mass: 1
+
+die-on-touch: yes
+damage-on-touch: 0.1</desc>
+    </path>
+    <path
+       style="fill:#ff0000;fill-opacity:1;stroke:none;display:inline;enable-background:new"
+       d="m 157.74219,723.17879 c 0,0.73225 -0.58796,1.32585 -1.31324,1.32585 -0.72529,0 -1.31325,-0.5936 -1.31325,-1.32585 0,-0.73223 0.58796,-1.32583 1.31325,-1.32583 0.72528,0 1.31324,0.5936 1.31324,1.32583 z"
+       id="path4166-4-4-8-6-68"
+       inkscape:connector-curvature="0">
+      <desc
+         id="desc4214-6-91-7-5-36">mass: 1
+
+die-on-touch: yes
+damage-on-touch: 0.1</desc>
+    </path>
+    <path
+       style="fill:#ff0000;fill-opacity:1;stroke:none;display:inline;enable-background:new"
+       d="m 172.74219,700.83047 c 0,0.73225 -0.58796,1.32585 -1.31324,1.32585 -0.72529,0 -1.31325,-0.5936 -1.31325,-1.32585 0,-0.73223 0.58796,-1.32583 1.31325,-1.32583 0.72528,0 1.31324,0.5936 1.31324,1.32583 z"
+       id="path4166-4-4-8-6-35"
+       inkscape:connector-curvature="0">
+      <desc
+         id="desc4214-6-91-7-5-27">mass: 1
+
+die-on-touch: yes
+damage-on-touch: 0.1</desc>
+    </path>
+    <path
+       style="fill:#ff0000;fill-opacity:1;stroke:none;display:inline;enable-background:new"
+       d="m 157.74219,670.83047 c 0,0.73225 -0.58796,1.32585 -1.31324,1.32585 -0.72529,0 -1.31325,-0.5936 -1.31325,-1.32585 0,-0.73223 0.58796,-1.32583 1.31325,-1.32583 0.72528,0 1.31324,0.5936 1.31324,1.32583 z"
+       id="path4166-4-4-8-6-70"
+       inkscape:connector-curvature="0">
+      <desc
+         id="desc4214-6-91-7-5-0">mass: 1
+
+die-on-touch: yes
+damage-on-touch: 0.1</desc>
+    </path>
+    <path
+       style="fill:#ff0000;fill-opacity:1;stroke:none;display:inline;enable-background:new"
+       d="m 129.05544,649.50464 c 0,0.73225 -0.58796,1.32585 -1.31324,1.32585 -0.72529,0 -1.31325,-0.5936 -1.31325,-1.32585 0,-0.73223 0.58796,-1.32583 1.31325,-1.32583 0.72528,0 1.31324,0.5936 1.31324,1.32583 z"
+       id="path4166-4-4-8-6-39"
+       inkscape:connector-curvature="0">
+      <desc
+         id="desc4214-6-91-7-5-35">mass: 1
+
+die-on-touch: yes
+damage-on-touch: 0.1</desc>
+    </path>
+    <path
+       style="fill:#ff0000;fill-opacity:1;stroke:none;display:inline;enable-background:new"
+       d="m 116.42895,644.50464 c 0,0.73225 -0.58796,1.32585 -1.31324,1.32585 -0.72529,0 -1.31325,-0.5936 -1.31325,-1.32585 0,-0.73223 0.58796,-1.32583 1.31325,-1.32583 0.72528,0 1.31324,0.5936 1.31324,1.32583 z"
+       id="path4166-4-4-8-6-8"
+       inkscape:connector-curvature="0">
+      <desc
+         id="desc4214-6-91-7-5-85">mass: 1
+
+die-on-touch: yes
+damage-on-touch: 0.1</desc>
+    </path>
+    <rect
+       style="fill:#808000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="rect3059"
+       width="55"
+       height="45"
+       x="150"
+       y="932.36218">
+      <desc
+         id="desc3061">mass: 1</desc>
+    </rect>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 40,992.36218 140,-40"
+       id="path3063"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc">
+      <desc
+         id="desc3065">winch: yes
+winch-length-variable: level variable 1
+winch-length-min: 1.0
+winch-length-max: 3.0</desc>
+    </path>
+  </g>
+</svg>

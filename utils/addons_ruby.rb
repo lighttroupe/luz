@@ -123,13 +123,17 @@ def optional_require(file)
 end
 
 class Object
-	require 'deep_clone'
-	require 'callbacks'
-	require 'easy_dsl'
+	if optional_require('deep_clone')
+		include DeepClone
+	end
 
-	include DeepClone
-	include Callbacks
-	include EasyDSL
+	if optional_require('callbacks')
+		include Callbacks
+	end
+
+	if optional_require('easy_dsl')
+		include EasyDSL
+	end
 
 	def to_a
 		return self if is_a?(Array)

@@ -4,7 +4,7 @@ module AL
 	end
 
 	class Source
-		attr_accessor :id, :chosen_pitch, :chosen_gain, :last_frame_number_update, :buffer
+		attr_accessor :id, :chosen_pitch, :chosen_gain, :fade_time, :last_frame_number_update, :buffer
 		boolean_accessor :dying
 	end
 end
@@ -26,6 +26,7 @@ class SoundManager
 		@id_to_source_hash = {}
 		@next_id = 0
 		@global_pitch = 1.0
+		@source_reference_distance = DEFAULT_SOURCE_REFERENCE_DISTANCE
 		init_openal
 	end
 
@@ -101,8 +102,10 @@ class SoundManager
 		# also load MIDI samples for this buffer?
 		if defined? MIDIFileReader
 			reader = MIDIFileReader.new
-			if reader.load_file(File.join($engine.project.file_path, file_path+'.mid'))
-				sample_player = SamplePlayer.new(reader.samples, offset = 1.60)		# TODO: offset ??
+			path = File.join($engine.project.file_path, file_path+'.mid')
+			if reader.load_file(path)
+				puts "MIDI: Loading samples #{path}..."
+				sample_player = SamplePlayer.new(reader.samples, offset = 0.0)		# TODO: offset ??
 				sample_player.on_sample(&method(:on_sample))
 				buffer.sample_player = sample_player
 
@@ -127,6 +130,13 @@ class SoundManager
 		@global_pitch = new_pitch
 		@active_sources.each { |source| source.pitch = pitch_for_source(source) }
 	end
+
+	def audible_distance=(distance)
+		return if distance == @source_reference_distance
+		@source_reference_distance = distance
+		@active_sources.each { |source| source.reference_distance = @source_reference_distance }
+	end
+
 
 	def print_al_error(location='')
 		e = AL.get_error
@@ -162,8 +172,13 @@ class SoundManager
 					end
 
 				elsif source.gain != source.chosen_gain
-					gain_delta = (source.chosen_gain - source.gain)
-					source.gain = (gain_delta.abs < GAIN_FADE_STEP) ? (source.chosen_gain) : (source.gain + (gain_delta > 0 ? GAIN_FADE_STEP/4 : -GAIN_FADE_STEP/4))
+					if source.fade_time == 0.0
+						source.gain = source.chosen_gain
+					else
+						gain_delta = (source.chosen_gain - source.gain)
+						gain_delta *= ($env[:frame_time_delta] / source.fade_time)
+						source.gain = (gain_delta.abs < GAIN_FADE_STEP) ? (source.chosen_gain) : (source.gain + gain_delta)
+					end
 					false		# keep
 
 				else
@@ -208,7 +223,8 @@ class SoundManager
 		source.dying = false
 
 		source.chosen_gain = (options[:volume] || 1.0)
-		source.gain = (options[:fade_in] ? 0.0 : source.chosen_gain)
+		source.fade_time = (options[:fade_time] || 0.0)
+		source.gain = ((source.fade_time > 0.0) ? 0.0 : source.chosen_gain)
 
 		source.chosen_pitch = (options[:pitch] || 1.0)
 		source.pitch = pitch_for_source(source)
@@ -226,7 +242,7 @@ class SoundManager
 		end
 
 		source.rolloff_factor = options[:rolloff] || DEFAULT_SOURCE_ROLLOFF
-		source.reference_distance = DEFAULT_SOURCE_REFERENCE_DISTANCE
+		source.reference_distance = @source_reference_distance
 
 		# Feature: positional audio using :at => object_that_responds_to_x_and_y
 		if (position=options[:at])

@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="512"
+   height="512"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.1 r9760"
+   sodipodi:docname="pin-group-numbering-2.svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.9899495"
+     inkscape:cx="560.20884"
+     inkscape:cy="308.70021"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1440"
+     inkscape:window-height="869"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-540.36218)">
+    <rect
+       style="color:#000000;fill:#ffff00;fill-opacity:1;fill-rule:nonzero;stroke:#08fc2f;stroke-width:0;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect2985"
+       width="75.761444"
+       height="74.751289"
+       x="214.15233"
+       y="688.70721">
+      <desc
+         id="desc3006">mass: 1</desc>
+    </rect>
+    <path
+       style="fill:#333333;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 248.94522,719.17582 104.87307,22.27169 0.31542,17.39114 -110.12897,-24.14196 z"
+       id="path2995-5-4"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccc">
+      <desc
+         id="desc2997-2-2">mass: 1</desc>
+    </path>
+    <path
+       style="fill:#333333;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 458.8339,854.63008 103.09565,746.37475 107.22139,729.47713 467.56562,840.88006 z"
+       id="path2995-9"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccc"
+       inkscape:transform-center-x="-39.163094"
+       inkscape:transform-center-y="14.757489">
+      <desc
+         id="desc2997-4">mass: 1</desc>
+    </path>
+    <rect
+       style="color:#000000;fill:#00ff00;fill-opacity:0.65948277;fill-rule:nonzero;stroke:#08fc2f;stroke-width:0;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect3008"
+       width="168.69547"
+       height="110.10663"
+       x="117.1777"
+       y="836.18951">
+      <desc
+         id="desc3012">trigger: yes
+on-touch: Test / Pass</desc>
+    </rect>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 268.70058,25.106473 c 174.65003,5.104903 211.99744,41.730875 211.12188,223.243717 0,10.10152 -1.01016,262.98995 -1.01016,262.98995 L 28.284271,510.32998 33.335034,26.116626 z"
+       id="path3010"
+       inkscape:connector-curvature="0"
+       transform="translate(0,540.36218)"
+       sodipodi:nodetypes="cccccc" />
+    <path
+       style="fill:#333333;stroke:#000000;stroke-width:1.25476158px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 271.48783,557.27816 1.228,114.36003 -32.09098,-0.44444 6.87388,-118.65333 z"
+       id="path2995-8"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccc">
+      <desc
+         id="desc2997-3">mass: 1</desc>
+    </path>
+    <path
+       style="fill:#333333;stroke:#000000;stroke-width:1.87614036px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 382.57519,671.19987 -255.67158,1.228 0.99362,-32.09098 265.27,6.87388 z"
+       id="path2995-8-1"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccc">
+      <desc
+         id="desc2997-3-5">mass: 1</desc>
+    </path>
+    <path
+       style="fill:#333333;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 107.54478,752.76661 30.76171,-102.70397 17.35881,1.10587 -33.05495,107.78959 z"
+       id="path2995"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccc">
+      <desc
+         id="desc2997">mass: 1</desc>
+    </path>
+    <rect
+       style="color:#000000;fill:#ff00ff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect2999"
+       width="8.586297"
+       height="7.5761442"
+       x="141.42136"
+       y="654.86719">
+      <desc
+         id="desc3769">pin: yes</desc>
+    </rect>
+    <rect
+       style="color:#000000;fill:#ff00ff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect2999-0"
+       width="7.5761442"
+       height="8.586297"
+       x="114.65231"
+       y="741.74023">
+      <desc
+         id="desc3769-4">pin: yes</desc>
+    </rect>
+    <path
+       style="fill:#333333;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 336.62511,755.329 30.76171,-102.70397 17.35881,1.10587 -33.05495,107.78959 z"
+       id="path2995-5"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccc">
+      <desc
+         id="desc2997-2">mass: 1</desc>
+    </path>
+    <rect
+       style="color:#000000;fill:#ff00ff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect2999-7"
+       width="8.586297"
+       height="7.5761442"
+       x="370.50168"
+       y="657.42957">
+      <desc
+         id="desc3769-5">pin: yes</desc>
+    </rect>
+    <rect
+       style="color:#000000;fill:#ff00ff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect2999-0-9"
+       width="7.5761442"
+       height="8.586297"
+       x="343.73264"
+       y="744.30261">
+      <desc
+         id="desc3769-4-8">pin: yes</desc>
+    </rect>
+    <rect
+       style="color:#000000;fill:#ff00ff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect2999-0-2"
+       width="8.586297"
+       height="7.5761442"
+       x="453.30594"
+       y="841.99792">
+      <desc
+         id="desc3769-4-3">pin: yes</desc>
+    </rect>
+    <rect
+       style="color:#000000;fill:#ff00ff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect2999-7-0"
+       width="8.586297"
+       height="7.5761442"
+       x="251.27544"
+       y="724.31512">
+      <desc
+         id="desc3769-5-5">pin: yes</desc>
+    </rect>
+    <rect
+       style="color:#000000;fill:#ff00ff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect2999-1"
+       width="8.586297"
+       height="7.5761442"
+       x="254.30591"
+       y="566.73132">
+      <desc
+         id="desc3769-0">pin: yes</desc>
+    </rect>
+    <rect
+       style="color:#000000;fill:#ff00ff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect2999-1-2"
+       width="8.586297"
+       height="7.5761442"
+       x="251.27544"
+       y="648.55371">
+      <desc
+         id="desc3769-0-8">pin: yes</desc>
+    </rect>
+  </g>
+</svg>

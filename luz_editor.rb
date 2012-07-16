@@ -122,6 +122,7 @@ GLADE_FILE_NAME = 'luz_editor.glade'
 settings_path = File.join(Dir.home, SETTINGS_DIRECTORY, SETTINGS_FILENAME)
 $settings = Settings.new.load(settings_path)
 $application = LuzEditor.new
+Gtk.main_clear_queue	# Give GUI a chance to draw before loading project
 $engine.load_from_path(project) if (project and File.extname(project) == '.luz')
 $application.run
 $settings.save(settings_path)

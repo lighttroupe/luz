@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="512"
+   height="512"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.1 r9760"
+   sodipodi:docname="while-event-2.svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.98994949"
+     inkscape:cx="345.88699"
+     inkscape:cy="276.86913"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1440"
+     inkscape:window-height="869"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     showguides="true"
+     inkscape:guide-bbox="true" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-540.36218)">
+    <rect
+       style="color:#000000;fill:#00ff00;fill-opacity:0.70689655;fill-rule:nonzero;stroke:none;stroke-width:2.65307736;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect4240"
+       width="58.13451"
+       height="82.621819"
+       x="-81.282326"
+       y="863.42865">
+      <desc
+         id="desc4242">trigger: yes
+on-touch: Test / Pass
+
+while-event: always</desc>
+    </rect>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 8.5714286,9.1428574 0,494.2857126 494.2857114,0 0,-495.714284 z"
+       id="path3080"
+       inkscape:connector-curvature="0"
+       transform="translate(0,540.36218)" />
+    <rect
+       y="993.76257"
+       x="403.83698"
+       height="40"
+       width="41.42857"
+       id="rect4022"
+       style="color:#000000;fill:#00ffff;fill-opacity:1;fill-rule:nonzero;stroke:#08fc2f;stroke-width:0;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new">
+      <title
+         id="title3024">other</title>
+      <desc
+         id="desc4024">spawner: yes
+spawner-event: spawn!
+mass: 1
+collision-type: blue</desc>
+    </rect>
+    <rect
+       style="color:#000000;fill:#ff0000;fill-opacity:0.70689655;fill-rule:nonzero;stroke:none;stroke-width:2.65307736;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect4240-3"
+       width="510.68286"
+       height="40.195408"
+       x="4.7728634"
+       y="544.86597">
+      <desc
+         id="desc4242-0">trigger: yes
+on-touch: Test / Fail
+collides-with: blue</desc>
+    </rect>
+    <rect
+       style="color:#000000;fill:#ffff00;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect3986"
+       width="33.335033"
+       height="32.324883"
+       x="26.263966"
+       y="659.41284">
+      <desc
+         id="desc3988">mass: 1
+collision-type: yellow
+on-touch-blue: Test / Pass</desc>
+    </rect>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M -27.274119,-33.482376 532.35039,8.944031"
+       id="path3990"
+       inkscape:connector-curvature="0"
+       transform="translate(0,540.36218)" />
+    <rect
+       style="color:#000000;fill:#ffff00;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect3986-3"
+       width="33.335033"
+       height="32.324883"
+       x="25.75889"
+       y="471.52448">
+      <desc
+         id="desc3988-8">mass: 1
+velocity-x: 0.1
+shape: circle</desc>
+    </rect>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 44.446712,135.2131 41.416254,-51.665122"
+       id="path4013"
+       inkscape:connector-curvature="0"
+       transform="translate(0,540.36218)"
+       sodipodi:nodetypes="cc">
+      <desc
+         id="desc4015">spring: yes
+spring-stiffness: 10</desc>
+    </path>
+    <rect
+       style="color:#000000;fill:#00ff00;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect4017"
+       width="77.993507"
+       height="63.63961"
+       x="404.63382"
+       y="653.35193">
+      <desc
+         id="desc4019">trigger: yes
+collides-with: yellow
+on-overlap: state</desc>
+    </rect>
+    <rect
+       style="color:#000000;fill:#ffff00;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect4021"
+       width="21.213203"
+       height="135.36044"
+       x="412.33508"
+       y="904.87988">
+      <desc
+         id="desc4023">trigger: yes
+collides-with: blue
+overlap-impulse-y: 1
+
+while-event: state
+
+// otherwise it goes too soon and hits fail trigger
+
+</desc>
+    </rect>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 396.17265,1046.3013 0,-152.53307"
+       id="path4025"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 458.8021,1050.3419 0,-156.06859"
+       id="path4027"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 475.9747,893.76823 -121.21831,1.01015 14.14214,23.23351 1.01015,-45.45686 -13.13198,23.23351"
+       id="path4029"
+       inkscape:connector-curvature="0">
+      <desc
+         id="desc4031">pass-left: yes</desc>
+    </path>
+  </g>
+</svg>

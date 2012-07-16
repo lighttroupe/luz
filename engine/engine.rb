@@ -16,8 +16,11 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-require 'beat_detector', 'message_bus', 'director', 'actor', 'curve', 'theme', 'variable', 'event', 'user_object', 'user_object_setting', 'project', 'image'
+require 'director', 'actor', 'curve', 'theme', 'variable', 'event', 'user_object', 'user_object_setting', 'project', 'image'
 require 'actor_shape', 'actor_canvas'
+
+optional_require 'beat_detector'
+optional_require 'message_bus'
 
 begin
 	require 'inline'
@@ -26,6 +29,52 @@ rescue LoadError
 	puts "ruby-inline is unavailable: you are missing out on a possible performance increase"
 rescue Exception => e
 	puts "error loading ruby-inline: #{e}"
+end
+
+#
+# Lookup UserObjects by name
+#
+def find_event_by_name(name)
+	$event_cache ||= {}
+	if $gui
+		$engine.project.events.find { |e| e.title == name }
+	else
+		$event_cache[name] || ($event_cache[name] = $engine.project.events.find { |e| e.title == name })
+	end
+end
+
+def find_variable_by_name(name)
+	$variable_cache ||= {}
+	if $gui
+		$engine.project.variables.find { |e| e.title == name }
+	else
+		$variable_cache[name] || ($variable_cache[name] = $engine.project.variables.find { |e| e.title == name })
+	end
+end
+
+def find_actor_by_name(name)
+	$actor_cache ||= {}
+	if $gui
+		$engine.project.actors.find { |e| e.title == name }
+	else
+		$actor_cache[name] || ($actor_cache[name] = $engine.project.actors.find { |e| e.title == name })
+	end
+end
+
+def find_director_by_name(name)
+	$director_cache ||= {}
+	if $gui
+		$engine.project.directors.find { |e| e.title == name }
+	else
+		$director_cache[name] || ($director_cache[name] = $engine.project.directors.find { |e| e.title == name })
+	end
+end
+
+def clear_engine_caches
+	$event_cache ||= {}
+	$variable_cache ||= {}
+	$actor_cache ||= {}
+	$director_cache ||= {}
 end
 
 class Engine
@@ -43,8 +92,9 @@ class Engine
 	require 'engine_images'
 	include EngineImages
 
-	require 'engine_dmx'
-	include EngineDMX
+	if optional_require 'engine_dmx'
+		include EngineDMX
+	end
 
 	require 'engine_sound'
 	include EngineSound
@@ -143,7 +193,7 @@ class Engine
 		@total_frame_times = 0.0
 		@add_to_engine_time = 0.0
 
-		@beat_detector = BeatDetector.new
+		@beat_detector = BeatDetector.new if defined? BeatDetector
 
 		@event_values = Hash.new
 
@@ -427,7 +477,7 @@ private
 		@project.effects.each { |effect| user_object_try(effect) { effect.resolve_settings ; effect.tick } }
 
 		# Beat
-		@beat_detector.tick(@frame_time)
+		@beat_detector.tick(@frame_time) if @beat_detector
 
 		@last_frame_time = @frame_time
 	end
@@ -499,5 +549,29 @@ private
 
 		$env[:child_index] = 0
 		$env[:total_children] = 1
+	end
+
+	if optional_require 'rb-inotify'
+		$notifier ||= INotify::Notifier.new
+
+		def with_watch(file_path)
+			# Load file
+			if yield
+
+				# Add a watch, and when it fires, yield again
+				$notifier.watch(file_path, :close_write) {
+					puts "Reloading #{file_path} ..."
+					yield
+				}
+
+				$notifier_io = [$notifier.to_io]
+				$engine.on_frame_end { $notifier.process if IO.select($notifier_io, nil, nil, 0) } unless $notifier_callback_set
+				$notifier_callback_set = true
+			end
+		end
+	else
+		def with_watch(file_path)
+			yield
+		end
 	end
 end

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="512"
+   height="512"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.1 r9760"
+   sodipodi:docname="spring-board-3.svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.4"
+     inkscape:cx="338.29334"
+     inkscape:cy="223.07923"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1440"
+     inkscape:window-height="869"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-540.36218)">
+    <path
+       style="fill:#ececec;stroke:#000000;stroke-width:0.66273671px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 320.92019,692.22533 59.85052,-50.5214 11.16625,16.659 -58.0566,48.94321 z"
+       id="path2995-5-5-6"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccc">
+      <desc
+         id="desc3003-8-5-3">mass: 1</desc>
+    </path>
+    <rect
+       style="color:#000000;fill:#ffff00;fill-opacity:1;fill-rule:nonzero;stroke:#08fc2f;stroke-width:0;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect2985"
+       width="31.475729"
+       height="31.056053"
+       x="168.33293"
+       y="581.33582">
+      <desc
+         id="desc3006">mass: 5
+shape: circle
+
+velocity-x: 0.1
+velocity-y: -0.1
+</desc>
+    </rect>
+    <rect
+       style="color:#000000;fill:#00ff00;fill-opacity:0.65948277;fill-rule:nonzero;stroke:#08fc2f;stroke-width:0;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect3008"
+       width="103.69547"
+       height="362.96378"
+       x="28.016029"
+       y="697.75299">
+      <desc
+         id="desc3012">trigger: yes
+on-touch: Test / Pass</desc>
+    </rect>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 268.70058,25.106473 c 174.65003,5.104903 211.99744,41.730875 211.12188,223.243717 0,10.10152 -1.01016,261.9798 -1.01016,261.9798 l -450.528029,-1e-5 5.050763,-484.213354 z"
+       id="path3010"
+       inkscape:connector-curvature="0"
+       transform="translate(0,540.36218)"
+       sodipodi:nodetypes="cccccc" />
+    <rect
+       style="color:#000000;fill:#ff0000;fill-opacity:0.65948277;fill-rule:nonzero;stroke:#08fc2f;stroke-width:0;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect3008-6"
+       width="260.0015"
+       height="124.09647"
+       x="203.79808"
+       y="926.8075">
+      <desc
+         id="desc3012-2">trigger: yes
+on-touch: Test / Fail</desc>
+    </rect>
+    <path
+       style="fill:#ececec;stroke:#000000;stroke-width:0.66273671px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 367.17099,652.94512 59.85052,-50.5214 11.16625,16.659 -58.0566,48.94321 z"
+       id="path2995-5-5"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccc">
+      <desc
+         id="desc3003-8-5">mass: 1</desc>
+    </path>
+    <rect
+       style="color:#000000;fill:#ff00ff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect3005-0-5-1"
+       width="9.0913725"
+       height="7.0710678"
+       x="376.16858"
+       y="650.96954">
+      <desc
+         id="desc3007-7-1-4">copy-from: master spring</desc>
+    </rect>
+    <path
+       style="fill:#ececec;stroke:#000000;stroke-width:0.66273671px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 273.77733,732.22533 59.85052,-50.5214 11.16625,16.659 -58.0566,48.94321 z"
+       id="path2995-5-5-6-6"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccc">
+      <desc
+         id="desc3003-8-5-3-7">mass: 1</desc>
+    </path>
+    <rect
+       style="color:#000000;fill:#ff00ff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect3005-0-5-1-7"
+       width="9.0913725"
+       height="7.0710678"
+       x="329.0257"
+       y="690.96954">
+      <desc
+         id="desc3007-7-1-4-4">copy-from: master spring</desc>
+    </rect>
+    <path
+       style="fill:#ececec;stroke:#000000;stroke-width:0.66273671px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 222.34876,772.93961 59.85052,-50.5214 11.16625,16.659 -58.0566,48.94321 z"
+       id="path2995-5-5-6-9"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccc">
+      <desc
+         id="desc3003-8-5-3-4">mass: 1</desc>
+    </path>
+    <rect
+       style="color:#000000;fill:#ff00ff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect3005-0-5-1-5"
+       width="9.0913725"
+       height="7.0710678"
+       x="277.59717"
+       y="731.68384">
+      <desc
+         id="desc3007-7-1-4-41">copy-from: master spring</desc>
+    </rect>
+    <rect
+       style="color:#000000;fill:#ff00ff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect3005-0"
+       width="9.0913725"
+       height="7.0710678"
+       x="419.3316"
+       y="613.5921">
+      <title
+         id="title3086">master spring</title>
+      <desc
+         id="desc3007-7">spring: yes
+spring-stiffness: 100
+spring-damping: 0.05</desc>
+    </rect>
+  </g>
+</svg>

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="512"
+   height="512"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.1 r9760"
+   sodipodi:docname="vehicle-3.svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.4"
+     inkscape:cx="412.68168"
+     inkscape:cy="242.56384"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:window-width="1440"
+     inkscape:window-height="869"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1">
+    <inkscape:grid
+       type="xygrid"
+       id="grid3590" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-540.36218)">
+    <rect
+       style="color:#000000;fill:#ffff00;fill-opacity:1;fill-rule:nonzero;stroke:#08fc2f;stroke-width:0;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect2985"
+       width="17.999998"
+       height="15.999997"
+       x="37"
+       y="1021.3622">
+      <desc
+         id="desc3006">mass: 0.5
+shape: circle
+rotational-velocity-control-variable: always
+rotational-velocity-control-min: 0
+rotational-velocity-control-max: 8</desc>
+    </rect>
+    <rect
+       style="color:#000000;fill:#00ff00;fill-opacity:0.65948277;fill-rule:nonzero;stroke:#08fc2f;stroke-width:0;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect3008"
+       width="220"
+       height="290"
+       x="120"
+       y="382.36218">
+      <desc
+         id="desc3012">trigger: yes
+on-touch: Test / Pass</desc>
+    </rect>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 268.70058,25.106473 C 460,22 500,92 500,232 494.56188,497.77326 270,512 140,512 L 28.284271,510.32998 33.335034,26.116626 z"
+       id="path3010"
+       inkscape:connector-curvature="0"
+       transform="translate(0,540.36218)"
+       sodipodi:nodetypes="cccccc" />
+    <rect
+       style="color:#000000;fill:#ffff00;fill-opacity:1;fill-rule:nonzero;stroke:#08fc2f;stroke-width:0;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect2985-6"
+       width="31.475729"
+       height="31.056053"
+       x="60"
+       y="981.30615">
+      <desc
+         id="desc3006-1">mass: 0.5
+shape: circle
+type: yellow</desc>
+    </rect>
+    <path
+       style="fill:#ff0000;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 20,443.42857 20.357143,0.71429 -1.428571,28.57143 69.642858,0.71428 -2.5,-10.71428 18.57143,1.78571 14.28571,12.5 -0.35714,10 L 115,486.64286 l -6.42857,-6.78572 -17.500001,0 L 84.642858,484.5 62.5,484.85714 l -10.714285,-7.14285 -13.571429,0.35714 -5,6.07143 L 17.5,481.28571 z"
+       id="path3580"
+       inkscape:connector-curvature="0"
+       transform="translate(0,540.36218)"
+       sodipodi:nodetypes="cccccccccccccccccc">
+      <desc
+         id="desc3582">mass: 1</desc>
+    </path>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 46,489 31.428572,478.78571"
+       id="path3584"
+       inkscape:connector-curvature="0"
+       transform="translate(0,540.36218)"
+       sodipodi:nodetypes="cc">
+      <title
+         id="title3588">master spring</title>
+      <desc
+         id="desc3586">spring: yes
+spring-stiffness: 10</desc>
+    </path>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 46,1029.3622 14,-9"
+       id="path3584-8"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc">
+      <title
+         id="title3588-0">master spring</title>
+      <desc
+         id="desc3586-7">spring: yes
+spring-stiffness: 10</desc>
+    </path>
+    <rect
+       style="color:#000000;fill:#ffff00;fill-opacity:1;fill-rule:nonzero;stroke:#08fc2f;stroke-width:0;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:new"
+       id="rect2985-5"
+       width="17.999998"
+       height="15.999997"
+       x="91.285713"
+       y="1022.7908">
+      <desc
+         id="desc3006-9">mass: 0.5
+shape: circle
+rotational-velocity-control-variable: always
+rotational-velocity-control-min: 0
+rotational-velocity-control-max: 5</desc>
+    </rect>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 100.28571,1030.7908 85.714286,1020.5765"
+       id="path3584-1"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc">
+      <title
+         id="title3588-2">master spring</title>
+      <desc
+         id="desc3586-6">spring: yes
+spring-stiffness: 10</desc>
+    </path>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 100.28571,1030.7908 14,-9"
+       id="path3584-8-3"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc">
+      <title
+         id="title3588-0-6">master spring</title>
+      <desc
+         id="desc3586-7-8">spring: yes
+spring-stiffness: 10</desc>
+    </path>
+  </g>
+</svg>
