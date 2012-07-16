@@ -9,7 +9,7 @@ module AL
 	end
 end
 
-optional_require 'midi_file_reader'
+#optional_require 'midi_file_reader'
 require 'sample_player'
 require 'ruby_version'			# loads different binding for 1.8 and 1.9 in init_openal
 
