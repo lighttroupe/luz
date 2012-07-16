@@ -2,10 +2,6 @@
 #  Copyright 2011 Ian McIntosh <ian@openanswers.org>
 ###############################################################################
 
-require 'chipmunk_physics_simulator'
-require 'svg_level_loader'
-require 'chipmunk_property_deprecations'
-
 class DirectorEffectGamePhysicsPuzzle < DirectorEffect
 	title 'Game Physics Puzzle'
 	description 'Chipmunk 2D physics, Inkscape SVG level loading, OpenAL 3D Audio.'
@@ -41,6 +37,10 @@ class DirectorEffectGamePhysicsPuzzle < DirectorEffect
 	end
 
 	def after_load
+		require 'chipmunk_physics_simulator'
+		require 'svg_level_loader'
+		require 'chipmunk_property_deprecations'
+
 		# after_load is called once when object is first created, and also after an engine reload
 		do_reload
 		super		# it must call 'super' for the object to be properly instantiated
