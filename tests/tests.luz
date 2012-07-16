@@ -4710,7 +4710,7 @@
         options: 
           :summary: true
         breaks_cache: 
-        director: &id057 !ruby/object:Director
+        director: &id061 !ruby/object:Director
           tags: 
             test: true
           effects: 
@@ -5254,6 +5254,20 @@
             activation_value: 1.0
             activation_variable: 
       title: always
+      enabled: true
+      combine_method_setting: !ruby/object:UserObjectSettingSelect
+        selected: :sum
+        name: combine_method
+        options: *id017
+        breaks_cache: 
+      damper_method_setting: !ruby/object:UserObjectSettingSelect
+        selected: :none
+        name: damper_method
+        options: *id018
+        breaks_cache: 
+    - !ruby/object:Variable
+      effects: []
+      title: never
       enabled: true
       combine_method_setting: !ruby/object:UserObjectSettingSelect
         selected: :sum
@@ -15908,6 +15922,377 @@
           title: Game Physics Puzzle
           enabled: true
           level_file_path_setting: !ruby/object:UserObjectSettingString
+            string: velocity-limit-variable.svg
+            name: level_file_path
+            options: 
+              :file_edit: true
+              :summary: true
+            breaks_cache: 
+          camera_mode_setting: !ruby/object:UserObjectSettingSelect
+            selected: :follow_last
+            name: camera_mode
+            options: 
+              :options: 
+                - - :follow_last
+                  - Follow Latest
+                - - :follow_first
+                  - Follow Earliest
+                - - :follow_all
+                  - Follow All
+              :default: :follow_last
+            breaks_cache: 
+          camera_x_setting: !ruby/object:UserObjectSettingFloat
+            name: camera_x
+            options: &id057
+              
+              :range: &id059 !ruby/range
+                begin: -1000.0
+                end: 1000.0
+                excl: false
+              :default: !ruby/range
+                begin: 0.0
+                end: 0.5
+                excl: false
+            breaks_cache: 
+            min: -1000.0
+            max: 1000.0
+            enter_value: 0.0
+            exit_value: 0.0
+            enable_enter_animation: false
+            enter_curve: *id008
+            enable_animation: false
+            animation_curve: *id008
+            animation_min: 0.0
+            animation_max: 0.5
+            animation_repeat_number: 4
+            animation_repeat_unit: :beats
+            enable_exit_animation: false
+            exit_curve: *id008
+            enable_activation: false
+            activation_direction: :to
+            activation_curve: *id008
+            activation_value: 1.0
+            activation_variable: 
+          camera_y_setting: !ruby/object:UserObjectSettingFloat
+            name: camera_y
+            options: *id057
+            breaks_cache: 
+            min: -1000.0
+            max: 1000.0
+            enter_value: 0.0
+            exit_value: 0.0
+            enable_enter_animation: false
+            enter_curve: *id008
+            enable_animation: false
+            animation_curve: *id008
+            animation_min: 0.0
+            animation_max: 0.5
+            animation_repeat_number: 4
+            animation_repeat_unit: :beats
+            enable_exit_animation: false
+            exit_curve: *id008
+            enable_activation: false
+            activation_direction: :to
+            activation_curve: *id008
+            activation_value: 1.0
+            activation_variable: 
+          camera_z_setting: !ruby/object:UserObjectSettingFloat
+            name: camera_z
+            options: *id057
+            breaks_cache: 
+            min: -1000.0
+            max: 1000.0
+            enter_value: 0.0
+            exit_value: 0.0
+            enable_enter_animation: false
+            enter_curve: *id008
+            enable_animation: false
+            animation_curve: *id008
+            animation_min: 0.0
+            animation_max: 0.5
+            animation_repeat_number: 4
+            animation_repeat_unit: :beats
+            enable_exit_animation: false
+            exit_curve: *id008
+            enable_activation: false
+            activation_direction: :to
+            activation_curve: *id008
+            activation_value: 1.0
+            activation_variable: 
+          camera_speed_setting: !ruby/object:UserObjectSettingFloat
+            name: camera_speed
+            options: 
+              :range: !ruby/range
+                begin: 0.01
+                end: 1000.0
+                excl: false
+              :default: &id058 !ruby/range
+                begin: 1.0
+                end: 1.0
+                excl: false
+            breaks_cache: 
+            min: 0.01
+            max: 1.0
+            enter_value: 0.01
+            exit_value: 0.01
+            enable_enter_animation: false
+            enter_curve: *id008
+            enable_animation: false
+            animation_curve: *id008
+            animation_min: 1.0
+            animation_max: 1.0
+            animation_repeat_number: 4
+            animation_repeat_unit: :beats
+            enable_exit_animation: false
+            exit_curve: *id008
+            enable_activation: false
+            activation_direction: :to
+            activation_curve: *id008
+            activation_value: 1.0
+            activation_variable: 
+          camera_damper_setting: !ruby/object:UserObjectSettingFloat
+            name: camera_damper
+            options: 
+              :range: !ruby/range
+                begin: 0.001
+                end: 1.0
+                excl: false
+              :default: *id058
+            breaks_cache: 
+            min: 0.001
+            max: 1.0
+            enter_value: 0.001
+            exit_value: 0.001
+            enable_enter_animation: false
+            enter_curve: *id008
+            enable_animation: false
+            animation_curve: *id008
+            animation_min: 1.0
+            animation_max: 1.0
+            animation_repeat_number: 4
+            animation_repeat_unit: :beats
+            enable_exit_animation: false
+            exit_curve: *id008
+            enable_activation: false
+            activation_direction: :to
+            activation_curve: *id008
+            activation_value: 1.0
+            activation_variable: 
+          gravity_x_setting: !ruby/object:UserObjectSettingFloat
+            name: gravity_x
+            options: *id057
+            breaks_cache: 
+            min: -1000.0
+            max: 1000.0
+            enter_value: 0.0
+            exit_value: 0.0
+            enable_enter_animation: false
+            enter_curve: *id008
+            enable_animation: false
+            animation_curve: *id008
+            animation_min: 0.0
+            animation_max: 0.5
+            animation_repeat_number: 4
+            animation_repeat_unit: :beats
+            enable_exit_animation: false
+            exit_curve: *id008
+            enable_activation: false
+            activation_direction: :to
+            activation_curve: *id008
+            activation_value: 1.0
+            activation_variable: 
+          gravity_y_setting: !ruby/object:UserObjectSettingFloat
+            name: gravity_y
+            options: 
+              :range: *id059
+              :default: !ruby/range
+                begin: -0.1
+                end: 0.0
+                excl: false
+            breaks_cache: 
+            min: -1000.0
+            max: 1000.0
+            enter_value: 0.0
+            exit_value: 0.0
+            enable_enter_animation: false
+            enter_curve: *id008
+            enable_animation: false
+            animation_curve: *id008
+            animation_min: -0.1
+            animation_max: 0.0
+            animation_repeat_number: 4
+            animation_repeat_unit: :beats
+            enable_exit_animation: false
+            exit_curve: *id008
+            enable_activation: false
+            activation_direction: :to
+            activation_curve: *id008
+            activation_value: 1.0
+            activation_variable: 
+          damping_setting: !ruby/object:UserObjectSettingFloat
+            name: damping
+            options: 
+              :range: !ruby/range
+                begin: 0.0
+                end: 1.0
+                excl: false
+              :default: *id058
+            breaks_cache: 
+            min: 0.0
+            max: 1.0
+            enter_value: 0.0
+            exit_value: 0.0
+            enable_enter_animation: false
+            enter_curve: *id008
+            enable_animation: false
+            animation_curve: *id008
+            animation_min: 1.0
+            animation_max: 1.0
+            animation_repeat_number: 4
+            animation_repeat_unit: :beats
+            enable_exit_animation: false
+            exit_curve: *id008
+            enable_activation: false
+            activation_direction: :to
+            activation_curve: *id008
+            activation_value: 1.0
+            activation_variable: 
+          speed_of_time_setting: !ruby/object:UserObjectSettingFloat
+            name: speed_of_time
+            options: 
+              :range: !ruby/range
+                begin: -2.0
+                end: 2.0
+                excl: false
+              :default: !ruby/range
+                begin: 1.0
+                end: 2.0
+                excl: false
+            breaks_cache: 
+            min: -2.0
+            max: 2.0
+            enter_value: 0.0
+            exit_value: 0.0
+            enable_enter_animation: false
+            enter_curve: *id008
+            enable_animation: false
+            animation_curve: *id008
+            animation_min: 1.0
+            animation_max: 2.0
+            animation_repeat_number: 4
+            animation_repeat_unit: :beats
+            enable_exit_animation: false
+            exit_curve: *id008
+            enable_activation: false
+            activation_direction: :to
+            activation_curve: *id008
+            activation_value: 1.0
+            activation_variable: 
+          object_speed_variable_setting: !ruby/object:UserObjectSettingVariable
+            variable: 
+            name: object_speed_variable
+            options: &id060
+              {}
+            breaks_cache: 
+          object_rotation_variable_setting: !ruby/object:UserObjectSettingVariable
+            variable: 
+            name: object_rotation_variable
+            options: *id060
+            breaks_cache: 
+          object_rotation_speed_variable_setting: !ruby/object:UserObjectSettingVariable
+            variable: 
+            name: object_rotation_speed_variable
+            options: *id060
+            breaks_cache: 
+          object_activation_variable_setting: !ruby/object:UserObjectSettingVariable
+            variable: 
+            name: object_activation_variable
+            options: *id060
+            breaks_cache: 
+          object_sleeping_event_setting: !ruby/object:UserObjectSettingEvent
+            event: 
+            name: object_sleeping_event
+            options: *id060
+            breaks_cache: 
+          object_damage_variable_setting: !ruby/object:UserObjectSettingVariable
+            variable: 
+            name: object_damage_variable
+            options: *id060
+            breaks_cache: 
+          reload_setting: !ruby/object:UserObjectSettingEvent
+            event: *id025
+            name: reload
+            options: *id060
+            breaks_cache: 
+          debug_mode_setting: !ruby/object:UserObjectSettingEvent
+            event: *id026
+            name: debug_mode
+            options: *id060
+            breaks_cache: 
+          audible_distance_setting: !ruby/object:UserObjectSettingFloat
+            name: audible_distance
+            options: 
+              :range: !ruby/range
+                begin: 0.001
+                end: 10.0
+                excl: false
+              :default: !ruby/range
+                begin: 0.01
+                end: 10.0
+                excl: false
+              :simple: true
+            breaks_cache: 
+            min: 0.001
+            max: 10.0
+            enter_value: 0.001
+            exit_value: 0.001
+            enable_enter_animation: false
+            enter_curve: 
+            enable_animation: false
+            animation_curve: 
+            animation_min: 0.01
+            animation_max: 10.0
+            animation_repeat_number: 4
+            animation_repeat_unit: :beats
+            enable_exit_animation: false
+            exit_curve: 
+            enable_activation: false
+            activation_direction: :to
+            activation_curve: 
+            activation_value: 1.0
+            activation_variable: 
+      title: velocity-limit-variable
+      enabled: true
+      offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
+        name: offscreen_render_actor
+        options: 
+          :summary: renders on %
+        breaks_cache: 
+        actor: 
+        x: 0.0
+        y: 0.0
+        z: 0.0
+    - !ruby/object:Director
+      tags: 
+        test: true
+      effects: 
+        - !ruby/object:DirectorEffectGamePhysicsPuzzle
+          conditions: !ruby/object:ChildConditions
+            enable_child_index: false
+            child_index_min: 0
+            child_index_max: 0
+            enable_event: false
+            event: 
+            event_invert: false
+            child_index_max: 0
+            child_index_min: 0
+            enable_child_index: false
+            enable_event: false
+            event: 
+            event_invert: false
+          title: Game Physics Puzzle
+          enabled: true
+          level_file_path_setting: !ruby/object:UserObjectSettingString
             string: rotational-velocity.svg
             name: level_file_path
             options: *id031
@@ -18987,7 +19372,7 @@
         x: 0.0
         y: 0.0
         z: 0.0
-    - *id057
+    - *id061
     - !ruby/object:Director
       tags: 
         test: true
@@ -26451,35 +26836,16 @@
           level_file_path_setting: !ruby/object:UserObjectSettingString
             string: trigger-damage-on-touch.svg
             name: level_file_path
-            options: 
-              :file_edit: true
-              :summary: true
+            options: *id031
             breaks_cache: 
           camera_mode_setting: !ruby/object:UserObjectSettingSelect
             selected: :follow_last
             name: camera_mode
-            options: 
-              :options: 
-                - - :follow_last
-                  - Follow Latest
-                - - :follow_first
-                  - Follow Earliest
-                - - :follow_all
-                  - Follow All
-              :default: :follow_last
+            options: *id032
             breaks_cache: 
           camera_x_setting: !ruby/object:UserObjectSettingFloat
             name: camera_x
-            options: &id058
-              
-              :range: &id060 !ruby/range
-                begin: -1000.0
-                end: 1000.0
-                excl: false
-              :default: !ruby/range
-                begin: 0.0
-                end: 0.5
-                excl: false
+            options: *id033
             breaks_cache: 
             min: -1000.0
             max: 1000.0
@@ -26502,7 +26868,7 @@
             activation_variable: 
           camera_y_setting: !ruby/object:UserObjectSettingFloat
             name: camera_y
-            options: *id058
+            options: *id034
             breaks_cache: 
             min: -1000.0
             max: 1000.0
@@ -26525,7 +26891,7 @@
             activation_variable: 
           camera_z_setting: !ruby/object:UserObjectSettingFloat
             name: camera_z
-            options: *id058
+            options: *id035
             breaks_cache: 
             min: -1000.0
             max: 1000.0
@@ -26548,15 +26914,7 @@
             activation_variable: 
           camera_speed_setting: !ruby/object:UserObjectSettingFloat
             name: camera_speed
-            options: 
-              :range: !ruby/range
-                begin: 0.01
-                end: 1000.0
-                excl: false
-              :default: &id059 !ruby/range
-                begin: 1.0
-                end: 1.0
-                excl: false
+            options: *id036
             breaks_cache: 
             min: 0.01
             max: 1.0
@@ -26579,12 +26937,7 @@
             activation_variable: 
           camera_damper_setting: !ruby/object:UserObjectSettingFloat
             name: camera_damper
-            options: 
-              :range: !ruby/range
-                begin: 0.001
-                end: 1.0
-                excl: false
-              :default: *id059
+            options: *id037
             breaks_cache: 
             min: 0.001
             max: 1.0
@@ -26607,7 +26960,7 @@
             activation_variable: 
           gravity_x_setting: !ruby/object:UserObjectSettingFloat
             name: gravity_x
-            options: *id058
+            options: *id038
             breaks_cache: 
             min: -1000.0
             max: 1000.0
@@ -26630,12 +26983,7 @@
             activation_variable: 
           gravity_y_setting: !ruby/object:UserObjectSettingFloat
             name: gravity_y
-            options: 
-              :range: *id060
-              :default: !ruby/range
-                begin: -0.1
-                end: 0.0
-                excl: false
+            options: *id039
             breaks_cache: 
             min: -1000.0
             max: 1000.0
@@ -26658,12 +27006,7 @@
             activation_variable: 
           damping_setting: !ruby/object:UserObjectSettingFloat
             name: damping
-            options: 
-              :range: !ruby/range
-                begin: 0.0
-                end: 1.0
-                excl: false
-              :default: *id059
+            options: *id040
             breaks_cache: 
             min: 0.0
             max: 1.0
@@ -26686,15 +27029,7 @@
             activation_variable: 
           speed_of_time_setting: !ruby/object:UserObjectSettingFloat
             name: speed_of_time
-            options: 
-              :range: !ruby/range
-                begin: -2.0
-                end: 2.0
-                excl: false
-              :default: !ruby/range
-                begin: 1.0
-                end: 2.0
-                excl: false
+            options: *id041
             breaks_cache: 
             min: -2.0
             max: 2.0
@@ -26718,56 +27053,46 @@
           object_speed_variable_setting: !ruby/object:UserObjectSettingVariable
             variable: 
             name: object_speed_variable
-            options: &id061
-              {}
+            options: *id042
             breaks_cache: 
           object_rotation_variable_setting: !ruby/object:UserObjectSettingVariable
             variable: 
             name: object_rotation_variable
-            options: *id061
+            options: *id043
             breaks_cache: 
           object_rotation_speed_variable_setting: !ruby/object:UserObjectSettingVariable
             variable: 
             name: object_rotation_speed_variable
-            options: *id061
+            options: *id044
             breaks_cache: 
           object_activation_variable_setting: !ruby/object:UserObjectSettingVariable
             variable: 
             name: object_activation_variable
-            options: *id061
+            options: *id045
             breaks_cache: 
           object_sleeping_event_setting: !ruby/object:UserObjectSettingEvent
             event: 
             name: object_sleeping_event
-            options: *id061
+            options: *id046
             breaks_cache: 
           object_damage_variable_setting: !ruby/object:UserObjectSettingVariable
             variable: 
             name: object_damage_variable
-            options: *id061
+            options: *id047
             breaks_cache: 
           reload_setting: !ruby/object:UserObjectSettingEvent
             event: *id025
             name: reload
-            options: *id061
+            options: *id048
             breaks_cache: 
           debug_mode_setting: !ruby/object:UserObjectSettingEvent
             event: *id026
             name: debug_mode
-            options: *id061
+            options: *id049
             breaks_cache: 
           audible_distance_setting: !ruby/object:UserObjectSettingFloat
             name: audible_distance
-            options: 
-              :range: !ruby/range
-                begin: 0.001
-                end: 10.0
-                excl: false
-              :default: !ruby/range
-                begin: 0.01
-                end: 10.0
-                excl: false
-              :simple: true
+            options: *id050
             breaks_cache: 
             min: 0.001
             max: 10.0
@@ -26792,8 +27117,7 @@
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
-        options: 
-          :summary: renders on %
+        options: *id051
         breaks_cache: 
         actor: 
         x: 0.0

@@ -727,6 +727,18 @@ class ChipmunkPhysicsSimulator
 				update_proc)
 		end
 
+		# Map Feature: Rotational Velocity Control
+		if object.options[:velocity_limit_variable]
+			update_proc = Proc.new { |updateable|
+				if (amount = resolve_variable(updateable.variable).scale(updateable.low, updateable.high)) != 0.0
+					updateable.target.v_limit = amount		# rotational velocity
+				end
+			}
+			@updateables << ControllableValue.new(body,
+				find_variable_by_name(object.options[:velocity_limit_variable]), as_float(object.options[:velocity_limit_min], 0.0), as_float(object.options[:velocity_limit_max], 1.0),
+				update_proc)
+		end
+
 		#
 		# Map Feature: 'jump-event'
 		#
