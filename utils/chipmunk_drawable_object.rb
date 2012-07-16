@@ -100,9 +100,10 @@ class DrawableObject
 	DAMAGE_MAX = 1.0
 	DAMAGE_DEATH = 0.99		# allow for floating point error with eg. four hits of 0.25 ending up at 0.999999995
 
-	def damage!(amount)		# returns whether "killed" or not
+	def damage!(amount, type=nil)		# returns whether "killed" or not
 		return false unless @takes_damage
 		@damage = (@damage + (amount * @damage_multiplier)).clamp(0.0, DAMAGE_MAX)
+		@damage *= as_float(@options["#{type}_damage_multiplier".to_sym], 1.0) if type		# explosion-damage-multiplier, etc.
 		$engine.on_slider_change(@damage_slider, @damage) if @damage_slider
 		@activation = 1.0 if @activates_on_damage
 		return (@damage >= DAMAGE_DEATH)
