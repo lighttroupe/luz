@@ -27,12 +27,8 @@ class TriggerCollisionHandler
 
 		@overlap_body_count_hash[body.object_id] += 1
 
-#puts "+1 for #{other_shape}"
-#puts "@overlap_body_count_hash[#{body.object_id}] == #{@overlap_body_count_hash[body.object_id]}"
-
 		return if @overlap_body_count_hash[body.object_id] > 1
 
-#		@overlap_body_set << body.object_id
 		overlap_count = @overlap_body_count_hash.size
 
 		if (follow_body=@object.options[:set_follow])
@@ -41,7 +37,7 @@ class TriggerCollisionHandler
 		end
 
 		# rare use of $env[]= outside of the engine, breaking rules is sexy
-		if @object.options[:next_director] 
+		if @object.options[:next_director]
 			$env[:next_director] = @object.options[:next_director]
 			$env[:next_director_fade_time] = as_float(@object.options[:next_director_fade_time])
 			$env[:next_director_fade_actor] = @object.options[:next_director_fade_actor]
@@ -58,9 +54,6 @@ class TriggerCollisionHandler
 
 		# Map Feature: trigger 'on-touch' button press
 		button = @object.options[:on_touch]
-
-#puts "trigger #{@object.options[:id]} sending #{button} for #{other_shape}"
-
 		$engine.on_button_press(button, 1) if button
 
 		# Map Feature: trigger 'on-touch-TYPE' button press
@@ -117,6 +110,12 @@ class TriggerCollisionHandler
 		# Map Feature: destroy-on-touch and destroy-on-touch-TYPE
 		if (@object.options[:destroy_on_touch] == YES) or (@object.options[$collision_type_symbol_to_destroy_on_touch_key[other_shape.collision_type]] == YES)
 			@simulator.exit_drawables(other_shape.body.drawables)
+		end
+
+		# Map Feature: trigger 'damage-on-touch' button press
+		damage_amount = as_float(@object.options[:damage_on_touch], 0.0)
+		if damage_drawables(body.drawables, damage_amount, damage_type=nil)
+			@simulator.exit_drawables(body.drawables)
 		end
 
 		# Now, on to sound...
