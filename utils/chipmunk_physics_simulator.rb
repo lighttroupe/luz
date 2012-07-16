@@ -100,7 +100,7 @@ class ChipmunkPhysicsSimulator
 	DEFAULT_WALL_FRICTION = 0.5
 
 	# Properties passed from a group to the drawables/shapes within
-	GROUP_INHERITABLE_OPTIONS = Set.new([:render, :draw_method, :z, :height, :depth, :image, :elasticity, :friction, :collisions, :collision_type, :enter_time, :exit_time, :surface_velocity_x, :surface_velocity_y, :die_on_touch])
+	GROUP_INHERITABLE_OPTIONS = Set.new([:render, :draw_method, :z, :height, :depth, :image, :elasticity, :friction, :collisions, :collision_type, :enter_time, :exit_time, :surface_velocity_x, :surface_velocity_y, :die_on_touch, :explosion_damage_multiplier])
 
 	attr_reader :name, :parent
 
