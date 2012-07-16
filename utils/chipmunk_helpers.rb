@@ -65,9 +65,9 @@ class Array
 end
 
 # returns true if killed
-def damage_drawables(drawables, damage_amount)
+def damage_drawables(drawables, damage_amount, damage_type=nil)
 	return false unless drawables
 	killed = false
-	drawables.each { |drawable| killed = true if drawable.damage!(damage_amount) }
+	drawables.each { |drawable| killed = true if drawable.damage!(damage_amount, damage_type) }
 	return killed
 end
