@@ -202,8 +202,21 @@ class ChipmunkPhysicsSimulator
 		shapes
 	end
 
+	def find_shapes_at_shape(shape)
+		shapes = []
+		space.shape_query(shape) { |s| shapes << s }
+		shapes
+	end
+
 	def find_bodies_at_point(point)
 		shapes = find_shapes_at_point(point)
+		bodies = shapes.map { |shape| shape.body }
+		bodies.uniq!
+		bodies
+	end
+
+	def find_bodies_at_shape(shape)
+		shapes = find_shapes_at_shape(shape)
 		bodies = shapes.map { |shape| shape.body }
 		bodies.uniq!
 		bodies
@@ -1494,19 +1507,20 @@ public
 
 	def explosion_at(point, radius, force, damage_amount, exclude_body=nil)
 		shape = CP::Shape::Circle.new(@layer_static_body, radius, point)
-		space.shape_query(shape) { |shape|
-			next if shape.body == exclude_body
-			vector = (shape.body.p - point)
+		bodies = find_bodies_at_shape(shape)
+		bodies.delete(exclude_body)
+		bodies.each { |body|
+			vector = (body.p - point)
 
 			distance_modulator = 1.0 - (vector.length / radius).clamp(0.0, 1.0)
 
 			# apply force
-			shape.body.activate		# in case it was sleeping
-			shape.body.apply_impulse(vector.normalize * force * distance_modulator, CP::ZERO_VEC_2)
+			body.activate		# in case it was sleeping
+			body.apply_impulse(vector.normalize * force * distance_modulator, CP::ZERO_VEC_2)
 
 			# apply damage
-			if damage_drawables(shape.body.drawables, damage_amount) # * distance_modulator)
-				exit_drawables(shape.body.drawables)
+			if damage_drawables(body.drawables, damage_amount, damage_type=:explosion)
+				exit_drawables(body.drawables)
 			end
 		}
 	end
