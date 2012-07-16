@@ -44,6 +44,7 @@ class DrawableObject
 		#@angle += as_float(@options[:angle], 0.0) if @angle	# this causes wrong angle results: reuse of :angle causing angle to be applied twice
 
 		@takes_damage = (@options[:takes_damage] == YES)
+		@activates_on_damage = (@options[:activates_on_damage] == YES)
 		@damage = 0.0
 		@damage_multiplier = as_float(@options[:damage_multiplier], 1.0)
 
@@ -103,6 +104,7 @@ class DrawableObject
 		return false unless @takes_damage
 		@damage = (@damage + (amount * @damage_multiplier)).clamp(0.0, DAMAGE_MAX)
 		$engine.on_slider_change(@damage_slider, @damage) if @damage_slider
+		@activation = 1.0 if @activates_on_damage
 		return (@damage >= DAMAGE_DEATH)
 	end
 
