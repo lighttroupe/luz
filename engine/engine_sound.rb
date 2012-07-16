@@ -1,6 +1,4 @@
 module EngineSound
-	include Callbacks
-
 	def play_sound(file, options)
 		@sound_manager.play(file, options) if init_sound?
 	end
@@ -25,13 +23,18 @@ module EngineSound
 		@sound_manager.stop_by_id(sound_id) if init_sound?
 	end
 
+	def init_sound!
+		init_sound?
+	end
+
 private
 
 	def init_sound?
-		if @sound_manager.nil?
+		if @sound_manager.nil?		# nil => uninitialized, false => failed, otherwise object
 			begin
 				require 'sound_manager'
 				@sound_manager = SoundManager.new
+				$sound = @sound_manager		# hack for new physics integration
 				on_frame_end { @sound_manager.tick! }
 			rescue Exception => e
 				e.report
