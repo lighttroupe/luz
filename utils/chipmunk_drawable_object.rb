@@ -131,7 +131,7 @@ class DrawableObject
 		update_looping_sound! if ($sound and @sound_id)
 
 		# 'aim-at' and 'aim-at-type' feature
-		update_aim_at if @aim_at || @aim_at_type
+		update_aim_at if @body && (@aim_at || @aim_at_type)		# finding nearby things requires a @body for position
 	end
 
 	def find_target_by_title(title)
