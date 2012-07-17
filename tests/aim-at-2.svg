@@ -24,9 +24,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.979899"
-     inkscape:cx="475.34183"
-     inkscape:cy="301.74946"
+     inkscape:zoom="0.7"
+     inkscape:cx="656.76962"
+     inkscape:cy="275.40198"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -128,7 +128,8 @@ collisions: yes</desc>
         <desc
            id="desc3006">mass: 1
 
-aim-at: target</desc>
+aim-at: target
+aim-at-radius: 1.5</desc>
       </rect>
       <rect
          transform="translate(0,540.36218)"

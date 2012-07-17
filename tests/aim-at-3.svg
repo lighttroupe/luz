@@ -24,9 +24,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.98994949"
-     inkscape:cx="507.26875"
-     inkscape:cy="300.61421"
+     inkscape:zoom="0.7"
+     inkscape:cx="316.32351"
+     inkscape:cy="127.38442"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -58,19 +58,6 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(0,-540.36218)">
-    <path
-       style="fill:#00ffff;fill-opacity:1;stroke:none;display:inline;enable-background:new"
-       d="m 95,692.36218 c 0,4.2259 -3.3932,7.65168 -7.5789,7.65168 -4.1858,0 -7.579,-3.42578 -7.579,-7.65168 0,-4.22587 3.3932,-7.65162 7.579,-7.65162 4.1857,0 7.5789,3.42575 7.5789,7.65162 z"
-       id="path4166-4-4"
-       inkscape:connector-curvature="0">
-      <title
-         id="title3090">target</title>
-      <desc
-         id="desc4214-6-91">mass: 1
-friction: 2
-
-collision-type: blue</desc>
-    </path>
     <rect
        style="fill:#ffffff;fill-opacity:1;stroke:none"
        id="rect3092"
@@ -103,7 +90,10 @@ force-control-forward-max: 0.5
          inkscape:connector-curvature="0"
          sodipodi:nodetypes="cccccc">
         <desc
-           id="desc3064">on-touch-blue: Test / Pass</desc>
+           id="desc3064">on-touch-blue: Test / Pass
+destroy-on-touch-blue: yes
+
+</desc>
       </path>
       <path
          transform="translate(0,540.36218)"
@@ -123,5 +113,23 @@ force-control-forward-max: 0.5
        d="m 40,682.36218 110,0"
        id="path3062-4"
        inkscape:connector-curvature="0" />
+    <rect
+       style="fill:#00ffff;fill-opacity:1;stroke:none"
+       id="rect3142"
+       width="15"
+       height="15"
+       x="100"
+       y="684.68359">
+      <title
+         id="title3146">target</title>
+      <desc
+         id="desc3144">mass: 1
+friction: 2
+
+collision-type: blue
+render-actor: bomb
+
+exit-time: 0.5</desc>
+    </rect>
   </g>
 </svg>

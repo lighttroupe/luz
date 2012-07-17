@@ -9,6 +9,8 @@ class DrawableObject
 	attr_accessor :body, :shapes, :shape_offset, :level_object, :display_list, :angle, :scale_x, :scale_y, :render_actor, :child_index, :draw_proc, :fully_static, :entered_at, :enter_time, :exited_at, :exit_time, :activation, :activation_count, :activation_time, :sound_id, :scheduled_exit_at, :damage, :z
 	boolean_accessor :takes_damage, :exit_still
 
+	AIM_AT_SEARCH_EVERY_N_FRAMES = 3
+
 	def initialize(simulator, body, shapes, shape_offset, level_object, angle, scale_x, scale_y, render_actor, child_index, draw_proc, fully_static)
 		@simulator, @body, @shapes, @shape_offset, @level_object, @angle, @scale_x, @scale_y, @render_actor, @child_index, @draw_proc, @fully_static = simulator, body, shapes, shape_offset, level_object, angle, scale_x, scale_y, render_actor, child_index, draw_proc, fully_static
 		@options = @level_object.options		# for easy access
@@ -49,7 +51,7 @@ class DrawableObject
 		@damage_multiplier = as_float(@options[:damage_multiplier], 1.0)
 
 		@aim_at = @options[:aim_at]
-		@aim_at_radius = as_float(@options[:aim_at_radius], 0.5)
+		@aim_at_radius = as_float(@options[:aim_at_radius], 1.0)
 		@aim_at_force = as_float(@options[:aim_at_force], 1.0)
 		@display_list = nil
 	end
@@ -128,27 +130,44 @@ class DrawableObject
 		update_looping_sound! if ($sound and @sound_id)
 
 		# 'aim-at' feature
-		if @aim_at
-			#puts "aim at... (per circle #{RADIANS_PER_CIRCLE}):"
-			if @aim_at_body.nil?
-				shapes = @simulator.find_shapes_within_radius(@body.p, @aim_at_radius + 1.0)
-				bodies = shapes.select { |shape| shape.level_object.options[:title] == @aim_at }.map { |shape| shape.body }.uniq
-				bodies.each { |body|
-					vector = (body.p - @body.p)
-					angle_difference = (vector.to_angle - @body.a)
+		update_aim_at if @aim_at
+	end
 
-					# easier to deal with in luz angles, up is 0.0, right is 0.25
-					luz_angle_difference = ((angle_difference / LUZ_ANGLE_TO_CHIPMUNK_ANGLE) % 1.0) + 0.25		# adjust for chipmunk angles 0.0 is pointing right
-					if luz_angle_difference > 0.5		# big right turn?  go left instead
-						luz_angle_difference = -(1.0 - luz_angle_difference)
-					elsif luz_angle_difference < -0.5		# big left turn?  go right instead
-						luz_angle_difference = -(1.0 + luz_angle_difference)
-					end
-					@body.w = 0.0		# reset angular momentum
-					@body.t = ((luz_angle_difference * LUZ_ANGLE_TO_CHIPMUNK_ANGLE) * 0.1 * @aim_at_force)		# set torque		TODO: reset this if no body found
-				}
-			end
+	def find_target_by_title(title)
+		shapes = @simulator.find_shapes_within_radius(@body.p, @aim_at_radius)
+		bodies = shapes.select { |shape| shape.level_object.options[:title] == title }.map { |shape| shape.body }.uniq
+		bodies.sort_by { |body| body.p.dist(@body.p) }.first		# closest
+	end
+
+	def update_aim_at
+		# Ditch old target if it's dead (TODO: better way to test this?)
+		if @aim_at_body && !@aim_at_body.drawables.empty? && @aim_at_body.drawables.first.exiting?
+			@aim_at_body = nil
+			@body.t = 0.0		# otherwise it spins like mad
 		end
+
+		# Find a new body to follow, if needed
+		unless @aim_at_body
+			return if @next_search_frame_number && @next_search_frame_number > $env[:frame_number]
+			@aim_at_body = find_target_by_title(@aim_at)
+			#puts "aim-at: #{@options[:id]} search on frame #{$env[:frame_number]}"
+			@next_search_frame_number = $env[:frame_number] + AIM_AT_SEARCH_EVERY_N_FRAMES
+			return unless @aim_at_body
+		end
+
+		# Calculate angle and apply torque to rotate towards chosen angle in the closest direction
+		vector = (@aim_at_body.p - @body.p)
+		angle_difference = (vector.to_angle - @body.a)
+
+		# (easier to deal with in luz angles, up is 0.0, right is 0.25)
+		luz_angle_difference = ((angle_difference / LUZ_ANGLE_TO_CHIPMUNK_ANGLE) % 1.0) + 0.25		# the +0.25 adjusts for chipmunk angles where 0.0 is pointing right
+		if luz_angle_difference > 0.5		# big right turn?  go left instead
+			luz_angle_difference = -(1.0 - luz_angle_difference)
+		elsif luz_angle_difference < -0.5		# big left turn?  go right instead
+			luz_angle_difference = -(1.0 + luz_angle_difference)
+		end
+		@body.w = 0.0		# reset angular momentum
+		@body.t = ((luz_angle_difference * LUZ_ANGLE_TO_CHIPMUNK_ANGLE) * 0.1 * @aim_at_force)		# set torque		TODO: reset this if no body found
 	end
 
 	def update_looping_sound!
