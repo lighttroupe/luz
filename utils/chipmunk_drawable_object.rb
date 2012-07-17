@@ -51,6 +51,7 @@ class DrawableObject
 		@damage_multiplier = as_float(@options[:damage_multiplier], 1.0)
 
 		@aim_at = @options[:aim_at]
+		@aim_at_type = @options[:aim_at_type] ? make_collision_type_symbol(@options[:aim_at_type]) : nil
 		@aim_at_radius = as_float(@options[:aim_at_radius], 1.0)
 		@aim_at_force = as_float(@options[:aim_at_force], 1.0)
 		@display_list = nil
@@ -129,13 +130,19 @@ class DrawableObject
 
 		update_looping_sound! if ($sound and @sound_id)
 
-		# 'aim-at' feature
-		update_aim_at if @aim_at
+		# 'aim-at' and 'aim-at-type' feature
+		update_aim_at if @aim_at || @aim_at_type
 	end
 
 	def find_target_by_title(title)
 		shapes = @simulator.find_shapes_within_radius(@body.p, @aim_at_radius)
 		bodies = shapes.select { |shape| shape.level_object.options[:title] == title }.map { |shape| shape.body }.uniq
+		bodies.sort_by { |body| body.p.dist(@body.p) }.first		# closest
+	end
+
+	def find_target_by_type(type)
+		shapes = @simulator.find_shapes_within_radius(@body.p, @aim_at_radius)
+		bodies = shapes.select { |shape| shape.collision_type == type }.map { |shape| shape.body }.uniq
 		bodies.sort_by { |body| body.p.dist(@body.p) }.first		# closest
 	end
 
@@ -149,7 +156,8 @@ class DrawableObject
 		# Find a new body to follow, if needed
 		unless @aim_at_body
 			return if @next_search_frame_number && @next_search_frame_number > $env[:frame_number]
-			@aim_at_body = find_target_by_title(@aim_at)
+			@aim_at_body = find_target_by_title(@aim_at) if @aim_at
+			@aim_at_body = find_target_by_type(@aim_at_type) if @aim_at_type
 			#puts "aim-at: #{@options[:id]} search on frame #{$env[:frame_number]}"
 			@next_search_frame_number = $env[:frame_number] + AIM_AT_SEARCH_EVERY_N_FRAMES
 			return unless @aim_at_body
