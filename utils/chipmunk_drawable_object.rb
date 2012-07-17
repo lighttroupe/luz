@@ -48,6 +48,9 @@ class DrawableObject
 		@damage = 0.0
 		@damage_multiplier = as_float(@options[:damage_multiplier], 1.0)
 
+		@aim_at = @options[:aim_at]
+		@aim_at_radius = as_float(@options[:aim_at_radius], 0.5)
+		@aim_at_force = as_float(@options[:aim_at_force], 1.0)
 		@display_list = nil
 	end
 
@@ -123,6 +126,29 @@ class DrawableObject
 		end
 
 		update_looping_sound! if ($sound and @sound_id)
+
+		# 'aim-at' feature
+		if @aim_at
+			#puts "aim at... (per circle #{RADIANS_PER_CIRCLE}):"
+			if @aim_at_body.nil?
+				shapes = @simulator.find_shapes_within_radius(@body.p, @aim_at_radius + 1.0)
+				bodies = shapes.select { |shape| shape.level_object.options[:title] == @aim_at }.map { |shape| shape.body }.uniq
+				bodies.each { |body|
+					vector = (body.p - @body.p)
+					angle_difference = (vector.to_angle - @body.a)
+
+					# easier to deal with in luz angles, up is 0.0, right is 0.25
+					luz_angle_difference = ((angle_difference / LUZ_ANGLE_TO_CHIPMUNK_ANGLE) % 1.0) + 0.25		# adjust for chipmunk angles 0.0 is pointing right
+					if luz_angle_difference > 0.5		# big right turn?  go left instead
+						luz_angle_difference = -(1.0 - luz_angle_difference)
+					elsif luz_angle_difference < -0.5		# big left turn?  go right instead
+						luz_angle_difference = -(1.0 + luz_angle_difference)
+					end
+					@body.w = 0.0		# reset angular momentum
+					@body.t = ((luz_angle_difference * LUZ_ANGLE_TO_CHIPMUNK_ANGLE) * 0.1 * @aim_at_force)		# set torque		TODO: reset this if no body found
+				}
+			end
+		end
 	end
 
 	def update_looping_sound!
