@@ -222,6 +222,16 @@ class ChipmunkPhysicsSimulator
 		bodies
 	end
 
+	def find_shapes_within_radius(point, radius)
+		shape = CP::Shape::Circle.new(@layer_static_body, radius, point)
+		find_shapes_at_shape(shape)
+	end
+
+	def find_bodies_within_radius(point, radius)
+		shape = CP::Shape::Circle.new(@layer_static_body, radius, point)
+		find_bodies_at_shape(shape)
+	end
+
 	# finds bodies at two points, ideally two different bodies, but will accept same or only 1 (other will be nil)
 	def find_two_bodies(point_a, point_b)
 		shapes_a = []
