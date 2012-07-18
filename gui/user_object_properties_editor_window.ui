@@ -184,6 +184,7 @@
                                         <property name="use_action_appearance">False</property>
                                         <property name="relief">none</property>
                                         <property name="focus_on_click">False</property>
+                                        <signal name="clicked" handler="on_add_condition_event_button_clicked" swapped="no"/>
                                         <child>
                                           <object class="GtkImage" id="image1">
                                             <property name="visible">True</property>
