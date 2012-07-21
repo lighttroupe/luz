@@ -549,7 +549,7 @@ class ChipmunkPhysicsSimulator
 				body = CP::Body.new(mass, moment_of_inertia)
 				body.p = CP::Vec2.new(average.x, average.y)
 
-				body.drawables = []			# user data for the ruby bindings
+				body.drawables = []
 				space.add_body(body)
 
 				drawables = []
@@ -612,7 +612,7 @@ class ChipmunkPhysicsSimulator
 		# Set shape options
 		#
 		shapes.each { |shape|
-			shape.level_object = object			# user data for the ruby bindings
+			shape.level_object = object
 			shape.collision_type = shape_collision_type
 			shape.group = find_named_group(object.options[:no_collisions_group]) if object.options[:no_collisions_group]
 		} if shapes
@@ -809,13 +809,13 @@ class ChipmunkPhysicsSimulator
 		@updateables.each { |updateable| updateable.proc.call(updateable) }
 	end
 
-	# There are potentially many updates for a given target (target is the object whose properties are being controller, usually a CP::Shape or CP::Body)
+	# There are potentially many updates for a given target (target is the object whose properties are being controlled, usually a CP::Shape or CP::Body)
 	def remove_updateable_target(target)
 		@updateables.delete_if { |u| u.target == target }
 	end
 
 	#
-	# Group numbering
+	# Group numbering (chpimunk group numbers are positive integers and allow the shapes of one multi-body creature self-collide
 	#
 	def harmonize_group_numbers(shapes)
 		#
@@ -849,7 +849,6 @@ class ChipmunkPhysicsSimulator
 		all_shapes.each { |shape|
 			if shape.group and shape.group != group_id
 				# if we're moving one shape to a new group, we move ALL shapes (ie all 6s) to the new group number
-				#assert @group_number_to_shapes[shape.group]
 				#puts "mass moving #{@group_number_to_shapes[shape.group].size} shapes from group #{shape.group} to #{group_id}"
 				@group_number_to_shapes[shape.group].each { |sibling_shape|
 					#assert_equal shape.group, sibling_shape.group
@@ -1287,6 +1286,7 @@ class ChipmunkPhysicsSimulator
 		}
 	end
 
+	# Helper for adding a constraint to the chipmunk Space.  All constraints should be added this way.
 	def add_constraint(constraint)
 		@space.add_constraint(constraint)
 		constraint.body_a.add_constraint(constraint)
