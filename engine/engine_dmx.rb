@@ -20,6 +20,8 @@ private
 		@dmx ||= DMX.new("/dev/ttyUSB2", DMX_CHANNEL_COUNT) rescue nil
 
 		if @dmx
+			puts "DMX Opened"
+
 			# Send at end of frame and retry dmx_init
 			self.on_frame_end { @dmx.send ; @dmx.clear } if @dmx
 
