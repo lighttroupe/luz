@@ -7,7 +7,7 @@ class ActorEffectVideoFile < ActorEffect
 	description ""
 
 	setting 'file_name', :string
-	setting 'speed', :float, :range => -4.0..4.0, :default => 1.0..2.0
+	setting 'speed', :float, :range => 0.0..1.0, :default => 1.0..1.0
 
 	def after_load
 		require 'video-file/ffmpeg'
@@ -17,7 +17,7 @@ class ActorEffectVideoFile < ActorEffect
 	end
 
 	def tick
-		reload_if_needed if $gui
+		reload_if_needed
 		@fast_forward_time += (speed - 1.0)
 		@skip_frames, remainder = @fast_forward_time.divmod(1.0)
 		#puts @skip_frames unless @skip_frames == 0.0 
