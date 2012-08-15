@@ -32,7 +32,7 @@ static VALUE FFmpeg_File_frame_count(VALUE self) {
 	return INT2FIX(video_file->frame_count);
 }
 
-static VALUE FFmpeg_File_data(VALUE self) {
+static VALUE FFmpeg_File_read_next_frame(VALUE self) {
 	video_file_t* video_file = NULL;
 	Data_Get_Struct(self, video_file_t, video_file);
 
@@ -164,7 +164,7 @@ void Init_ffmpeg() {
 	rb_define_method(vFileClass, "width", &FFmpeg_File_width, 0);
 	rb_define_method(vFileClass, "height", &FFmpeg_File_height, 0);
 	rb_define_method(vFileClass, "frame_count", &FFmpeg_File_frame_count, 0);
-	rb_define_method(vFileClass, "data", &FFmpeg_File_data, 0);
+	rb_define_method(vFileClass, "read_next_frame", &FFmpeg_File_read_next_frame, 0);
 	rb_define_method(vFileClass, "seek_to_frame", &FFmpeg_File_seek_to_frame, 1);
 	rb_define_method(vFileClass, "close", &FFmpeg_File_close, 0);
 }

@@ -19,7 +19,7 @@ module FFmpeg
 
 			# Get next frame
 			if @last_frame_load < $env[:frame_number]
-				if(new_data = self.data)
+				if(new_data = self.read_next_frame)
 					@image.from_rgb8(new_data, self.width, self.height)
 					@frame_index += 1
 				else
