@@ -9,6 +9,10 @@ class ActorEffectVideoFile < ActorEffect
 	setting 'file_name', :string
 	setting 'speed', :float, :range => 0.0..1.0, :default => 1.0..1.0
 
+	setting 'jump_frames', :integer, :range => 10..10000
+	setting 'jump_forward', :event
+	setting 'jump_backward', :event
+
 	def after_load
 		require 'video-file/ffmpeg'
 		@frame_index = 0
@@ -23,6 +27,9 @@ class ActorEffectVideoFile < ActorEffect
 		#puts @skip_frames unless @skip_frames == 0.0 
 		@fast_forward_time = remainder
 
+		@skip_frames += jump_frames if jump_forward.now?
+		@skip_frames -= jump_frames if jump_backward.now?
+
 		@frame_index += (1 + @skip_frames)
 	end
 
@@ -32,6 +39,7 @@ class ActorEffectVideoFile < ActorEffect
 		@file.with_frame(@frame_index) {
 			yield
 		}
+		@frame_index = @file.frame_index
 		@skip_frames = 0
 	end
 
