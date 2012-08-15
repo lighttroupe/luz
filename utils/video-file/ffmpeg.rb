@@ -14,17 +14,18 @@ module FFmpeg
 	MAX_FRAME_CACHE_SIZE = 50
 
 	class File
+		attr_reader :frame_index
 		def with_frame(index=0)
 			@frame_index ||= 0
 			@last_frame_load ||= 0
 			@frame_cache ||= {}
 
 			# wrap index around (this works both positively and negatively)
-			index = (index % self.frame_count) if index < 0 || index > (self.frame_count-1)
+			index = (index % self.frame_count) if index < 0 || index > (self.frame_count-1) if self.frame_count > 0 # avoids div yy 0
 
 			# attempt to satisfy via cache?
 			if(cache_hit = @frame_cache[index])
-				puts "#{index} cache hit"
+				#puts "#{index} cache hit"
 				cache_hit.using {
 					yield
 				}
@@ -36,7 +37,7 @@ module FFmpeg
 			# Reuse an existing image if if necessary
 			if (@frame_cache.size >= MAX_FRAME_CACHE_SIZE)
 				index_to_remove = @frame_cache.keys.random
-				puts "#{index_to_remove} removing"
+				#puts "#{index_to_remove} removing"
 				image = @frame_cache.delete(index_to_remove)
 			end
 
@@ -57,16 +58,16 @@ module FFmpeg
 
 		def read_frame_index_into_image(index, image)
 			if index != @frame_index
-				puts "#{index} seeking to"
+				#puts "#{index} seeking to"
 				unless self.seek_to_frame(index)
-					puts "SEEKFAILED ==============================="
+					#puts "SEEKFAILED ==============================="
 				end
 				@frame_index = index
 			end
 
 			# Decode Frame
 			if(new_data = self.read_next_frame)
-				puts "#{index} got frame"
+				#puts "#{index} got frame"
 				image.from_rgb8(new_data, self.width, self.height)
 				@frame_index += 1
 			else
