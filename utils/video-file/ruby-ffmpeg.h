@@ -16,6 +16,7 @@ typedef struct {
 	AVCodecContext *av_codec_context;
 	AVCodec *av_codec;
 	int video_index;							// index of the first video stream in a file
+	int frame_index;
 	int frame_count;
 	int64_t time_base_per_frame;
 	AVPacket packet;

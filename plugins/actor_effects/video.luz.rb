@@ -7,23 +7,32 @@ class ActorEffectVideoFile < ActorEffect
 	description ""
 
 	setting 'file_name', :string
+	setting 'speed', :float, :range => -4.0..4.0, :default => 1.0..2.0
 
 	def after_load
 		require 'video-file/ffmpeg'
+		@frame_index = 0
+		@fast_forward_time = 0.0
 		super
 	end
 
 	def tick
-		reload_if_needed
+		reload_if_needed if $gui
+		@fast_forward_time += (speed - 1.0)
+		@skip_frames, remainder = @fast_forward_time.divmod(1.0)
+		#puts @skip_frames unless @skip_frames == 0.0 
+		@fast_forward_time = remainder
+
+		@frame_index += (1 + @skip_frames)
 	end
 
 	def render
 		return yield unless @file
 
-		#@file.seek_to_frame(progress * 500)
-		@file.with_frame {
+		@file.with_frame(@frame_index) {
 			yield
 		}
+		@skip_frames = 0
 	end
 
 private

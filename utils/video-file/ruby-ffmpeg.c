@@ -46,6 +46,7 @@ static VALUE FFmpeg_File_read_next_frame(VALUE self) {
 			// Did we get a video frame?
 			if(frame_finished > 0) {
 				sws_scale(video_file->sws_context, (video_file->av_frame->data), video_file->av_frame->linesize, 0, video_file->av_codec_context->height, video_file->av_frame_rgb->data, video_file->av_frame_rgb->linesize);
+				video_file->frame_index++;
 				return video_file->ruby_string_buffer;
 			}
 		}
@@ -62,6 +63,8 @@ static VALUE FFmpeg_File_new(VALUE klass, VALUE v_file_path) {
 	char* file_path = RSTRING_PTR(v_file_path);		// eg. "/dev/video0"
 
 	video_file_t* video_file = ALLOC_N(video_file_t, 1);
+
+	video_file->frame_index = 0;		// TODO: needed?
 
 	//
 	// Open video file
@@ -144,9 +147,15 @@ static VALUE FFmpeg_File_seek_to_frame(VALUE self, VALUE vFrameIndex) {
 
 	int64_t seek_target = (int64_t)(frame_index) * video_file->time_base_per_frame;
 
-	if(av_seek_frame(video_file->av_format_context, -1, seek_target, AVSEEK_FLAG_ANY) < 0) {
+	int flags = 0;		// flags: AVSEEK_FLAG_ANY, AVSEEK_FLAG_BACKWARD, AVSEEK_FLAG_BYTE
+	if(frame_index < video_file->frame_index) {
+		flags = AVSEEK_FLAG_BACKWARD;
+	}
+
+	if(av_seek_frame(video_file->av_format_context, -1, seek_target, flags) < 0) {
 		return Qfalse;
 	}
+	video_file->frame_index = frame_index;
 	return Qtrue;
 }
 
