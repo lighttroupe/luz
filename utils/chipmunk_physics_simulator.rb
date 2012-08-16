@@ -1504,7 +1504,6 @@ public
 		drawables.delete_if { |drawable|
 			# Remove from physical world?
 			if @bodies_to_remove.include?(drawable.body)
-				#drawable.body.drawables.each { |drawable| remove_drawable_body(drawable) }
 				remove_drawable_body(drawable)
 				@bodies_removed << drawable.body
 			end
