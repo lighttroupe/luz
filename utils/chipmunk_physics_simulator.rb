@@ -100,7 +100,7 @@ class ChipmunkPhysicsSimulator
 	DEFAULT_WALL_FRICTION = 0.5
 
 	# Properties passed from a group to the drawables/shapes within
-	GROUP_INHERITABLE_OPTIONS = Set.new([:render, :draw_method, :z, :height, :depth, :image, :elasticity, :friction, :collisions, :collision_type, :enter_time, :exit_time, :surface_velocity_x, :surface_velocity_y, :die_on_touch, :explosion_damage_multiplier])
+	GROUP_INHERITABLE_OPTIONS = Set.new([:render, :draw_method, :z, :height, :depth, :image, :elasticity, :friction, :collisions, :collision_type, :enter_time, :exit_time, :exit_still, :surface_velocity_x, :surface_velocity_y, :takes_damage, :die_on_touch, :explosion_damage_multiplier])
 
 	attr_reader :name, :parent
 
@@ -119,6 +119,7 @@ class ChipmunkPhysicsSimulator
 		@breakable_constraints = []
 		@trigger_collision_handlers = []
 		@bodies_to_remove = Set.new
+		@bodies_removed = Set.new
 		@after_frame_procs = []
 		@physical_object_collision_types_need_handler = {}
 		@wall_collision_types_need_handler = {}
@@ -560,7 +561,7 @@ class ChipmunkPhysicsSimulator
 				# Create a DrawableGroup, if the class can handle these drawables
 				#  (
 				#
-				if ENABLE_DRAWABLE_LIST_OPTIMIZATIONS and DrawableGroup.suitable?(drawables) 
+				if ENABLE_DRAWABLE_LIST_OPTIMIZATIONS and DrawableGroup.suitable?(drawables)
 					draw_proc = Proc.new { |drawable| drawable.render! }
 					drawable = DrawableGroup.new(self, body, object, drawables, draw_proc)
 					body.drawables << drawable
@@ -1502,7 +1503,11 @@ public
 
 		drawables.delete_if { |drawable|
 			# Remove from physical world?
-			remove_drawable_body(drawable) if @bodies_to_remove.delete?(drawable.body)
+			if @bodies_to_remove.include?(drawable.body)
+				#drawable.body.drawables.each { |drawable| remove_drawable_body(drawable) }
+				remove_drawable_body(drawable)
+				@bodies_removed << drawable.body
+			end
 
 			# Has it finished exit animation?
 			if (drawable.exited_at and ((now - drawable.exited_at) >= drawable.exit_time))
@@ -1525,6 +1530,9 @@ public
 				false		# keep
 			end
 		}
+		# It must be this way until the drawables array holds only one drawable per physical body
+		@bodies_removed.each { |body| @bodies_to_remove.delete(body) }
+		@bodies_removed.clear
 	end
 
 	def explosion_at(point, radius, force, damage_amount, exclude_body=nil)
