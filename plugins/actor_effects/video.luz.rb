@@ -39,7 +39,7 @@ class ActorEffectVideoFile < ActorEffect
 		@file.with_frame(@frame_index) {
 			yield
 		}
-		@frame_index = @file.frame_index
+		@frame_index = @file.frame_index - 1		# since it progresses automatically after reading the next frame
 		@skip_frames = 0
 	end
 
