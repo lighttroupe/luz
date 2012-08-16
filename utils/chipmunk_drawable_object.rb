@@ -112,7 +112,11 @@ class DrawableObject
 		@damage *= as_float(@options["#{type}_damage_multiplier".to_sym], 1.0) if type		# explosion-damage-multiplier, etc.
 		$engine.on_slider_change(@damage_slider, @damage) if @damage_slider
 		@activation = 1.0 if @activates_on_damage
-		return (@damage >= DAMAGE_DEATH)
+		return dead?
+	end
+
+	def dead?
+		(@damage >= DAMAGE_DEATH)
 	end
 
 	#
