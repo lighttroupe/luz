@@ -57,7 +57,12 @@ class DrawableGroup < DrawableObject
 
 	#
 	# Shutdown
-	#
+	# 
+#	def begin_exit!		added when trying to fix a bug, never called. not needed?
+#		super
+#		@drawable_objects.each { |drawable| drawable.begin_exit! }
+#	end
+
 	def finalize!
 		super
 		@drawable_objects.each { |drawable| drawable.finalize! }
