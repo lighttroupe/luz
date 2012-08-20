@@ -1083,7 +1083,7 @@ class ChipmunkPhysicsSimulator
 
 		constraint = nil
 
-		winch_length_min = as_float(object.options[:winch_length_min], 0.0)
+		winch_length_min = as_float(object.options[:winch_length_min], 0.0)		# NOTE: min is allowed to be greater than max
 		winch_length_max = as_float(object.options[:winch_length_max], 1.0)
 		winch_length = (DEFAULT_WINCH_LENGTH).clamp(winch_length_min, winch_length_max)
 
@@ -1094,7 +1094,9 @@ class ChipmunkPhysicsSimulator
 		max_length = drawn_length * winch_length_max
 
 		# The absolute limits
-		constraint = CP::Constraint::SlideJoint.new(body_a, body_b, point_a - body_a.p, point_b - body_b.p, min_length, max_length)
+		true_min_length, true_max_length = min_length, max_length
+		true_min_length, true_max_length = true_max_length, true_min_length if true_min_length > true_max_length
+		constraint = CP::Constraint::SlideJoint.new(body_a, body_b, point_a - body_a.p, point_b - body_b.p, true_min_length, true_max_length)
 		add_constraint(constraint)
 
 		# The controllable one
