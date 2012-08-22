@@ -31,15 +31,25 @@ end
 =end
 
 class GuiObject
+	def initialize
+		@offset_x, @offset_y = 0.0, 0.0
+		@scale_x, @scale_y = 1.0, 1.0
+	end
+
 	def render
+		if $env[:gui_debug]
+			with_translation(@offset_x, @offset_y) {
+				with_scale(@scale_x, @scale_y) {
+					unit_square_outline
+				}
+			}
+		end
 	end
 end
 
 class GuiBox < GuiObject
 	def initialize
 		@contents = []
-		@offset_x, @offset_y = 0.0, 0.0
-		@scale_x, @scale_y = 1.0, 1.0
 		super
 	end
 
@@ -48,15 +58,6 @@ class GuiBox < GuiObject
 	end
 
 	def render
-		if $env[:gui_debug]
-			with_translation(@offset_x, @offset_y) {
-				with_scale(@scale_x, @scale_y) {
-				with_color([1,1,1,1]) {
-					unit_square_outline
-					}
-				}
-			}
-		end
 		@contents.each { |gui_object| gui_object.render }
 		super
 	end
