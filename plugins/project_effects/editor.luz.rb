@@ -16,8 +16,9 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-require 'cycle-logic'
-require 'safe_eval'
+#require 'cycle-logic'
+#require 'safe_eval'
+require 'easy_accessor'
 
 =begin
 GuiRectangle = Struct.new(:top, :right, :bottom, :left)
@@ -32,6 +33,7 @@ end
 
 class GuiObject
 	attr_accessor :parent
+	easy_accessor :offset_x, :offset_y, :scale_x, :scale_y
 
 	def initialize
 		@offset_x, @offset_y = 0.0, 0.0
@@ -39,10 +41,14 @@ class GuiObject
 		@parent = nil
 	end
 
-	def render
+	def set_scale(scale)
+		@scale_x, @scale_y = scale, scale
 	end
 
-	def debug_render
+	def render!
+	end
+
+	def debug_render!
 		with_positioning {
 			unit_square_outline
 		}
@@ -68,16 +74,16 @@ class GuiBox < GuiObject
 		gui_object.parent = self
 	end
 
-	def render
+	def render!
 		with_positioning {
 			@contents.each { |gui_object|
-				gui_object.render
+				gui_object.render!
 			}
 		}
 	end
 
-	def debug_render
-		@contents.each { |gui_object| gui_object.debug_render }
+	def debug_render!
+		@contents.each { |gui_object| gui_object.debug_render! if gui_object.respond_to? :debug_render! }
 	end
 
 =begin
@@ -91,11 +97,11 @@ class GuiBox < GuiObject
 end
 
 class GuiList < GuiBox
-	def render
+	def render!
 		with_positioning {
 			@contents.each_with_index { |gui_object, index|
-				with_translation(0.0, index * 1.0) {
-					gui_object.render
+				with_translation(0.0, index * -1.0 * $env[:enter]) {
+					gui_object.render!
 				}
 			}
 		}
@@ -113,17 +119,15 @@ class ProjectEffectEditor < ProjectEffect
 
 	def after_load
 		@gui = GuiBox.new
-		@gui << GuiList.new($engine.project.actors)
+		@gui << GuiList.new($engine.project.actors).set_scale_x(0.2).set_scale_y(0.2).set_offset_x(-0.6).set_offset_y(0.6)
 		super
 	end
 
 	def render
 		if show_amount > 0.0
 			with_enter_and_exit(show_amount, 0.0) {
-				#@gui.debug_render
-				#with_env(:gui_debug, true) {
-				@gui.render
-				#}
+				#@gui.debug_render!
+				@gui.render!
 			}
 		end
 
