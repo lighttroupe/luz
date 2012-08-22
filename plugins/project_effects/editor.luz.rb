@@ -38,12 +38,18 @@ class GuiObject
 
 	def render
 		if $env[:gui_debug]
-			with_translation(@offset_x, @offset_y) {
-				with_scale(@scale_x, @scale_y) {
-					unit_square_outline
-				}
+			with_positioning {
+				unit_square_outline
 			}
 		end
+	end
+
+	def with_positioning
+		with_translation(@offset_x, @offset_y) {
+			with_scale(@scale_x, @scale_y) {
+				yield
+			}
+		}
 	end
 end
 
@@ -58,7 +64,9 @@ class GuiBox < GuiObject
 	end
 
 	def render
-		@contents.each { |gui_object| gui_object.render }
+		with_positioning {
+			@contents.each { |gui_object| gui_object.render }
+		}
 		super
 	end
 
