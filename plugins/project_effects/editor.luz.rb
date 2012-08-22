@@ -31,17 +31,21 @@ end
 =end
 
 class GuiObject
+	attr_accessor :parent
+
 	def initialize
 		@offset_x, @offset_y = 0.0, 0.0
 		@scale_x, @scale_y = 1.0, 1.0
+		@parent = nil
 	end
 
 	def render
-		if $env[:gui_debug]
-			with_positioning {
-				unit_square_outline
-			}
-		end
+	end
+
+	def debug_render
+		with_positioning {
+			unit_square_outline
+		}
 	end
 
 	def with_positioning
@@ -54,20 +58,26 @@ class GuiObject
 end
 
 class GuiBox < GuiObject
-	def initialize
-		@contents = []
-		super
+	def initialize(contents = [])
+		@contents = contents
+		super()
 	end
 
 	def <<(gui_object)
 		@contents << gui_object
+		gui_object.parent = self
 	end
 
 	def render
 		with_positioning {
-			@contents.each { |gui_object| gui_object.render }
+			@contents.each { |gui_object|
+				gui_object.render
+			}
 		}
-		super
+	end
+
+	def debug_render
+		@contents.each { |gui_object| gui_object.debug_render }
 	end
 
 =begin
@@ -78,6 +88,18 @@ class GuiBox < GuiObject
 		$env[:gui_box_left] = -0.5
 	end
 =end
+end
+
+class GuiList < GuiBox
+	def render
+		with_positioning {
+			@contents.each_with_index { |gui_object, index|
+				with_translation(0.0, index * 1.0) {
+					gui_object.render
+				}
+			}
+		}
+	end
 end
 
 class ProjectEffectEditor < ProjectEffect
@@ -91,16 +113,17 @@ class ProjectEffectEditor < ProjectEffect
 
 	def after_load
 		@gui = GuiBox.new
-		@gui << GuiBox.new
+		@gui << GuiList.new($engine.project.actors)
 		super
 	end
 
 	def render
 		if show_amount > 0.0
 			with_enter_and_exit(show_amount, 0.0) {
-				with_env(:gui_debug, true) {
-					@gui.render
-				}
+				#@gui.debug_render
+				#with_env(:gui_debug, true) {
+				@gui.render
+				#}
 			}
 		end
 
