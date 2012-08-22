@@ -124,11 +124,9 @@ class DrawableObject
 	#
 	def update!
 		# Update activation
-		if @activation_count.nil?
-			# nothing
-		elsif @activation_count > 0
+		if @activation_count > 0		# rising
 			@activation = (@activation + (@activation_count * ($env[:time_delta] / @activation_time))).clamp(0.0, 1.0)
-		else
+		elsif @activation > 0.0			# falling
 			@activation = (@activation - (($env[:time_delta] / @activation_time))).clamp(0.0, 1.0)
 		end
 
