@@ -96,11 +96,24 @@ class GuiBox < GuiObject
 =end
 end
 
+class Variable
+	GUI_COLOR = [0.0,1.0,0.5,0.7]
+	def render!
+		with_vertical_clip_plane_right_of(value - 0.5) {
+			with_color(GUI_COLOR) {
+				unit_square
+			}
+		}
+	end
+end
+
 class GuiList < GuiBox
+	easy_accessor :spacing
+
 	def render!
 		with_positioning {
 			@contents.each_with_index { |gui_object, index|
-				with_translation(0.0, index * -1.0 * $env[:enter]) {
+				with_translation(0.0, index * (-1.0 - (@spacing || 0.0))) {
 					gui_object.render!
 				}
 			}
@@ -119,7 +132,8 @@ class ProjectEffectEditor < ProjectEffect
 
 	def after_load
 		@gui = GuiBox.new
-		@gui << GuiList.new($engine.project.actors).set_scale_x(0.2).set_scale_y(0.2).set_offset_x(-0.6).set_offset_y(0.6)
+		@gui << GuiList.new($engine.project.actors).set_scale_x(0.2).set_scale_y(0.2).set_offset_x(-0.4).set_offset_y(0.4)
+		@gui << GuiList.new($engine.project.variables).set_scale_x(0.15).set_scale_y(0.04).set_offset_x(-0.20).set_offset_y(0.45).set_spacing(0.4)
 		super
 	end
 
