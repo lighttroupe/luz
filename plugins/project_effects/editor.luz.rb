@@ -138,15 +138,16 @@ class ProjectEffectEditor < ProjectEffect
 	end
 
 	def render
+		# 
+		with_multiplied_alpha(output_opacity) {
+			yield
+		}
+
 		if show_amount > 0.0
 			with_enter_and_exit(show_amount, 0.0) {
 				#@gui.debug_render!
 				@gui.render!
 			}
 		end
-
-		with_multiplied_alpha(output_opacity) {
-			yield
-		}
 	end
 end
