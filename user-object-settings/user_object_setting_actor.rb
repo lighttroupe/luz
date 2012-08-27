@@ -71,8 +71,7 @@ class UserObjectSettingActor < UserObjectSetting
 	def draw_hit_test_handles
 		GL.PointSize(GRAB_DISTANCE * 4)
 
-		hit_test_id = next_hit_test_id
-		with_hit_test_id(hit_test_id, HANDLE_POSITION, self) {
+		with_unique_hit_test_color_for_object(self, user_data=HANDLE_POSITION) {
 			GL.Begin(GL::POINTS) ; GL.Vertex(0.0, 0.0, 0.0) ; GL.End
 		}
 	end

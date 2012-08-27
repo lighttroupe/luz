@@ -31,7 +31,7 @@ module DrawingHitTesting
 		return $hit_test_id
 	end
 
-	def with_unique_hit_test_color(user_data, object)
+	def with_unique_hit_test_color_for_object(object, user_data)
 		hit_test_id = next_hit_test_id
 		$hit_test_options[[hit_test_id, user_data]] = object
 		GL.Color4ub(hit_test_id, user_data, 0, 255)
