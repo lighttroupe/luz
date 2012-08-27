@@ -80,7 +80,7 @@ class GuiObject
 		}
 	end
 
-	def debug_render!
+	def hit_test_render!
 		with_unique_hit_test_color_for_object(self, 0) {
 			with_positioning {
 				unit_square
@@ -136,11 +136,11 @@ class GuiBox < GuiObject
 		}
 	end
 
-	def debug_render!
+	def hit_test_render!
 		with_positioning {
 			@contents.each { |gui_object|
-				if gui_object.respond_to?(:debug_render!)
-					gui_object.debug_render!
+				if gui_object.respond_to?(:hit_test_render!)
+					gui_object.hit_test_render!
 				end
 			}
 		}
@@ -173,8 +173,8 @@ class GuiList < GuiBox
 		each_with_positioning { |gui_object| gui_object.gui_render! }
 	end
 
-	def debug_render!
-		each_with_positioning { |gui_object| gui_object.debug_render! }
+	def hit_test_render!
+		each_with_positioning { |gui_object| gui_object.hit_test_render! }
 	end
 end
 
@@ -183,7 +183,7 @@ class Actor
 		render!
 	end
 
-	def debug_render!
+	def hit_test_render!
 		with_unique_hit_test_color_for_object(self, 0) { unit_square }
 	end
 
@@ -203,7 +203,7 @@ class Variable
 		}
 	end
 
-	def debug_render!
+	def hit_test_render!
 		with_unique_hit_test_color_for_object(self, 0) {
 			unit_square
 		}
@@ -286,7 +286,7 @@ class ProjectEffectEditor < ProjectEffect
 		#
 		if show_amount > 0.0
 			with_hit_testing {
-				@gui.debug_render!
+				@gui.hit_test_render!
 			}
 			hit_test_pointers
 		end
