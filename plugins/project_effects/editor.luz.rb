@@ -45,7 +45,7 @@ class GuiObject
 		@scale_x, @scale_y = scale, scale
 	end
 
-	def render!
+	def gui_render!
 	end
 
 	def debug_render!
@@ -72,11 +72,9 @@ class GuiBox < GuiObject
 		gui_object.parent = self
 	end
 
-	def render!
+	def gui_render!
 		with_positioning {
-			@contents.each { |gui_object|
-				gui_object.render!
-			}
+			@contents.each { |gui_object| gui_object.gui_render! }
 		}
 	end
 
@@ -113,8 +111,8 @@ class GuiList < GuiBox
 		}
 	end
 
-	def render!
-		each_with_positioning { |gui_object| gui_object.render! }
+	def gui_render!
+		each_with_positioning { |gui_object| gui_object.gui_render! }
 	end
 
 	def debug_render!
@@ -123,6 +121,10 @@ class GuiList < GuiBox
 end
 
 class Actor
+	def gui_render!
+		render!
+	end
+
 	def debug_render!
 		with_unique_hit_test_color_for_object(self, 0) { unit_square }
 	end
@@ -134,7 +136,8 @@ end
 
 class Variable
 	GUI_COLOR = [0.0,1.0,0.5,0.7]
-	def render!
+
+	def gui_render!
 		with_vertical_clip_plane_right_of(value - 0.5) {
 			with_color(GUI_COLOR) {
 				unit_square
@@ -235,7 +238,7 @@ class ProjectEffectEditor < ProjectEffect
 
 		if show_amount > 0.0
 			with_enter_and_exit(show_amount, 0.0) {
-				@gui.render!
+				@gui.gui_render!
 				render_pointers
 			}
 		end
