@@ -17,6 +17,7 @@
  ###############################################################################
 
 module DrawingHitTesting
+	# Enable and initialize hit-testing mode, which 
 	def with_hit_test
 		$engine.with_env(:hit_test, true) {
 			$hit_test_id = 0
@@ -30,15 +31,21 @@ module DrawingHitTesting
 		return $hit_test_id
 	end
 
-	HANDLE_POSITION = 1
-	def add_hit_test_option(hit_test_id, handle_id, object, x, y, z)
-		$hit_test_options[[hit_test_id, handle_id]] = object
-		GL.Color4ub(hit_test_id, HANDLE_POSITION, 0, 255)
-		GL.Begin(GL::POINTS) ; GL.Vertex(x, y, z) ; GL.End
+	def with_unique_hit_test_color(user_data, object)
+		hit_test_id = next_hit_test_id
+		$hit_test_options[[hit_test_id, user_data]] = object
+		GL.Color4ub(hit_test_id, user_data, 0, 255)
+		yield
 	end
 
+#	def with_hit_test_id(hit_test_id, user_data, object)
+#		$hit_test_options[[hit_test_id, user_data]] = object
+#		GL.Color4ub(hit_test_id, user_data, 0, 255)
+#		yield
+#	end
+
 	# returns [hit_test_id, handle_id] or [0, nil]
-	def hit_test_object_handles(x, y)
+	def hit_test_object_at(x, y)
 		color = glReadPixels(x, y, 1, 1, GL_RGB, GL_UNSIGNED_BYTE).unpack("CCC")
 		object = $hit_test_options[[color[0], color[1]]]
 		return [object, color[1]]

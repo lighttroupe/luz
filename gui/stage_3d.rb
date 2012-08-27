@@ -254,7 +254,7 @@ class Stage3D < Stage
 
 			#winZ = glReadPixels(x, y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT).unpack("f")[0]
 			#puts winZ
-			@drag_object, @drag_handle_id = hit_test_object_handles(x, height - y)
+			@drag_object, @drag_handle_id = hit_test_object_at(x, height - y)
 		}
 	end
 

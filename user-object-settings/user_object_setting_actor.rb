@@ -71,8 +71,10 @@ class UserObjectSettingActor < UserObjectSetting
 	def draw_hit_test_handles
 		GL.PointSize(GRAB_DISTANCE * 4)
 
-		object_id = next_hit_test_id
-		add_hit_test_option(object_id, HANDLE_POSITION, self, 0.0, 0.0, 0.0)
+		hit_test_id = next_hit_test_id
+		with_hit_test_id(hit_test_id, HANDLE_POSITION, self) {
+			GL.Begin(GL::POINTS) ; GL.Vertex(0.0, 0.0, 0.0) ; GL.End
+		}
 	end
 
 	GRAB_DISTANCE = 5
