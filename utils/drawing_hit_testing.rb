@@ -47,7 +47,12 @@ module DrawingHitTesting
 #	end
 
 	# returns [hit_test_id, handle_id] or [0, nil]
-	def hit_test_object_at(x, y)
+	def hit_test_object_at_luz_coordinates(x, y)		# coordinates with 0-centered unit square
+		pixel_x, pixel_y = (x + 0.5) * $application.width, ((y + 0.5)) * $application.height
+		hit_test_object_at(pixel_x, pixel_y)
+	end
+
+	def hit_test_object_at(x, y)		# pixel coordinates
 		color = glReadPixels(x, y, 1, 1, GL_RGB, GL_UNSIGNED_BYTE).unpack("CCC")
 		object = $hit_test_options[[color[0], color[1]]]
 		return [object, color[1]]

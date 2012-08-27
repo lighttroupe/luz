@@ -126,6 +126,10 @@ class Actor
 	def debug_render!
 		with_unique_hit_test_color_for_object(self, 0) { unit_square }
 	end
+
+	def click(pointer)
+		#puts "actor clicked"
+	end
 end
 
 class Variable
@@ -143,6 +147,58 @@ class Variable
 			unit_square
 		}
 	end
+
+	def click(pointer)
+		#puts "variable clicked"
+	end
+end
+
+class Pointer
+	attr_accessor :number
+
+	def initialize
+		@number = 1
+	end
+
+	def tick
+		if @hover_object && click?
+			@hover_object.click(self) if @hover_object.respond_to?(:click)
+		end
+	end
+
+	def is_over(object)
+		return if @hover_object == object
+
+		exit_hover_object!
+
+		if object
+			# enter new object
+			object.pointer_enter(self) if object.respond_to?(:pointer_enter)
+
+			# save
+			@hover_object = object
+			#puts "hovering over #{@hover_object.title}"
+		end
+		self
+	end
+
+	def exit_hover_object!
+		@hover_object.pointer_exit(self) if @hover_object && @hover_object.respond_to?(:pointer_exit)
+		@hover_object = nil
+	end
+end
+
+class PointerMouse < Pointer
+	X,Y,BUTTON_01 = 'Mouse 01 / X', 'Mouse 01 / Y', 'Mouse 01 / Button 01'
+	def x
+		$engine.slider_value(X) - 0.5
+	end
+	def y
+		$engine.slider_value(Y) - 0.5
+	end
+	def click?
+		$engine.button_pressed_this_frame?(BUTTON_01)
+	end
 end
 
 class ProjectEffectEditor < ProjectEffect
@@ -159,25 +215,49 @@ class ProjectEffectEditor < ProjectEffect
 		@gui = GuiBox.new
 		@gui << GuiList.new($engine.project.actors).set_scale_x(0.2).set_scale_y(0.2).set_offset_x(-0.4).set_offset_y(0.4)
 		@gui << GuiList.new($engine.project.variables).set_scale_x(0.15).set_scale_y(0.04).set_offset_x(-0.20).set_offset_y(0.45).set_spacing(0.4)
+
+		@pointers = [PointerMouse.new]
 		super
 	end
 
 	def render
 		#
-		if debug.now?		# hit test
+		if show_amount > 0.0
 			with_hit_test {
 				@gui.debug_render!
 			}
-		else
-			with_multiplied_alpha(output_opacity) {
-				yield
-			}
-
-			if show_amount > 0.0
-				with_enter_and_exit(show_amount, 0.0) {
-					@gui.render!
-				}
-			end
+			hit_test_pointers
 		end
+
+		with_multiplied_alpha(output_opacity) {
+			yield
+		}
+
+		if show_amount > 0.0
+			with_enter_and_exit(show_amount, 0.0) {
+				@gui.render!
+				render_pointers
+			}
+		end
+	end
+
+	def render_pointers
+		with_color([1,1,1]) {
+			@pointers.each { |pointer|
+				with_translation(pointer.x, pointer.y) {
+					with_scale(0.05) {
+						unit_square
+					}
+				}
+			}
+		}
+	end
+ 
+	def hit_test_pointers
+		@pointers.each { |pointer|
+			object, _unused_user_data = hit_test_object_at_luz_coordinates(pointer.x, pointer.y)
+			pointer.is_over(object)
+			pointer.tick
+		}
 	end
 end
