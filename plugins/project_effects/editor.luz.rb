@@ -226,7 +226,7 @@ class ProjectEffectEditor < ProjectEffect
 	def render
 		#
 		if show_amount > 0.0
-			with_hit_test {
+			with_hit_testing {
 				@gui.debug_render!
 			}
 			hit_test_pointers

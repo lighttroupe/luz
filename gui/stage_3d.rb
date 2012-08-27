@@ -239,10 +239,8 @@ class Stage3D < Stage
 	end
 
 	def hit_test(x, y)
-		with_hit_test {
-#		$env[:draw_handles] = true
-
-			using_context_without_finalize {
+		with_hit_testing {
+			using_context_without_finalize {		# allows us to draw without it showing up on screen
 				GL.PushAll {
 					setup_camera
 					settings

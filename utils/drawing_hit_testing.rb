@@ -20,7 +20,7 @@ module DrawingHitTesting
 	HIT_TEST_INCREMENT = 1		# always 1, except for testing visually
 
 	# Enable and initialize hit-testing mode, which 
-	def with_hit_test
+	def with_hit_testing
 		$engine.with_env(:hit_test, true) {
 			$hit_test_id = 0
 			$hit_test_options = {}
