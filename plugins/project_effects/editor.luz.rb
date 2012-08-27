@@ -49,9 +49,7 @@ class GuiObject
 	end
 
 	def debug_render!
-		with_positioning {
-			unit_square_outline
-		}
+		with_unique_hit_test_color_for_object(self, 0) { unit_square }
 	end
 
 	def with_positioning
@@ -83,7 +81,13 @@ class GuiBox < GuiObject
 	end
 
 	def debug_render!
-		@contents.each { |gui_object| gui_object.debug_render! if gui_object.respond_to? :debug_render! }
+		with_positioning {
+			@contents.each { |gui_object|
+				if gui_object.respond_to?(:debug_render!)
+					gui_object.debug_render!
+				end
+			}
+		}
 	end
 
 =begin
@@ -96,6 +100,34 @@ class GuiBox < GuiObject
 =end
 end
 
+class GuiList < GuiBox
+	easy_accessor :spacing
+
+	def each_with_positioning
+		with_positioning {
+			@contents.each_with_index { |gui_object, index|
+				with_translation(0.0, index * (-1.0 - (@spacing || 0.0))) {
+					yield gui_object
+				}
+			}
+		}
+	end
+
+	def render!
+		each_with_positioning { |gui_object| gui_object.render! }
+	end
+
+	def debug_render!
+		each_with_positioning { |gui_object| gui_object.debug_render! }
+	end
+end
+
+class Actor
+	def debug_render!
+		with_unique_hit_test_color_for_object(self, 0) { unit_square }
+	end
+end
+
 class Variable
 	GUI_COLOR = [0.0,1.0,0.5,0.7]
 	def render!
@@ -105,18 +137,10 @@ class Variable
 			}
 		}
 	end
-end
 
-class GuiList < GuiBox
-	easy_accessor :spacing
-
-	def render!
-		with_positioning {
-			@contents.each_with_index { |gui_object, index|
-				with_translation(0.0, index * (-1.0 - (@spacing || 0.0))) {
-					gui_object.render!
-				}
-			}
+	def debug_render!
+		with_unique_hit_test_color_for_object(self, 0) {
+			unit_square
 		}
 	end
 end
@@ -129,6 +153,7 @@ class ProjectEffectEditor < ProjectEffect
 
 	setting 'show_amount', :float, :range => 0.0..1.0
 	setting 'output_opacity', :float, :range => 0.0..1.0, :default => 1.0..1.0
+	setting 'debug', :event
 
 	def after_load
 		@gui = GuiBox.new
@@ -138,16 +163,21 @@ class ProjectEffectEditor < ProjectEffect
 	end
 
 	def render
-		# 
-		with_multiplied_alpha(output_opacity) {
-			yield
-		}
-
-		if show_amount > 0.0
-			with_enter_and_exit(show_amount, 0.0) {
-				#@gui.debug_render!
-				@gui.render!
+		#
+		if debug.now?		# hit test
+			with_hit_test {
+				@gui.debug_render!
 			}
+		else
+			with_multiplied_alpha(output_opacity) {
+				yield
+			}
+
+			if show_amount > 0.0
+				with_enter_and_exit(show_amount, 0.0) {
+					@gui.render!
+				}
+			end
 		end
 	end
 end
