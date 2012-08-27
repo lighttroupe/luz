@@ -31,7 +31,36 @@ def with_gui_viewport(rect)		# inspired by CSS
 end
 =end
 
+module GuiHoverBehavior
+	def pointers_hovering
+		@gui_pointers_hovering ||= Set.new
+	end
+
+	def pointer_hovering?
+		!pointers_hovering.empty?
+	end
+
+	def pointer_clicking?
+		pointers_hovering.find { |pointer| pointer.click? }
+	end
+
+	def pointer_enter(pointer)
+		unless pointers_hovering.include?(pointer)
+			pointers_hovering << pointer
+			puts "pointer enter"
+		end
+	end
+
+	def pointer_exit(pointer)
+		if pointers_hovering.delete(pointer)
+			puts "pointer exit"
+		end
+	end
+end
+
 class GuiObject
+	include GuiHoverBehavior
+
 	attr_accessor :parent
 	easy_accessor :offset_x, :offset_y, :scale_x, :scale_y
 
@@ -45,17 +74,46 @@ class GuiObject
 		@scale_x, @scale_y = scale, scale
 	end
 
-	def gui_render!
+	def gui_render!		# basic implementation
+		with_positioning {
+			unit_square
+		}
 	end
 
 	def debug_render!
-		with_unique_hit_test_color_for_object(self, 0) { unit_square }
+		with_unique_hit_test_color_for_object(self, 0) {
+			with_positioning {
+				unit_square
+			}
+		}
 	end
 
 	def with_positioning
 		with_translation(@offset_x, @offset_y) {
 			with_scale(@scale_x, @scale_y) {
 				yield
+			}
+		}
+	end
+end
+
+class GuiButton < GuiObject
+	def click(pointer)
+		puts 'button clicked !!!!!!!!!!!!!!!!!!!!'
+	end
+
+	BUTTON_COLOR = [0.5,0.5,0.5]
+	BUTTON_HOVER_COLOR = [1.0,0.5,0.5]
+	BUTTON_CLICK_COLOR = [0.5,1.0,0.5]
+
+	def gui_color
+		(pointer_clicking?) ? BUTTON_CLICK_COLOR : ((pointer_hovering?) ? BUTTON_HOVER_COLOR : BUTTON_COLOR)
+	end
+
+	def gui_render!
+		with_color(gui_color) {
+			with_positioning {
+				unit_square
 			}
 		}
 	end
@@ -130,7 +188,7 @@ class Actor
 	end
 
 	def click(pointer)
-		#puts "actor clicked"
+		puts "actor '#{title}' clicked"
 	end
 end
 
@@ -152,7 +210,7 @@ class Variable
 	end
 
 	def click(pointer)
-		#puts "variable clicked"
+		puts "variable '#{title}' clicked"
 	end
 end
 
@@ -218,7 +276,8 @@ class ProjectEffectEditor < ProjectEffect
 		@gui = GuiBox.new
 		@gui << GuiList.new($engine.project.actors).set_scale_x(0.2).set_scale_y(0.2).set_offset_x(-0.4).set_offset_y(0.4)
 		@gui << GuiList.new($engine.project.variables).set_scale_x(0.15).set_scale_y(0.04).set_offset_x(-0.20).set_offset_y(0.45).set_spacing(0.4)
-
+		button = GuiButton.new.set_scale_x(0.15).set_scale_y(0.04).set_offset_x(0.2).set_offset_y(0.2)
+		@gui << button
 		@pointers = [PointerMouse.new]
 		super
 	end
@@ -244,8 +303,9 @@ class ProjectEffectEditor < ProjectEffect
 		end
 	end
 
+	POINTER_COLOR = [1,1,1]
 	def render_pointers
-		with_color([1,1,1]) {
+		with_color(POINTER_COLOR) {		# TODO: why is this necessary?
 			@pointers.each { |pointer|
 				with_translation(pointer.x, pointer.y) {
 					with_scale(0.05) {
