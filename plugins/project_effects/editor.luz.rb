@@ -19,6 +19,7 @@
 #require 'cycle-logic'
 #require 'safe_eval'
 require 'easy_accessor'
+require 'value_animation'
 
 =begin
 GuiRectangle = Struct.new(:top, :right, :bottom, :left)
@@ -60,6 +61,7 @@ end
 
 class GuiObject
 	include GuiHoverBehavior
+	include ValueAnimation
 
 	attr_accessor :parent
 	easy_accessor :offset_x, :offset_y, :scale_x, :scale_y
@@ -78,6 +80,10 @@ class GuiObject
 		with_positioning {
 			unit_square
 		}
+	end
+
+	def gui_tick!
+		tick_animations!
 	end
 
 	def hit_test_render!
@@ -100,6 +106,7 @@ end
 class GuiButton < GuiObject
 	def click(pointer)
 		puts 'button clicked !!!!!!!!!!!!!!!!!!!!'
+		animate(:offset_x, @offset_x - 0.1, duration=0.5)
 	end
 
 	BUTTON_COLOR = [0.5,0.5,0.5]
@@ -134,6 +141,10 @@ class GuiBox < GuiObject
 		with_positioning {
 			@contents.each { |gui_object| gui_object.gui_render! }
 		}
+	end
+
+	def gui_tick!
+		@contents.each { |gui_object| gui_object.gui_tick! }
 	end
 
 	def hit_test_render!
@@ -178,7 +189,13 @@ class GuiList < GuiBox
 	end
 end
 
+class UserObject
+	def gui_tick!
+	end
+end
+
 class Actor
+
 	def gui_render!
 		render!
 	end
@@ -278,6 +295,10 @@ class ProjectEffectEditor < ProjectEffect
 		@gui << button
 		@pointers = [PointerMouse.new]
 		super
+	end
+
+	def tick
+		@gui.gui_tick!
 	end
 
 	def render
