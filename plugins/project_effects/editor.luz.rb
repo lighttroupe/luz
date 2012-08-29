@@ -263,8 +263,6 @@ class PointerMouse < Pointer
 end
 
 class ProjectEffectEditor < ProjectEffect
-	include CycleLogic
-
 	title				"Editor"
 	description ""
 
