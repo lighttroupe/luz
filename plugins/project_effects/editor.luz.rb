@@ -104,9 +104,10 @@ class GuiObject
 end
 
 class GuiButton < GuiObject
+	callback :clicked
+
 	def click(pointer)
-		puts 'button clicked !!!!!!!!!!!!!!!!!!!!'
-		animate(:offset_x, @offset_x - 0.1, duration=0.5)
+		clicked_notify(pointer)
 	end
 
 	BUTTON_COLOR = [0.5,0.5,0.5]
@@ -195,7 +196,6 @@ class UserObject
 end
 
 class Actor
-
 	def gui_render!
 		render!
 	end
@@ -294,6 +294,9 @@ class ProjectEffectEditor < ProjectEffect
 		button = GuiButton.new.set_scale_x(0.15).set_scale_y(0.04).set_offset_x(0.2).set_offset_y(0.2)
 		@gui << button
 		@pointers = [PointerMouse.new]
+		button.on_clicked {
+			button.animate(:scale_x, button.scale_x * 1.2)
+		}
 		super
 	end
 
