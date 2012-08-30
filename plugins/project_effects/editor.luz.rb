@@ -79,12 +79,7 @@ class GuiObject
 		@scale_x, @scale_y = scale, scale
 	end
 
-	#
-	def gui_render!
-		with_positioning {
-			unit_square
-		}
-	end
+	# 
 
 	def gui_tick!
 		tick_animations!
@@ -97,6 +92,14 @@ class GuiObject
 			}
 		}
 	end
+
+	def gui_render!
+		with_positioning {
+			unit_square
+		}
+	end
+
+private
 
 	def with_positioning
 		with_translation(@offset_x, @offset_y) {
