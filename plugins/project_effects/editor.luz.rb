@@ -70,16 +70,17 @@ class GuiObject
 	easy_accessor :offset_x, :offset_y, :scale_x, :scale_y
 
 	def initialize
+		@parent = nil
 		@offset_x, @offset_y = 0.0, 0.0
 		@scale_x, @scale_y = 1.0, 1.0
-		@parent = nil
 	end
 
 	def set_scale(scale)
 		@scale_x, @scale_y = scale, scale
 	end
 
-	def gui_render!		# basic implementation
+	#
+	def gui_render!
 		with_positioning {
 			unit_square
 		}
