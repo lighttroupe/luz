@@ -59,6 +59,9 @@ module GuiHoverBehavior
 	end
 end
 
+#
+# Gui base class
+#
 class GuiObject
 	include GuiHoverBehavior
 	include ValueAnimation
@@ -138,6 +141,9 @@ class GuiBox < GuiObject
 		gui_object.parent = self
 	end
 
+	#
+	# Extend GuiObject methods to pass them along to contents
+	#
 	def gui_render!
 		with_positioning {
 			@contents.each { |gui_object| gui_object.gui_render! }
@@ -151,9 +157,7 @@ class GuiBox < GuiObject
 	def hit_test_render!
 		with_positioning {
 			@contents.each { |gui_object|
-				if gui_object.respond_to?(:hit_test_render!)
-					gui_object.hit_test_render!
-				end
+				gui_object.hit_test_render!
 			}
 		}
 	end
@@ -191,7 +195,10 @@ class GuiList < GuiBox
 end
 
 class UserObject
-	def gui_tick!
+	empty_method :gui_tick!
+
+	def hit_test_render!
+		with_unique_hit_test_color_for_object(self, 0) { unit_square }
 	end
 end
 
@@ -217,12 +224,6 @@ class Variable
 			with_color(GUI_COLOR) {
 				unit_square
 			}
-		}
-	end
-
-	def hit_test_render!
-		with_unique_hit_test_color_for_object(self, 0) {
-			unit_square
 		}
 	end
 
@@ -302,17 +303,17 @@ class ProjectEffectEditor < ProjectEffect
 
 	def tick
 		@gui.gui_tick!
-	end
 
-	def render
-		#
+		# 
 		if show_amount > 0.0
 			with_hit_testing {
 				@gui.hit_test_render!
+				hit_test_pointers
 			}
-			hit_test_pointers
 		end
+	end
 
+	def render
 		with_multiplied_alpha(output_opacity) {
 			yield
 		}
