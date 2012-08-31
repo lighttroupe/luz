@@ -3942,7 +3942,7 @@
             event: 
             event_invert: false
           title: Spotlight
-          enabled: true
+          enabled: false
           number_setting: !ruby/object:UserObjectSettingInteger
             name: number
             options: 
