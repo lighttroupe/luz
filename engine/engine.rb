@@ -474,7 +474,7 @@ private
 		resolve_events
 
 		# Project Tick
-		@project.effects.each { |effect| user_object_try(effect) { effect.resolve_settings ; effect.tick } }
+		@project.effects.each { |effect| effect.tick! }
 
 		# Beat
 		@beat_detector.tick(@frame_time) if @beat_detector
