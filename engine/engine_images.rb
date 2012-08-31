@@ -42,4 +42,13 @@ module EngineImages
 		}
 		return ret
 	end
+
+	# Helper when we know it's just one image
+	def load_image(path)
+		if (images=load_images(path))
+			images.first
+		else
+			nil
+		end
+	end
 end
