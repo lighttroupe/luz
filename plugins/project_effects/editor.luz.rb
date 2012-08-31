@@ -251,7 +251,7 @@ class Pointer
 		@color = DEFAULT_COLOR
 	end
 
-	def tick
+	def tick!
 		if @hover_object && click?
 			@hover_object.click(self) if @hover_object.respond_to?(:click)
 		end
@@ -324,13 +324,13 @@ class ProjectEffectEditor < ProjectEffect
 		@gui << GuiList.new($engine.project.actors).set_scale_x(0.2).set_scale_y(0.2).set_offset_x(-0.4).set_offset_y(0.4)
 		@gui << GuiList.new($engine.project.variables).set_scale_x(0.15).set_scale_y(0.04).set_offset_x(-0.20).set_offset_y(0.45).set_spacing(0.4)
 
-		button = GuiButton.new.set_scale_x(0.1).set_scale_y(0.1).set_offset_x(0.2).set_offset_y(0.2).set_background_image($engine.load_image('images/buttons/menu.png'))
-		@gui << button
-		@gui << BitmapFont.new.set_string('Luz 2.0 has text support!!').set_scale_x(0.02).set_scale_y(0.04)
+		@gui << (button = GuiButton.new.set_scale_x(0.1).set_scale_y(0.1).set_offset_x(0.2).set_offset_y(0.2).set_background_image($engine.load_image('images/buttons/menu.png')))
+		@gui << (text = BitmapFont.new.set_string('Luz 2.0 has text support!!').set_scale_x(0.02).set_scale_y(0.04))
 
-		#button.on_clicked {
-		#	button.animate(:scale_x, button.scale_x * 1.2)
-		#}
+		@cnt ||= 0
+		button.on_clicked {
+			text.set_string(sprintf("clicked the button %d times", @cnt += 1))
+		}
 
 		@pointers = [PointerMouse.new.set_background_image($engine.load_image('images/buttons/menu.png'))]
 	end
@@ -340,12 +340,14 @@ class ProjectEffectEditor < ProjectEffect
 
 		@gui.gui_tick!
 
-		# 
 		if show_amount > 0.0
-			with_hit_testing {
-				@gui.hit_test_render!
-				hit_test_pointers
-			}
+			#with_offscreen_buffer { |buffer|
+				with_hit_testing {				# render in special colors
+					@gui.hit_test_render!
+					tick_pointers
+					hit_test_pointers
+				}
+			#}
 		end
 	end
 
@@ -362,17 +364,18 @@ class ProjectEffectEditor < ProjectEffect
 		end
 	end
 
+	def tick_pointers
+		@pointers.each { |pointer| pointer.tick! }
+	end
+
 	def render_pointers
-		@pointers.each { |pointer|
-			pointer.render!
-		}
+		@pointers.each { |pointer| pointer.render! }
 	end
  
 	def hit_test_pointers
 		@pointers.each { |pointer|
 			object, _unused_user_data = hit_test_object_at_luz_coordinates(pointer.x, pointer.y)
 			pointer.is_over(object)
-			pointer.tick
 		}
 	end
 end
