@@ -176,6 +176,7 @@ class GuiBox < GuiObject
 	def gui_tick!
 		return if hidden?
 		@contents.each { |gui_object| gui_object.gui_tick! }
+		super
 	end
 
 	def hit_test_render!
@@ -331,7 +332,7 @@ class ProjectEffectEditor < ProjectEffect
 	def create_gui
 		@gui = GuiBox.new
 		#@gui << GuiList.new($engine.project.actors).set_scale_x(0.2).set_scale_y(0.2).set_offset_x(-0.4).set_offset_y(0.4)
-		#@gui << GuiList.new($engine.project.variables).set_scale_x(0.15).set_scale_y(0.04).set_offset_x(-0.20).set_offset_y(0.45).set_spacing(0.4)
+		@gui << (variables_list=GuiList.new($engine.project.variables).set_hidden(true).set_scale_x(0.15).set_scale_y(0.04).set_offset_x(0.6).set_offset_y(0.35).set_spacing(0.4))
 
 		@gui << (button = GuiButton.new.set_scale_x(0.1).set_scale_y(0.1).set_offset_x(0.2).set_offset_y(0.2).set_background_image($engine.load_image('images/buttons/menu.png')))
 		@gui << (text = BitmapFont.new.set_string('Luz 2.0 has text support!!').set_scale_x(0.02).set_scale_y(0.04))
@@ -343,12 +344,11 @@ class ProjectEffectEditor < ProjectEffect
 		@cnt ||= 0
 		button.on_clicked {
 			text.set_string(sprintf("clicked the button %d times", @cnt += 1))
-			if save_button.hidden?
-				save_button.set_scale_x(0.0).set_hidden(false).animate(:scale_x, 0.1, duration=0.5) { text.set_string(sprintf("animation is done!")) }
+			if variables_list.hidden?
+				variables_list.set_hidden(false).animate(:offset_x, 0.4, duration=0.2) { text.set_string(sprintf("here's your list!")) }
 			else
-				save_button.animate(:scale_x, 0.0, duration=0.5) { |obj| obj.set_hidden(true) ; text.set_string(sprintf("animation is done!!")) }
+				variables_list.animate(:offset_x, 0.6, duration=0.2) { variables_list.set_hidden(true) ; text.set_string(sprintf("byebye list!")) }
 			end
-			save_button.not_hidden!
 		}
 		save_button.on_clicked {
 			text.set_string(sprintf("clicked the button %d times", @cnt -= 1))
