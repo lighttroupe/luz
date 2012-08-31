@@ -5090,13 +5090,13 @@
         enter_curve: *id004
         enable_animation: false
         animation_curve: *id004
-        animation_min: 0.0
+        animation_min: 0.5
         animation_max: 0.0
         animation_repeat_number: 4
         animation_repeat_unit: :beats
         enable_exit_animation: false
         exit_curve: *id004
-        enable_activation: true
+        enable_activation: false
         activation_direction: :to
         activation_curve: *id004
         activation_value: 1.0
