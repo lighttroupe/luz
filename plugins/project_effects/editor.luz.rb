@@ -69,6 +69,7 @@ class GuiObject
 
 	attr_accessor :parent
 	easy_accessor :offset_x, :offset_y, :scale_x, :scale_y
+	boolean_accessor :hidden
 
 	def initialize
 		@parent = nil
@@ -87,6 +88,7 @@ class GuiObject
 	end
 
 	def hit_test_render!
+		return if hidden?
 		with_unique_hit_test_color_for_object(self, 0) {
 			with_positioning {
 				unit_square
@@ -95,6 +97,7 @@ class GuiObject
 	end
 
 	def gui_render!
+		return if hidden?
 		with_positioning {
 			unit_square
 		}
@@ -134,6 +137,7 @@ class GuiButton < GuiObject
 	end
 
 	def gui_render!
+		return if hidden?
 		with_positioning {
 			with_color(gui_color) {
 				if background_image
@@ -163,16 +167,19 @@ class GuiBox < GuiObject
 	# Extend GuiObject methods to pass them along to contents
 	#
 	def gui_render!
+		return if hidden?
 		with_positioning {
 			@contents.each { |gui_object| gui_object.gui_render! }
 		}
 	end
 
 	def gui_tick!
+		return if hidden?
 		@contents.each { |gui_object| gui_object.gui_tick! }
 	end
 
 	def hit_test_render!
+		return if hidden?
 		with_positioning {
 			@contents.each { |gui_object|
 				gui_object.hit_test_render!
@@ -195,10 +202,12 @@ class GuiList < GuiBox
 	end
 
 	def gui_render!
+		return if hidden?
 		each_with_positioning { |gui_object| gui_object.gui_render! }
 	end
 
 	def hit_test_render!
+		return if hidden?
 		each_with_positioning { |gui_object| gui_object.hit_test_render! }
 	end
 end
@@ -321,15 +330,28 @@ class ProjectEffectEditor < ProjectEffect
 
 	def create_gui
 		@gui = GuiBox.new
-		@gui << GuiList.new($engine.project.actors).set_scale_x(0.2).set_scale_y(0.2).set_offset_x(-0.4).set_offset_y(0.4)
-		@gui << GuiList.new($engine.project.variables).set_scale_x(0.15).set_scale_y(0.04).set_offset_x(-0.20).set_offset_y(0.45).set_spacing(0.4)
+		#@gui << GuiList.new($engine.project.actors).set_scale_x(0.2).set_scale_y(0.2).set_offset_x(-0.4).set_offset_y(0.4)
+		#@gui << GuiList.new($engine.project.variables).set_scale_x(0.15).set_scale_y(0.04).set_offset_x(-0.20).set_offset_y(0.45).set_spacing(0.4)
 
 		@gui << (button = GuiButton.new.set_scale_x(0.1).set_scale_y(0.1).set_offset_x(0.2).set_offset_y(0.2).set_background_image($engine.load_image('images/buttons/menu.png')))
 		@gui << (text = BitmapFont.new.set_string('Luz 2.0 has text support!!').set_scale_x(0.02).set_scale_y(0.04))
 
+		# Main menu
+		@gui << (save_button = GuiButton.new.set_scale_x(0.1).set_scale_y(0.1).set_offset_y(0.2).set_background_image($engine.load_image('images/buttons/menu.png')))
+		save_button.hidden!
+
 		@cnt ||= 0
 		button.on_clicked {
 			text.set_string(sprintf("clicked the button %d times", @cnt += 1))
+			if save_button.hidden?
+				save_button.set_scale_x(0.0).set_hidden(false).animate(:scale_x, 0.1, duration=0.5) { text.set_string(sprintf("animation is done!")) }
+			else
+				save_button.animate(:scale_x, 0.0, duration=0.5) { |obj| obj.set_hidden(true) ; text.set_string(sprintf("animation is done!!")) }
+			end
+			save_button.not_hidden!
+		}
+		save_button.on_clicked {
+			text.set_string(sprintf("clicked the button %d times", @cnt -= 1))
 		}
 
 		@pointers = [PointerMouse.new.set_background_image($engine.load_image('images/buttons/menu.png'))]
