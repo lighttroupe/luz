@@ -304,6 +304,8 @@ class PointerMouse < Pointer
 	end
 end
 
+require 'editor/fonts/bitmap-font'
+
 class ProjectEffectEditor < ProjectEffect
 	title				"Editor"
 	description ""
@@ -314,6 +316,7 @@ class ProjectEffectEditor < ProjectEffect
 
 	def after_load
 		super
+		@gui = nil
 	end
 
 	def create_gui
@@ -323,6 +326,8 @@ class ProjectEffectEditor < ProjectEffect
 
 		button = GuiButton.new.set_scale_x(0.1).set_scale_y(0.1).set_offset_x(0.2).set_offset_y(0.2).set_background_image($engine.load_image('images/buttons/menu.png'))
 		@gui << button
+		@gui << BitmapFont.new.set_string('Luz 2.0 has text support!!').set_scale_x(0.02).set_scale_y(0.04)
+
 		#button.on_clicked {
 		#	button.animate(:scale_x, button.scale_x * 1.2)
 		#}
