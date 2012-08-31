@@ -65,6 +65,7 @@ end
 class GuiObject
 	include GuiHoverBehavior
 	include ValueAnimation
+	include Drawing
 
 	attr_accessor :parent
 	easy_accessor :offset_x, :offset_y, :scale_x, :scale_y
@@ -110,8 +111,15 @@ private
 	end
 end
 
+class NilClass
+	def using
+		yield
+	end
+end
+
 class GuiButton < GuiObject
 	callback :clicked
+	easy_accessor :background_image
 
 	def click(pointer)
 		clicked_notify(pointer)
@@ -126,9 +134,15 @@ class GuiButton < GuiObject
 	end
 
 	def gui_render!
-		with_color(gui_color) {
-			with_positioning {
-				unit_square
+		with_positioning {
+			with_color(gui_color) {
+				if background_image
+					background_image.using {
+						unit_square
+					}
+				else
+					unit_square
+				end
 			}
 		}
 	end
@@ -165,15 +179,6 @@ class GuiBox < GuiObject
 			}
 		}
 	end
-
-=begin
-	def self.init_env
-		$env[:gui_box_top] = 0.5
-		$env[:gui_box_right] = 0.5
-		$env[:gui_box_bottom] = -0.5
-		$env[:gui_box_left] = -0.5
-	end
-=end
 end
 
 class GuiList < GuiBox
@@ -237,16 +242,31 @@ class Variable
 end
 
 class Pointer
-	attr_accessor :number
+	easy_accessor :number, :background_image, :color, :size
+	DEFAULT_COLOR = [1,1,1]
 
 	def initialize
 		@number = 1
+		@size = 0.03
+		@color = DEFAULT_COLOR
 	end
 
 	def tick
 		if @hover_object && click?
 			@hover_object.click(self) if @hover_object.respond_to?(:click)
 		end
+	end
+
+	def render!
+		background_image.using {
+			with_color(color) {
+				with_translation(x, y) {
+					with_scale(size) {
+						unit_square
+					}
+				}
+			}
+		}
 	end
 
 	def is_over(object)
@@ -293,19 +313,26 @@ class ProjectEffectEditor < ProjectEffect
 	setting 'debug', :event
 
 	def after_load
-		@gui = GuiBox.new
-		@gui << GuiList.new($engine.project.actors).set_scale_x(0.2).set_scale_y(0.2).set_offset_x(-0.4).set_offset_y(0.4)
-		@gui << GuiList.new($engine.project.variables).set_scale_x(0.15).set_scale_y(0.04).set_offset_x(-0.20).set_offset_y(0.45).set_spacing(0.4)
-		button = GuiButton.new.set_scale_x(0.15).set_scale_y(0.04).set_offset_x(0.2).set_offset_y(0.2)
-		@gui << button
-		@pointers = [PointerMouse.new]
-		button.on_clicked {
-			button.animate(:scale_x, button.scale_x * 1.2)
-		}
 		super
 	end
 
+	def create_gui
+		@gui = GuiBox.new
+		@gui << GuiList.new($engine.project.actors).set_scale_x(0.2).set_scale_y(0.2).set_offset_x(-0.4).set_offset_y(0.4)
+		@gui << GuiList.new($engine.project.variables).set_scale_x(0.15).set_scale_y(0.04).set_offset_x(-0.20).set_offset_y(0.45).set_spacing(0.4)
+
+		button = GuiButton.new.set_scale_x(0.1).set_scale_y(0.1).set_offset_x(0.2).set_offset_y(0.2).set_background_image($engine.load_image('images/buttons/menu.png'))
+		@gui << button
+		#button.on_clicked {
+		#	button.animate(:scale_x, button.scale_x * 1.2)
+		#}
+
+		@pointers = [PointerMouse.new.set_background_image($engine.load_image('images/buttons/menu.png'))]
+	end
+
 	def tick
+		create_gui unless @gui
+
 		@gui.gui_tick!
 
 		# 
@@ -330,16 +357,9 @@ class ProjectEffectEditor < ProjectEffect
 		end
 	end
 
-	POINTER_COLOR = [1,1,1]
 	def render_pointers
-		with_color(POINTER_COLOR) {		# TODO: why is this necessary?
-			@pointers.each { |pointer|
-				with_translation(pointer.x, pointer.y) {
-					with_scale(0.05) {
-						unit_square
-					}
-				}
-			}
+		@pointers.each { |pointer|
+			pointer.render!
 		}
 	end
  
