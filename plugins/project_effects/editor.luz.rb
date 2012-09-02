@@ -79,6 +79,7 @@ class GuiObject
 
 	def set_scale(scale)
 		@scale_x, @scale_y = scale, scale
+		self
 	end
 
 	# 
@@ -331,27 +332,26 @@ class ProjectEffectEditor < ProjectEffect
 
 	def create_gui
 		@gui = GuiBox.new
-		#@gui << GuiList.new($engine.project.actors).set_scale_x(0.2).set_scale_y(0.2).set_offset_x(-0.4).set_offset_y(0.4)
-		@gui << (variables_list=GuiList.new($engine.project.variables).set_hidden(true).set_scale_x(0.15).set_scale_y(0.04).set_offset_x(0.6).set_offset_y(0.35).set_spacing(0.4))
-
-		@gui << (button = GuiButton.new.set_scale_x(0.1).set_scale_y(0.1).set_offset_x(0.2).set_offset_y(0.2).set_background_image($engine.load_image('images/buttons/menu.png')))
+		#@gui << (actor_list=GuiList.new($engine.project.actors).set_scale(0.2).set_offset_x(-0.4).set_offset_y(0.4))
+		@gui << (variables_list=GuiList.new($engine.project.variables).set_hidden(true).set_scale_x(0.15).set_scale_y(0.04).set_offset_x(-0.6).set_offset_y(0.35).set_spacing(0.4))
+		@gui << (button = GuiButton.new.set_scale(0.08).set_offset_x(-0.50 + 0.04).set_offset_y(0.50 - 0.04).set_background_image($engine.load_image('images/buttons/menu.png')))
 		@gui << (text = BitmapFont.new.set_string('Luz 2.0 has text support!!').set_scale_x(0.02).set_scale_y(0.04))
 
 		# Main menu
 		@gui << (save_button = GuiButton.new.set_scale_x(0.1).set_scale_y(0.1).set_offset_y(0.2).set_background_image($engine.load_image('images/buttons/menu.png')))
-		save_button.hidden!
+		#save_button.hidden!
 
 		@cnt ||= 0
 		button.on_clicked {
-			text.set_string(sprintf("clicked the button %d times", @cnt += 1))
 			if variables_list.hidden?
-				variables_list.set_hidden(false).animate(:offset_x, 0.4, duration=0.2) { text.set_string(sprintf("here's your list!")) }
+				variables_list.set_hidden(false).animate(:offset_x, -0.41, duration=0.2) { text.set_string(sprintf("here's your list!")) }
 			else
-				variables_list.animate(:offset_x, 0.6, duration=0.2) { variables_list.set_hidden(true) ; text.set_string(sprintf("byebye list!")) }
+				variables_list.animate(:offset_x, -0.6, duration=0.25) { variables_list.set_hidden(true) ; text.set_string(sprintf("byebye list!")) }
 			end
 		}
 		save_button.on_clicked {
-			text.set_string(sprintf("clicked the button %d times", @cnt -= 1))
+			$engine.project.variables << $engine.project.variables.random.deep_clone
+			text.set_string(sprintf("clicked the button %d times", @cnt += 1))
 		}
 
 		@pointers = [PointerMouse.new.set_background_image($engine.load_image('images/buttons/menu.png'))]
