@@ -1,5 +1,5 @@
  ###############################################################################
- #  Copyright 2011 Ian McIntosh <ian@openanswers.org>
+ #  Copyright 2012 Ian McIntosh <ian@openanswers.org>
  #
  #  This program is free software; you can redistribute it and/or modify
  #  it under the terms of the GNU General Public License as published by
@@ -16,20 +16,8 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-#require 'cycle-logic'
-#require 'safe_eval'
 require 'easy_accessor'
 require 'value_animation'
-
-=begin
-GuiRectangle = Struct.new(:top, :right, :bottom, :left)
-def with_gui_viewport(rect)		# inspired by CSS
-	rect = $env[:gui_viewport] ? $env[:gui_viewport].dup : GuiRectangle.new(0.5, 0.5, -0.5, -0.5)
-	with_env(:gui_viewport, rect) {
-		yield
-	}
-end
-=end
 
 module GuiHoverBehavior
 	def pointers_hovering
