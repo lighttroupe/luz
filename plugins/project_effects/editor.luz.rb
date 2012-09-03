@@ -23,7 +23,6 @@ require 'value_animation'
 
 =begin
 GuiRectangle = Struct.new(:top, :right, :bottom, :left)
-
 def with_gui_viewport(rect)		# inspired by CSS
 	rect = $env[:gui_viewport] ? $env[:gui_viewport].dup : GuiRectangle.new(0.5, 0.5, -0.5, -0.5)
 	with_env(:gui_viewport, rect) {
@@ -67,8 +66,7 @@ class GuiObject
 	include ValueAnimation
 	include Drawing
 
-	attr_accessor :parent
-	easy_accessor :offset_x, :offset_y, :scale_x, :scale_y
+	easy_accessor :parent, :offset_x, :offset_y, :scale_x, :scale_y
 	boolean_accessor :hidden
 
 	def initialize
