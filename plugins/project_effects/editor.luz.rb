@@ -18,6 +18,7 @@
 
 require 'easy_accessor'
 require 'value_animation'
+require 'editor/fonts/bitmap-font'
 
 module GuiHoverBehavior
 	def pointers_hovering
@@ -300,8 +301,6 @@ class PointerMouse < Pointer
 		$engine.button_pressed_this_frame?(BUTTON_01)
 	end
 end
-
-require 'editor/fonts/bitmap-font'
 
 class ProjectEffectEditor < ProjectEffect
 	title				"Editor"
