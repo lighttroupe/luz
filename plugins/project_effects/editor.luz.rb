@@ -16,16 +16,10 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-require 'easy_accessor'
-require 'value_animation'
-require 'gui_hover_behavior'
-require 'gui_object'
+require 'easy_accessor', 'value_animation'
+require 'gui_hover_behavior', 'gui_object', 'gui_button', 'gui_box', 'gui_list'
 require 'editor/fonts/bitmap-font'
-require 'gui_button'
-require 'gui_box'
-require 'gui_list'
-require 'pointer'
-require 'pointer_mouse'
+require 'pointer', 'pointer_mouse'
 
 class NilClass		# generally helpful for eg. nil instance variables thought to be holding images
 	def using
