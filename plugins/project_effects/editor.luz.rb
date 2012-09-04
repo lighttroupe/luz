@@ -18,188 +18,18 @@
 
 require 'easy_accessor'
 require 'value_animation'
-
-module GuiHoverBehavior
-	def pointers_hovering
-		@gui_pointers_hovering ||= Set.new
-	end
-
-	def pointer_hovering?
-		!pointers_hovering.empty?
-	end
-
-	def pointer_clicking?
-		pointers_hovering.find { |pointer| pointer.click? }
-	end
-
-	def pointer_enter(pointer)
-		unless pointers_hovering.include?(pointer)
-			pointers_hovering << pointer
-			puts "pointer enter"
-		end
-	end
-
-	def pointer_exit(pointer)
-		if pointers_hovering.delete(pointer)
-			puts "pointer exit"
-		end
-	end
-end
-
-#
-# Gui base class
-#
-class GuiObject
-	include GuiHoverBehavior
-	include ValueAnimation
-	include Drawing
-
-	easy_accessor :parent, :offset_x, :offset_y, :scale_x, :scale_y, :opacity
-	boolean_accessor :hidden
-
-	def initialize
-		@parent = nil
-		@offset_x, @offset_y = 0.0, 0.0
-		@scale_x, @scale_y = 1.0, 1.0
-		@opacity = 1.0
-	end
-
-	def set_scale(scale)
-		@scale_x, @scale_y = scale, scale
-		self
-	end
-
-	# 
-	def gui_tick!
-		tick_animations!
-	end
-
-	def hit_test_render!
-		return if hidden?
-		with_unique_hit_test_color_for_object(self, 0) {
-			with_positioning {
-				unit_square
-			}
-		}
-	end
-
-	def gui_render!
-		return if hidden?
-		with_positioning {
-			unit_square
-		}
-	end
-
-private
-
-	def with_positioning
-		with_translation(@offset_x, @offset_y) {
-			with_scale(@scale_x, @scale_y) {
-				with_multiplied_alpha(@opacity) {
-					yield
-				}
-			}
-		}
-	end
-end
+require 'gui_hover_behavior'
+require 'gui_object'
 require 'editor/fonts/bitmap-font'
+require 'gui_button'
+require 'gui_box'
+require 'gui_list'
+require 'pointer'
+require 'pointer_mouse'
 
-class NilClass
+class NilClass		# generally helpful for eg. nil instance variables thought to be holding images
 	def using
 		yield
-	end
-end
-
-class GuiButton < GuiObject
-	callback :clicked
-	easy_accessor :background_image
-
-	def click(pointer)
-		clicked_notify(pointer)
-	end
-
-	BUTTON_COLOR = [0.5,0.5,0.5]
-	BUTTON_HOVER_COLOR = [1.0,0.5,0.5]
-	BUTTON_CLICK_COLOR = [0.5,1.0,0.5]
-
-	def gui_color
-		(pointer_clicking?) ? BUTTON_CLICK_COLOR : ((pointer_hovering?) ? BUTTON_HOVER_COLOR : BUTTON_COLOR)
-	end
-
-	def gui_render!
-		return if hidden?
-		with_positioning {
-			with_color(gui_color) {
-				if background_image
-					background_image.using {
-						unit_square
-					}
-				else
-					unit_square
-				end
-			}
-		}
-	end
-end
-
-class GuiBox < GuiObject
-	def initialize(contents = [])
-		@contents = contents
-		super()
-	end
-
-	def <<(gui_object)
-		@contents << gui_object
-		gui_object.parent = self
-	end
-
-	#
-	# Extend GuiObject methods to pass them along to contents
-	#
-	def gui_render!
-		return if hidden?
-		with_positioning {
-			@contents.each { |gui_object| gui_object.gui_render! }
-		}
-	end
-
-	def gui_tick!
-		return if hidden?
-		@contents.each { |gui_object| gui_object.gui_tick! }
-		super
-	end
-
-	def hit_test_render!
-		return if hidden?
-		with_positioning {
-			@contents.each { |gui_object|
-				gui_object.hit_test_render!
-			}
-		}
-	end
-end
-
-class GuiList < GuiBox
-	easy_accessor :spacing
-
-	def each_with_positioning
-		with_positioning {
-			@contents.each_with_index { |gui_object, index|
-				with_translation(0.0, index * (-1.0 - (@spacing || 0.0))) {
-					yield gui_object
-				}
-			}
-		}
-	end
-
-	def gui_render!
-		return if hidden?
-		each_with_positioning { |gui_object| gui_object.gui_render! }
-	end
-
-	def hit_test_render!
-		return if hidden?
-		each_with_positioning { |gui_object| gui_object.hit_test_render! }
 	end
 end
 
@@ -209,19 +39,15 @@ class UserObject
 	def hit_test_render!
 		with_unique_hit_test_color_for_object(self, 0) { unit_square }
 	end
+
+	def click(pointer)
+		puts "user object '#{title}' clicked"
+	end
 end
 
 class Actor
 	def gui_render!
 		render!
-	end
-
-	def hit_test_render!
-		with_unique_hit_test_color_for_object(self, 0) { unit_square }
-	end
-
-	def click(pointer)
-		puts "actor '#{title}' clicked"
 	end
 end
 
@@ -234,73 +60,6 @@ class Variable
 				unit_square
 			}
 		}
-	end
-
-	def click(pointer)
-		puts "variable '#{title}' clicked"
-	end
-end
-
-class Pointer
-	easy_accessor :number, :background_image, :color, :size
-	DEFAULT_COLOR = [1,1,1]
-
-	def initialize
-		@number = 1
-		@size = 0.03
-		@color = DEFAULT_COLOR
-	end
-
-	def tick!
-		if @hover_object && click?
-			@hover_object.click(self) if @hover_object.respond_to?(:click)
-		end
-	end
-
-	def render!
-		background_image.using {
-			with_color(color) {
-				with_translation(x, y) {
-					with_scale(size) {
-						unit_square
-					}
-				}
-			}
-		}
-	end
-
-	def is_over(object)
-		return if @hover_object == object
-
-		exit_hover_object!
-
-		if object
-			# enter new object
-			object.pointer_enter(self) if object.respond_to?(:pointer_enter)
-
-			# save
-			@hover_object = object
-			#puts "hovering over #{@hover_object.title}"
-		end
-		self
-	end
-
-	def exit_hover_object!
-		@hover_object.pointer_exit(self) if @hover_object && @hover_object.respond_to?(:pointer_exit)
-		@hover_object = nil
-	end
-end
-
-class PointerMouse < Pointer
-	X,Y,BUTTON_01 = 'Mouse 01 / X', 'Mouse 01 / Y', 'Mouse 01 / Button 01'
-	def x
-		$engine.slider_value(X) - 0.5
-	end
-	def y
-		$engine.slider_value(Y) - 0.5
-	end
-	def click?
-		$engine.button_pressed_this_frame?(BUTTON_01)
 	end
 end
 
