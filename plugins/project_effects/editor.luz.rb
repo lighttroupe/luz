@@ -20,6 +20,7 @@ require 'easy_accessor', 'value_animation'
 require 'gui_hover_behavior', 'gui_object', 'gui_button', 'gui_box', 'gui_list'
 require 'editor/fonts/bitmap-font'
 require 'pointer', 'pointer_mouse'
+require 'gui_default'
 
 class NilClass		# generally helpful for eg. nil instance variables thought to be holding images
 	def using
@@ -71,29 +72,7 @@ class ProjectEffectEditor < ProjectEffect
 	end
 
 	def create_gui
-		@gui = GuiBox.new
-		#@gui << (actor_list=GuiList.new($engine.project.actors).set_scale(0.2).set_offset_x(-0.4).set_offset_y(0.4))
-		@gui << (variables_list=GuiList.new($engine.project.variables).set_hidden(true).set_scale_x(0.12).set_scale_y(0.03).set_offset_x(-0.6).set_offset_y(0.35).set_spacing(0.4))
-		@gui << (button = GuiButton.new.set_scale(0.08).set_offset_x(-0.50 + 0.04).set_offset_y(0.50 - 0.04).set_background_image($engine.load_image('images/buttons/menu.png')))
-		@gui << (text = BitmapFont.new.set_string('Luz 2.0 has text support!!').set_scale_x(0.02).set_scale_y(0.04))
-
-		# Main menu
-		@gui << (save_button = GuiButton.new.set_scale_x(0.1).set_scale_y(0.1).set_offset_y(0.2).set_background_image($engine.load_image('images/buttons/menu.png')))
-		#save_button.hidden!
-
-		@cnt ||= 0
-		button.on_clicked {
-			if variables_list.hidden?
-				variables_list.set_hidden(false).set_opacity(0.0).animate(:offset_x, -0.41, duration=0.2) { text.set_string(sprintf("here's your list!")) }.animate(:opacity, 1.0, duration=0.2)
-			else
-				variables_list.animate(:offset_x, -0.6, duration=0.25) { variables_list.set_hidden(true) ; text.set_string(sprintf("byebye list!")) }.animate(:opacity, 0.0, duration=0.2)
-			end
-		}
-		save_button.on_clicked {
-			$engine.project.variables << $engine.project.variables.random.deep_clone
-			text.set_string(sprintf("clicked the button %d times", @cnt += 1))
-		}
-
+		@gui = create_default_gui
 		@pointers = [PointerMouse.new.set_background_image($engine.load_image('images/buttons/menu.png'))]
 	end
 

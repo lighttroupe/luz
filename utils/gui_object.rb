@@ -16,7 +16,18 @@ class GuiObject
 		@opacity = 1.0
 	end
 
+	def set(hash)
+		hash.each { |key, value|
+			self.send(key.to_s + '=', value)
+		}
+		self
+	end
+
 	def set_scale(scale)
+		@scale_x, @scale_y = scale, scale
+		self
+	end
+	def scale=(scale)
 		@scale_x, @scale_y = scale, scale
 		self
 	end
