@@ -148,11 +148,15 @@ class DrawableObject
 		bodies.sort_by { |body| body.p.dist(@body.p) }.first		# closest
 	end
 
+	def clear_aim_at!
+		@aim_at_body = nil
+		@body.t = 0.0		# otherwise it spins like mad
+	end
+
 	def update_aim_at
 		# Ditch old target if it's dead (TODO: better way to test this?)
 		if @aim_at_body && !@aim_at_body.drawables.empty? && @aim_at_body.drawables.first.exiting?
-			@aim_at_body = nil
-			@body.t = 0.0		# otherwise it spins like mad
+			clear_aim_at!
 		end
 
 		# Find a new body to follow, if needed
@@ -167,6 +171,12 @@ class DrawableObject
 
 		# Calculate angle and apply torque to rotate towards chosen angle in the closest direction
 		vector = (@aim_at_body.p - @body.p)
+
+		# Break if the range gets too great
+		if vector.length >= @aim_at_radius
+			clear_aim_at!
+		end
+
 		angle_difference = (vector.to_angle - @body.a)
 
 		# (easier to deal with in luz angles, up is 0.0, right is 0.25)
