@@ -11,6 +11,7 @@ module ValueAnimation
 
 	def animate(field, target_value, duration=0.5, &proc)
 		active_animations << animation_struct_stack.pop(field, send(field), target_value, $env[:frame_time], $env[:frame_time] + duration, proc)
+		self
 	end
 
 	def tick_animations!
