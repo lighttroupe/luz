@@ -18,7 +18,6 @@
 
 require 'easy_accessor'
 require 'value_animation'
-require 'editor/fonts/bitmap-font'
 
 module GuiHoverBehavior
 	def pointers_hovering
@@ -55,13 +54,14 @@ class GuiObject
 	include ValueAnimation
 	include Drawing
 
-	easy_accessor :parent, :offset_x, :offset_y, :scale_x, :scale_y
+	easy_accessor :parent, :offset_x, :offset_y, :scale_x, :scale_y, :opacity
 	boolean_accessor :hidden
 
 	def initialize
 		@parent = nil
 		@offset_x, @offset_y = 0.0, 0.0
 		@scale_x, @scale_y = 1.0, 1.0
+		@opacity = 1.0
 	end
 
 	def set_scale(scale)
@@ -70,7 +70,6 @@ class GuiObject
 	end
 
 	# 
-
 	def gui_tick!
 		tick_animations!
 	end
@@ -96,11 +95,14 @@ private
 	def with_positioning
 		with_translation(@offset_x, @offset_y) {
 			with_scale(@scale_x, @scale_y) {
-				yield
+				with_multiplied_alpha(@opacity) {
+					yield
+				}
 			}
 		}
 	end
 end
+require 'editor/fonts/bitmap-font'
 
 class NilClass
 	def using
@@ -318,7 +320,7 @@ class ProjectEffectEditor < ProjectEffect
 	def create_gui
 		@gui = GuiBox.new
 		#@gui << (actor_list=GuiList.new($engine.project.actors).set_scale(0.2).set_offset_x(-0.4).set_offset_y(0.4))
-		@gui << (variables_list=GuiList.new($engine.project.variables).set_hidden(true).set_scale_x(0.15).set_scale_y(0.04).set_offset_x(-0.6).set_offset_y(0.35).set_spacing(0.4))
+		@gui << (variables_list=GuiList.new($engine.project.variables).set_hidden(true).set_scale_x(0.12).set_scale_y(0.03).set_offset_x(-0.6).set_offset_y(0.35).set_spacing(0.4))
 		@gui << (button = GuiButton.new.set_scale(0.08).set_offset_x(-0.50 + 0.04).set_offset_y(0.50 - 0.04).set_background_image($engine.load_image('images/buttons/menu.png')))
 		@gui << (text = BitmapFont.new.set_string('Luz 2.0 has text support!!').set_scale_x(0.02).set_scale_y(0.04))
 
@@ -329,9 +331,9 @@ class ProjectEffectEditor < ProjectEffect
 		@cnt ||= 0
 		button.on_clicked {
 			if variables_list.hidden?
-				variables_list.set_hidden(false).animate(:offset_x, -0.41, duration=0.2) { text.set_string(sprintf("here's your list!")) }
+				variables_list.set_hidden(false).set_opacity(0.0).animate(:offset_x, -0.41, duration=0.2) { text.set_string(sprintf("here's your list!")) }.animate(:opacity, 1.0, duration=0.2)
 			else
-				variables_list.animate(:offset_x, -0.6, duration=0.25) { variables_list.set_hidden(true) ; text.set_string(sprintf("byebye list!")) }
+				variables_list.animate(:offset_x, -0.6, duration=0.25) { variables_list.set_hidden(true) ; text.set_string(sprintf("byebye list!")) }.animate(:opacity, 0.0, duration=0.2)
 			end
 		}
 		save_button.on_clicked {
