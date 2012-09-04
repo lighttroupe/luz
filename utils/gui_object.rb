@@ -27,10 +27,7 @@ class GuiObject
 		@scale_x, @scale_y = scale, scale
 		self
 	end
-	def scale=(scale)
-		@scale_x, @scale_y = scale, scale
-		self
-	end
+	alias :scale= :set_scale
 
 	# 
 	def gui_tick!
