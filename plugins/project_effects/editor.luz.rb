@@ -73,6 +73,8 @@ class ProjectEffectEditor < ProjectEffect
 
 	def create_gui
 		@gui = create_default_gui
+
+		# TODO: how to configure the mices?
 		@pointers = [PointerMouse.new.set_background_image($engine.load_image('images/buttons/menu.png'))]
 	end
 
@@ -82,13 +84,16 @@ class ProjectEffectEditor < ProjectEffect
 		@gui.gui_tick!
 
 		if show_amount > 0.0
+			# Perform hit testing-- TODO: this needn't be every frame...
+			# Nor full-frame
+
 			#with_offscreen_buffer { |buffer|
 				with_hit_testing {				# render in special colors
 					@gui.hit_test_render!
-					tick_pointers
 					hit_test_pointers
 				}
 			#}
+			tick_pointers
 		end
 	end
 
