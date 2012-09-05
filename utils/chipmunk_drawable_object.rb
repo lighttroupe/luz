@@ -267,7 +267,7 @@ class DrawableObject
 			@simulator.create_object!(gib) { |drawable|
 				# gibs inherit position, velocity, angle (this could perhaps be more precise)
 				drawable.body.p = @body.p + CP::Vec2.new(gib.x - @level_object.x, gib.y - @level_object.y).rotate(@body.rot)
-				drawable.body.v = (@body.v * as_float(gib.options[:gib_velocity_multiplier], 1.0))
+				drawable.body.v += (@body.v * as_float(gib.options[:gib_velocity_multiplier], 1.0))		# use += in case it got its own velocity (ie velocity-x property)
 				drawable.body.a = @body.a
 			}
 		} if @gibs

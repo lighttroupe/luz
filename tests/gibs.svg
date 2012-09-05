@@ -159,26 +159,9 @@ collision-type: blue
 
 gib: yes
 gib-velocity-multiplier: 1.0
-gib-angle-randomizer: 2.0
 
 / this one is expected
 / to fly into cubby hole</desc>
-      </rect>
-      <rect
-         y="678.95862"
-         x="417.07108"
-         height="10"
-         width="10"
-         id="rect3156"
-         style="fill:#ff6600;fill-opacity:1;stroke:none">
-        <desc
-           id="desc3158">mass: 1
-collision-type: just for looks
-
-gib: yes
-gib-velocity-multiplier: 0.1
-
-gib-chance: 0.2</desc>
       </rect>
       <rect
          style="fill:#ff6600;fill-opacity:1;stroke:none"
@@ -192,9 +175,10 @@ gib-chance: 0.2</desc>
 collision-type: just for looks
 
 gib: yes
-gib-velocity-multiplier: 0.1
 
-gib-chance: 0.2</desc>
+velocity-y: 0.5
+
+</desc>
       </rect>
       <rect
          y="666.83679"
@@ -208,9 +192,26 @@ gib-chance: 0.2</desc>
 collision-type: just for looks
 
 gib: yes
-gib-velocity-multiplier: 0.1
+gib-velocity-multiplier: -1
 
 gib-chance: 0.2</desc>
+      </rect>
+      <rect
+         y="680.57538"
+         x="417.02029"
+         height="10"
+         width="10"
+         id="rect3168"
+         style="fill:#ff6600;fill-opacity:1;stroke:none">
+        <desc
+           id="desc3170">mass: 1
+collision-type: just for looks
+
+gib: yes
+
+velocity-y: -0.5
+
+</desc>
       </rect>
     </g>
     <rect
