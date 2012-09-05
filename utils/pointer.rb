@@ -29,7 +29,7 @@ class Pointer
 	def is_over(object)
 		return if @hover_object == object
 
-		exit_hover_object!
+		exit_hover_object!		# pointer exits current object
 
 		if object
 			# enter new object
