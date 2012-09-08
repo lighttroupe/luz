@@ -58,6 +58,23 @@ class Variable
 	end
 end
 
+class Event
+	GUI_COLOR_ON = [0.0,1.0,0.5,0.7]
+	GUI_COLOR_OFF = [0.0,1.0,0.0,0.0]
+
+	def gui_render!
+		if now? == true
+			with_color(GUI_COLOR_ON) {
+				unit_square
+			}
+		else
+			with_color(GUI_COLOR_OFF) {
+				unit_square
+			}
+		end
+	end
+end
+
 class ProjectEffectEditor < ProjectEffect
 	title				"Editor"
 	description ""
