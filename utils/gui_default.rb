@@ -2,10 +2,10 @@ def create_default_gui
 	screen = GuiBox.new
 
 	screen << (actor_list=GuiList.new($engine.project.actors).set_scale(0.2).set_offset_x(-0.4).set_offset_y(0.4))
-	screen << (variables_list=GuiList.new($engine.project.variables).set_hidden(true).set_scale_x(0.12).set_scale_y(0.03).set_offset_x(0.3).set_offset_y(0.5).set_spacing(0.4))
-	screen << (variable_button = GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.23 + 0.04, :offset_y => 0.50 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
-	screen << (events_list=GuiList.new($engine.project.events).set_hidden(true).set_scale_x(0.03).set_scale_y(0.03).set_offset_x(0.4).set_offset_y(0.5).set_spacing(0.4))
-	screen << (event_button = GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.38 + 0.04, :offset_y => 0.50 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
+	screen << (variables_list=GuiList.new($engine.project.variables).set_hidden(true).set_scale_x(0.12).set_scale_y(0.03).set_offset_x(0.23).set_offset_y(0.5).set_spacing(0.4))
+	screen << (variable_button = GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.23, :offset_y => 0.50 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
+	screen << (events_list=GuiList.new($engine.project.events).set_hidden(true).set_scale_x(0.12).set_scale_y(0.03).set_offset_x(0.4).set_offset_y(0.5).set_spacing(0.4))
+	screen << (event_button = GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.40, :offset_y => 0.50 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
 	screen << (text = BitmapFont.new.set(:string => 'Luz 2.0 has text support!!', :scale_x => 0.02, :scale_y => 0.04))
 
 	# Main menu
