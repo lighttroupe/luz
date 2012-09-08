@@ -52,7 +52,9 @@ class Variable
 	def gui_render!
 		with_vertical_clip_plane_right_of(value - 0.5) {
 			with_color(GUI_COLOR) {
-				unit_square
+				unit_square {
+					@title_label ||= BitmapFont.new(:string => title, :scale_x => 0.75, :scale_y => 0.5)
+				}
 			}
 		}
 	end
@@ -60,7 +62,7 @@ end
 
 class Event
 	GUI_COLOR_ON = [0.0,1.0,0.5,0.7]
-	GUI_COLOR_OFF = [0.0,1.0,0.0,0.0]
+	GUI_COLOR_OFF = [0.0,1.0,0.5,0.0]
 
 	def gui_render!
 		if now? == true
