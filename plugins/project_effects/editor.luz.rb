@@ -50,31 +50,32 @@ class Variable
 	GUI_COLOR = [0.0,1.0,0.5,0.7]
 
 	def gui_render!
-		@title_label ||= BitmapFont.new.set(:string => title, :scale_x => 0.1, :offset_x => -0.5 + 0.08)
-
+		# Status Indicator
 		with_vertical_clip_plane_right_of(value - 0.5) {
 			with_color(GUI_COLOR) {
 				unit_square
 			}
 		}
+
+		# Label
+		@title_label ||= BitmapFont.new.set(:string => title, :scale_x => 0.1, :offset_x => -0.5 + 0.08)
 		@title_label.gui_render!
 	end
 end
 
 class Event
-	GUI_COLOR_ON = [0.0,1.0,0.5,0.7]
-	GUI_COLOR_OFF = [0.0,1.0,0.5,0.0]
+	GUI_COLOR_ON = [1.0,1.0,0.0,0.9]
+	GUI_COLOR_OFF = [1.0,1.0,0.0,0.1]
 
 	def gui_render!
-		if now? == true
-			with_color(GUI_COLOR_ON) {
-				unit_square
-			}
-		else
-			with_color(GUI_COLOR_OFF) {
-				unit_square
-			}
-		end
+		# Status Indicator
+		with_color((now?) ? GUI_COLOR_ON : GUI_COLOR_OFF) {
+			unit_square
+		}
+
+		# Label
+		@title_label ||= BitmapFont.new.set(:string => title, :scale_x => 0.1, :offset_x => -0.5 + 0.08)
+		@title_label.gui_render!
 	end
 end
 
