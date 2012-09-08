@@ -64,12 +64,12 @@ class Variable
 end
 
 class Event
-	GUI_COLOR_ON = [1.0,1.0,0.0,0.9]
+	GUI_COLOR_ON = [1.0,1.0,0.0,1.0]
 	GUI_COLOR_OFF = [1.0,1.0,0.0,0.1]
 
 	def gui_render!
 		# Status Indicator
-		with_color((now?) ? GUI_COLOR_ON : GUI_COLOR_OFF) {
+		with_color(now? ? GUI_COLOR_ON : GUI_COLOR_OFF) {
 			unit_square
 		}
 
