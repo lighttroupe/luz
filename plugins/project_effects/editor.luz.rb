@@ -50,13 +50,14 @@ class Variable
 	GUI_COLOR = [0.0,1.0,0.5,0.7]
 
 	def gui_render!
+		@title_label ||= BitmapFont.new.set(:string => title, :scale_x => 0.1, :offset_x => -0.5 + 0.08)
+
 		with_vertical_clip_plane_right_of(value - 0.5) {
 			with_color(GUI_COLOR) {
-				unit_square {
-					@title_label ||= BitmapFont.new(:string => title, :scale_x => 0.75, :scale_y => 0.5)
-				}
+				unit_square
 			}
 		}
+		@title_label.gui_render!
 	end
 end
 
