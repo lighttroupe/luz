@@ -17,8 +17,6 @@
  ###############################################################################
 
 require 'easy_accessor', 'value_animation'
-require 'gui_hover_behavior', 'gui_object', 'gui_button', 'gui_box', 'gui_list'
-require 'editor/fonts/bitmap-font'
 require 'pointer', 'pointer_mouse'
 require 'gui_default'
 

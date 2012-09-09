@@ -1,4 +1,9 @@
+require 'gui_hover_behavior', 'gui_object', 'gui_button', 'gui_box', 'gui_list', 'gui_message_bar'
+require 'editor/fonts/bitmap-font'
+
 class GuiDefault < GuiBox
+	pipe :positive_message, :message_bar
+
 	def initialize
 		super
 		create_default_gui
@@ -10,7 +15,7 @@ class GuiDefault < GuiBox
 		self << (@variable_button = GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.23, :offset_y => 0.50 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
 		self << (@events_list=GuiList.new($engine.project.events).set(:hidden => true, :scale_x => 0.12, :scale_y => 0.03, :offset_x => 0.4, :offset_y => 0.5, :spacing => 0.4))
 		self << (@event_button = GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.40, :offset_y => 0.50 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
-		self << (@text = BitmapFont.new.set(:offset_x => -0.3, :offset_y => 0.5 - 0.03, :scale_x => 0.02, :scale_y => 0.04))
+		self << (@message_bar = GuiMessageBar.new.set(:offset_x => -0.3, :offset_y => 0.5 - 0.03, :scale_x => 0.02, :scale_y => 0.04))
 
 		@variable_button.on_clicked {
 			if @variables_list.hidden?
@@ -31,43 +36,7 @@ class GuiDefault < GuiBox
 		positive_message('Welcome to Luz 2.0')
 	end
 
-	def gui_tick!
-		super
-		tick_messages!
-	end
-
 	def build_editor_for(user_object, options)
 		positive_message("Clicked on '#{user_object.title}'")
-	end
-
-	#
-	# Message bar / queue
-	#
-	def messages
-		@messages ||= []
-	end
-
-	def positive_message(message)
-		messages << message
-	end
-
-	MESSAGE_DURATION = 1.5
-
-	def tick_messages!
-		next_message! if (@message_time.nil? && !messages.empty?) || (!@message_time.nil? && ($env[:frame_time] - @message_time) > MESSAGE_DURATION)
-	end
-
-	def next_message?
-	end
-
-	def next_message!
-		message = messages.shift
-		if message
-			@text.set_string(message).animate(:opacity, 1.0, duration=0.01)
-			@message_time = $env[:frame_time]
-		else
-			@text.animate(:opacity, 0.0, duration=0.2)
-			@message_time = nil
-		end
 	end
 end
