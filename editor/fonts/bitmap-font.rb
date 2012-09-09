@@ -23,7 +23,9 @@ class BitmapFont < GuiObject
 		super
 	end
 
-	empty_method :gui_tick!
+#	def gui_tick!
+#		super
+#	end
 
 	def gui_render!
 		return unless @image and @chars
