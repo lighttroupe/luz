@@ -8,7 +8,6 @@ def create_default_gui
 	screen << (event_button = GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.40, :offset_y => 0.50 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
 	screen << (text = BitmapFont.new.set(:string => 'Luz 2.0 has text support!!', :offset_x => -0.3, :offset_y => 0.5 - 0.03, :scale_x => 0.02, :scale_y => 0.04))
 
-	@cnt ||= 0
 	variable_button.on_clicked {
 		if variables_list.hidden?
 			variables_list.set(:hidden => false, :opacity => 0.0).animate(:offset_y, 0.38, duration=0.2) { text.set_string(sprintf("here's your list!")) }.animate(:opacity, 1.0, duration=0.2)
