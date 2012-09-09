@@ -30,6 +30,7 @@ end
 
 class UserObject
 	empty_method :gui_tick!
+	SELECTION_COLOR = [1.0,1.0,1.0,0.25]
 
 	def hit_test_render!
 		with_unique_hit_test_color_for_object(self, 0) { unit_square }
@@ -38,10 +39,26 @@ class UserObject
 	def click(pointer)
 		puts "user object '#{title}' clicked"
 	end
+
+	include GuiHoverBehavior
+
+	def with_selection
+		render_selection if pointer_hovering?
+		yield
+	end
+
+	def render_selection
+		with_color(SELECTION_COLOR) {
+			with_scale(1.1, 1.5) {		# TODO: avoid need for this
+				unit_square
+			}
+		}
+	end
 end
 
 class Actor
 	def gui_render!
+		render_selection if pointer_hovering?
 		render!
 	end
 end
@@ -50,6 +67,8 @@ class Variable
 	GUI_COLOR = [0.0,1.0,0.5,0.7]
 
 	def gui_render!
+		render_selection if pointer_hovering?
+
 		# Status Indicator
 		with_vertical_clip_plane_right_of(value - 0.5) {
 			with_color(GUI_COLOR) {
@@ -68,6 +87,8 @@ class Event
 	GUI_COLOR_OFF = [1.0,1.0,0.0,0.1]
 
 	def gui_render!
+		render_selection if pointer_hovering?
+
 		# Status Indicator
 		with_color(now? ? GUI_COLOR_ON : GUI_COLOR_OFF) {
 			unit_square
