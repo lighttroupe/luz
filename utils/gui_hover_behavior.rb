@@ -16,7 +16,7 @@ module GuiHoverBehavior
 	def pointer_enter(pointer)
 		unless pointers_hovering.include?(pointer)
 			pointers_hovering << pointer
-			on_pointer_enter
+			on_pointer_enter		# TODO: should these take 'pointer' as argument?
 			on_first_pointer_enter if pointers_hovering.size == 1
 		end
 	end
