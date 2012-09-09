@@ -1,11 +1,11 @@
 class GuiMessageBar < GuiBox
-	MESSAGE_DURATION = 1.5
+	MESSAGE_DURATION = 4.0
+	MESSAGE_DURATION_FAST = 1.5
 
 	def initialize
 		super
 		self << (@text = BitmapFont.new)
 	end
-
 
 	def messages
 		@messages ||= []
@@ -20,8 +20,17 @@ class GuiMessageBar < GuiBox
 		next_message! if next_message?
 	end
 
+	def desired_duration
+		(messages.size > 0) ? MESSAGE_DURATION_FAST : MESSAGE_DURATION
+	end
+
+	def current_duration
+		(@message_time.nil?) ? 0.0 : $env[:frame_time] - @message_time
+	end
+
 	def next_message?
-		(@message_time.nil? && !messages.empty?) || (!@message_time.nil? && ($env[:frame_time] - @message_time) > MESSAGE_DURATION)
+		(@message_time.nil? && !messages.empty?) ||		# introduce a message?
+		(current_duration > desired_duration)		# move to next message?
 	end
 
 	def next_message!
