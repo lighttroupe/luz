@@ -1,4 +1,6 @@
 module GuiHoverBehavior
+	empty_method :on_pointer_enter, :on_pointer_exit, :on_first_pointer_enter, :on_last_pointer_exit
+
 	def pointers_hovering
 		@gui_pointers_hovering ||= Set.new
 	end
@@ -14,13 +16,15 @@ module GuiHoverBehavior
 	def pointer_enter(pointer)
 		unless pointers_hovering.include?(pointer)
 			pointers_hovering << pointer
-			puts "pointer enter"
+			on_pointer_enter
+			on_first_pointer_enter if pointers_hovering.size == 1
 		end
 	end
 
 	def pointer_exit(pointer)
 		if pointers_hovering.delete(pointer)
-			puts "pointer exit"
+			on_pointer_exit
+			on_last_pointer_exit if pointers_hovering.empty?
 		end
 	end
 end
