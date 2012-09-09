@@ -29,6 +29,10 @@ class GuiObject
 	end
 	alias :scale= :set_scale
 
+	def show!
+		self.hidden = false
+	end
+
 	# 
 	def gui_tick!
 		tick_animations!

@@ -37,10 +37,11 @@ class UserObject
 	end
 
 	def click(pointer)
-		puts "user object '#{title}' clicked"
+		$gui.build_editor_for(self, :pointer => pointer)
 	end
 
 	include GuiHoverBehavior
+	easy_accessor :selection_scale_x, :selection_scale_y
 
 	def with_selection
 		render_selection if pointer_hovering?
@@ -49,7 +50,7 @@ class UserObject
 
 	def render_selection
 		with_color(SELECTION_COLOR) {
-			with_scale(1.1, 1.5) {		# TODO: avoid need for this
+			with_scale(selection_scale_x || 1.0, selection_scale_y || 1.0) {		# TODO: avoid need for this
 				unit_square
 			}
 		}
@@ -114,7 +115,8 @@ class ProjectEffectEditor < ProjectEffect
 	end
 
 	def create_gui
-		@gui = create_default_gui
+		@gui = GuiDefault.new
+		$gui ||= @gui		# HACK: allows GuiObject and others to send events to the gui
 
 		# TODO: how to configure the mices?
 		@pointers = [PointerMouse.new.set_background_image($engine.load_image('images/buttons/menu.png'))]
