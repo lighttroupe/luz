@@ -19,17 +19,17 @@ class GuiDefault < GuiBox
 
 		@variable_button.on_clicked {
 			if @variables_list.hidden?
-				@variables_list.set(:hidden => false, :opacity => 0.0).animate(:offset_y, 0.38, duration=0.2) { positive_message(sprintf("here's your list!")) }.animate(:opacity, 1.0, duration=0.2)
+				@variables_list.set(:hidden => false, :opacity => 0.0).animate(:offset_y, 0.38, duration=0.2).animate(:opacity, 1.0, duration=0.2)
 			else
-				@variables_list.animate(:offset_y, 0.5, duration=0.25) { @variables_list.set_hidden(true) ; positive_message(sprintf("byebye list!")) }.animate(:opacity, 0.0, duration=0.2)
+				@variables_list.animate(:offset_y, 0.5, duration=0.25) { @variables_list.set_hidden(true) }.animate(:opacity, 0.0, duration=0.2)
 			end
 		}
 
 		@event_button.on_clicked {
 			if @events_list.hidden?
-				@events_list.set(:hidden => false, :opacity => 0.0).animate(:offset_y, 0.38, duration=0.2) { positive_message(sprintf("there are events!")) }.animate(:opacity, 1.0, duration=0.2)
+				@events_list.set(:hidden => false, :opacity => 0.0).animate(:offset_y, 0.38, duration=0.2).animate(:opacity, 1.0, duration=0.2)
 			else
-				@events_list.animate(:offset_y, 0.5, duration=0.25) { @events_list.set_hidden(true) ; positive_message(sprintf("no more events!")) }.animate(:opacity, 0.0, duration=0.2)
+				@events_list.animate(:offset_y, 0.5, duration=0.25) { @events_list.set_hidden(true) }.animate(:opacity, 0.0, duration=0.2)
 			end
 		}
 
