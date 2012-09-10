@@ -9,8 +9,12 @@ class Pointer
 	end
 
 	def tick!
-		if @hover_object && click?
-			@hover_object.click(self) if @hover_object.respond_to?(:click)
+		if @hover_object
+			@hover_object.click(self) if click? && @hover_object.respond_to?(:click)
+			@hover_object.scroll_up!(self) if scroll_up? && @hover_object.respond_to?(:scroll_up!)
+			@hover_object.scroll_down!(self) if scroll_down? && @hover_object.respond_to?(:scroll_down!)
+			@hover_object.scroll_left!(self) if scroll_left? && @hover_object.respond_to?(:scroll_left!)
+			@hover_object.scroll_right!(self) if scroll_right? && @hover_object.respond_to?(:scroll_right!)
 		end
 	end
 
