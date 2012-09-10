@@ -54,6 +54,10 @@ class GuiObject
 		}
 	end
 
+	def click(pointer)
+		@parent.click(pointer) if @parent			# Default is to pass it up the stack
+	end
+
 private
 
 	def with_positioning
