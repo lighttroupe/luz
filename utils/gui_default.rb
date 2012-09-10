@@ -35,15 +35,28 @@ class GuiDefault < GuiBox
 		}
 
 		positive_message('Welcome to Luz 2.0')
+
+		@user_object_editors = {}
 	end
 
 	def build_editor_for(user_object, options)
 		positive_message("Clicked on '#{user_object.title}'")
 		pointer = options[:pointer]
-		editor = GuiUserObjectEditor.new(user_object, options).
-			set({:offset_x => pointer.x, :offset_y => pointer.y, :scale_x => 0.0, :scale_y => 0.0}).
-			animate({:offset_x => 0.0, :offset_y => 0.0, :scale_x => 0.2, :scale_y => 0.2}, duration=0.2)
-		self << editor
+		editor = @user_object_editors[user_object]
+
+		if editor
+			bring_to_top(editor)
+		else
+			editor = GuiUserObjectEditor.new(user_object, options)
+			self << editor
+			@user_object_editors[user_object] = editor
+		end
+
+		editor.set({:offset_x => pointer.x, :offset_y => pointer.y, :scale_x => 0.0, :scale_y => 0.0})
+		editor.animate({:offset_x => 0.0, :offset_y => 0.0, :scale_x => 0.2, :scale_y => 0.2}, duration=0.2)
+
+		return editor if editor
+
 	end
 end
 
