@@ -19,7 +19,7 @@ class GuiDefault < GuiBox
 
 		@variable_button.on_clicked {
 			if @variables_list.hidden?
-				@variables_list.set(:hidden => false, :opacity => 0.0).animate(:offset_y, 0.38, duration=0.2).animate(:opacity, 1.0, duration=0.2)
+				@variables_list.set(:hidden => false, :opacity => 0.0).animate({:offset_y => 0.38, :opacity => 1.0}, duration=0.2)
 			else
 				@variables_list.animate(:offset_y, 0.5, duration=0.25) { @variables_list.set_hidden(true) }.animate(:opacity, 0.0, duration=0.2)
 			end
@@ -27,9 +27,9 @@ class GuiDefault < GuiBox
 
 		@event_button.on_clicked {
 			if @events_list.hidden?
-				@events_list.set(:hidden => false, :opacity => 0.0).animate(:offset_y, 0.38, duration=0.2).animate(:opacity, 1.0, duration=0.2)
+				@events_list.set(:hidden => false, :opacity => 0.0).animate({:offset_y => 0.38, :opacity => 1.0}, duration=0.2)
 			else
-				@events_list.animate(:offset_y, 0.5, duration=0.25) { @events_list.set_hidden(true) }.animate(:opacity, 0.0, duration=0.2)
+				@events_list.animate({:offset_y => 0.5, :opacity => 0.0}, duration=0.25) { @events_list.set_hidden(true) }
 			end
 		}
 
@@ -38,5 +38,20 @@ class GuiDefault < GuiBox
 
 	def build_editor_for(user_object, options)
 		positive_message("Clicked on '#{user_object.title}'")
+		pointer = options[:pointer]
+		p [pointer.x - 0.5, pointer.y - 0.5]
+		self << GuiUserObjectEditor.new(user_object, options).set(:offset_x => pointer.x, :offset_y => pointer.y, :scale_x => 0.0, :scale_y => 0.0)
+	end
+end
+
+class GuiUserObjectEditor < GuiBox
+	def initialize(user_object, options)
+		@user_object, @options = user_object, options
+		super([])
+		create!
+	end
+
+	def create!
+		self << GuiObject.new
 	end
 end

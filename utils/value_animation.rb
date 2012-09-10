@@ -9,8 +9,16 @@ module ValueAnimation
 		@animation_struct_stack ||= StructStack.new(Animation)
 	end
 
-	def animate(field, target_value, duration=0.5, &proc)
-		active_animations << animation_struct_stack.pop(field, send(field), target_value, $env[:frame_time], $env[:frame_time] + duration, proc)
+	def animate(field, target_value=:none, duration=0.5, &proc)
+		if field.is_a? Hash
+			duration = target_value unless target_value == :none
+			field.each { |field, target_value|
+				active_animations << animation_struct_stack.pop(field, send(field), target_value, $env[:frame_time], $env[:frame_time] + duration, proc)
+				proc = nil		# only the first one should call the proc
+			}
+		else
+			active_animations << animation_struct_stack.pop(field, send(field), target_value, $env[:frame_time], $env[:frame_time] + duration, proc)
+		end
 		self
 	end
 
