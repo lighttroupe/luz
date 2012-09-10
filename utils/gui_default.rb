@@ -3,6 +3,7 @@ require 'editor/fonts/bitmap-font'
 
 class GuiDefault < GuiBox
 	pipe :positive_message, :message_bar
+	pipe :negative_message, :message_bar
 
 	def initialize
 		super
@@ -39,8 +40,10 @@ class GuiDefault < GuiBox
 	def build_editor_for(user_object, options)
 		positive_message("Clicked on '#{user_object.title}'")
 		pointer = options[:pointer]
-		p [pointer.x - 0.5, pointer.y - 0.5]
-		self << GuiUserObjectEditor.new(user_object, options).set(:offset_x => pointer.x, :offset_y => pointer.y, :scale_x => 0.0, :scale_y => 0.0)
+		editor = GuiUserObjectEditor.new(user_object, options).
+			set({:offset_x => pointer.x, :offset_y => pointer.y, :scale_x => 0.0, :scale_y => 0.0}).
+			animate({:offset_x => 0.0, :offset_y => 0.0, :scale_x => 0.2, :scale_y => 0.2}, duration=0.2)
+		self << editor
 	end
 end
 
@@ -52,6 +55,7 @@ class GuiUserObjectEditor < GuiBox
 	end
 
 	def create!
-		self << GuiObject.new
+		self << GuiObject.new		#.set(:background_image => $engine.load_image('images/buttons/menu.png'))
+		self << BitmapFont.new.set_string(@user_object.title).set(:scale_x => 0.05, :scale_y => 0.1, :offset_x => -0.5 + 0.05, :offset_y => 0.5 - 0.05)		#.set(:background_image => $engine.load_image('images/buttons/menu.png'))
 	end
 end
