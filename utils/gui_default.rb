@@ -56,7 +56,6 @@ class GuiDefault < GuiBox
 		editor.animate({:offset_x => 0.0, :offset_y => 0.0, :scale_x => 0.2, :scale_y => 0.2}, duration=0.2)
 
 		return editor if editor
-
 	end
 end
 
