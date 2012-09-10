@@ -5,7 +5,7 @@ class GuiBeatLight < GuiObject
 	easy_accessor :beat_index
 
 	def on?
-		($env[:beat_number] % 4) == beat_index
+		($env[:beat_number] % 4) == beat_index		# or only on the one frame... && $env[:is_beat]
 	end
 
 	def gui_render!
