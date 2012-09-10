@@ -130,11 +130,13 @@ class ProjectEffectEditor < ProjectEffect
 			# Nor full-frame
 
 			#with_offscreen_buffer { |buffer|
+			#if @pointers.any? { |p| p.click? } || $env[:frame_number] % 5 == 0		# TODO: or "has moved fast"
 				with_hit_testing {				# render in special colors
 					@gui.hit_test_render!
 					hit_test_pointers
 				}
 			#}
+			#end
 			tick_pointers
 		end
 	end
