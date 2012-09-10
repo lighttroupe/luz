@@ -9,6 +9,12 @@ class GuiBox < GuiObject
 		gui_object.parent = self
 	end
 
+	def bring_to_top(object)
+		if @contents.delete(object)
+			@contents << object
+		end
+	end
+
 	#
 	# Extend GuiObject methods to pass them along to contents
 	#
