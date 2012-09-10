@@ -18,6 +18,8 @@
 
 require 'easy_accessor', 'value_animation'
 require 'pointer', 'pointer_mouse'
+
+$LOAD_PATH << './editor'
 require 'gui_default'
 
 class NilClass		# generally helpful for eg. nil instance variables thought to be holding images
