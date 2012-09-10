@@ -3,9 +3,10 @@ class GuiBeatLight < GuiObject
 	BEAT_OFF_COLOR = [0,0,0,1]
 
 	easy_accessor :beat_index
+	easy_accessor :beats_per_measure
 
 	def on?
-		($env[:beat_number] % 4) == beat_index		# or only on the one frame... && $env[:is_beat]
+		($env[:beat_number] % beats_per_measure) == beat_index		# or only on the one frame... && $env[:is_beat]
 	end
 
 	def gui_render!
@@ -16,9 +17,9 @@ class GuiBeatLight < GuiObject
 end
 
 class GuiBeatMonitor < GuiList
-	def initialize
-		super
-		4.times { |i| self << GuiBeatLight.new.set_beat_index(i) }
+	def initialize(beats_per_measure)
+		super()
+		beats_per_measure.times { |i| self << GuiBeatLight.new.set_beat_index(i).set_beats_per_measure(beats_per_measure) }
 	end
 
 	def click(pointer)
