@@ -1,4 +1,4 @@
-require 'gui_hover_behavior', 'gui_object', 'gui_button', 'gui_box', 'gui_list', 'gui_message_bar'
+require 'gui_hover_behavior', 'gui_object', 'gui_button', 'gui_box', 'gui_list', 'gui_message_bar', 'gui_beat_monitor'
 require 'editor/fonts/bitmap-font'
 
 class GuiDefault < GuiBox
@@ -17,6 +17,7 @@ class GuiDefault < GuiBox
 		self << (@events_list=GuiList.new($engine.project.events).set(:hidden => true, :scale_x => 0.12, :scale_y => 0.03, :offset_x => 0.4, :offset_y => 0.5, :spacing => 0.4))
 		self << (@event_button = GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.40, :offset_y => 0.50 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
 		self << (@message_bar = GuiMessageBar.new.set(:offset_x => -0.3, :offset_y => 0.5 - 0.03, :scale_x => 0.02, :scale_y => 0.04))
+		self << (@beat_monitor = GuiBeatMonitor.new.set(:offset_x => -0.45, :offset_y => 0.5 - 0.03, :scale_x => 0.02, :scale_y => 0.04))
 
 		@variable_button.on_clicked {
 			if @variables_list.hidden?
