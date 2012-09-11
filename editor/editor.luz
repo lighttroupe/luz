@@ -1,256 +1,4 @@
 --- 
-  :events: 
-    - !ruby/object:Event
-      effects: 
-        - !ruby/object:EventInputButtonToggle
-          conditions: !ruby/object:ChildConditions
-            enable_child_index: false
-            child_index_min: 0
-            child_index_max: 0
-            enable_event: false
-            event: 
-            event_invert: false
-            child_index_max: 0
-            child_index_min: 0
-            enable_child_index: false
-            enable_event: false
-            event: 
-            event_invert: false
-          title: Button Toggle
-          enabled: true
-          button_setting: !ruby/object:UserObjectSettingButton
-            button: Keyboard / Grave
-            name: button
-            options: &id003
-              
-              :summary: true
-            breaks_cache: 
-          clear_setting: !ruby/object:UserObjectSettingButton
-            button: Keyboard / Escape
-            name: clear
-            options: &id004
-              
-              :summary: true
-            breaks_cache: 
-      title: show editor
-      enabled: true
-    - &id050 !ruby/object:Event
-      effects: 
-        - !ruby/object:EventInputButtonPress
-          conditions: !ruby/object:ChildConditions
-            enable_child_index: false
-            child_index_min: 0
-            child_index_max: 0
-            enable_event: false
-            event: 
-            event_invert: false
-            child_index_max: 0
-            child_index_min: 0
-            enable_child_index: false
-            enable_event: false
-            event: 
-            event_invert: false
-          title: Button Press
-          enabled: true
-          button_setting: !ruby/object:UserObjectSettingButton
-            button: Keyboard / Space
-            name: button
-            options: &id005
-              
-              :summary: true
-            breaks_cache: 
-      title: beat tap!
-      enabled: true
-    - &id063 !ruby/object:Event
-      effects: 
-        - !ruby/object:EventInputButtonComboDown
-          conditions: !ruby/object:ChildConditions
-            enable_child_index: false
-            child_index_min: 0
-            child_index_max: 0
-            enable_event: false
-            event: 
-            event_invert: false
-            child_index_max: 0
-            child_index_min: 0
-            enable_child_index: false
-            enable_event: false
-            event: 
-            event_invert: false
-          title: Button Combo Down
-          enabled: true
-          button_one_setting: !ruby/object:UserObjectSettingButton
-            button: Keyboard / Right Control
-            name: button_one
-            options: &id001
-              
-              :summary: true
-            breaks_cache: 
-          button_two_setting: !ruby/object:UserObjectSettingButton
-            button: Keyboard / R
-            name: button_two
-            options: &id002
-              
-              :summary: true
-            breaks_cache: 
-        - !ruby/object:EventInputButtonComboDown
-          conditions: !ruby/object:ChildConditions
-            enable_child_index: false
-            child_index_min: 0
-            child_index_max: 0
-            enable_event: false
-            event: 
-            event_invert: false
-            child_index_max: 0
-            child_index_min: 0
-            enable_child_index: false
-            enable_event: false
-            event: 
-            event_invert: false
-          title: Button Combo Down
-          enabled: true
-          button_one_setting: !ruby/object:UserObjectSettingButton
-            button: Keyboard / Left Control
-            name: button_one
-            options: *id001
-            breaks_cache: 
-          button_two_setting: !ruby/object:UserObjectSettingButton
-            button: Keyboard / R
-            name: button_two
-            options: *id002
-            breaks_cache: 
-      title: reload set!
-      enabled: true
-    - !ruby/object:Event
-      effects: 
-        - !ruby/object:EventInputAlways
-          conditions: !ruby/object:ChildConditions
-            enable_child_index: false
-            child_index_min: 0
-            child_index_max: 0
-            enable_event: false
-            event: 
-            event_invert: false
-            child_index_max: 0
-            child_index_min: 0
-            enable_child_index: false
-            enable_event: false
-            event: 
-            event_invert: false
-          title: Always
-          enabled: true
-      title: always on
-      enabled: true
-    - !ruby/object:Event
-      effects: 
-        - !ruby/object:EventInputButtonToggle
-          conditions: !ruby/object:ChildConditions
-            enable_child_index: false
-            child_index_min: 0
-            child_index_max: 0
-            enable_event: false
-            event: 
-            event_invert: false
-            child_index_max: 0
-            child_index_min: 0
-            enable_child_index: false
-            enable_event: false
-            event: 
-            event_invert: false
-          title: Button Toggle
-          enabled: true
-          button_setting: !ruby/object:UserObjectSettingButton
-            button: Keyboard / 1
-            name: button
-            options: *id003
-            breaks_cache: 
-          clear_setting: !ruby/object:UserObjectSettingButton
-            button: 
-            name: clear
-            options: *id004
-            breaks_cache: 
-      title: toggle test 1
-      enabled: true
-    - !ruby/object:Event
-      effects: 
-        - !ruby/object:EventInputButtonToggle
-          conditions: !ruby/object:ChildConditions
-            enable_child_index: false
-            child_index_min: 0
-            child_index_max: 0
-            enable_event: false
-            event: 
-            event_invert: false
-            child_index_max: 0
-            child_index_min: 0
-            enable_child_index: false
-            enable_event: false
-            event: 
-            event_invert: false
-          title: Button Toggle
-          enabled: true
-          button_setting: !ruby/object:UserObjectSettingButton
-            button: Keyboard / 2
-            name: button
-            options: *id003
-            breaks_cache: 
-          clear_setting: !ruby/object:UserObjectSettingButton
-            button: 
-            name: clear
-            options: *id004
-            breaks_cache: 
-      title: toggle test 2
-      enabled: true
-    - &id061 !ruby/object:Event
-      effects: 
-        - !ruby/object:EventInputButtonPress
-          conditions: !ruby/object:ChildConditions
-            enable_child_index: false
-            child_index_min: 0
-            child_index_max: 0
-            enable_event: false
-            event: 
-            event_invert: false
-            child_index_max: 0
-            child_index_min: 0
-            enable_child_index: false
-            enable_event: false
-            event: 
-            event_invert: false
-          title: Button Press
-          enabled: true
-          button_setting: !ruby/object:UserObjectSettingButton
-            button: Keyboard / Equal
-            name: button
-            options: *id005
-            breaks_cache: 
-      title: next
-      enabled: true
-    - &id062 !ruby/object:Event
-      effects: 
-        - !ruby/object:EventInputButtonPress
-          conditions: !ruby/object:ChildConditions
-            enable_child_index: false
-            child_index_min: 0
-            child_index_max: 0
-            enable_event: false
-            event: 
-            event_invert: false
-            child_index_max: 0
-            child_index_min: 0
-            enable_child_index: false
-            enable_event: false
-            event: 
-            event_invert: false
-          title: Button Press
-          enabled: true
-          button_setting: !ruby/object:UserObjectSettingButton
-            button: Keyboard / Minus
-            name: button
-            options: *id005
-            breaks_cache: 
-      title: previous
-      enabled: true
   :curves: 
     - &id006 !ruby/object:Curve
       vector: 
@@ -3494,6 +3242,258 @@
       effects: []
       title: Lob
       enabled: true
+  :events: 
+    - !ruby/object:Event
+      effects: 
+        - !ruby/object:EventInputButtonToggle
+          conditions: !ruby/object:ChildConditions
+            enable_child_index: false
+            child_index_min: 0
+            child_index_max: 0
+            enable_event: false
+            event: 
+            event_invert: false
+            child_index_max: 0
+            child_index_min: 0
+            enable_child_index: false
+            enable_event: false
+            event: 
+            event_invert: false
+          title: Button Toggle
+          enabled: true
+          button_setting: !ruby/object:UserObjectSettingButton
+            button: Keyboard / Grave
+            name: button
+            options: &id003
+              
+              :summary: true
+            breaks_cache: 
+          clear_setting: !ruby/object:UserObjectSettingButton
+            button: Keyboard / Escape
+            name: clear
+            options: &id004
+              
+              :summary: true
+            breaks_cache: 
+      title: show editor
+      enabled: true
+    - &id050 !ruby/object:Event
+      effects: 
+        - !ruby/object:EventInputButtonPress
+          conditions: !ruby/object:ChildConditions
+            enable_child_index: false
+            child_index_min: 0
+            child_index_max: 0
+            enable_event: false
+            event: 
+            event_invert: false
+            child_index_max: 0
+            child_index_min: 0
+            enable_child_index: false
+            enable_event: false
+            event: 
+            event_invert: false
+          title: Button Press
+          enabled: true
+          button_setting: !ruby/object:UserObjectSettingButton
+            button: Keyboard / Space
+            name: button
+            options: &id005
+              
+              :summary: true
+            breaks_cache: 
+      title: beat tap!
+      enabled: true
+    - &id063 !ruby/object:Event
+      effects: 
+        - !ruby/object:EventInputButtonComboDown
+          conditions: !ruby/object:ChildConditions
+            enable_child_index: false
+            child_index_min: 0
+            child_index_max: 0
+            enable_event: false
+            event: 
+            event_invert: false
+            child_index_max: 0
+            child_index_min: 0
+            enable_child_index: false
+            enable_event: false
+            event: 
+            event_invert: false
+          title: Button Combo Down
+          enabled: true
+          button_one_setting: !ruby/object:UserObjectSettingButton
+            button: Keyboard / Right Control
+            name: button_one
+            options: &id001
+              
+              :summary: true
+            breaks_cache: 
+          button_two_setting: !ruby/object:UserObjectSettingButton
+            button: Keyboard / R
+            name: button_two
+            options: &id002
+              
+              :summary: true
+            breaks_cache: 
+        - !ruby/object:EventInputButtonComboDown
+          conditions: !ruby/object:ChildConditions
+            enable_child_index: false
+            child_index_min: 0
+            child_index_max: 0
+            enable_event: false
+            event: 
+            event_invert: false
+            child_index_max: 0
+            child_index_min: 0
+            enable_child_index: false
+            enable_event: false
+            event: 
+            event_invert: false
+          title: Button Combo Down
+          enabled: true
+          button_one_setting: !ruby/object:UserObjectSettingButton
+            button: Keyboard / Left Control
+            name: button_one
+            options: *id001
+            breaks_cache: 
+          button_two_setting: !ruby/object:UserObjectSettingButton
+            button: Keyboard / R
+            name: button_two
+            options: *id002
+            breaks_cache: 
+      title: reload set!
+      enabled: true
+    - !ruby/object:Event
+      effects: 
+        - !ruby/object:EventInputAlways
+          conditions: !ruby/object:ChildConditions
+            enable_child_index: false
+            child_index_min: 0
+            child_index_max: 0
+            enable_event: false
+            event: 
+            event_invert: false
+            child_index_max: 0
+            child_index_min: 0
+            enable_child_index: false
+            enable_event: false
+            event: 
+            event_invert: false
+          title: Always
+          enabled: true
+      title: always on
+      enabled: true
+    - !ruby/object:Event
+      effects: 
+        - !ruby/object:EventInputButtonToggle
+          conditions: !ruby/object:ChildConditions
+            enable_child_index: false
+            child_index_min: 0
+            child_index_max: 0
+            enable_event: false
+            event: 
+            event_invert: false
+            child_index_max: 0
+            child_index_min: 0
+            enable_child_index: false
+            enable_event: false
+            event: 
+            event_invert: false
+          title: Button Toggle
+          enabled: true
+          button_setting: !ruby/object:UserObjectSettingButton
+            button: Keyboard / 1
+            name: button
+            options: *id003
+            breaks_cache: 
+          clear_setting: !ruby/object:UserObjectSettingButton
+            button: 
+            name: clear
+            options: *id004
+            breaks_cache: 
+      title: toggle test 1
+      enabled: true
+    - !ruby/object:Event
+      effects: 
+        - !ruby/object:EventInputButtonToggle
+          conditions: !ruby/object:ChildConditions
+            enable_child_index: false
+            child_index_min: 0
+            child_index_max: 0
+            enable_event: false
+            event: 
+            event_invert: false
+            child_index_max: 0
+            child_index_min: 0
+            enable_child_index: false
+            enable_event: false
+            event: 
+            event_invert: false
+          title: Button Toggle
+          enabled: true
+          button_setting: !ruby/object:UserObjectSettingButton
+            button: Keyboard / 2
+            name: button
+            options: *id003
+            breaks_cache: 
+          clear_setting: !ruby/object:UserObjectSettingButton
+            button: 
+            name: clear
+            options: *id004
+            breaks_cache: 
+      title: toggle test 2
+      enabled: true
+    - &id061 !ruby/object:Event
+      effects: 
+        - !ruby/object:EventInputButtonPress
+          conditions: !ruby/object:ChildConditions
+            enable_child_index: false
+            child_index_min: 0
+            child_index_max: 0
+            enable_event: false
+            event: 
+            event_invert: false
+            child_index_max: 0
+            child_index_min: 0
+            enable_child_index: false
+            enable_event: false
+            event: 
+            event_invert: false
+          title: Button Press
+          enabled: true
+          button_setting: !ruby/object:UserObjectSettingButton
+            button: Keyboard / Equal
+            name: button
+            options: *id005
+            breaks_cache: 
+      title: next
+      enabled: true
+    - &id062 !ruby/object:Event
+      effects: 
+        - !ruby/object:EventInputButtonPress
+          conditions: !ruby/object:ChildConditions
+            enable_child_index: false
+            child_index_min: 0
+            child_index_max: 0
+            enable_event: false
+            event: 
+            event_invert: false
+            child_index_max: 0
+            child_index_min: 0
+            enable_child_index: false
+            enable_event: false
+            event: 
+            event_invert: false
+          title: Button Press
+          enabled: true
+          button_setting: !ruby/object:UserObjectSettingButton
+            button: Keyboard / Minus
+            name: button
+            options: *id005
+            breaks_cache: 
+      title: previous
+      enabled: true
   :actors: 
     - !ruby/object:ActorRectangle
       x: 0.0
@@ -3522,6 +3522,7 @@
             name: draw_method
             options: &id015
               
+              :summary: true
               :options: 
                 - - :average
                   - Average
@@ -3537,7 +3538,6 @@
                   - Min
                 - - :max
                   - Max
-              :summary: true
             breaks_cache: 
         - !ruby/object:ActorEffectFade
           conditions: !ruby/object:ChildConditions
@@ -3607,11 +3607,11 @@
             name: number
             options: &id016
               
+              :summary: true
               :range: !ruby/range
                 begin: 1
                 end: 100
                 excl: false
-              :summary: true
               :default: !ruby/range
                 begin: 1
                 end: 2
@@ -4062,7 +4062,8 @@
                   green: 0.0
                   red: 0.0
                 name: background_color
-                options: 
+                options: &id071
+                  
                   :only_literal: true
                   :default: 
                     - 0.0
@@ -5329,6 +5330,7 @@
             selected: :warp_horizontal
             name: method
             options: 
+              :summary: true
               :options: 
                 - - :bulge
                   - Bulge
@@ -5338,7 +5340,6 @@
                   - Warp Horizontal
                 - - :warp_vertical
                   - Warp Vertical
-              :summary: true
               :default: :warp_horizontal
             breaks_cache: 
         - !ruby/object:ActorEffectScale
@@ -5399,11 +5400,11 @@
           number_setting: !ruby/object:UserObjectSettingInteger
             name: number
             options: 
+              :summary: true
               :range: !ruby/range
                 begin: 1
                 end: 100
                 excl: false
-              :summary: true
               :default: !ruby/range
                 begin: 1
                 end: 2
@@ -6268,11 +6269,11 @@
           number_setting: !ruby/object:UserObjectSettingInteger
             name: number
             options: 
+              :summary: true
               :range: !ruby/range
                 begin: 1
                 end: 1000
                 excl: false
-              :summary: true
               :default: !ruby/range
                 begin: 1
                 end: 2
@@ -7565,8 +7566,8 @@
         breaks_cache: 
   :variables: 
     - *id052
-    - *id049
     - *id046
+    - *id049
     - *id048
     - !ruby/object:Variable
       effects: 
@@ -7632,6 +7633,88 @@
     - *id067
   :directors: 
     - *id068
-  :version: 1
   :themes: 
     - *id017
+    - !ruby/object:Theme
+      tags: 
+      effects: 
+        - !ruby/object:Style
+          title: ""
+          enabled: true
+          color_setting: !ruby/object:UserObjectSettingColor
+            color: !ruby/object:Color
+              alpha: 1.0
+              blue: 0.862775616083009
+              green: 0.0
+              red: 1.0
+            name: &id069 color
+            options: *id011
+            breaks_cache: 
+          image_setting: !ruby/object:UserObjectSettingImage
+            image_name: 
+            name: &id070 image
+            options: *id013
+            breaks_cache: 
+        - !ruby/object:Style
+          title: ""
+          enabled: true
+          color_setting: !ruby/object:UserObjectSettingColor
+            color: !ruby/object:Color
+              alpha: 1.0
+              blue: 0.0
+              green: 1.0
+              red: 0.0517280842298009
+            name: *id069
+            options: *id011
+            breaks_cache: 
+          image_setting: !ruby/object:UserObjectSettingImage
+            image_name: 
+            name: *id070
+            options: *id013
+            breaks_cache: 
+        - !ruby/object:Style
+          title: ""
+          enabled: true
+          color_setting: !ruby/object:UserObjectSettingColor
+            color: !ruby/object:Color
+              alpha: 1.0
+              blue: 1.0
+              green: 0.0321812771801328
+              red: 0.0
+            name: *id069
+            options: *id011
+            breaks_cache: 
+          image_setting: !ruby/object:UserObjectSettingImage
+            image_name: 
+            name: *id070
+            options: *id013
+            breaks_cache: 
+        - !ruby/object:Style
+          title: ""
+          enabled: true
+          color_setting: !ruby/object:UserObjectSettingColor
+            color: !ruby/object:Color
+              alpha: 1.0
+              blue: 0.0
+              green: 0.526024261844816
+              red: 1.0
+            name: *id069
+            options: *id011
+            breaks_cache: 
+          image_setting: !ruby/object:UserObjectSettingImage
+            image_name: 
+            name: *id070
+            options: *id013
+            breaks_cache: 
+      title: Flava
+      enabled: true
+      background_color_setting: !ruby/object:UserObjectSettingColor
+        color: !ruby/object:Color
+          alpha: 1.0
+          blue: 0.0
+          green: 0.0
+          red: 0.0
+        name: background_color
+        options: *id071
+        breaks_cache: 
+  :version: 1

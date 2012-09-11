@@ -64,6 +64,22 @@ class Actor
 	end
 end
 
+class Theme
+
+	def gui_render!
+		render_selection if pointer_hovering?
+
+		# Status Indicator
+		#with_color(now? ? GUI_COLOR_ON : GUI_COLOR_OFF) {
+		#	unit_square(:scale_x => 0.5)
+		#}
+
+		# Label
+		@title_label ||= BitmapFont.new.set(:string => title, :scale_x => 0.1, :offset_x => -0.5 + 0.08)
+		@title_label.gui_render!
+	end
+end
+
 class Variable
 	GUI_COLOR = [0.0,1.0,0.5,0.7]
 
@@ -92,7 +108,7 @@ class Event
 
 		# Status Indicator
 		with_color(now? ? GUI_COLOR_ON : GUI_COLOR_OFF) {
-			unit_square
+			unit_square#(:scale_x => 0.5)
 		}
 
 		# Label
