@@ -69,10 +69,11 @@ class Theme
 	def gui_render!
 		render_selection if pointer_hovering?
 
-		# Status Indicator
-		#with_color(now? ? GUI_COLOR_ON : GUI_COLOR_OFF) {
-		#	unit_square(:scale_x => 0.5)
-		#}
+		# Theme Display
+		with_color(:color => @color) {
+		#@style.color {
+			unit_square
+		}
 
 		# Label
 		@title_label ||= BitmapFont.new.set(:string => title, :scale_x => 0.1, :offset_x => -0.5 + 0.08)
@@ -108,8 +109,8 @@ class Event
 
 		# Status Indicator
 		with_color(now? ? GUI_COLOR_ON : GUI_COLOR_OFF) {
-			unit_square#(:scale_x => 0.5)
-		}
+			unit_square
+		} 
 
 		# Label
 		@title_label ||= BitmapFont.new.set(:string => title, :scale_x => 0.1, :offset_x => -0.5 + 0.08)
