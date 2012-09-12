@@ -82,7 +82,7 @@ class GuiUserObjectEditor < GuiBox
 		self << GuiObject.new		#.set(:background_image => $engine.load_image('images/buttons/menu.png'))
 		self << BitmapFont.new.set_string(@user_object.title).set(:scale_x => 0.025, :scale_y => 0.05, :offset_x => -0.5 + 0.05, :offset_y => 0.5 - 0.05)		#.set(:background_image => $engine.load_image('images/buttons/menu.png'))
 
-		@effects_list = GuiList.new(@user_object.effects).set({:scale_x => 0.40, :offset_x => -0.3, :scale_y => 0.05, :offset_y => -0.025}) if @user_object.respond_to? :effects
+		@effects_list = GuiList.new(@user_object.effects).set({:scale_x => 0.40, :offset_x => -0.3, :scale_y => 0.05, :offset_y => 0.5 - 0.025}) if @user_object.respond_to? :effects
 		self << @effects_list if @effects_list
 	end
 end
