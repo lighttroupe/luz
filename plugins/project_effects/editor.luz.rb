@@ -99,9 +99,7 @@ class Theme
 					for x in (0...num_columns)
 						with_translation(x, (num_rows - y)) {
 							break if index >= effects.size
-							with_color(effects[index].color) {
-								unit_square
-							}
+							effects[index].gui_render!
 						}
 						index += 1
 					end
