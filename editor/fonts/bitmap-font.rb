@@ -33,9 +33,19 @@ class BitmapFont < GuiObject
 		with_color([1,1,1,1]) {
 			with_pixel_combine_function(:brighten) {
 				with_positioning {
-					render_letters
+					with_aspect_ratio_fix {
+						render_letters
+					}
 				}
 			}
+		}
+	end
+
+	def with_aspect_ratio_fix
+		width = $env[:gui_scale_x]
+		height = $env[:gui_scale_y]
+		with_scale((height/2.0)/width, 1.0) {		# multiply width as necessary to maintain a ratio of 1x2   TODO: dynamic?
+			yield
 		}
 	end
 

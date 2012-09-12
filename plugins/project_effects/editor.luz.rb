@@ -31,8 +31,7 @@ end
 class ChildUserObject
 	def gui_render!
 		# Label
-		@title_label ||= BitmapFont.new.set(:string => title, :scale_x => 0.1, :offset_x => -0.5 + 0.08)
-		@title_label.gui_render!
+		gui_render_label
 	end
 end
 
@@ -81,7 +80,7 @@ class Theme
 			unit_square
 		}
 
-		# Grid of Styles
+		# grid of Styles
 		if effects.size > 8
 			num_rows = 4
 		else
@@ -119,12 +118,19 @@ class Theme
 			}
 		end
 	end
+end
 
+class UserObject
+	USER_OBJECT_TITLE_HEIGHT = 0.75
 	def gui_render_label
-		@title_label ||= BitmapFont.new.set(:string => title, :scale_x => 0.1, :offset_x => -0.5 + 0.08)
-		with_translation(0.1, 0.0) {
+		@title_label ||= BitmapFont.new.set(:string => title, :scale_y => USER_OBJECT_TITLE_HEIGHT, :offset_x => -0.5 + 0.08)
+		if pointer_hovering?
 			@title_label.gui_render!
-		}
+		else
+			with_vertical_clip_plane_right_of(0.5) {
+				@title_label.gui_render!
+			}
+		end
 	end
 end
 
@@ -195,8 +201,7 @@ class Variable
 		}
 
 		# Label
-		@title_label ||= BitmapFont.new.set(:string => title, :scale_x => 0.1, :offset_x => -0.5 + 0.08)
-		@title_label.gui_render!
+		gui_render_label
 	end
 end
 
@@ -213,8 +218,7 @@ class Event
 		} 
 
 		# Label
-		@title_label ||= BitmapFont.new.set(:string => title, :scale_x => 0.1, :offset_x => -0.5 + 0.08)
-		@title_label.gui_render!
+		gui_render_label
 	end
 end
 
