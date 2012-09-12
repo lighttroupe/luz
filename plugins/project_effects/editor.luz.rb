@@ -72,19 +72,69 @@ class Actor
 end
 
 class Theme
-
 	def gui_render!
 		render_selection if pointer_hovering?
 
 		# Theme Display
 		#with_color(:color => @color) {
 		#@style.color {
+		with_color([0,0,0,0.5]) {
 			unit_square
-		#}
+		}
 
-		# Label
+		if effects.size > 8
+			num_rows = 4
+		else
+			num_rows = 2
+		end
+		num_columns = num_rows * 2
+
+		width = 1.0 / num_columns
+		height = 1.0 / num_rows
+
+		with_scale(width, height) {
+			with_translation(-num_columns/2.0 + 0.5, -num_rows/2.0 - 0.5) {
+				index = 0
+				for y in (0...num_rows)
+					for x in (0...num_columns)
+						with_translation(x, (num_rows - y)) {
+							break if index >= effects.size
+							with_color(effects[index].color) {
+								unit_square
+							}
+						}
+						index += 1
+					end
+				end
+			}
+		}
+
+		# Label and shading effect
+		if pointer_hovering?
+			with_color([0,0,0,0.2]) {
+				unit_square
+			}
+			gui_render_label
+		else
+			with_multiplied_alpha(0.5) {
+				gui_render_label
+			}
+		end
+	end
+
+	def gui_render_label
 		@title_label ||= BitmapFont.new.set(:string => title, :scale_x => 0.1, :offset_x => -0.5 + 0.08)
-		@title_label.gui_render!
+		with_translation(0.1, 0.0) {
+			@title_label.gui_render!
+		}
+	end
+end
+
+class Style
+	def gui_render!
+		with_color(color) {
+			unit_square
+		}
 	end
 end
 
