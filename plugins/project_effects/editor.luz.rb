@@ -28,6 +28,13 @@ class NilClass		# generally helpful for eg. nil instance variables thought to be
 	end
 end
 
+class ChildUserObject
+	def gui_render!
+		# Label
+		@title_label ||= BitmapFont.new.set(:string => title, :scale_x => 0.1, :offset_x => -0.5 + 0.08)
+		@title_label.gui_render!
+	end
+end
 class UserObject
 	empty_method :gui_tick!
 	SELECTION_COLOR = [1.0,1.0,1.0,0.25]
