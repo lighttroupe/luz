@@ -144,8 +144,21 @@ class Curve
 	end
 
 	def gui_render!
-		with_color(gui_icon_color) {
-			unit_square
+		render_selection if pointer_hovering?
+
+		with_translation(-0.5, -0.5) {
+			with_color(gui_icon_color) {
+				vertices = []
+				GL.Begin(GL::TRIANGLE_STRIP)
+					GL.Vertex(0.0, 0.0)
+					100.times { |i|
+						GL.Vertex(x=(i * 1.0/100), value(x))
+						GL.Vertex(((i+1) * 1.0/100), 0.0)
+					}
+					GL.Vertex(1.0, 0.0)
+					GL.Vertex(1.0, 1.0)
+				GL.End
+			}
 		}
 	end
 end
