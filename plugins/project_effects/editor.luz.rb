@@ -130,9 +130,7 @@ end
 
 class Style
 	def gui_render!
-		with_color(color) {
-			unit_square
-		}
+		using { unit_square }
 	end
 end
 
