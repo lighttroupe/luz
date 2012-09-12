@@ -28,7 +28,7 @@ class ThemeIcon < CairoIcon
 				num_rows = 2
 			end
 			height_per_row = (height / num_rows)
-			num_per_row = (width / height_per_row)	# since we're drawing squares.
+			num_per_row = (width / height_per_row)	# height_per_row is also width per style, since we're drawing squares
 
 			# Icon's background is the theme's background color
 		  cr.set_source_rgb(*theme.background_color.cairo_color_without_alpha)
