@@ -12,15 +12,15 @@ class GuiDefault < GuiBox
 
 	def create_default_gui
 		#self << (actor_list=GuiList.new($engine.project.actors).set_scale(0.2).set_offset_x(-0.4).set_offset_y(0.4))
-		self << (@themes_list = GuiList.new($engine.project.themes).set(:hidden => true, :scale_x => 0.12, :scale_y => 0.03, :offset_x => 0.06, :offset_y => 0.5, :spacing => 0.4))
+		self << (@themes_list = GuiList.new($engine.project.themes).set(:hidden => true, :spacing_y => -1.4, :scale_x => 0.12, :scale_y => 0.03, :offset_x => 0.06, :offset_y => 0.5))
 		self << (@theme_button = GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.06, :offset_y => 0.50 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
-		self << (@variables_list = GuiList.new($engine.project.variables).set(:hidden => true, :scale_x => 0.12, :scale_y => 0.03, :offset_x => 0.23, :offset_y => 0.5, :spacing => 0.4))
+		self << (@variables_list = GuiList.new($engine.project.variables).set(:hidden => true, :spacing_y => -1.4, :scale_x => 0.12, :scale_y => 0.03, :offset_x => 0.23, :offset_y => 0.5))
 		self << (@variable_button = GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.23, :offset_y => 0.50 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
-		self << (@events_list = GuiList.new($engine.project.events).set(:hidden => true, :scale_x => 0.12, :scale_y => 0.03, :offset_x => 0.4, :offset_y => 0.5, :spacing => 0.4))
+		self << (@events_list = GuiList.new($engine.project.events).set(:hidden => true, :spacing_y => -1.4, :scale_x => 0.12, :scale_y => 0.03, :offset_x => 0.4, :offset_y => 0.5))
 		self << (@event_button = GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.40, :offset_y => 0.50 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
 
 		self << (@message_bar = GuiMessageBar.new.set(:offset_x => -0.3, :offset_y => 0.5 - 0.03, :scale_x => 0.02, :scale_y => 0.04))
-		self << (@beat_monitor = GuiBeatMonitor.new(beats_per_measure=4).set(:offset_x => -0.485, :offset_y => 0.5 - 0.03, :scale_x => 0.02, :scale_y => 0.04))
+		self << (@beat_monitor = GuiBeatMonitor.new(beats_per_measure=4).set(:offset_x => -0.485, :offset_y => 0.5 - 0.03, :scale_x => 0.02, :scale_y => 0.02, :spacing_x => 1.1, :spacing_y => 0.0))
 
 		@theme_button.on_clicked {
 			if @themes_list.hidden?
@@ -82,7 +82,7 @@ class GuiUserObjectEditor < GuiBox
 		self << GuiObject.new		#.set(:background_image => $engine.load_image('images/buttons/menu.png'))
 		self << BitmapFont.new.set_string(@user_object.title).set(:scale_x => 0.025, :scale_y => 0.05, :offset_x => -0.5 + 0.05, :offset_y => 0.5 - 0.05)		#.set(:background_image => $engine.load_image('images/buttons/menu.png'))
 
-		@effects_list = GuiList.new(@user_object.effects).set({:scale_x => 0.40, :offset_x => -0.3, :scale_y => 0.05, :offset_y => 0.5 - 0.025}) if @user_object.respond_to? :effects
+		@effects_list = GuiList.new(@user_object.effects).set({:spacing_y => -1.0, :scale_x => 0.40, :offset_x => -0.3, :scale_y => 0.05, :offset_y => 0.5 - 0.025}) if @user_object.respond_to? :effects
 		self << @effects_list if @effects_list
 	end
 end
