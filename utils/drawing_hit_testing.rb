@@ -42,12 +42,6 @@ module DrawingHitTesting
 		GL.Color(*saved)
 	end
 
-#	def with_hit_test_id(hit_test_id, user_data, object)
-#		$hit_test_options[[hit_test_id, user_data]] = object
-#		GL.Color4ub(hit_test_id, user_data, 0, 255)
-#		yield
-#	end
-
 	# returns [hit_test_id, handle_id] or [0, nil]
 	def hit_test_object_at_luz_coordinates(x, y)		# coordinates with 0-centered unit square
 		pixel_x, pixel_y = (x + 0.5) * $application.width, ((y + 0.5)) * $application.height
