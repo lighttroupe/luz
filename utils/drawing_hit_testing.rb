@@ -36,8 +36,10 @@ module DrawingHitTesting
 	def with_unique_hit_test_color_for_object(object, user_data_integer=0)
 		hit_test_id = next_hit_test_id
 		$hit_test_options[[hit_test_id, user_data_integer]] = object
+		saved = GL.GetColorArray
 		GL.Color4ub(hit_test_id, user_data_integer, 0, 255)
 		yield
+		GL.Color(*saved)
 	end
 
 #	def with_hit_test_id(hit_test_id, user_data, object)
