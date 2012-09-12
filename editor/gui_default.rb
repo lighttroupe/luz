@@ -12,9 +12,9 @@ class GuiDefault < GuiBox
 
 	def create_default_gui
 		#self << (actor_list=GuiList.new($engine.project.actors).set_scale(0.2).set_offset_x(-0.4).set_offset_y(0.4))
-		self << (@variables_list=GuiList.new($engine.project.variables).set(:hidden => true, :scale_x => 0.12, :scale_y => 0.03, :offset_x => 0.23, :offset_y => 0.5, :spacing => 0.4))
+		self << (@variables_list = GuiList.new($engine.project.variables).set(:hidden => true, :scale_x => 0.12, :scale_y => 0.03, :offset_x => 0.23, :offset_y => 0.5, :spacing => 0.4))
 		self << (@variable_button = GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.23, :offset_y => 0.50 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
-		self << (@events_list=GuiList.new($engine.project.events).set(:hidden => true, :scale_x => 0.12, :scale_y => 0.03, :offset_x => 0.4, :offset_y => 0.5, :spacing => 0.4))
+		self << (@events_list = GuiList.new($engine.project.events).set(:hidden => true, :scale_x => 0.12, :scale_y => 0.03, :offset_x => 0.4, :offset_y => 0.5, :spacing => 0.4))
 		self << (@event_button = GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.40, :offset_y => 0.50 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
 		self << (@message_bar = GuiMessageBar.new.set(:offset_x => -0.3, :offset_y => 0.5 - 0.03, :scale_x => 0.02, :scale_y => 0.04))
 		self << (@beat_monitor = GuiBeatMonitor.new(beats_per_measure=4).set(:offset_x => -0.485, :offset_y => 0.5 - 0.03, :scale_x => 0.02, :scale_y => 0.04))
@@ -41,7 +41,7 @@ class GuiDefault < GuiBox
 	end
 
 	def build_editor_for(user_object, options)
-		positive_message("Clicked on '#{user_object.title}'")
+		#positive_message("Clicked on '#{user_object.title}'")
 		pointer = options[:pointer]
 		editor = @user_object_editors[user_object]
 
@@ -54,7 +54,7 @@ class GuiDefault < GuiBox
 		end
 
 		editor.set({:offset_x => pointer.x, :offset_y => pointer.y, :scale_x => 0.0, :scale_y => 0.0})
-		editor.animate({:offset_x => 0.0, :offset_y => 0.0, :scale_x => 0.2, :scale_y => 0.2}, duration=0.2)
+		editor.animate({:offset_x => -0.15, :offset_y => 0.0, :scale_x => 0.5, :scale_y => 0.8}, duration=0.2)
 
 		return editor if editor
 	end
@@ -69,6 +69,9 @@ class GuiUserObjectEditor < GuiBox
 
 	def create!
 		self << GuiObject.new		#.set(:background_image => $engine.load_image('images/buttons/menu.png'))
-		self << BitmapFont.new.set_string(@user_object.title).set(:scale_x => 0.05, :scale_y => 0.1, :offset_x => -0.5 + 0.05, :offset_y => 0.5 - 0.05)		#.set(:background_image => $engine.load_image('images/buttons/menu.png'))
+		self << BitmapFont.new.set_string(@user_object.title).set(:scale_x => 0.025, :scale_y => 0.05, :offset_x => -0.5 + 0.05, :offset_y => 0.5 - 0.05)		#.set(:background_image => $engine.load_image('images/buttons/menu.png'))
+
+		@effects_list = GuiList.new(@user_object.effects).set({:scale_x => 0.40, :offset_x => -0.3, :scale_y => 0.05, :offset_y => -0.025}) if @user_object.respond_to? :effects
+		self << @effects_list if @effects_list
 	end
 end
