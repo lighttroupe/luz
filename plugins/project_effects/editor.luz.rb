@@ -76,13 +76,12 @@ class Theme
 	def gui_render!
 		render_selection if pointer_hovering?
 
-		# Theme Display
-		#with_color(:color => @color) {
-		#@style.color {
+		# Background
 		with_color([0,0,0,0.5]) {
 			unit_square
 		}
 
+		# Grid of Styles
 		if effects.size > 8
 			num_rows = 4
 		else
@@ -153,7 +152,11 @@ class Curve
 	POINTS_IN_ICON = 100
 
 	def gui_render!
-		render_selection if pointer_hovering?
+		if pointer_hovering?
+			render_selection
+		else
+			with_color([0,0,0,0.5]) { unit_square }
+		end
 
 		with_translation(-0.5, -0.5) {
 			with_color(gui_icon_color) {
