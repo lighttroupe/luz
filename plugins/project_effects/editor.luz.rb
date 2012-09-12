@@ -128,6 +128,28 @@ class Theme
 	end
 end
 
+class Curve
+	def gui_icon_color
+		if up?					# lower left to upper right (/)
+			[0.35, 0.75, 0.25, 1.0]
+		elsif down?			# upper left to lower right (\)
+			[0.80, 0.0, 0.0, 1.0]
+		elsif middle?		# starts and ends on 0.5 (~)
+			[0.95, 0.50, 0.0, 1.0]
+		elsif looping?	# starts and ends on same value
+			[0.8, 0.8, 0.0, 1.0]
+		else									# anything else
+			[0.5, 0.5, 0.8, 1.0]
+		end
+	end
+
+	def gui_render!
+		with_color(gui_icon_color) {
+			unit_square
+		}
+	end
+end
+
 class Style
 	def gui_render!
 		using { unit_square }
