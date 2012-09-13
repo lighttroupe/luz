@@ -28,16 +28,22 @@ class NilClass		# generally helpful for eg. nil instance variables thought to be
 	end
 end
 
-class ChildUserObject
-	def gui_render!
-		# Label
-		gui_render_label
-	end
-end
-
 class UserObject
 	empty_method :gui_tick!
 	SELECTION_COLOR = [1.0,1.0,1.0,0.25]
+	BACKGROUND_COLOR = [0.0,0.0,0.0,0.5]
+
+	def gui_render!
+		# Label
+		gui_render_background
+		gui_render_label
+	end
+
+	def gui_render_background
+		with_color(BACKGROUND_COLOR) {
+			unit_square
+		}
+	end
 
 	def hit_test_render!
 		with_unique_hit_test_color_for_object(self, 0) { unit_square }
@@ -76,9 +82,7 @@ class Theme
 		render_selection if pointer_hovering?
 
 		# Background
-		with_color([0,0,0,0.5]) {
-			unit_square
-		}
+		gui_render_background
 
 		# grid of Styles
 		if effects.size > 8
@@ -108,9 +112,7 @@ class Theme
 
 		# Label and shading effect
 		if pointer_hovering?
-			with_color([0,0,0,0.2]) {
-				unit_square
-			}
+			gui_render_background
 			gui_render_label
 		else
 			with_multiplied_alpha(0.5) {
@@ -161,7 +163,7 @@ class Curve
 		if pointer_hovering?
 			render_selection
 		else
-			with_color([0,0,0,0.5]) { unit_square }
+			gui_render_background
 		end
 
 		with_translation(-0.5, -0.5) {
