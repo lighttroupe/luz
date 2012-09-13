@@ -1,10 +1,10 @@
 class Pointer
 	easy_accessor :number, :background_image, :color, :size
-	DEFAULT_COLOR = [1,1,1]
+	DEFAULT_COLOR = [1,1,1,0.7]
 
 	def initialize
 		@number = 1
-		@size = 0.03
+		@size = 0.08
 		@color = DEFAULT_COLOR
 	end
 
