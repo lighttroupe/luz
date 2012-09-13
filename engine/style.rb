@@ -50,6 +50,14 @@ class Style < UserObject
 		}
 	end
 
+	def using_listsafe
+		image.using {
+			with_color_listsafe(color_setting.color) {		# TODO: seems to be a caching issue with using 'color' directly?
+				yield
+			}
+		}
+	end
+
 	def using_amount(amount)
 		return yield if amount == 0.0
 		# note: currently ignores image

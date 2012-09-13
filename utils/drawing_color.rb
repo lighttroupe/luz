@@ -34,6 +34,14 @@ module DrawingColor
 	end
 	#conditional :with_color
 
+	def with_color_listsafe(color)
+		GL.PushAttrib(GL_CURRENT_BIT)
+		c = color.to_a
+		GL.Color4f(c[0], c[1], c[2], c[3] || 1.0)		# NOTE: doesn't set alpha-- instead multiplies it
+		yield
+		GL.PopAttrib
+	end
+
 	def with_color_and_alpha(color)
 		saved = GL.GetColorArray
 		GL.Color(*color.to_a)
