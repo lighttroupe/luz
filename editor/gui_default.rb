@@ -21,7 +21,7 @@ class GuiDefault < GuiBox
 		self << (@events_list = GuiList.new($engine.project.events).set(:hidden => true, :spacing_y => -1.2, :scale_x => 0.12, :scale_y => 0.045, :offset_x => 0.4, :offset_y => 0.5))
 		self << (@event_button = GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.40, :offset_y => 0.50 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
 
-		self << (@message_bar = GuiMessageBar.new.set(:offset_x => -0.3, :offset_y => 0.5 - 0.03, :scale_x => 0.02, :scale_y => 0.04))
+		self << (@message_bar = GuiMessageBar.new.set(:offset_x => -0.38, :offset_y => 0.5 - 0.03, :scale_x => 0.02, :scale_y => 0.04))
 		self << (@beat_monitor = GuiBeatMonitor.new(beats_per_measure=4).set(:offset_x => -0.485, :offset_y => 0.5 - 0.03, :scale_x => 0.02, :scale_y => 0.02, :spacing_x => 1.1, :spacing_y => 0.0))
 
 		@curve_button.on_clicked {
@@ -89,7 +89,8 @@ class GuiDefault < GuiBox
 
 		# ...reveal just this one.
 		editor.set({:offset_x => pointer.x, :offset_y => pointer.y, :scale_x => 0.0, :scale_y => 0.0, :opacity => 0.0, :hidden => false})
-		editor.animate({:offset_x => -0.15, :offset_y => 0.0, :scale_x => 0.5, :scale_y => 0.8, :opacity => 1.0}, duration=0.2)
+		final_options = {:offset_x => -0.15, :offset_y => 0.0, :scale_x => 0.5, :scale_y => 0.8, :opacity => 1.0}
+		editor.animate(final_options, duration=0.2)
 
 		return editor if editor
 	end
