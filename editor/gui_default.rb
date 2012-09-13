@@ -68,14 +68,20 @@ class GuiDefault < GuiBox
 
 		if editor
 			bring_to_top(editor)
+
+			# Reveal animation
+			opacity = editor.opacity
+			editor.opacity *= 0.9
+			editor.animate(:opacity, opacity, 0.1)
 		else
 			editor = GuiUserObjectEditor.new(user_object, options)
 			self << editor
 			@user_object_editors[user_object] = editor
-		end
 
-		editor.set({:offset_x => pointer.x, :offset_y => pointer.y, :scale_x => 0.0, :scale_y => 0.0})
-		editor.animate({:offset_x => -0.15, :offset_y => 0.0, :scale_x => 0.5, :scale_y => 0.8}, duration=0.2)
+			# Reveal animation
+			editor.set({:offset_x => pointer.x, :offset_y => pointer.y, :scale_x => 0.0, :scale_y => 0.0, :opacity => 0.0})
+			editor.animate({:offset_x => -0.15, :offset_y => 0.0, :scale_x => 0.5, :scale_y => 0.8, :opacity => 1.0}, duration=0.2)
+		end
 
 		return editor if editor
 	end
@@ -92,7 +98,7 @@ class GuiUserObjectEditor < GuiBox
 		self << GuiObject.new		#.set(:background_image => $engine.load_image('images/buttons/menu.png'))
 		self << BitmapFont.new.set_string(@user_object.title).set(:scale_x => 0.025, :scale_y => 0.05, :offset_x => -0.5 + 0.05, :offset_y => 0.5 - 0.05)		#.set(:background_image => $engine.load_image('images/buttons/menu.png'))
 
-		@effects_list = GuiList.new(@user_object.effects).set({:spacing_y => -1.0, :scale_x => 0.40, :offset_x => -0.3, :scale_y => 0.05, :offset_y => 0.5 - 0.025}) if @user_object.respond_to? :effects
+		@effects_list = GuiList.new(@user_object.effects).set({:spacing_y => -1.0, :scale_x => 0.30, :offset_x => -0.5+(0.30/2), :scale_y => 0.05, :offset_y => 0.5 - 0.025}) if @user_object.respond_to? :effects
 		self << @effects_list if @effects_list
 	end
 end
