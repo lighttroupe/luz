@@ -33,6 +33,13 @@ class UserObject
 	SELECTION_COLOR = [1.0,1.0,1.0,0.25]
 	BACKGROUND_COLOR = [0.0,0.0,0.0,0.5]
 
+	def gui_build_editor(container)
+		if respond_to? :effects
+			@gui_effects_list = GuiList.new(effects).set({:spacing_y => -1.0, :scale_x => 0.30, :scale_y => 0.05, :offset_x => -0.5+(0.30/2), :offset_y => 0.5 - 0.1})
+			container << @gui_effects_list
+		end
+	end
+
 	def gui_render!
 		# Label
 		gui_render_background
@@ -217,7 +224,7 @@ class Event
 		# Status Indicator
 		with_color(now? ? GUI_COLOR_ON : GUI_COLOR_OFF) {
 			unit_square
-		} 
+		}
 
 		# Label
 		gui_render_label
