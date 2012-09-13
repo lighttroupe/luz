@@ -95,10 +95,10 @@ class GuiUserObjectEditor < GuiBox
 	end
 
 	def create!
-		self << GuiObject.new		#.set(:background_image => $engine.load_image('images/buttons/menu.png'))
-		self << BitmapFont.new.set_string(@user_object.title).set(:scale_x => 0.025, :scale_y => 0.05, :offset_x => -0.5 + 0.05, :offset_y => 0.5 - 0.05)		#.set(:background_image => $engine.load_image('images/buttons/menu.png'))
+		self << GuiObject.new.set(:color => [0,0,0,0.5])		#.set(:background_image => $engine.load_image('images/buttons/menu.png'))
+		self << BitmapFont.new.set_string(@user_object.title).set(:scale_x => 0.025, :scale_y => 0.05, :offset_x => -0.5 + 0.025, :offset_y => 0.5 - 0.025)		#.set(:background_image => $engine.load_image('images/buttons/menu.png'))
 
-		@effects_list = GuiList.new(@user_object.effects).set({:spacing_y => -1.0, :scale_x => 0.30, :offset_x => -0.5+(0.30/2), :scale_y => 0.05, :offset_y => 0.5 - 0.025}) if @user_object.respond_to? :effects
+		@effects_list = GuiList.new(@user_object.effects).set({:spacing_y => -1.0, :scale_x => 0.30, :scale_y => 0.05, :offset_x => -0.5+(0.30/2), :offset_y => 0.5 - 0.1}) if @user_object.respond_to? :effects
 		self << @effects_list if @effects_list
 	end
 end

@@ -7,7 +7,7 @@ class GuiObject
 	include Drawing
 	include Engine::MethodsForUserObject
 
-	easy_accessor :parent, :offset_x, :offset_y, :scale_x, :scale_y, :opacity
+	easy_accessor :parent, :offset_x, :offset_y, :scale_x, :scale_y, :opacity, :color
 	boolean_accessor :hidden
 
 	def initialize
@@ -51,7 +51,9 @@ class GuiObject
 	def gui_render!
 		return if hidden?
 		with_positioning {
-			unit_square
+			with_color(color) {
+				unit_square
+			}
 		}
 	end
 
