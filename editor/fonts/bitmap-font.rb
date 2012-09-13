@@ -30,10 +30,10 @@ class BitmapFont < GuiObject
 	def gui_render!
 		return unless @image and @chars
 
-		with_color([1,1,1,1]) {
-			with_pixel_combine_function(:brighten) {
-				with_positioning {
-					with_aspect_ratio_fix {
+		with_pixel_combine_function(:brighten) {
+			with_positioning {
+				with_aspect_ratio_fix {
+					@gui_render_list = GL.RenderCached(@gui_render_list) {
 						render_letters
 					}
 				}

@@ -105,28 +105,30 @@ class Theme
 	end
 
 	def gui_render_styles
-		if effects.size > 8
-			num_rows = 4
-		else
-			num_rows = 2
-		end
-		num_columns = num_rows * 2
+		@gui_render_styles_list = GL.RenderCached(@gui_render_styles_list) {
+			if effects.size > 8
+				num_rows = 4
+			else
+				num_rows = 2
+			end
+			num_columns = num_rows * 2
 
-		width = 1.0 / num_columns
-		height = 1.0 / num_rows
+			width = 1.0 / num_columns
+			height = 1.0 / num_rows
 
-		with_scale(width, height) {
-			with_translation(-num_columns/2.0 + 0.5, -num_rows/2.0 - 0.5) {
-				index = 0
-				for y in (0...num_rows)
-					for x in (0...num_columns)
-						with_translation(x, (num_rows - y)) {
-							break if index >= effects.size
-							effects[index].gui_render!
-						}
-						index += 1
+			with_scale(width, height) {
+				with_translation(-num_columns/2.0 + 0.5, -num_rows/2.0 - 0.5) {
+					index = 0
+					for y in (0...num_rows)
+						for x in (0...num_columns)
+							with_translation(x, (num_rows - y)) {
+								break if index >= effects.size
+								effects[index].gui_render!
+							}
+							index += 1
+						end
 					end
-				end
+				}
 			}
 		}
 	end
@@ -176,18 +178,20 @@ class Curve
 			gui_render_background
 		end
 
-		with_translation(-0.5, -0.5) {
-			with_color(gui_icon_color) {
-				vertices = []
-				GL.Begin(GL::TRIANGLE_STRIP)
-					GL.Vertex(0.0, 0.0)
-					POINTS_IN_ICON.times { |i|
-						GL.Vertex(x=(i * 1.0/POINTS_IN_ICON), value(x))
-						GL.Vertex(((i+1) * 1.0/POINTS_IN_ICON), 0.0)
-					}
-					GL.Vertex(1.0, value(1.0))
-					GL.Vertex(1.0, 0.0)
-				GL.End
+		@gui_render_list = GL.RenderCached(@gui_render_list) {
+			with_color_listsafe(gui_icon_color) {
+				with_translation(-0.5, -0.5) {
+					vertices = []
+					GL.Begin(GL::TRIANGLE_STRIP)
+						GL.Vertex(0.0, 0.0)
+						POINTS_IN_ICON.times { |i|
+							GL.Vertex(x=(i * 1.0/POINTS_IN_ICON), value(x))
+							GL.Vertex(((i+1) * 1.0/POINTS_IN_ICON), 0.0)
+						}
+						GL.Vertex(1.0, value(1.0))
+						GL.Vertex(1.0, 0.0)
+					GL.End
+				}
 			}
 		}
 	end
@@ -195,7 +199,7 @@ end
 
 class Style
 	def gui_render!
-		using { unit_square }
+		using_listsafe { unit_square }
 	end
 end
 
@@ -225,7 +229,7 @@ class Event
 		render_selection if pointer_hovering?
 
 		# Status Indicator
-		with_color(now? ? GUI_COLOR_ON : GUI_COLOR_OFF) {
+		with_color_listsafe(now? ? GUI_COLOR_ON : GUI_COLOR_OFF) {
 			unit_square
 		}
 
