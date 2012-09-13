@@ -9,6 +9,11 @@ class GuiBox < GuiObject
 		gui_object.parent = self
 	end
 
+	def prepend(gui_object)
+		@contents.unshift(gui_object)
+		gui_object.parent = self
+	end
+
 	def bring_to_top(object)
 		if @contents.delete(object)
 			@contents << object
