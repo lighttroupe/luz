@@ -91,7 +91,20 @@ class Theme
 		# Background
 		gui_render_background
 
-		# grid of Styles
+		gui_render_styles
+
+		# Label and shading effect
+		if pointer_hovering?
+			gui_render_background
+			gui_render_label
+		else
+			with_multiplied_alpha(0.5) {
+				gui_render_label
+			}
+		end
+	end
+
+	def gui_render_styles
 		if effects.size > 8
 			num_rows = 4
 		else
@@ -116,16 +129,6 @@ class Theme
 				end
 			}
 		}
-
-		# Label and shading effect
-		if pointer_hovering?
-			gui_render_background
-			gui_render_label
-		else
-			with_multiplied_alpha(0.5) {
-				gui_render_label
-			}
-		end
 	end
 end
 
@@ -182,8 +185,8 @@ class Curve
 						GL.Vertex(x=(i * 1.0/POINTS_IN_ICON), value(x))
 						GL.Vertex(((i+1) * 1.0/POINTS_IN_ICON), 0.0)
 					}
+					GL.Vertex(1.0, value(1.0))
 					GL.Vertex(1.0, 0.0)
-					GL.Vertex(1.0, 1.0)
 				GL.End
 			}
 		}
