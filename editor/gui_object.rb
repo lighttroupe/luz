@@ -68,7 +68,7 @@ private
 			# Record the scaling we do, so it's possible to undo it when proper aspect ratio is needed (ie text)
 			with_env(:gui_scale_x, ($env[:gui_scale_x] || 1.0) * (@scale_x || 1.0)) {
 				with_env(:gui_scale_y, ($env[:gui_scale_y] || 1.0) * (@scale_y || 1.0)) {
-					with_scale(@scale_x, @scale_y) {
+					with_scale(@scale_x || 1.0, @scale_y || 1.0) {
 						with_multiplied_alpha(@opacity || 1.0) {
 							yield
 						}

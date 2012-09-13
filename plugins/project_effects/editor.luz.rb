@@ -148,12 +148,34 @@ class UserObject
 	end
 end
 
+# HACK to render an object without reparenting it
+class GuiObjectRenderer < GuiObject
+	def initialize(object)
+		@object = object
+	end
+
+	def gui_render!
+		#with_positioning {
+			@object.gui_render!
+		#}
+	end
+
+	def gui_tick!
+		@object.gui_tick!
+	end
+end
+
 class Curve
 	UP_COLOR = [0.35, 0.75, 0.25, 1.0]
 	DOWN_COLOR = [0.80, 0.0, 0.0, 1.0]
 	MIDDLE_COLOR = [0.95, 0.50, 0.0, 1.0]
 	LOOPING_COLOR = [0.8, 0.8, 0.0, 1.0]
 	MISC_COLOR = [0.5, 0.5, 0.8, 1.0]
+
+	def gui_build_editor(container)
+		box = GuiObjectRenderer.new(self)
+		container.prepend(box)
+	end
 
 	def gui_icon_color
 		if up?					# lower left to upper right (/)

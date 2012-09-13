@@ -65,11 +65,16 @@ class GuiDefault < GuiBox
 		pointer = options[:pointer]
 		editor = @user_object_editors[user_object]
 
-		@user_object_editors.values.each { |e|
-			e.set({:opacity => 0.0})	#, duration=0.4)
-		}
 		if editor
-			bring_to_top(editor)
+			if editor.hidden?
+				bring_to_top(editor)
+			else
+				# was visible...
+				editor.animate({:offset_x => pointer.x, :offset_y => pointer.y, :scale_x => 0.0, :scale_y => 0.0, :opacity => 0.5}, duration=0.2) {
+					editor.hidden!
+				}
+				return
+			end
 		else
 			editor = GuiUserObjectEditor.new(user_object, options)
 			self << editor
@@ -77,8 +82,13 @@ class GuiDefault < GuiBox
 			@user_object_editors[user_object] = editor
 		end
 
-		# Reveal animation
-		editor.set({:offset_x => pointer.x, :offset_y => pointer.y, :scale_x => 0.0, :scale_y => 0.0, :opacity => 0.0})
+		# Hide everything...
+		@user_object_editors.values.each { |e|
+			e.set({:opacity => 0.0, :hidden => true})	#, duration=0.4)
+		}
+
+		# ...reveal just this one.
+		editor.set({:offset_x => pointer.x, :offset_y => pointer.y, :scale_x => 0.0, :scale_y => 0.0, :opacity => 0.0, :hidden => false})
 		editor.animate({:offset_x => -0.15, :offset_y => 0.0, :scale_x => 0.5, :scale_y => 0.8, :opacity => 1.0}, duration=0.2)
 
 		return editor if editor
