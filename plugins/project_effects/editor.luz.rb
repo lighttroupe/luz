@@ -98,9 +98,9 @@ class Theme
 			gui_render_background
 			gui_render_label
 		else
-			with_multiplied_alpha(0.5) {
-				gui_render_label
-			}
+#			with_multiplied_alpha(0.5) {
+#				gui_render_label
+#			}
 		end
 	end
 
@@ -123,7 +123,9 @@ class Theme
 						for x in (0...num_columns)
 							with_translation(x, (num_rows - y)) {
 								break if index >= effects.size
-								effects[index].gui_render!
+								with_scale(0.85) {
+									effects[index].gui_render!
+								}
 							}
 							index += 1
 						end
@@ -216,6 +218,11 @@ class Curve
 				}
 			}
 		}
+
+		if pointer_hovering?
+			gui_render_background
+			gui_render_label
+		end
 	end
 end
 
