@@ -62,26 +62,24 @@ class GuiDefault < GuiBox
 	end
 
 	def build_editor_for(user_object, options)
-		#positive_message("Clicked on '#{user_object.title}'")
 		pointer = options[:pointer]
 		editor = @user_object_editors[user_object]
 
+		@user_object_editors.values.each { |e|
+			e.set({:opacity => 0.0})	#, duration=0.4)
+		}
 		if editor
 			bring_to_top(editor)
-
-			# Reveal animation
-			opacity = editor.opacity
-			editor.opacity *= 0.9
-			editor.animate(:opacity, opacity, 0.1)
 		else
 			editor = GuiUserObjectEditor.new(user_object, options)
 			self << editor
-			@user_object_editors[user_object] = editor
 
-			# Reveal animation
-			editor.set({:offset_x => pointer.x, :offset_y => pointer.y, :scale_x => 0.0, :scale_y => 0.0, :opacity => 0.0})
-			editor.animate({:offset_x => -0.15, :offset_y => 0.0, :scale_x => 0.5, :scale_y => 0.8, :opacity => 1.0}, duration=0.2)
+			@user_object_editors[user_object] = editor
 		end
+
+		# Reveal animation
+		editor.set({:offset_x => pointer.x, :offset_y => pointer.y, :scale_x => 0.0, :scale_y => 0.0, :opacity => 0.0})
+		editor.animate({:offset_x => -0.15, :offset_y => 0.0, :scale_x => 0.5, :scale_y => 0.8, :opacity => 1.0}, duration=0.2)
 
 		return editor if editor
 	end
