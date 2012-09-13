@@ -200,8 +200,8 @@ class Curve
 			gui_render_background
 		end
 
-		@gui_render_list = GL.RenderCached(@gui_render_list) {
-			with_color_listsafe(gui_icon_color) {
+		with_color(gui_icon_color) {
+			@gui_render_list = GL.RenderCached(@gui_render_list) {
 				with_translation(-0.5, -0.5) {
 					vertices = []
 					GL.Begin(GL::TRIANGLE_STRIP)
@@ -253,7 +253,7 @@ class Event
 		# Status Indicator
 		with_translation(-0.5 + 0.1, 0.0) {
 			with_scale(0.1, 0.35) {
-				with_color_listsafe(now? ? GUI_COLOR_ON : GUI_COLOR_OFF) {
+				with_color(now? ? GUI_COLOR_ON : GUI_COLOR_OFF) {
 					unit_square
 				}
 			}
