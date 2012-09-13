@@ -242,7 +242,7 @@ class ProjectEffectEditor < ProjectEffect
 		$gui ||= @gui		# HACK: allows GuiObject and others to send events to the gui
 
 		# TODO: how to configure the mices?
-		@pointers = [PointerMouse.new.set_background_image($engine.load_image('images/buttons/menu.png'))]
+		@pointers = [PointerMouse.new.set_background_image($engine.load_image('images/pointer.png'))]
 	end
 
 	def tick
