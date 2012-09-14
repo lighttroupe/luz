@@ -12,13 +12,13 @@ class GuiDefault < GuiBox
 
 	def create_default_gui
 		#self << (actor_list=GuiList.new($engine.project.actors).set_scale(0.2).set_offset_x(-0.4).set_offset_y(0.4))
-		self << (@curves_list = GuiList.new($engine.project.curves).set(:hidden => true, :spacing_y => -1.2, :scale_x => 0.07, :scale_y => 0.04, :offset_x => -0.11, :offset_y => 0.5))
+		self << (@curves_list = GuiList.new($engine.project.curves).set(:scale_x => 0.07, :scale_y => 0.04, :offset_x => -0.11, :offset_y => 0.5, :hidden => true, :spacing_y => -1.2))
 		self << (@curve_button = GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.08, :offset_x => -0.11, :offset_y => 0.50 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
-		self << (@themes_list = GuiList.new($engine.project.themes).set(:hidden => true, :spacing_y => -1.2, :scale_x => 0.09, :scale_y => 0.045, :offset_x => 0.06, :offset_y => 0.5))
+		self << (@themes_list = GuiList.new($engine.project.themes).set(:scale_x => 0.09, :scale_y => 0.045, :offset_x => 0.06, :offset_y => 0.5, :hidden => true, :spacing_y => -1.2))
 		self << (@theme_button = GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.06, :offset_y => 0.50 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
-		self << (@variables_list = GuiList.new($engine.project.variables).set(:hidden => true, :spacing_y => -1.2, :scale_x => 0.12, :scale_y => 0.045, :offset_x => 0.23, :offset_y => 0.5))
+		self << (@variables_list = GuiList.new($engine.project.variables).set(:scale_x => 0.12, :scale_y => 0.045, :offset_x => 0.23, :offset_y => 0.5, :hidden => true, :spacing_y => -1.2))
 		self << (@variable_button = GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.23, :offset_y => 0.50 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
-		self << (@events_list = GuiList.new($engine.project.events).set(:hidden => true, :spacing_y => -1.2, :scale_x => 0.12, :scale_y => 0.045, :offset_x => 0.4, :offset_y => 0.5))
+		self << (@events_list = GuiList.new($engine.project.events).set(:scale_x => 0.12, :scale_y => 0.045, :offset_x => 0.4, :offset_y => 0.5, :hidden => true, :spacing_y => -1.2))
 		self << (@event_button = GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.40, :offset_y => 0.50 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
 
 		self << (@message_bar = GuiMessageBar.new.set(:offset_x => -0.38, :offset_y => 0.5 - 0.03, :scale_x => 0.02, :scale_y => 0.04))
