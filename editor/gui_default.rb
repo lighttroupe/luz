@@ -1,6 +1,8 @@
 require 'gui_hover_behavior', 'gui_object', 'gui_button', 'gui_box', 'gui_list', 'gui_message_bar', 'gui_beat_monitor'
 require 'editor/fonts/bitmap-font'
 
+require 'gui_addons'
+
 class GuiDefault < GuiBox
 	pipe :positive_message, :message_bar
 	pipe :negative_message, :message_bar
@@ -18,7 +20,7 @@ class GuiDefault < GuiBox
 		self << (@theme_button = GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.06, :offset_y => 0.50 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
 		self << (@variables_list = GuiList.new($engine.project.variables).set(:scale_x => 0.12, :scale_y => 0.045, :offset_x => 0.23, :offset_y => 0.5, :hidden => true, :spacing_y => -1.2))
 		self << (@variable_button = GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.23, :offset_y => 0.50 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
-		self << (@events_list = GuiList.new($engine.project.events).set(:scale_x => 0.12, :scale_y => 0.045, :offset_x => 0.4, :offset_y => 0.5, :hidden => true, :spacing_y => -1.2))
+		self << (@events_list = GuiList.new($engine.project.events).set(:scale_x => 0.12, :scale_y => 0.045, :offset_x => 0.40, :offset_y => 0.5, :hidden => true, :spacing_y => -1.2))
 		self << (@event_button = GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.40, :offset_y => 0.50 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
 
 		self << (@message_bar = GuiMessageBar.new.set(:offset_x => -0.38, :offset_y => 0.5 - 0.03, :scale_x => 0.02, :scale_y => 0.04))
