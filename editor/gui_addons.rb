@@ -168,10 +168,10 @@ class Curve
 	MIDDLE_COLOR = [0.95, 0.50, 0.0, 1.0]
 	LOOPING_COLOR = [0.8, 0.8, 0.0, 1.0]
 	MISC_COLOR = [0.5, 0.5, 0.8, 1.0]
+	FLOOR_COLOR = [0.0, 0.0, 0.0, 0.9]
 
 	def gui_build_editor(container)
-		box = GuiObjectRenderer.new(self)
-		container.prepend(box)
+		container.prepend(GuiObjectRenderer.new(self))
 	end
 
 	def gui_icon_color
@@ -211,9 +211,11 @@ class Curve
 						with_translation(1.0, 0.0) {
 							gui_render_curve
 						}
-						with_translation(0.0, -0.525) {
-							with_scale(3.0, 0.05) {
-								unit_square
+						with_translation(0.0, -1) {
+							with_scale(3.0, 1.0) {
+								with_color(FLOOR_COLOR) {
+									unit_square
+								}
 							}
 						}
 					}
@@ -224,19 +226,6 @@ class Curve
 		else
 			gui_render_curve
 		end
-	end
-
-	def with_clip_box
-		half_radius = 0.5
-		with_vertical_clip_plane_left_of(-half_radius) {
-			with_vertical_clip_plane_right_of(half_radius) {
-				with_horizontal_clip_plane_below(-half_radius) {
-					with_horizontal_clip_plane_above(half_radius) {
-						yield
-					}
-				}
-			}
-		}
 	end
 
 	def gui_render_curve
