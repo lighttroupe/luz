@@ -6,7 +6,7 @@ class GuiButton < GuiObject
 		clicked_notify(pointer)
 	end
 
-	BUTTON_COLOR = [0.5,0.5,0.5]
+	BUTTON_COLOR = [1.0,1.0,1.0,1.0]
 	BUTTON_HOVER_COLOR = [1.0,0.5,0.5]
 	BUTTON_CLICK_COLOR = [0.5,1.0,0.5]
 
