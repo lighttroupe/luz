@@ -197,6 +197,49 @@ class Curve
 			gui_render_background
 		end
 
+		if pointer_hovering?
+			progress = ($env[:beat] % 4.0) / 4.0
+
+			with_clip_box {
+				with_scale(8.0) {
+					with_translation(0.5 - progress, 0.5 - value(progress)) {
+						#unit_square_outline
+						with_translation(-1.0, 0.0) {
+							gui_render_curve
+						}
+						gui_render_curve
+						with_translation(1.0, 0.0) {
+							gui_render_curve
+						}
+						with_translation(0.0, -0.525) {
+							with_scale(3.0, 0.05) {
+								unit_square
+							}
+						}
+					}
+				}
+			}
+
+			gui_render_label
+		else
+			gui_render_curve
+		end
+	end
+
+	def with_clip_box
+		half_radius = 0.5
+		with_vertical_clip_plane_left_of(-half_radius) {
+			with_vertical_clip_plane_right_of(half_radius) {
+				with_horizontal_clip_plane_below(-half_radius) {
+					with_horizontal_clip_plane_above(half_radius) {
+						yield
+					}
+				}
+			}
+		}
+	end
+
+	def gui_render_curve
 		with_color(gui_icon_color) {
 			@gui_render_list = GL.RenderCached(@gui_render_list) {
 				with_translation(-0.5, -0.5) {
@@ -213,11 +256,6 @@ class Curve
 				}
 			}
 		}
-
-		if pointer_hovering?
-			gui_render_background
-			gui_render_label
-		end
 	end
 end
 
