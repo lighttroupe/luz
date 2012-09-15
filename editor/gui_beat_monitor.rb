@@ -1,6 +1,6 @@
 class GuiBeatLight < GuiObject
 	BEAT_ON_COLOR = [1,1,1,1]
-	BEAT_OFF_COLOR = [0,0,0,1]
+	BEAT_OFF_COLOR = [0,0.1,0.1,0.5]
 
 	easy_accessor :beat_index
 	easy_accessor :beats_per_measure
@@ -11,7 +11,14 @@ class GuiBeatLight < GuiObject
 
 	def gui_render!
 		with_color(on? ? BEAT_ON_COLOR : BEAT_OFF_COLOR) {
-			unit_square
+			with_scale(on? ? 1.5 : 1.0) {
+#			if on?
+#				self.animate({:scale_x => 1.5, :scale_y => 1.5, :opacity => 1.0}, duration=0.2) {
+#			else
+#				self.animate({:scale_x => 1.0, :scale_y => 1.0, :opacity => 0.5}, duration=0.2) {
+#			end
+				unit_square
+			}
 		}
 	end
 end

@@ -24,7 +24,7 @@ class GuiDefault < GuiBox
 		self << (@event_button = GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.40, :offset_y => 0.50 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
 
 		self << (@message_bar = GuiMessageBar.new.set(:offset_x => -0.38, :offset_y => 0.5 - 0.03, :scale_x => 0.02, :scale_y => 0.04))
-		self << (@beat_monitor = GuiBeatMonitor.new(beats_per_measure=4).set(:offset_x => -0.485, :offset_y => 0.5 - 0.03, :scale_x => 0.02, :scale_y => 0.02, :spacing_x => 1.1, :spacing_y => 0.0))
+		self << (@beat_monitor = GuiBeatMonitor.new(beats_per_measure=4).set(:offset_x => -0.025, :offset_y => -0.45 - 0.03, :scale_x => 0.02, :scale_y => 0.02, :spacing_x => 1.25, :spacing_y => 0.0))
 
 		@curve_button.on_clicked {
 			if @curves_list.hidden?
