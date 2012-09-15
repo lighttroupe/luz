@@ -6,7 +6,11 @@ class BitmapFont < GuiObject
 	easy_accessor :string
 
 	def string=(str)
-		@chars = str.chars.to_a
+		if str != @string
+			@string = str
+			@chars = str.chars.to_a
+			expire_cache!
+		end
 		self
 	end
 
@@ -39,6 +43,11 @@ class BitmapFont < GuiObject
 				}
 			}
 		}
+	end
+
+	def expire_cache!
+		GL.DestroyList(@gui_render_list)
+		@gui_render_list = nil
 	end
 
 	def with_aspect_ratio_fix
