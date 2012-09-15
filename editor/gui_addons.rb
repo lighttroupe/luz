@@ -12,7 +12,7 @@ class UserObject
 
 	def gui_build_editor(container)
 		if respond_to? :effects
-			@gui_effects_list = GuiList.new(effects).set({:spacing_y => -1.0, :scale_x => 0.40, :scale_y => 0.05, :offset_x => -0.5+(0.40/2), :offset_y => 0.5 - 0.1})
+			@gui_effects_list = GuiList.new(effects).set({:spacing_y => -0.9, :scale_x => 1.0, :scale_y => 0.23, :offset_x => 0.0, :offset_y => 0.5 - 0.2})
 			container << @gui_effects_list
 		end
 	end
@@ -292,6 +292,13 @@ class Event
 			# Label
 			gui_render_label
 		}
+	end
+end
+
+class ChildUserObject
+	def gui_render!
+		render_selection if pointer_hovering?
+		gui_render_label
 	end
 end
 
