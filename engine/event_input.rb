@@ -26,6 +26,10 @@ class EventInput < ChildUserObject
 		super
 	end
 
+	def now?
+		@current_value > 0
+	end
+
 	def last_value
 		@current_value_raw
 	end
