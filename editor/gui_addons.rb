@@ -5,9 +5,10 @@ class NilClass		# generally helpful for eg. nil instance variables thought to be
 end
 
 class UserObject
-	empty_method :gui_tick!
 	SELECTION_COLOR = [1.0,1.0,1.0,0.25]
 	BACKGROUND_COLOR = [0.0,0.0,0.0,0.5]
+
+	empty_method :gui_tick!
 
 	def gui_build_editor(container)
 		if respond_to? :effects
