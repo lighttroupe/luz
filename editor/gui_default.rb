@@ -69,40 +69,49 @@ class GuiDefault < GuiBox
 
 		if editor
 			if editor.hidden?
+				puts 'showing...'
 				bring_to_top(editor)
+				editor.not_hidden!
 			else
-				# was visible...
-				editor.animate({:offset_x => pointer.x, :offset_y => pointer.y, :scale_x => 0.0, :scale_y => 0.0, :opacity => 0.5}, duration=0.2) {
+				# was already visible... ...hide self towards click spot
+				editor.animate({:offset_x => pointer.x, :offset_y => pointer.y, :opacity => 0.2}, duration=0.2) {
 					editor.hidden!
 				}
 				return
 			end
 		else
-			editor = GuiUserObjectEditor.new(user_object, options)
+			editor = GuiUserObjectEditor.new(user_object, {:scale_x => 0.2, :scale_y => 0.2}.merge(options))
 			self << editor
-
 			@user_object_editors[user_object] = editor
 		end
 
+		# Reveal
+		editor.set({:offset_x => pointer.x, :offset_y => pointer.y, :opacity => 0.0, :hidden => false})
+		editor.animate({:offset_x => pointer.x + 0.1 + (editor.scale_x / 2.0), :offset_y => pointer.y + 0.1 - (editor.scale_y / 2.0), :opacity => 1.0}, duration=0.2)
+
+=begin
 		# Hide everything...
 		@user_object_editors.values.each { |e|
 			e.set({:opacity => 0.0, :hidden => true})	#, duration=0.4)
 		}
 
 		# ...reveal just this one.
-		editor.set({:offset_x => pointer.x, :offset_y => pointer.y, :scale_x => 0.0, :scale_y => 0.0, :opacity => 0.0, :hidden => false})
 		final_options = {:offset_x => -0.15, :offset_y => 0.0, :scale_x => 0.5, :scale_y => 0.8, :opacity => 1.0}
 		editor.animate(final_options, duration=0.2)
+=end
 
-		return editor if editor
+		return editor
 	end
 end
 
 class GuiUserObjectEditor < GuiBox
+	easy_accessor :pointer
+
 	def initialize(user_object, options)
 		@user_object, @options = user_object, options
 		super([])
 		create!
+		set(options)
 	end
 
 	def create!
@@ -112,9 +121,9 @@ class GuiUserObjectEditor < GuiBox
 		@user_object.gui_build_editor(self)
 
 		# label
-		self << (@title_text=BitmapFont.new.set_string(@user_object.title).set(:scale_x => 0.025, :scale_y => 0.05, :offset_x => -0.5 + 0.025, :offset_y => 0.5 - 0.025))		#.set(:background_image => $engine.load_image('images/buttons/menu.png'))
+		self << (@title_text=BitmapFont.new.set_string(@user_object.title).set(:scale_x => 0.025, :scale_y => 0.2, :offset_x => -0.5 + 0.025, :offset_y => 0.5 - 0.025))		#.set(:background_image => $engine.load_image('images/buttons/menu.png'))
 
-		self << (@close_button=GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.5, :offset_y => 0.5, :background_image => $engine.load_image('images/buttons/close.png')))
+		self << (@close_button=GuiButton.new.set(:scale_x => 0.15, :scale_y => 0.15, :offset_x => 0.5, :offset_y => 0.5, :background_image => $engine.load_image('images/buttons/close.png')))
 		@close_button.on_clicked {
 			animate({:opacity => 0.0, :offset_y => offset_y - 0.1, :scale_x => scale_x * 1.1}, duration=0.2) { set_hidden(true) }
 		}
