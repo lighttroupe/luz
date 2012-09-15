@@ -61,6 +61,10 @@ class Actor
 end
 
 class Theme
+	def gui_build_editor(container)
+		container << GuiGrid.new(effects).set(:min_columns => 4)
+	end
+
 	def gui_render!
 		render_selection if pointer_hovering?
 
