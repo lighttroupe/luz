@@ -11,12 +11,7 @@ class GuiBeatLight < GuiObject
 
 	def gui_render!
 		with_color(on? ? BEAT_ON_COLOR : BEAT_OFF_COLOR) {
-			with_scale(on? ? 1.5 : 1.0) {
-#			if on?
-#				self.animate({:scale_x => 1.5, :scale_y => 1.5, :opacity => 1.0}, duration=0.2) {
-#			else
-#				self.animate({:scale_x => 1.0, :scale_y => 1.0, :opacity => 0.5}, duration=0.2) {
-#			end
+			with_scale(on? ? ($env[:beat_scale].scale(1.5, 1.0)) : 1.0) {
 				unit_square
 			}
 		}
