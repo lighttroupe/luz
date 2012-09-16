@@ -291,6 +291,24 @@ class Variable
 	end
 end
 
+class VariableInput
+	GUI_COLOR = [0.0,1.0,0.5,0.7]
+
+	def gui_render!
+		render_selection if pointer_hovering?
+
+		# Status Indicator
+		with_vertical_clip_plane_right_of(current_value - 0.5) {
+			with_color(GUI_COLOR) {
+				unit_square
+			}
+		}
+
+		# Label
+		gui_render_label
+	end
+end
+
 class Event
 	GUI_COLOR_ON = [1.0,1.0,0.0,1.0]
 	GUI_COLOR_OFF = [1.0,1.0,0.0,0.1]
