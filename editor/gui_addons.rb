@@ -18,8 +18,6 @@ class Integer
 	alias :beat :beats
 end
 
-
-
 class UserObject
 	SELECTION_COLOR = [1.0,1.0,1.0,0.25]
 	BACKGROUND_COLOR = [0.0,0.0,0.0,0.5]
@@ -67,6 +65,42 @@ class UserObject
 				unit_square
 			}
 		}
+	end
+
+	USER_OBJECT_TITLE_HEIGHT = 0.75
+	def gui_render_label
+		@title_label ||= BitmapFont.new.set(:string => title, :scale_y => USER_OBJECT_TITLE_HEIGHT, :offset_x => -0.5 + 0.08)
+		if pointer_hovering?
+			@title_label.gui_render!
+		else
+			with_vertical_clip_plane_right_of(0.5) {
+				@title_label.gui_render!
+			}
+		end
+	end
+end
+
+# HACK to render an object without reparenting it
+class GuiObjectRenderer < GuiObject
+	def initialize(object)
+		@object = object
+	end
+
+	def gui_render!
+		#with_positioning {
+			@object.gui_render!		# TODO: send a symbol for customizable render method (ie simple curves)
+		#}
+	end
+
+	def gui_tick!
+		@object.gui_tick!
+	end
+end
+
+class ChildUserObject
+	def gui_render!
+		render_selection if pointer_hovering?
+		gui_render_label
 	end
 end
 
@@ -144,37 +178,6 @@ class Theme
 				}
 			}
 		}
-	end
-end
-
-class UserObject
-	USER_OBJECT_TITLE_HEIGHT = 0.75
-	def gui_render_label
-		@title_label ||= BitmapFont.new.set(:string => title, :scale_y => USER_OBJECT_TITLE_HEIGHT, :offset_x => -0.5 + 0.08)
-		if pointer_hovering?
-			@title_label.gui_render!
-		else
-			with_vertical_clip_plane_right_of(0.5) {
-				@title_label.gui_render!
-			}
-		end
-	end
-end
-
-# HACK to render an object without reparenting it
-class GuiObjectRenderer < GuiObject
-	def initialize(object)
-		@object = object
-	end
-
-	def gui_render!
-		#with_positioning {
-			@object.gui_render!
-		#}
-	end
-
-	def gui_tick!
-		@object.gui_tick!
 	end
 end
 
@@ -308,13 +311,6 @@ class Event
 			# Label
 			gui_render_label
 		}
-	end
-end
-
-class ChildUserObject
-	def gui_render!
-		render_selection if pointer_hovering?
-		gui_render_label
 	end
 end
 
