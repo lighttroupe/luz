@@ -4,6 +4,22 @@ class NilClass		# generally helpful for eg. nil instance variables thought to be
 	end
 end
 
+class Float
+	def beats
+		self * $env[:seconds_per_beat]
+	end
+	alias :beat :beats
+end
+
+class Integer
+	def beats
+		self * $env[:seconds_per_beat]
+	end
+	alias :beat :beats
+end
+
+
+
 class UserObject
 	SELECTION_COLOR = [1.0,1.0,1.0,0.25]
 	BACKGROUND_COLOR = [0.0,0.0,0.0,0.5]
