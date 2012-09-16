@@ -49,7 +49,7 @@ class UserObjectSettingTimespan < UserObjectSetting
 		return 1.0 if instant?
 
 		elapsed = $env[:time] - time
-		elapsed.abs!		# NOTE: progress backwards in time works just as well
+		elapsed = elapsed.abs		# NOTE: progress backwards in time works just as well
 
 		return (elapsed / self.to_seconds).clamp(0.0, 1.0)
 	end
