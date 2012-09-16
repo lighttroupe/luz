@@ -534,6 +534,7 @@ private
 		$env[:is_beat] = @beat_detector.is_beat?	# boolean
 		$env[:bpm] = bpm
 		$env[:bps] = bpm / 60.0
+		$env[:seconds_per_beat] = 60.0 / bpm
 		$env[:frame_number] = @frame_number
 
 		$env[:previous_time] = $env[:time]
