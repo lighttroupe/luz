@@ -26,7 +26,7 @@ class UserObject
 
 	def gui_build_editor(container)
 		if respond_to? :effects
-			@gui_effects_list = GuiList.new(effects).set({:spacing_y => -0.9, :scale_x => 1.0, :scale_y => 0.23, :offset_x => 0.0, :offset_y => 0.5 - 0.2})
+			@gui_effects_list = GuiList.new(effects).set({:spacing_y => -0.9, :scale_x => 1.0, :scale_y => 1.0, :offset_x => 0.0, :offset_y => 0.5 - 0.2})
 			container << @gui_effects_list
 		end
 	end
