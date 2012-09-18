@@ -13,53 +13,50 @@ class GuiDefault < GuiBox
 	end
 
 	def create_default_gui
-		self << (@actor_list = GuiList.new($engine.project.actors).set(:scale_x => 0.2, :scale_y => 1.0, :offset_x => -0.4, :offset_y => 0.4, :spacing_y => -1.0))
+		self << (@actor_list = GuiList.new($engine.project.actors).set(:scale_x => 0.2, :scale_y => 0.5, :offset_x => -0.4, :offset_y => 0.0, :spacing_y => -1.0))
 
-		self << (@curves_list = GuiList.new($engine.project.curves).set(:scale_x => 0.08, :scale_y => 0.25, :offset_x => -0.11, :offset_y => 0.40, :spacing_y => -1.0))
-		self << (@themes_list = GuiList.new($engine.project.themes).set(:scale_x => 0.08, :scale_y => 0.5, :offset_x => 0.06, :offset_y => 0.4, :hidden => true, :spacing_y => -1.2))
-
-		self << (@curve_button = GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.08, :offset_x => -0.11, :offset_y => 0.50 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
-
-		self << (@theme_button = GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.06, :offset_y => 0.50 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
-		self << (@variables_list = GuiList.new($engine.project.variables).set(:scale_x => 0.08, :scale_y => 0.5, :offset_x => 0.23, :offset_y => 0.4, :hidden => true, :spacing_y => -1.2))
-		self << (@variable_button = GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.23, :offset_y => 0.50 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
-		self << (@events_list = GuiList.new($engine.project.events).set(:scale_x => 0.08, :scale_y => 0.5, :offset_x => 0.40, :offset_y => 0.4, :hidden => true, :spacing_y => -1.2))
-		self << (@event_button = GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.40, :offset_y => 0.50 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
-
-		self << (@message_bar = GuiMessageBar.new.set(:offset_x => -0.38, :offset_y => 0.5 - 0.03, :scale_x => 0.02, :scale_y => 0.04))
-		self << (@beat_monitor = GuiBeatMonitor.new(beats_per_measure=4).set(:offset_x => -(0.02 * 1.25 * 1.5), :offset_y => -0.45 - 0.03, :scale_x => 0.02, :scale_y => 0.02, :spacing_x => 1.25, :spacing_y => 0.0))
-
+		self << (@curves_list = GuiList.new($engine.project.curves).set(:scale_x => 0.08, :scale_y => 0.5, :offset_x => -0.11, :offset_y => 0.5, :item_aspect_ratio => 1.6, :hidden => true, :spacing_y => -1.0))
+		self << (@curve_button = GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.08, :offset_x => -0.11, :offset_y => 0.5 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
 		@curve_button.on_clicked {
 			if @curves_list.hidden?
-				@curves_list.set(:hidden => false, :opacity => 0.0).animate({:offset_y => 0.38, :opacity => 1.0}, duration=0.2)
+				@curves_list.set(:hidden => false, :opacity => 0.0).animate({:offset_y => 0.0, :opacity => 1.0}, duration=0.2)
 			else
 				@curves_list.animate(:offset_y, 0.5, duration=0.25) { @curves_list.set_hidden(true) }.animate(:opacity, 0.0, duration=0.2)
 			end
 		}
 
+		self << (@themes_list = GuiList.new($engine.project.themes).set(:scale_x => 0.08, :scale_y => 0.5, :offset_x => 0.06, :offset_y => 0.5, :item_aspect_ratio => 1.6, :hidden => true, :spacing_y => -1.0))
+		self << (@theme_button = GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.06, :offset_y => 0.50 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
 		@theme_button.on_clicked {
 			if @themes_list.hidden?
-				@themes_list.set(:hidden => false, :opacity => 0.0).animate({:offset_y => 0.38, :opacity => 1.0}, duration=0.2)
+				@themes_list.set(:hidden => false, :opacity => 0.0).animate({:offset_y => 0.0, :opacity => 1.0}, duration=0.2)
 			else
 				@themes_list.animate(:offset_y, 0.5, duration=0.25) { @themes_list.set_hidden(true) }.animate(:opacity, 0.0, duration=0.2)
 			end
 		}
 
+		self << (@variables_list = GuiList.new($engine.project.variables).set(:scale_x => 0.08, :scale_y => 0.5, :offset_x => 0.23, :offset_y => 0.5, :item_aspect_ratio => 1.6, :hidden => true, :spacing_y => -1.0))
+		self << (@variable_button = GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.23, :offset_y => 0.50 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
 		@variable_button.on_clicked {
 			if @variables_list.hidden?
-				@variables_list.set(:hidden => false, :opacity => 0.0).animate({:offset_y => 0.38, :opacity => 1.0}, duration=0.2)
+				@variables_list.set(:hidden => false, :opacity => 0.0).animate({:offset_y => 0.0, :opacity => 1.0}, duration=0.2)
 			else
 				@variables_list.animate(:offset_y, 0.5, duration=0.25) { @variables_list.set_hidden(true) }.animate(:opacity, 0.0, duration=0.2)
 			end
 		}
 
+		self << (@events_list = GuiList.new($engine.project.events).set(:scale_x => 0.08, :scale_y => 0.5, :offset_x => 0.40, :offset_y => 0.5, :item_aspect_ratio => 1.6, :hidden => true, :spacing_y => -1.0))
+		self << (@event_button = GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.40, :offset_y => 0.50 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
 		@event_button.on_clicked {
 			if @events_list.hidden?
-				@events_list.set(:hidden => false, :opacity => 0.0).animate({:offset_y => 0.38, :opacity => 1.0}, duration=0.2)
+				@events_list.set(:hidden => false, :opacity => 0.0).animate({:offset_y => 0.0, :opacity => 1.0}, duration=0.2)
 			else
 				@events_list.animate({:offset_y => 0.5, :opacity => 0.0}, duration=0.25) { @events_list.set_hidden(true) }
 			end
 		}
+
+		self << (@message_bar = GuiMessageBar.new.set(:offset_x => -0.38, :offset_y => 0.5 - 0.03, :scale_x => 0.02, :scale_y => 0.04))
+		self << (@beat_monitor = GuiBeatMonitor.new(beats_per_measure=4).set(:offset_x => -(0.02 * 1.25 * 1.5), :offset_y => -0.45 - 0.03, :scale_x => 0.02, :scale_y => 0.02, :spacing_x => 1.25, :spacing_y => 0.0))
 
 		positive_message('Welcome to Luz 2.0')
 

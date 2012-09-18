@@ -96,6 +96,17 @@ module DrawingTransformations
 	end
 	#conditional :with_roll, :with_pitch, :with_yaw
 
+	$accumulated_scale_x = 1.0
+	$accumulated_scale_y = 1.0
+	def with_aspect_ratio_fix
+		fix = $accumulated_scale_y / $accumulated_scale_x
+		with_scale(fix, 1.0) {
+			$accumulated_scale_x = (saved = $accumulated_scale_x) * fix
+			yield
+			$accumulated_scale_x = saved
+		}
+	end
+
 	def with_scale(x, y=nil, z=nil)
 		y ||= x		# When only one is given, scale equally x and y
 		z ||= 1.0		# When only one is given, scale equally x and y
@@ -104,8 +115,12 @@ module DrawingTransformations
 		return yield if x == 1.0 and y == 1.0 and z == 1.0
 
 		GL.SaveMatrix {
+			$accumulated_scale_x = (saved_x = $accumulated_scale_x) * x
+			$accumulated_scale_y = (saved_y = $accumulated_scale_y) * y
 			GL.Scale(x, y, z)
 			yield
+			$accumulated_scale_x = saved_x
+			$accumulated_scale_y = saved_y
 		}
 	end
 	def with_scale_unsafe(x, y=nil, z=nil)

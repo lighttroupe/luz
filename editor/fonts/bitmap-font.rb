@@ -37,8 +37,10 @@ class BitmapFont < GuiObject
 		with_pixel_combine_function(:brighten) {
 			with_positioning {
 				with_aspect_ratio_fix {
-					@gui_render_list = GL.RenderCached(@gui_render_list) {
-						render_letters
+					with_scale(0.5, 1.0) {		# text looks good at 1x2 ratio
+						@gui_render_list = GL.RenderCached(@gui_render_list) {
+							render_letters
+						}
 					}
 				}
 			}
@@ -48,14 +50,6 @@ class BitmapFont < GuiObject
 	def expire_cache!
 		GL.DestroyList(@gui_render_list)
 		@gui_render_list = nil
-	end
-
-	def with_aspect_ratio_fix
-		width = $env[:gui_scale_x]
-		height = $env[:gui_scale_y]
-		with_scale(width/height, 1.0) {		# multiply width as necessary to maintain a ratio of 1x2   TODO: dynamic?
-			yield
-		}
 	end
 
 	def render_letters
