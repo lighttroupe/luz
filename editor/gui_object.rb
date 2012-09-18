@@ -61,6 +61,10 @@ class GuiObject
 		@parent.click(pointer) if @parent			# Default is to pass it up the stack
 	end
 
+#	def scroll_up!(pointer)
+#		@parent.scroll_up!(pointer) if @parent			# Default is to pass it up the stack
+#	end
+
 private
 
 	def with_positioning
