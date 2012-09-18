@@ -288,9 +288,9 @@ class Variable
 		}
 
 		#Value Display
-		with_translation(0.25, 0.25) {
-			value.to_s ||= BitmapFont.new.set(:string => value)
-		#	value ||= BitmapFont.new.set(:string => value, :scale_x => 0.95)#, :scale_y => USER_OBJECT_TITLE_HEIGHT)
+		with_translation(0.45, 0.25) {
+			@value_label ||= BitmapFont.new.set(:string => (value * 100).to_i.to_s + '%', :scale_x => 0.35, :scale_y => 0.35)
+			@value_label.gui_render!
 		}
 
 		# Status Marker
