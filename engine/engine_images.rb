@@ -39,6 +39,7 @@ module EngineImages
 					ret = false
 				end
 			}
+			true		# tell with_watch that we were successful
 		}
 		return ret
 	end
