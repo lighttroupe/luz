@@ -24,6 +24,8 @@ class BitmapFont < GuiObject
 		@offsets = [-4,-2,-3,-2,-2,-2,-3,-2,-2,-3,-2,-2,-3,-2,-3,-2,-3,-2,-3,-3,-2,-4,-4,-4,-4,-4,-3,-3,-104,-3,-4,-4,-3,-3,-3,-3,-3,-3,-3,-3,-4,-3,-3,-3,-4,-4,-3,-4,-4,-4,-4,-4,-3,-2,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-2,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-4,-3,-2,-2,-4,-4,-3,-5,-3,-3,-3,-3,-3,-3,-3,-3,-3,-2,-5,-3,-4,-3,-3,-3,-3,-4,-4,-4,-4,-4,-4,-4,-3,-2,-2,-2,-2,-4,-2,-4,-4,-4,-2,-3,-3,-3,-3,-3,-3,-2,-2,-2,-2,-4,-3,-3,-3,-3,-3,-3,-3,-4,-4,-4,-4,-4,-4,-5,-3,-5,-5,-4,-3,-4,-4,-4,-4,-4,-4,-3,-3,-3,-3,-4,-4]
 
 		@image = $engine.load_image('fonts/TwCenMTCondensedExtraBold18.png')
+
+		@one_em = (@widths[@letters.index('M')] / @image.width.to_f)
 		super
 	end
 
@@ -36,13 +38,16 @@ class BitmapFont < GuiObject
 
 		with_pixel_combine_function(:brighten) {
 			with_positioning {
-				with_aspect_ratio_fix {
-					with_scale(0.5, 1.0) {		# text looks good at 1x2 ratio
+				with_color([1,0,0,0.5]) { unit_square }		# testing
+
+				with_translation(-0.5 + @one_em, 0.0) {		# HACK: add padding instead of 1em
+					with_scale(0.1, 1.0) {		# HACK: remove need for this.
 						@gui_render_list = GL.RenderCached(@gui_render_list) {
 							render_letters
 						}
 					}
 				}
+				#}
 			}
 		}
 	end
@@ -84,7 +89,7 @@ class BitmapFont < GuiObject
 				}
 
 				if next_letter_index
-					draw_offset_x += (@widths[letter_index] / @image.width.to_f) * 15.0
+					draw_offset_x += (@widths[letter_index] / @image.width.to_f) * 15.0		# HACK: this 15 is bogutive
 					draw_offset_x += (@widths[next_letter_index] / @image.width.to_f) * 15.0
 					#draw_offset_x += (@offsets[next_letter_index] / @image.width.to_f)
 				end

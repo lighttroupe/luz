@@ -2,7 +2,8 @@ class GuiList < GuiBox
 	easy_accessor :spacing_x, :spacing_y, :item_aspect_ratio
 	easy_accessor :scroll
 
-	def with_aspect_ratio_fix
+=begin
+	def with_aspect_ratio_fix_y
 		width = $env[:gui_scale_x]
 		height = $env[:gui_scale_y]
 		with_scale(1.0, width/height) {		# multiply width as necessary to maintain a ratio of 1x2   TODO: dynamic?
@@ -11,6 +12,7 @@ class GuiList < GuiBox
 			}
 		}
 	end
+=end
 
 	def each_with_positioning
 		@scroll ||= 0.0
@@ -21,8 +23,8 @@ class GuiList < GuiBox
 					final_spacing_y = (spacing_y || 0.0) / (item_aspect_ratio || 1.0)
 
 					with_translation(0.0, 0.5) {		# start at the top (TODO: or left)
-						with_aspect_ratio_fix {
-							with_translation(0.0, @scroll) {		# start at the top (TODO: or left)
+						with_aspect_ratio_fix_y {
+							with_translation(0.0, @scroll) {
 								@contents.each_with_index { |gui_object, index|
 									with_translation(index * (spacing_x || 0.0), (final_spacing_y / 2.0) + (index * final_spacing_y)) {
 										with_scale(1.0, final_spacing_y.abs) {

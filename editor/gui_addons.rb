@@ -69,7 +69,7 @@ class UserObject
 
 	USER_OBJECT_TITLE_HEIGHT = 0.75
 	def gui_render_label
-		@title_label ||= BitmapFont.new.set(:string => title, :scale_y => USER_OBJECT_TITLE_HEIGHT, :offset_x => -0.5 + 0.08)
+		@title_label ||= BitmapFont.new.set(:string => title, :scale_x => 0.95, :scale_y => USER_OBJECT_TITLE_HEIGHT)
 		if pointer_hovering?
 			@title_label.gui_render!
 		else
@@ -325,7 +325,7 @@ class Event
 			}
 		}
 
-		with_translation(0.17, 0.05) {
+		with_translation(0.23, 0.05) {
 			# Label
 			gui_render_label
 		}
