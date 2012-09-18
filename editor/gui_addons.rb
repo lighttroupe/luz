@@ -287,30 +287,34 @@ class Variable
 			}
 		}
 
+		#Value Display
+		with_translation(0.45, 0.25) {
+			@value_label ||= BitmapFont.new.set(:string => (value * 100).to_i.to_s + '%', :scale_x => 0.35, :scale_y => 0.35)
+			@value_label.gui_render!
+		}
+
 		# Status Marker
-		with_translation(0.0, -0.4) {
-			with_scale(0.01, 0.25) {
-				with_color(MARKER_COLOR) {
-					unit_square
-				}
-			}
-		}
-
-		with_translation(0.25, -0.45) {
-			with_scale(0.01, 0.15) {
-				with_color(MARKER_COLOR) {
-					unit_square
-				}
-			}
-		}
-
-		with_translation(-0.25, -0.45) {
-			with_scale(0.01, 0.15) {
-				with_color(MARKER_COLOR) {
-					unit_square
-				}
-			}
-		}
+		#with_translation(0.0, -0.4) {
+		#	with_scale(0.01, 0.25) {
+		#		with_color(MARKER_COLOR) {
+		#			unit_square
+		#		}
+		#	}
+		#}
+		#with_translation(0.25, -0.45) {
+		#	with_scale(0.01, 0.15) {
+		#		with_color(MARKER_COLOR) {
+		#			unit_square
+		#		}
+		#	}
+		#}
+		#with_translation(-0.25, -0.45) {
+		#	with_scale(0.01, 0.15) {
+		#		with_color(MARKER_COLOR) {
+		#			unit_square
+		#		}
+		#	}
+		#}
 
 		# Label
 		gui_render_label
