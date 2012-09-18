@@ -5291,7 +5291,7 @@
                   title: Slider
                   enabled: true
                   slider_setting: !ruby/object:UserObjectSettingSlider
-                    slider: Tablet 01 / Y
+                    slider: Mouse 01 / Y
                     is_inverted: 
                     input_min: 0.0
                     input_max: 1.0
@@ -5999,7 +5999,7 @@
                   title: Slider
                   enabled: true
                   slider_setting: !ruby/object:UserObjectSettingSlider
-                    slider: Tablet 01 / X
+                    slider: Mouse 01 / X
                     is_inverted: 
                     input_min: 0.0
                     input_max: 1.0
