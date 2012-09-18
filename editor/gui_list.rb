@@ -16,23 +16,36 @@ class GuiList < GuiBox
 
 	def each_with_positioning
 		@scroll ||= 0.0
+		# test @scroll += 0.05
 
 		with_positioning {
 			if spacing_y && spacing_y != 0.0
 				with_horizontal_clip_plane_above(0.5) {
 					with_horizontal_clip_plane_below(-0.5) {
-						final_spacing_y = (spacing_y || 0.0) / (item_aspect_ratio || 1.0)
+						final_spacing_y = (spacing_y || 1.0) / (item_aspect_ratio || 1.0)
 
 						with_translation(0.0, 0.5) {
 							with_aspect_ratio_fix_y {
-								with_translation(0.0, @scroll) {
-									@contents.each_with_index { |gui_object, index|
-										with_translation(index * (spacing_x || 0.0), (final_spacing_y / 2.0) + (index * final_spacing_y)) {
+								with_translation(0.0, @scroll + (final_spacing_y / 2.0)) {
+									first_index, remainder_scroll = @scroll.divmod(final_spacing_y.abs)
+
+									# TODO: determine total_shown
+									total_shown = 10 #scale_y / final_spacing_y.abs
+									total_shown = @contents.size if @contents.size < total_shown
+
+									last_index = first_index + (total_shown - 1)
+
+									for fake_index in first_index..last_index
+										index = fake_index % @contents.size		# this achieves endless looping!
+										gui_object = @contents[index]
+										next unless gui_object
+
+										with_translation(fake_index * (spacing_x || 0.0), (fake_index * final_spacing_y)) {
 											with_scale(1.0, final_spacing_y.abs) {
 												yield gui_object
 											}
 										}
-									}
+									end
 								}
 							}
 						}
