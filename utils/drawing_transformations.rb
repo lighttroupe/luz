@@ -111,7 +111,7 @@ module DrawingTransformations
 		# make object as tall as it is wide, in screen coordinates
 		fix = $accumulated_scale_x / $accumulated_scale_y
 		with_scale(1.0, fix) {
-			yield
+			yield fix
 		}
 	end
 
