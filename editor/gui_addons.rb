@@ -128,6 +128,11 @@ end
 class Theme
 	def gui_build_editor(container)
 		container << GuiGrid.new(effects).set(:min_columns => 4)
+		container << (@add_button=GuiButton.new.set(:scale_x => 0.15, :scale_y => 0.15, :offset_x => -0.5, :offset_y => 0.5, :background_image => $engine.load_image('images/buttons/menu.png')))
+		@add_button.on_clicked {
+			effects << Style.new
+			GL.DestroyList(@gui_render_styles_list) ; @gui_render_styles_list = nil
+		}
 	end
 
 	def gui_render!
