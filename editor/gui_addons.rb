@@ -275,7 +275,7 @@ end
 
 class Variable
 	GUI_COLOR = [0.0,1.0,0.5,0.7]
-	GUI_MARKER_COLOR = [0.8,0.0,0.0,0.7]
+	MARKER_COLOR = [0.8,0.0,0.0,0.15]
 
 	def gui_render!
 		render_selection if pointer_hovering?
@@ -290,7 +290,23 @@ class Variable
 		# Status Marker
 		with_translation(0.0, -0.4) {
 			with_scale(0.01, 0.25) {
-				with_color(GUI_MARKER_COLOR) {
+				with_color(MARKER_COLOR) {
+					unit_square
+				}
+			}
+		}
+
+		with_translation(0.25, -0.45) {
+			with_scale(0.01, 0.15) {
+				with_color(MARKER_COLOR) {
+					unit_square
+				}
+			}
+		}
+
+		with_translation(-0.25, -0.45) {
+			with_scale(0.01, 0.15) {
+				with_color(MARKER_COLOR) {
 					unit_square
 				}
 			}
