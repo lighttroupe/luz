@@ -18,17 +18,19 @@ class GuiList < GuiBox
 		@scroll ||= 0.0
 
 		with_positioning {
-			with_horizontal_clip_plane_above(0.5) {
-				with_horizontal_clip_plane_below(-0.5) {
-					final_spacing_y = (spacing_y || 0.0) / (item_aspect_ratio || 1.0)
+			if spacing_y && spacing_y != 0.0
+				with_horizontal_clip_plane_above(0.5) {
+					with_horizontal_clip_plane_below(-0.5) {
+						final_spacing_y = (spacing_y || 0.0) / (item_aspect_ratio || 1.0)
 
-					with_translation(0.0, 0.5) {		# start at the top (TODO: or left)
-						with_aspect_ratio_fix_y {
-							with_translation(0.0, @scroll) {
-								@contents.each_with_index { |gui_object, index|
-									with_translation(index * (spacing_x || 0.0), (final_spacing_y / 2.0) + (index * final_spacing_y)) {
-										with_scale(1.0, final_spacing_y.abs) {
-											yield gui_object
+						with_translation(0.0, 0.5) {
+							with_aspect_ratio_fix_y {
+								with_translation(0.0, @scroll) {
+									@contents.each_with_index { |gui_object, index|
+										with_translation(index * (spacing_x || 0.0), (final_spacing_y / 2.0) + (index * final_spacing_y)) {
+											with_scale(1.0, final_spacing_y.abs) {
+												yield gui_object
+											}
 										}
 									}
 								}
@@ -36,13 +38,33 @@ class GuiList < GuiBox
 						}
 					}
 				}
-			}
+			else
+				with_vertical_clip_plane_right_of(1.5) {
+					with_vertical_clip_plane_left_of(-0.5) {
+						final_spacing_x = (spacing_x || 0.0) #/ (item_aspect_ratio || 1.0)
+
+						with_translation(-0.5, 0.0) {
+							with_aspect_ratio_fix {
+								with_translation(@scroll, 0.0) {
+									@contents.each_with_index { |gui_object, index|
+										with_translation((final_spacing_x / 2.0) + index * (final_spacing_x), 0.0) {
+											with_scale(final_spacing_x.abs, 1.0) {
+												yield gui_object
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			end
 		}
 	end
 
 	def gui_render!
 		return if hidden?
-		with_positioning { with_color([0.5,1.0,0.0,0.5]) { unit_square } }
+		#with_positioning { with_color([0.5,1.0,0.0,0.5]) { unit_square } }
 		each_with_positioning { |gui_object| gui_object.gui_render! }
 		
 	end

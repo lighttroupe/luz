@@ -56,7 +56,7 @@ class GuiDefault < GuiBox
 		}
 
 		self << (@message_bar = GuiMessageBar.new.set(:offset_x => -0.33, :offset_y => 0.5 - 0.04, :scale_x => 0.32, :scale_y => 0.05))
-		self << (@beat_monitor = GuiBeatMonitor.new(beats_per_measure=4).set(:offset_x => -(0.02 * 1.25 * 1.5), :offset_y => -0.45 - 0.03, :scale_x => 0.02, :scale_y => 0.02, :spacing_x => 1.25, :spacing_y => 0.0))
+		self << (@beat_monitor = GuiBeatMonitor.new(beats_per_measure=4).set(:offset_y => -0.45 - 0.03, :scale_x => 0.08, :scale_y => 0.02, :spacing_x => 1.0))
 
 		positive_message('Welcome to Luz 2.0')
 
