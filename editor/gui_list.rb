@@ -16,7 +16,6 @@ class GuiList < GuiBox
 
 	def each_with_positioning
 		@scroll ||= 0.0
-		@scroll += 0.05
 
 		with_positioning {
 			if spacing_y && spacing_y != 0.0
@@ -30,8 +29,10 @@ class GuiList < GuiBox
 									first_index, remainder_scroll = @scroll.divmod(final_spacing_y.abs)
 
 									# TODO: determine total_shown
-									total_shown = (1.0 / (fix_y * final_spacing_y.abs))
-									last_index = first_index + (total_shown)
+									total_shown = (1.0 / (fix_y * final_spacing_y.abs)).ceil
+									total_shown = @contents.size if total_shown > @contents.size
+
+									last_index = first_index + (total_shown) - 1
 
 									for fake_index in first_index..last_index
 										index = fake_index % @contents.size		# this achieves endless looping!
