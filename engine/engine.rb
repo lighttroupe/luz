@@ -553,12 +553,13 @@ private
 	end
 
 	if optional_require 'rb-inotify'
+		puts '=== iNotify live reloading of changed images enabled ==='
+
 		$notifier ||= INotify::Notifier.new
 
 		def with_watch(file_path)
 			# Load file
 			if yield
-
 				# Add a watch, and when it fires, yield again
 				$notifier.watch(file_path, :close_write) {
 					puts "Reloading #{file_path} ..."
@@ -571,7 +572,7 @@ private
 			end
 		end
 	else
-		def with_watch(file_path)
+		def with_watch(file_path)		# stub
 			yield
 		end
 	end
