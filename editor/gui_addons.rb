@@ -67,7 +67,7 @@ class UserObject
 		}
 	end
 
-	USER_OBJECT_TITLE_HEIGHT = 0.75
+	USER_OBJECT_TITLE_HEIGHT = 0.65
 	def gui_render_label
 		@title_label ||= BitmapFont.new.set(:string => title, :scale_x => 0.95, :scale_y => USER_OBJECT_TITLE_HEIGHT)
 		if pointer_hovering?

@@ -34,20 +34,22 @@ class BitmapFont < GuiObject
 #	end
 
 	def gui_render!
+		return if hidden?
 		return unless @image and @chars
 
 		with_pixel_combine_function(:brighten) {
 			with_positioning {
-				with_color([1,0,0,0.5]) { unit_square }		# testing
-
-				with_translation(-0.5 + @one_em, 0.0) {		# HACK: add padding instead of 1em
-					with_scale(0.1, 1.0) {		# HACK: remove need for this.
-						@gui_render_list = GL.RenderCached(@gui_render_list) {
-							render_letters
+				#with_color([1,0.0,0,0.9]) { unit_square } 		# test fill
+				with_translation(-0.5 + @one_em, 0.0) {		# HACK: move to left edge  TODO: add padding instead of 1em
+					with_aspect_ratio_fix {									# this leaves us as wide as the row is tall
+						with_scale(0.5, 1.0) {								# HACK: text looks good at about 1x2
+							@gui_render_list = GL.RenderCached(@gui_render_list) {
+								render_letters
+							}
 						}
+						#with_color([0,0,1,0.9]) { unit_square } if $env[:frame_number] % 2 == 0		# testing "1 character width"
 					}
 				}
-				#}
 			}
 		}
 	end

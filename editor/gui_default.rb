@@ -94,7 +94,7 @@ class GuiDefault < GuiBox
 		editor.set({:offset_x => pointer.x, :offset_y => pointer.y, :opacity => 0.0, :hidden => false})
 
 		# ...reveal just this one.
-		final_options = {:offset_x => -0.15, :offset_y => 0.15, :scale_x => 0.25, :scale_y => 0.25, :opacity => 1.0}
+		final_options = {:offset_x => -0.15, :offset_y => 0.15, :scale_x => 0.2, :scale_y => 0.25, :opacity => 1.0}
 		editor.animate(final_options, duration=0.2)
 
 		return editor
@@ -118,7 +118,7 @@ class GuiUserObjectEditor < GuiBox
 		@user_object.gui_build_editor(self)
 
 		# label
-		self << (@title_text=BitmapFont.new.set_string(@user_object.title).set(:scale_x => 0.9, :scale_y => 0.2, :offset_x => 0.0, :offset_y => 0.5))		#.set(:background_image => $engine.load_image('images/buttons/menu.png'))
+		self << (@title_text=BitmapFont.new.set_string(@user_object.title).set(:scale_x => 0.95, :scale_y => 0.15, :offset_x => 0.0, :offset_y => 0.5))		#.set(:background_image => $engine.load_image('images/buttons/menu.png'))
 
 		self << (@close_button=GuiButton.new.set(:scale_x => 0.15, :scale_y => 0.15, :offset_x => 0.5, :offset_y => 0.5, :background_image => $engine.load_image('images/buttons/close.png')))
 		@close_button.on_clicked {

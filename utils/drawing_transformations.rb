@@ -100,20 +100,18 @@ module DrawingTransformations
 	$accumulated_scale_y = 1.0
 
 	def with_aspect_ratio_fix
-		fix = $accumulated_scale_y / $accumulated_scale_x
+		# make object as wide as it is tall, in screen coordinates
+		fix = ($accumulated_scale_y / $accumulated_scale_x)
 		with_scale(fix, 1.0) {
-			$accumulated_scale_x = (saved = $accumulated_scale_x) * fix
 			yield
-			$accumulated_scale_x = saved
 		}
 	end
 
 	def with_aspect_ratio_fix_y
+		# make object as tall as it is wide, in screen coordinates
 		fix = $accumulated_scale_x / $accumulated_scale_y
 		with_scale(1.0, fix) {
-			$accumulated_scale_y = (saved = $accumulated_scale_y) * fix
 			yield
-			$accumulated_scale_y = saved
 		}
 	end
 
