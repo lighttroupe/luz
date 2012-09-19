@@ -42,24 +42,25 @@ class GuiList < GuiBox
 							with_aspect_ratio_fix_y { |fix_y|
 								visible_slots = (1.0 / (fix_y * final_spacing_y.abs)).ceil
 
-								if @contents.size > visible_slots		# scrolling needed
+								# Enable scrolling?
+								if @contents.size > visible_slots
 									first_index, remainder_scroll = @scroll.divmod(final_spacing_y.abs)
 									total_shown = @contents.size
 									last_index = first_index + (visible_slots) + 1
 
-									with_translation(0.0, @scroll) {
+#									with_translation(0.0, @scroll) {		# note that @scroll is in
 										for fake_index in first_index..last_index
 											index = fake_index % @contents.size		# this achieves endless looping!
 											gui_object = @contents[index]
 											next unless gui_object		# support for nils-- potentially useful feature?
 
-											with_translation(fake_index * (spacing_x || 0.0), (fake_index * final_spacing_y)) {
+											with_translation(fake_index * (spacing_x || 0.0), @scroll + (fake_index * final_spacing_y) + (final_spacing_y / 2.0)) {
 												with_scale(1.0, final_spacing_y.abs) {
 													yield gui_object
 												}
 											}
 										end
-									}
+#									}
 								else
 									with_translation(0.0, (final_spacing_y / 2.0)) {
 										for index in 0..(@contents.size-1)
