@@ -27,4 +27,17 @@ module GuiHoverBehavior
 			on_last_pointer_exit if pointers_hovering.empty?
 		end
 	end
+
+	def scroll_left!(pointer)
+		parent.scroll_left!(pointer) if parent
+	end
+	def scroll_right!(pointer)
+		parent.scroll_right!(pointer) if parent
+	end
+	def scroll_up!(pointer)
+		parent.scroll_up!(pointer) if parent
+	end
+	def scroll_down!(pointer)
+		parent.scroll_down!(pointer) if parent
+	end
 end

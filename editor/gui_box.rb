@@ -1,6 +1,9 @@
 class GuiBox < GuiObject
 	def initialize(contents = [])
 		@contents = contents
+		@contents.each { |gui_object|
+			gui_object.parent = self
+		}
 		super()
 	end
 

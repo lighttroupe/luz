@@ -8,14 +8,30 @@ class GuiList < GuiBox
 		each_with_positioning { |gui_object| gui_object.gui_render! }
 	end
 
+	VELOCITY_PER_SCROLL = 2.0
+	MAX_SCROLL_VELOCITY = 16.0
+	def scroll_up!(pointer)
+		@scroll_velocity = (@scroll_velocity - VELOCITY_PER_SCROLL).clamp(-MAX_SCROLL_VELOCITY, MAX_SCROLL_VELOCITY)
+	end
+	def scroll_down!(pointer)
+		@scroll_velocity = (@scroll_velocity + VELOCITY_PER_SCROLL).clamp(-MAX_SCROLL_VELOCITY, MAX_SCROLL_VELOCITY) 
+	end
+
 	def hit_test_render!
 		return if hidden?
 		each_with_positioning { |gui_object| gui_object.hit_test_render! }
 	end
 
-	def each_with_positioning
+	def gui_tick!
+		super
 		@scroll ||= 0.0
+		@scroll_velocity ||= 0.0
+		@scroll += @scroll_velocity * $env[:frame_time_delta]
+		@scroll_velocity *= 0.9
+		@scroll_velocity = 0.0 if @scroll_velocity.abs < 0.001		# damper
+	end
 
+	def each_with_positioning
 		with_positioning {
 			if spacing_y && spacing_y != 0.0
 				with_horizontal_clip_plane_above(0.5) {
@@ -31,7 +47,7 @@ class GuiList < GuiBox
 									total_shown = (1.0 / (fix_y * final_spacing_y.abs)).ceil
 									total_shown = @contents.size if total_shown > @contents.size
 
-									last_index = first_index + (total_shown) - 1
+									last_index = first_index + (total_shown)
 
 									# fake_index can go higher than the end of the list
 									# index is then properly looped
@@ -74,5 +90,4 @@ class GuiList < GuiBox
 			end
 		}
 	end
-
 end
