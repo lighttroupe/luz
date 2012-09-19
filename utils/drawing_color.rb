@@ -1,4 +1,4 @@
-with_multiplied_alpha ###############################################################################
+ ###############################################################################
  #  Copyright 2011 Ian McIntosh <ian@openanswers.org>
  #
  #  This program is free software; you can redistribute it and/or modify
