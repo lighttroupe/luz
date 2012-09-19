@@ -106,6 +106,35 @@ class LuzPerformer
 	MOUSE_BUTTON_FORMAT = "Mouse %02d / Button %02d"
 	@@mouse_1_button_formatter = Hash.new { |hash, key| hash[key] = sprintf(MOUSE_BUTTON_FORMAT, 1, key) }
 
+	def parse_event(event)
+		case event
+		# Mouse input
+		when SDL::Event2::MouseMotion
+			$engine.on_slider_change(MOUSE_1_X, (event.x / (@width - 1).to_f))
+			$engine.on_slider_change(MOUSE_1_Y, (1.0 - (event.y / (@height - 1).to_f)))
+
+		when SDL::Event2::MouseButtonDown
+			$engine.on_button_down(@@mouse_1_button_formatter[event.button], frame_offset=1)
+
+		when SDL::Event2::MouseButtonUp
+			$engine.on_button_up(@@mouse_1_button_formatter[event.button], frame_offset=1)
+
+		# Keyboard input
+		when SDL::Event2::KeyDown
+			if event.sym == SDL::Key::ESCAPE and escape_quits?
+				finished!
+			else
+				$engine.on_button_down(sdl_to_luz_button_name(SDL::Key.get_key_name(event.sym)), frame_offset=1)
+			end
+
+		when SDL::Event2::KeyUp
+			$engine.on_button_up(sdl_to_luz_button_name(SDL::Key.get_key_name(event.sym)), frame_offset=1)
+
+		when SDL::Event2::Quit
+			finished!
+		end
+	end
+
 	#
 	# Run Performer (interactive)
 	#
@@ -118,34 +147,7 @@ class LuzPerformer
 			frame_start_ms = SDL.getTicks
 
 			while event = SDL::Event2.poll
-				case event
-
-				# Mouse input
-				when SDL::Event2::MouseMotion
-					$engine.on_slider_change(MOUSE_1_X, (event.x / (@width - 1).to_f))
-					$engine.on_slider_change(MOUSE_1_Y, (1.0 - (event.y / (@height - 1).to_f)))
-
-				when SDL::Event2::MouseButtonDown
-					$engine.on_button_down(@@mouse_1_button_formatter[event.button], frame_offset=1)
-
-				when SDL::Event2::MouseButtonUp
-					$engine.on_button_up(@@mouse_1_button_formatter[event.button], frame_offset=1)
-
-				# Keyboard input
-				when SDL::Event2::KeyDown
-					if event.sym == SDL::Key::ESCAPE and escape_quits?
-						finished!
-					else
-						$engine.on_button_down(sdl_to_luz_button_name(SDL::Key.get_key_name(event.sym)), frame_offset=1)
-					end
-
-				when SDL::Event2::KeyUp
-					$engine.on_button_up(sdl_to_luz_button_name(SDL::Key.get_key_name(event.sym)), frame_offset=1)
-
-				# Window closing, etc.
-				when SDL::Event2::Quit
-					finished!
-				end
+				parse_event(event)
 			end
 
 			#
