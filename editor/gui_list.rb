@@ -16,6 +16,7 @@ class GuiList < GuiBox
 
 	def each_with_positioning
 		@scroll ||= 0.0
+		# @scroll += 0.01		# scrolling test
 
 		with_positioning {
 			if spacing_y && spacing_y != 0.0
@@ -34,10 +35,12 @@ class GuiList < GuiBox
 
 									last_index = first_index + (total_shown) - 1
 
+									# fake_index can go higher than the end of the list
+									# index is then properly looped
 									for fake_index in first_index..last_index
 										index = fake_index % @contents.size		# this achieves endless looping!
 										gui_object = @contents[index]
-										next unless gui_object
+										next unless gui_object		# support for nils-- potentially useful feature?
 
 										with_translation(fake_index * (spacing_x || 0.0), (fake_index * final_spacing_y)) {
 											with_scale(1.0, final_spacing_y.abs) {
