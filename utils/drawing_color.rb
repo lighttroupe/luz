@@ -59,6 +59,7 @@ module DrawingColor
 	end
 
 	def with_multiplied_alpha(multiplier)
+		return if multiplier == 0.0
 		return yield if multiplier == 1.0
 
 		saved = GL.GetDoublev(GL::CURRENT_COLOR)

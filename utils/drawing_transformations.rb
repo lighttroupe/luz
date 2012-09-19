@@ -18,35 +18,27 @@
 
 module DrawingTransformations
 	def with_translation(x, y, z=0.0)
-		if x == 0.0 and y == 0.0 and z == 0.0
-			yield
-		else
-			GL.SaveMatrix {
-				GL.Translate(x, y, z)
-				yield
-			}
-		end
-	end
-	def with_translation_unsafe(x, y, z=0.0)
-		if x == 0.0 and y == 0.0 and z == 0.0
-			yield
-		else
+		return yield if x == 0.0 and y == 0.0 and z == 0.0
+
+		GL.SaveMatrix {
 			GL.Translate(x, y, z)
 			yield
-		end
+		}
+	end
+	def with_translation_unsafe(x, y, z=0.0)
+		GL.Translate(x, y, z)
+		yield
 	end
 	#conditional :with_translation
 
 	# Variation of translate, moves "forward" (towards higher Y values)
 	def with_slide(amount)
-		if amount == 0.0
+		return yield if amount == 0.0
+
+		GL.SaveMatrix {
+			GL.Translate(0.0, amount, 0.0)
 			yield
-		else
-			GL.SaveMatrix {
-				GL.Translate(0.0, amount, 0.0)
-				yield
-			}
-		end
+		}
 	end
 	#conditional :with_slide
 
@@ -66,6 +58,7 @@ module DrawingTransformations
 
 	def with_roll(amount, x=0.0, y=0.0, z=1.0)
 		return yield if amount == 0.0
+
 		GL.SaveMatrix {
 			GL.Rotate(amount * FUZZY_TO_DEGREES, x, y, z) 	# Rotate around the Z axis
 			yield
@@ -73,6 +66,7 @@ module DrawingTransformations
 	end
 	def with_roll_unsafe(amount, x=0.0, y=0.0, z=1.0)
 		return yield if amount == 0.0
+
 		GL.Rotate(amount * FUZZY_TO_DEGREES, x, y, z) 	# Rotate around the Z axis
 		yield
 	end
@@ -111,7 +105,7 @@ module DrawingTransformations
 		# make object as tall as it is wide, in screen coordinates
 		fix = $accumulated_scale_x / $accumulated_scale_y
 		with_scale(1.0, fix) {
-			yield
+			yield fix
 		}
 	end
 
