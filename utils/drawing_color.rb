@@ -1,4 +1,4 @@
- ###############################################################################
+with_multiplied_alpha ###############################################################################
  #  Copyright 2011 Ian McIntosh <ian@openanswers.org>
  #
  #  This program is free software; you can redistribute it and/or modify
@@ -59,6 +59,7 @@ module DrawingColor
 	end
 
 	def with_multiplied_alpha(multiplier)
+		return if multiplier == 0.0
 		return yield if multiplier == 1.0
 
 		saved = GL.GetDoublev(GL::CURRENT_COLOR)
