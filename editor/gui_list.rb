@@ -40,29 +40,38 @@ class GuiList < GuiBox
 
 						with_translation(0.0, 0.5) {
 							with_aspect_ratio_fix_y { |fix_y|
-								with_translation(0.0, @scroll + (final_spacing_y / 2.0)) {
+								visible_slots = (1.0 / (fix_y * final_spacing_y.abs)).ceil
+
+								if @contents.size > visible_slots		# scrolling needed
 									first_index, remainder_scroll = @scroll.divmod(final_spacing_y.abs)
+									total_shown = @contents.size
+									last_index = first_index + (visible_slots) + 1
 
-									# TODO: determine total_shown
-									total_shown = (1.0 / (fix_y * final_spacing_y.abs)).ceil
-									total_shown = @contents.size if total_shown > @contents.size
+									with_translation(0.0, @scroll) {
+										for fake_index in first_index..last_index
+											index = fake_index % @contents.size		# this achieves endless looping!
+											gui_object = @contents[index]
+											next unless gui_object		# support for nils-- potentially useful feature?
 
-									last_index = first_index + (total_shown)
-
-									# fake_index can go higher than the end of the list
-									# index is then properly looped
-									for fake_index in first_index..last_index
-										index = fake_index % @contents.size		# this achieves endless looping!
-										gui_object = @contents[index]
-										next unless gui_object		# support for nils-- potentially useful feature?
-
-										with_translation(fake_index * (spacing_x || 0.0), (fake_index * final_spacing_y)) {
-											with_scale(1.0, final_spacing_y.abs) {
-												yield gui_object
+											with_translation(fake_index * (spacing_x || 0.0), (fake_index * final_spacing_y)) {
+												with_scale(1.0, final_spacing_y.abs) {
+													yield gui_object
+												}
 											}
-										}
-									end
-								}
+										end
+									}
+								else
+									with_translation(0.0, (final_spacing_y / 2.0)) {
+										for index in 0..(@contents.size-1)
+											gui_object = @contents[index]
+											with_translation(index * (spacing_x || 0.0), (index * final_spacing_y)) {
+												with_scale(1.0, final_spacing_y.abs) {
+													yield gui_object
+												}
+											}
+										end
+									}
+								end
 							}
 						}
 					}
