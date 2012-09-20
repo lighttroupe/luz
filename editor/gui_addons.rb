@@ -3,8 +3,15 @@ class UserObjectSetting
 	BACKGROUND_COLOR = [1,1,0,0.5]
 
 	def gui_build_editor(container)
+		container << GuiObject.new.set(:color => [0,1,1,1])
+	end
+end
+
+class UserObjectSettingFloat
+	def gui_build_editor(container)
 		box = GuiBox.new
-		box << GuiFloat.new(self, :animation_min).set(:scale_x => 0.3, :offset_x => -0.15)
+		box << GuiFloat.new(self, :animation_min, 0.0, 1.0).set(:scale_x => 0.3, :offset_x => -0.5 + 0.15)
+		box << GuiFloat.new(self, :animation_max, 0.0, 1.0).set(:scale_x => 0.3, :offset_x => 0.5 - 0.15)
 		container << box
 	end
 end

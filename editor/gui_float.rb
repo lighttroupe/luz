@@ -1,7 +1,7 @@
 class GuiFloat < GuiObject
-	def initialize(object, method)
+	def initialize(object, method, min, max)
 		super()
-		@object, @method = object, '@'+method.to_s
+		@object, @method, @min, @max = object, '@'+method.to_s, min, max
 		@value_label = BitmapFont.new		#.set(:scale_y => 1.0)
 		@change_speed_multiplier = 4.0
 		@format_string = "%0.2f"
@@ -12,6 +12,8 @@ class GuiFloat < GuiObject
 	end
 
 	def set_value(value)
+		value = @min if @min && value < @min
+		value = @max if @max && value > @max
 		@object.instance_variable_set(@method, value)
 	end
 
