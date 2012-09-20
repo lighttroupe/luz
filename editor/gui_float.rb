@@ -2,9 +2,9 @@ class GuiFloat < GuiObject
 	def initialize(object, method, min, max)
 		super()
 		@object, @method, @min, @max = object, '@'+method.to_s, min, max
-		@value_label = BitmapFont.new		#.set(:scale_y => 1.0)
+		@value_label = BitmapFont.new.set(:scale_x => 0.95, :scale_y => 0.7)
 		@change_speed_multiplier = 4.0
-		@format_string = "%0.2f"
+		@format_string = "%+0.2f"
 	end
 
 	def get_value
