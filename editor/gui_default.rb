@@ -1,4 +1,4 @@
-require 'gui_pointer_behavior', 'gui_object', 'gui_box', 'gui_list', 'gui_grid', 'gui_message_bar', 'gui_beat_monitor', 'gui_button', 'gui_float'
+require 'gui_pointer_behavior', 'gui_object', 'gui_box', 'gui_list', 'gui_grid', 'gui_message_bar', 'gui_beat_monitor', 'gui_button', 'gui_float', 'gui_toggle'
 require 'editor/fonts/bitmap-font'
 
 require 'gui_addons'
@@ -70,7 +70,7 @@ class GuiDefault < GuiBox
 				return
 			end
 		else
-			editor = GuiUserObjectEditor.new(user_object, {:scale_x => 0.2, :scale_y => 0.2}.merge(options))
+			editor = GuiUserObjectEditor.new(user_object, {:scale_x => 0.3, :scale_y => 0.2}.merge(options))
 			self << editor
 			@user_object_editors[user_object] = editor
 		end
