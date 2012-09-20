@@ -9,7 +9,9 @@ class PointerMouse < Pointer
 	def click?
 		$engine.button_pressed_this_frame?(BUTTON_01)
 	end
-
+	def hold?
+		$engine.button_down?(BUTTON_01)
+	end
 	def scroll_up?
 		$engine.button_pressed_this_frame?(WHEEL_UP)
 	end
