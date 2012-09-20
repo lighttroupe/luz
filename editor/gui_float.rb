@@ -6,9 +6,11 @@ class GuiFloat < GuiObject
 		@change_speed_multiplier = 4.0
 		@format_string = "%0.2f"
 	end
+
 	def get_value
 		@object.instance_variable_get(@method).to_f
 	end
+
 	def set_value(value)
 		@object.instance_variable_set(@method, value)
 	end

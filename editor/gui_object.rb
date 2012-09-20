@@ -2,7 +2,7 @@
 # Gui base class
 #
 class GuiObject
-	include GuiHoverBehavior
+	include GuiPointerBehavior
 	include ValueAnimation
 	include Drawing
 	include Engine::MethodsForUserObject

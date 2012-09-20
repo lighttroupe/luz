@@ -19,7 +19,7 @@ class Integer
 end
 
 class UserObjectSetting
-	include GuiHoverBehavior
+	include GuiPointerBehavior
 	BACKGROUND_COLOR = [1,1,0,0.5]
 
 	def gui_build_editor(container)
@@ -33,7 +33,7 @@ class UserObject
 	SELECTION_COLOR = [1.0,1.0,1.0,0.25]
 	BACKGROUND_COLOR = [0.0,0.0,0.0,0.5]
 
-	include GuiHoverBehavior
+	include GuiPointerBehavior
 
 	easy_accessor :selection_scale_x, :selection_scale_y
 

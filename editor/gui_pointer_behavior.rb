@@ -1,4 +1,4 @@
-module GuiHoverBehavior
+module GuiPointerBehavior
 	empty_method :on_pointer_enter, :on_pointer_exit, :on_first_pointer_enter, :on_last_pointer_exit
 
 	def pointers_hovering
