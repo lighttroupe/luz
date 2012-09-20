@@ -49,12 +49,12 @@ class GuiFloat < GuiObject
 		#return 0.0 if distance_abs < 0.02		# no change within a small box
 		progress = distance.clamp(-0.25, 0.25) / 0.25
 		scaled_progress = ((progress ** 3) + 1.0) / 2.0
-puts scaled_progress
+#puts scaled_progress
 		min, max = -20.0, 20.0
 		v = scaled_progress.scale(min, max)
 		#v = (distance.scale(1.0, 5.0) ** 3)
 #		v += (v > 0) ? -1.0 : 1.0
-		puts "#{distance} => #{v}"
+		#puts "#{distance} => #{v}"
 		v
 	end
 
