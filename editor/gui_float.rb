@@ -20,7 +20,7 @@ class GuiFloat < GuiObject
 	def gui_render!
 		with_positioning {
 			render_selection if pointer_hovering?
-			with_color([rand,rand,rand,0.5]) { unit_square } 		# test fill
+			#with_color([rand,rand,rand,0.5]) { unit_square } 		# test fill
 			@value_label.set_string(sprintf(@format_string, get_value))
 			@value_label.gui_render!
 		}
