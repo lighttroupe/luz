@@ -80,7 +80,8 @@ class GuiList < GuiBox
 					}
 				}
 			else
-				with_vertical_clip_plane_right_of(1.5) {
+				# more primitive support for horizontal layout
+				with_vertical_clip_plane_right_of(1.5) {		# ...uhr?
 					with_vertical_clip_plane_left_of(-0.5) {
 						final_spacing_x = (spacing_x || 0.0) #/ (item_aspect_ratio || 1.0)
 
