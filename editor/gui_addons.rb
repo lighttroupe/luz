@@ -18,6 +18,17 @@ class Integer
 	alias :beat :beats
 end
 
+class UserObjectSetting
+	include GuiHoverBehavior
+	BACKGROUND_COLOR = [1,1,0,0.5]
+
+	def gui_build_editor(container)
+		box = GuiBox.new
+		box << GuiFloat.new(self, :animation_min).set(:scale_x => 0.3, :offset_x => -0.15)
+		container << box
+	end
+end
+
 class UserObject
 	SELECTION_COLOR = [1.0,1.0,1.0,0.25]
 	BACKGROUND_COLOR = [0.0,0.0,0.0,0.5]
@@ -33,6 +44,13 @@ class UserObject
 		if respond_to? :effects
 			@gui_effects_list = GuiList.new(effects).set({:spacing_y => -0.9, :scale_x => 0.95, :scale_y => 0.95, :offset_x => 0.0, :offset_y => 0.0, :item_aspect_ratio => 4.0})
 			container << @gui_effects_list
+		else
+			@gui_settings_list = GuiList.new.set({:spacing_y => -0.9, :scale_x => 0.95, :scale_y => 0.95, :offset_x => 0.0, :offset_y => 0.0, :item_aspect_ratio => 4.0})
+			container << @gui_settings_list
+			settings.each { |setting|
+				puts "creating for #{setting.name}"
+				setting.gui_build_editor(@gui_settings_list)		# TODO: create a box container for each?
+			}
 		end
 	end
 
