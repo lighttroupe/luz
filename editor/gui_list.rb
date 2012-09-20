@@ -1,5 +1,5 @@
 class GuiList < GuiBox
-	easy_accessor :spacing_x, :spacing_y, :item_aspect_ratio
+	easy_accessor :spacing_x, :spacing_y, :item_aspect_ratio, :scroll_wrap
 	easy_accessor :scroll
 
 	def gui_render!
@@ -40,27 +40,29 @@ class GuiList < GuiBox
 
 						with_translation(0.0, 0.5) {
 							with_aspect_ratio_fix_y { |fix_y|
-								visible_slots = (1.0 / (fix_y * final_spacing_y.abs)).ceil
+								visible_slots = ((1.0 / fix_y) / (final_spacing_y.abs))
 
 								# Enable scrolling?
 								if @contents.size > visible_slots
+									unless scroll_wrap
+										@scroll = @scroll.clamp(0.0, (@contents.size - visible_slots) * final_spacing_y.abs)
+									end
+
 									first_index, remainder_scroll = @scroll.divmod(final_spacing_y.abs)
 									total_shown = @contents.size
 									last_index = first_index + (visible_slots) + 1
 
-#									with_translation(0.0, @scroll) {		# note that @scroll is in
-										for fake_index in first_index..last_index
-											index = fake_index % @contents.size		# this achieves endless looping!
-											gui_object = @contents[index]
-											next unless gui_object		# support for nils-- potentially useful feature?
+									for fake_index in first_index..last_index
+										index = fake_index % @contents.size		# this achieves endless looping!
+										gui_object = @contents[index]
+										next unless gui_object		# support for nils-- potentially useful feature?
 
-											with_translation(fake_index * (spacing_x || 0.0), @scroll + (fake_index * final_spacing_y) + (final_spacing_y / 2.0)) {
-												with_scale(1.0, final_spacing_y.abs) {
-													yield gui_object
-												}
+										with_translation(fake_index * (spacing_x || 0.0), @scroll + (fake_index * final_spacing_y) + (final_spacing_y / 2.0)) {
+											with_scale(1.0, final_spacing_y.abs) {
+												yield gui_object
 											}
-										end
-#									}
+										}
+									end
 								else
 									with_translation(0.0, (final_spacing_y / 2.0)) {
 										for index in 0..(@contents.size-1)

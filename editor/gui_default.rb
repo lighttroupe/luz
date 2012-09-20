@@ -13,7 +13,7 @@ class GuiDefault < GuiBox
 	end
 
 	def create_default_gui
-		self << (@actor_list = GuiList.new($engine.project.actors).set(:scale_x => 0.2, :scale_y => 0.5, :offset_x => -0.4, :offset_y => 0.0, :hidden => false, :spacing_y => -1.0))
+		self << (@actor_list = GuiList.new($engine.project.actors).set(:scroll_wrap => true, :scale_x => 0.2, :scale_y => 0.5, :offset_x => -0.4, :offset_y => 0.0, :hidden => false, :spacing_y => -1.0))
 
 		self << (@curves_list = GuiList.new($engine.project.curves).set(:scale_x => 0.08, :scale_y => 0.5, :offset_x => -0.11, :offset_y => 0.5, :item_aspect_ratio => 1.6, :hidden => true, :spacing_y => -1.0))
 		self << (@curve_button = GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.08, :offset_x => -0.11, :offset_y => 0.5 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
