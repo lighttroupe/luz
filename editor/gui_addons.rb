@@ -1,23 +1,3 @@
-class NilClass		# generally helpful for eg. nil instance variables thought to be holding images
-	def using
-		yield
-	end
-end
-
-class Float
-	def beats
-		self * $env[:seconds_per_beat]
-	end
-	alias :beat :beats
-end
-
-class Integer
-	def beats
-		self * $env[:seconds_per_beat]
-	end
-	alias :beat :beats
-end
-
 class UserObjectSetting
 	include GuiPointerBehavior
 	BACKGROUND_COLOR = [1,1,0,0.5]

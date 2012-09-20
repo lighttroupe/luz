@@ -585,6 +585,11 @@ class Integer
 		self * (60 * 60)
 	end
 	alias :hours :hour
+
+	def beats
+		self * $env[:seconds_per_beat]
+	end
+	alias :beat :beats
 end
 
 class Float
@@ -642,6 +647,11 @@ class Float
 		parts << seconds.to_i.plural('second', 'seconds') if parts.empty? # Only show seconds if it's the only part
 		return parts.join(', ')
 	end
+
+	def beats
+		self * $env[:seconds_per_beat]
+	end
+	alias :beat :beats
 end
 
 class Dir
@@ -674,5 +684,11 @@ end
 module Math
 	def self.distance_2d(a,b)
 		((a[0] - b[0]).squared + (a[1] - b[1]).squared).square_root
+	end
+end
+
+class NilClass		# generally helpful for eg. nil instance variables thought to be holding images
+	def using
+		yield
 	end
 end
