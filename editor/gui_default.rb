@@ -12,48 +12,39 @@ class GuiDefault < GuiBox
 		create_default_gui
 	end
 
+	ACTORS_BUTTON    = 'Keyboard / F1'
+	THEMES_BUTTON    = 'Keyboard / F5'
+	CURVES_BUTTON    = 'Keyboard / F6'
+	VARIABLES_BUTTON = 'Keyboard / F7'
+	EVENTS_BUTTON    = 'Keyboard / F8'
+
+	def gui_tick!
+		super
+		toggle_actors_list! if $engine.button_pressed_this_frame?(ACTORS_BUTTON)
+		toggle_curves_list! if $engine.button_pressed_this_frame?(CURVES_BUTTON)
+		toggle_themes_list! if $engine.button_pressed_this_frame?(THEMES_BUTTON)
+		toggle_variables_list! if $engine.button_pressed_this_frame?(VARIABLES_BUTTON)
+		toggle_events_list! if $engine.button_pressed_this_frame?(EVENTS_BUTTON)
+	end
+
 	def create_default_gui
-		self << (@actor_list = GuiList.new($engine.project.actors).set(:scroll_wrap => true, :scale_x => 0.2, :scale_y => 0.5, :offset_x => -0.4, :offset_y => 0.0, :hidden => false, :spacing_y => -1.0))
+		self << (@actors_list = GuiList.new($engine.project.actors).set(:scroll_wrap => true, :scale_x => 0.2, :scale_y => 0.5, :offset_x => -0.4, :offset_y => 0.0, :hidden => true, :spacing_y => -1.0))
 
 		self << (@curves_list = GuiList.new($engine.project.curves).set(:scale_x => 0.08, :scale_y => 0.5, :offset_x => -0.11, :offset_y => 0.5, :item_aspect_ratio => 1.6, :hidden => true, :spacing_y => -1.0))
 		self << (@curve_button = GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.08, :offset_x => -0.11, :offset_y => 0.5 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
-		@curve_button.on_clicked {
-			if @curves_list.hidden?
-				@curves_list.set(:hidden => false, :opacity => 0.0).animate({:offset_y => 0.15, :opacity => 1.0}, duration=0.2)
-			else
-				@curves_list.animate(:offset_y, 0.5, duration=0.25) { @curves_list.set_hidden(true) }.animate(:opacity, 0.0, duration=0.2)
-			end
-		}
+		@curve_button.on_clicked { toggle_curves_list! }
 
 		self << (@themes_list = GuiList.new($engine.project.themes).set(:scale_x => 0.08, :scale_y => 0.5, :offset_x => 0.06, :offset_y => 0.5, :item_aspect_ratio => 1.6, :hidden => true, :spacing_y => -1.0))
 		self << (@theme_button = GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.06, :offset_y => 0.50 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
-		@theme_button.on_clicked {
-			if @themes_list.hidden?
-				@themes_list.set(:hidden => false, :opacity => 0.0).animate({:offset_y => 0.15, :opacity => 1.0}, duration=0.2)
-			else
-				@themes_list.animate(:offset_y, 0.5, duration=0.25) { @themes_list.set_hidden(true) }.animate(:opacity, 0.0, duration=0.2)
-			end
-		}
+		@theme_button.on_clicked { toggle_themes_list! }
 
 		self << (@variables_list = GuiList.new($engine.project.variables).set(:scale_x => 0.12, :scale_y => 0.5, :offset_x => 0.23, :offset_y => 0.5, :item_aspect_ratio => 2.5, :hidden => true, :spacing_y => -1.0))
 		self << (@variable_button = GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.23, :offset_y => 0.50 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
-		@variable_button.on_clicked {
-			if @variables_list.hidden?
-				@variables_list.set(:hidden => false, :opacity => 0.0).animate({:offset_y => 0.15, :opacity => 1.0}, duration=0.2)
-			else
-				@variables_list.animate(:offset_y, 0.5, duration=0.25) { @variables_list.set_hidden(true) }.animate(:opacity, 0.0, duration=0.2)
-			end
-		}
+		@variable_button.on_clicked { toggle_variables_list! }
 
 		self << (@events_list = GuiList.new($engine.project.events).set(:scale_x => 0.12, :scale_y => 0.5, :offset_x => 0.40, :offset_y => 0.5, :item_aspect_ratio => 2.5, :hidden => true, :spacing_y => -1.0))
 		self << (@event_button = GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.40, :offset_y => 0.50 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
-		@event_button.on_clicked {
-			if @events_list.hidden?
-				@events_list.set(:hidden => false, :opacity => 0.0).animate({:offset_y => 0.15, :opacity => 1.0}, duration=0.2)
-			else
-				@events_list.animate({:offset_y => 0.5, :opacity => 0.0}, duration=0.25) { @events_list.set_hidden(true) }
-			end
-		}
+		@event_button.on_clicked { toggle_events_list! }
 
 		self << (@message_bar = GuiMessageBar.new.set(:offset_x => -0.33, :offset_y => 0.5 - 0.04, :scale_x => 0.32, :scale_y => 0.05))
 		self << (@beat_monitor = GuiBeatMonitor.new(beats_per_measure=4).set(:offset_y => -0.45 - 0.03, :scale_x => 0.08, :scale_y => 0.02, :spacing_x => 1.0))
@@ -98,6 +89,46 @@ class GuiDefault < GuiBox
 		editor.animate(final_options, duration=0.2)
 
 		return editor
+	end
+
+	def toggle_actors_list!
+		if @actors_list.hidden?
+			@actors_list.set(:hidden => false, :opacity => 0.0).animate({:opacity => 1.0}, duration=0.2)
+		else
+			@actors_list.animate(:opacity, 0.0, duration=0.25) { @actors_list.set_hidden(true) }
+		end
+	end
+
+	def toggle_curves_list!
+		if @curves_list.hidden?
+			@curves_list.set(:hidden => false, :opacity => 0.0).animate({:offset_y => 0.15, :opacity => 1.0}, duration=0.2)
+		else
+			@curves_list.animate(:offset_y, 0.5, duration=0.25) { @curves_list.set_hidden(true) }.animate(:opacity, 0.0, duration=0.2)
+		end
+	end
+
+	def toggle_themes_list!
+		if @themes_list.hidden?
+			@themes_list.set(:hidden => false, :opacity => 0.0).animate({:offset_y => 0.15, :opacity => 1.0}, duration=0.2)
+		else
+			@themes_list.animate(:offset_y, 0.5, duration=0.25) { @themes_list.set_hidden(true) }.animate(:opacity, 0.0, duration=0.2)
+		end
+	end
+
+	def toggle_variables_list!
+		if @variables_list.hidden?
+			@variables_list.set(:hidden => false, :opacity => 0.0).animate({:offset_y => 0.15, :opacity => 1.0}, duration=0.2)
+		else
+			@variables_list.animate(:offset_y, 0.5, duration=0.25) { @variables_list.set_hidden(true) }.animate(:opacity, 0.0, duration=0.2)
+		end
+	end
+
+	def toggle_events_list!
+		if @events_list.hidden?
+			@events_list.set(:hidden => false, :opacity => 0.0).animate({:offset_y => 0.15, :opacity => 1.0}, duration=0.2)
+		else
+			@events_list.animate({:offset_y => 0.5, :opacity => 0.0}, duration=0.25) { @events_list.set_hidden(true) }
+		end
 	end
 end
 
