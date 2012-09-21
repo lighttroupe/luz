@@ -17,6 +17,11 @@ class GuiBox < GuiObject
 		gui_object.parent = self
 	end
 
+	def clear!
+		@contents.each { |gui_object| gui_object.parent = nil }
+		@contents.clear
+	end
+
 	def bring_to_top(object)
 		if @contents.delete(object)
 			@contents << object
