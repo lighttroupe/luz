@@ -48,6 +48,7 @@ class UserObject
 	end
 
 	def gui_build_settings_list(user_object)
+		return unless @gui_settings_list
 		@gui_settings_list.clear!
 		user_object.settings.each { |setting|
 			setting.gui_build_editor(@gui_settings_list)		# TODO: create a box container for each?
