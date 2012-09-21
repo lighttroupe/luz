@@ -302,7 +302,8 @@ class Variable
 
 		#Value Display
 		with_translation(0.45, 0.25) {
-			@value_label ||= BitmapFont.new.set(:string => (value * 100).to_i.to_s + '%', :scale_x => 0.35, :scale_y => 0.35)
+			@value_label ||= BitmapFont.new.set(:scale_x => 0.35, :scale_y => 0.35)
+			@value_label.set_string((value * 100).to_i.to_s + '%')
 			@value_label.gui_render!
 		}
 
