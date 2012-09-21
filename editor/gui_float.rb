@@ -2,7 +2,7 @@ class GuiFloat < GuiObject
 	def initialize(object, method, min, max)
 		super()
 		@object, @method, @min, @max = object, '@'+method.to_s, min, max
-		@value_label = BitmapFont.new.set(:scale_x => 0.95, :scale_y => 0.7)
+		@value_label = BitmapFont.new.set(:scale_x => 0.9, :scale_y => 0.65)
 		@change_speed_multiplier = 4.0
 		@format_string = "%+0.2f"
 	end
@@ -17,12 +17,20 @@ class GuiFloat < GuiObject
 		@object.instance_variable_set(@method, value)
 	end
 
+	def generate_string
+		sprintf(@format_string, get_value).sub('+',' ')
+	end
+
+	COLOR = [0.1, 0.1, 1.0, 1.0]
 	def gui_render!
 		with_positioning {
 			render_selection if pointer_hovering?
 			#with_color([rand,rand,rand,0.5]) { unit_square } 		# test fill
-			@value_label.set_string(sprintf(@format_string, get_value))
-			@value_label.gui_render!
+			@value_label.set_string(generate_string)
+
+			with_color(COLOR) {
+				@value_label.gui_render!
+			}
 		}
 	end
 
@@ -69,7 +77,7 @@ class GuiFloat < GuiObject
 
 	def step_amount
 		return 1.0 unless @min
-		return 0.1
+		return 0.01
 	end
 
 	def scroll_up!(pointer)
