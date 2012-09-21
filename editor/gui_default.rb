@@ -1,4 +1,4 @@
-require 'gui_pointer_behavior', 'gui_object', 'gui_box', 'gui_list', 'gui_grid', 'gui_message_bar', 'gui_beat_monitor', 'gui_button', 'gui_float', 'gui_toggle'
+require 'gui_pointer_behavior', 'gui_object', 'gui_box', 'gui_list', 'gui_grid', 'gui_message_bar', 'gui_beat_monitor', 'gui_button', 'gui_float', 'gui_toggle', 'gui_curve'
 require 'editor/fonts/bitmap-font'
 
 require 'gui_addons'
@@ -17,6 +17,11 @@ class GuiDefault < GuiBox
 	CURVES_BUTTON    = 'Keyboard / F6'
 	VARIABLES_BUTTON = 'Keyboard / F7'
 	EVENTS_BUTTON    = 'Keyboard / F8'
+
+	def reload_notify
+#		clear!
+#		create_default_gui
+	end
 
 	def gui_tick!
 		super
