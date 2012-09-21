@@ -17,6 +17,7 @@ class GuiCurve < GuiObject
 	end
 
 	def gui_render!
+		return if hidden?
 		return unless (curve = get_value)
 		with_positioning {
 			curve.gui_render!

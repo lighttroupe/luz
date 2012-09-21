@@ -23,6 +23,7 @@ class GuiFloat < GuiObject
 
 	COLOR = [0.1, 0.1, 1.0, 1.0]
 	def gui_render!
+		return if hidden?
 		with_positioning {
 			render_selection if pointer_hovering?
 			#with_color([rand,rand,rand,0.5]) { unit_square } 		# test fill
