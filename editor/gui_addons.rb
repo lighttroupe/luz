@@ -37,6 +37,7 @@ class UserObject
 			@gui_settings_list = GuiList.new.set({:spacing_y => -0.9, :scale_x => 0.5, :scale_y => 0.9, :offset_x => 0.25, :offset_y => -0.05, :item_aspect_ratio => 4.0})
 			container << @gui_settings_list
 		else
+			# Just a settings list (not used as of 2012/09/21)
 			@gui_settings_list = GuiList.new.set({:spacing_y => -0.9, :scale_x => 0.95, :scale_y => 0.9, :offset_x => 0.0, :offset_y => -0.05, :item_aspect_ratio => 4.0})
 			container << @gui_settings_list
 		end
