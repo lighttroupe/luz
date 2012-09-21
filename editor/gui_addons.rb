@@ -32,12 +32,12 @@ class UserObject
 	def gui_build_editor(container)
 		if respond_to? :effects
 			# Two-lists side by side
-			@gui_effects_list = GuiList.new(effects).set({:spacing_y => -0.9, :scale_x => 0.5, :scale_y => 0.95, :offset_x => -0.25, :offset_y => -0.1, :item_aspect_ratio => 4.0})
+			@gui_effects_list = GuiList.new(effects).set({:spacing_y => -0.9, :scale_x => 0.5, :scale_y => 0.9, :offset_x => -0.25, :offset_y => -0.05, :item_aspect_ratio => 4.0})
 			container << @gui_effects_list
-			@gui_settings_list = GuiList.new.set({:spacing_y => -0.9, :scale_x => 0.5, :scale_y => 0.9, :offset_x => 0.25, :offset_y => -0.1, :item_aspect_ratio => 4.0})
+			@gui_settings_list = GuiList.new.set({:spacing_y => -0.9, :scale_x => 0.5, :scale_y => 0.9, :offset_x => 0.25, :offset_y => -0.05, :item_aspect_ratio => 4.0})
 			container << @gui_settings_list
 		else
-			@gui_settings_list = GuiList.new.set({:spacing_y => -0.9, :scale_x => 0.95, :scale_y => 0.9, :offset_x => 0.0, :offset_y => -0.1, :item_aspect_ratio => 4.0})
+			@gui_settings_list = GuiList.new.set({:spacing_y => -0.9, :scale_x => 0.95, :scale_y => 0.9, :offset_x => 0.0, :offset_y => -0.05, :item_aspect_ratio => 4.0})
 			container << @gui_settings_list
 		end
 

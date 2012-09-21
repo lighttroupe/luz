@@ -136,7 +136,7 @@ class GuiDefault < GuiBox
 		editor.set({:offset_x => pointer.x, :offset_y => pointer.y, :opacity => 0.0, :hidden => false})
 
 		# ...reveal just this one.
-		final_options = {:offset_x => -0.15, :offset_y => 0.15, :scale_x => 0.2, :scale_y => 0.25, :opacity => 1.0}
+		final_options = {:offset_x => -0.15, :offset_y => 0.15, :scale_x => 0.3, :scale_y => 0.375, :opacity => 1.0}
 		editor.animate(final_options, duration=0.2)
 
 		return editor
