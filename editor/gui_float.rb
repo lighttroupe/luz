@@ -66,4 +66,17 @@ class GuiFloat < GuiObject
 			unit_square
 		}
 	end
+
+	def step_amount
+		return 1.0 unless @min
+		return 0.1
+	end
+
+	def scroll_up!(pointer)
+		set_value(get_value + step_amount)
+	end
+
+	def scroll_down!(pointer)
+		set_value(get_value - step_amount)
+	end
 end
