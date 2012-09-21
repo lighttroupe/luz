@@ -11,6 +11,7 @@ class UserObjectSettingFloat
 	def gui_build_editor(container)
 		box = GuiBox.new
 		box << GuiFloat.new(self, :animation_min, @min, @max).set(:scale_x => 0.3, :offset_x => -0.5 + 0.15)
+		box << GuiCurve.new(self, :animation_curve).set(:scale_x => 0.3, :offset_x => 0.05)
 		box << GuiFloat.new(self, :animation_max, @min, @max).set(:scale_x => 0.3, :offset_x => 0.5 - 0.15)
 		box << GuiToggle.new(self, :enable_animation).set(:scale_x => 0.1, :offset_x => -0.15, :color => [1,0,0,1])
 		container << box
@@ -30,16 +31,30 @@ class UserObject
 
 	def gui_build_editor(container)
 		if respond_to? :effects
-			@gui_effects_list = GuiList.new(effects).set({:spacing_y => -0.9, :scale_x => 0.95, :scale_y => 0.95, :offset_x => 0.0, :offset_y => 0.0, :item_aspect_ratio => 4.0})
+			# Two-lists side by side
+			@gui_effects_list = GuiList.new(effects).set({:spacing_y => -0.9, :scale_x => 0.5, :scale_y => 0.95, :offset_x => -0.25, :offset_y => -0.1, :item_aspect_ratio => 4.0})
 			container << @gui_effects_list
-		else
-			@gui_settings_list = GuiList.new.set({:spacing_y => -0.9, :scale_x => 0.95, :scale_y => 0.95, :offset_x => 0.0, :offset_y => 0.0, :item_aspect_ratio => 4.0})
+			@gui_settings_list = GuiList.new.set({:spacing_y => -0.9, :scale_x => 0.5, :scale_y => 0.9, :offset_x => 0.25, :offset_y => -0.1, :item_aspect_ratio => 4.0})
 			container << @gui_settings_list
-			settings.each { |setting|
-				puts "creating for #{setting.name}"
-				setting.gui_build_editor(@gui_settings_list)		# TODO: create a box container for each?
-			}
+		else
+			@gui_settings_list = GuiList.new.set({:spacing_y => -0.9, :scale_x => 0.95, :scale_y => 0.9, :offset_x => 0.0, :offset_y => -0.1, :item_aspect_ratio => 4.0})
+			container << @gui_settings_list
 		end
+
+		if @gui_settings_list
+			gui_build_settings_list(self)
+		end
+	end
+
+	def gui_build_settings_list(user_object)
+		@gui_settings_list.clear!
+		user_object.settings.each { |setting|
+			setting.gui_build_editor(@gui_settings_list)		# TODO: create a box container for each?
+		}
+	end
+
+	def on_child_user_object_selected(user_object)
+		gui_build_settings_list(user_object)
 	end
 
 	def gui_render!

@@ -1,5 +1,52 @@
 --- 
   :events: 
+    - &id055 !ruby/object:Event
+      effects: 
+        - !ruby/object:EventInputButtonPress
+          conditions: !ruby/object:ChildConditions
+            enable_child_index: false
+            child_index_min: 0
+            child_index_max: 0
+            enable_event: false
+            event: 
+            event_invert: false
+            child_index_max: 0
+            child_index_min: 0
+            enable_child_index: false
+            enable_event: false
+            event: 
+            event_invert: false
+          title: Button Press
+          enabled: true
+          button_setting: !ruby/object:UserObjectSettingButton
+            button: Keyboard / Space
+            name: button
+            options: &id005
+              
+              :summary: true
+            breaks_cache: 
+      title: beat tap!
+      enabled: true
+    - !ruby/object:Event
+      effects: 
+        - !ruby/object:EventInputAlways
+          conditions: !ruby/object:ChildConditions
+            enable_child_index: false
+            child_index_min: 0
+            child_index_max: 0
+            enable_event: false
+            event: 
+            event_invert: false
+            child_index_max: 0
+            child_index_min: 0
+            enable_child_index: false
+            enable_event: false
+            event: 
+            event_invert: false
+          title: Always
+          enabled: true
+      title: always on
+      enabled: true
     - !ruby/object:Event
       effects: 
         - !ruby/object:EventInputButtonToggle
@@ -34,34 +81,7 @@
             breaks_cache: 
       title: show editor
       enabled: true
-    - &id055 !ruby/object:Event
-      effects: 
-        - !ruby/object:EventInputButtonPress
-          conditions: !ruby/object:ChildConditions
-            enable_child_index: false
-            child_index_min: 0
-            child_index_max: 0
-            enable_event: false
-            event: 
-            event_invert: false
-            child_index_max: 0
-            child_index_min: 0
-            enable_child_index: false
-            enable_event: false
-            event: 
-            event_invert: false
-          title: Button Press
-          enabled: true
-          button_setting: !ruby/object:UserObjectSettingButton
-            button: Keyboard / Space
-            name: button
-            options: &id005
-              
-              :summary: true
-            breaks_cache: 
-      title: beat tap!
-      enabled: true
-    - &id058 !ruby/object:Event
+    - &id056 !ruby/object:Event
       effects: 
         - !ruby/object:EventInputButtonComboDown
           conditions: !ruby/object:ChildConditions
@@ -123,26 +143,6 @@
       enabled: true
     - !ruby/object:Event
       effects: 
-        - !ruby/object:EventInputAlways
-          conditions: !ruby/object:ChildConditions
-            enable_child_index: false
-            child_index_min: 0
-            child_index_max: 0
-            enable_event: false
-            event: 
-            event_invert: false
-            child_index_max: 0
-            child_index_min: 0
-            enable_child_index: false
-            enable_event: false
-            event: 
-            event_invert: false
-          title: Always
-          enabled: true
-      title: always on
-      enabled: true
-    - !ruby/object:Event
-      effects: 
         - !ruby/object:EventInputButtonToggle
           conditions: !ruby/object:ChildConditions
             enable_child_index: false
@@ -198,6 +198,35 @@
             button: 
             name: clear
             options: *id004
+            breaks_cache: 
+        - !ruby/object:EventInputButtonRepeater
+          conditions: !ruby/object:ChildConditions
+            enable_child_index: false
+            child_index_min: 0
+            child_index_max: 0
+            enable_event: false
+            event: 
+            event_invert: false
+            child_index_max: 0
+            child_index_min: 0
+            enable_child_index: false
+            enable_event: false
+            event: 
+            event_invert: false
+          title: Button Repeater
+          enabled: true
+          button_setting: !ruby/object:UserObjectSettingButton
+            button: Keyboard / Right Shift
+            name: button
+            options: 
+              :summary: true
+            breaks_cache: 
+          period_setting: !ruby/object:UserObjectSettingTimespan
+            time_number: 0.25
+            time_unit: :beats
+            name: period
+            options: 
+              :summary: true
             breaks_cache: 
       title: toggle test 2
       enabled: true
@@ -4138,6 +4167,28 @@
                 excl: false
             breaks_cache: 
             animation_min: 0
+        - !ruby/object:ActorEffectImage
+          conditions: !ruby/object:ChildConditions
+            enable_child_index: false
+            child_index_min: 0
+            child_index_max: 0
+            enable_event: false
+            event: 
+            event_invert: false
+            child_index_max: 0
+            child_index_min: 0
+            enable_child_index: false
+            enable_event: false
+            event: 
+            event_invert: false
+          title: Image
+          enabled: true
+          image_setting: !ruby/object:UserObjectSettingImage
+            image_name: grid-3x3.png
+            name: image
+            options: 
+              :summary: true
+            breaks_cache: 
         - !ruby/object:ActorEffectTextChildren
           conditions: !ruby/object:ChildConditions
             enable_child_index: false
@@ -4153,7 +4204,7 @@
             event: 
             event_invert: false
           title: Text Children
-          enabled: true
+          enabled: false
           font_setting: !ruby/object:UserObjectSettingFont
             font: Star Jedi
             name: font
@@ -4172,11 +4223,11 @@
         name: hole_size
         options: &id029
           
-          :breaks_cache: true
           :range: !ruby/range
             begin: 0.0
             end: 1.0
             excl: false
+          :breaks_cache: true
           :default: !ruby/range
             begin: 0.0
             end: 1.0
@@ -4691,11 +4742,11 @@
       arms_setting: !ruby/object:UserObjectSettingInteger
         name: arms
         options: 
-          :breaks_cache: true
           :range: !ruby/range
             begin: 2
             end: 100
             excl: false
+          :breaks_cache: true
           :default: !ruby/range
             begin: 5
             end: 100
@@ -4705,11 +4756,11 @@
       radius_setting: !ruby/object:UserObjectSettingFloat
         name: radius
         options: 
-          :breaks_cache: true
           :range: !ruby/range
             begin: 0.0
             end: 1.0
             excl: false
+          :breaks_cache: true
           :default: !ruby/range
             begin: 0.25
             end: 1.0
@@ -4737,11 +4788,11 @@
       cutout_size_setting: !ruby/object:UserObjectSettingFloat
         name: cutout_size
         options: 
-          :breaks_cache: true
           :range: !ruby/range
             begin: 0.0
             end: 1.0
             excl: false
+          :breaks_cache: true
           :default: !ruby/range
             begin: 0.0
             end: 1.0
@@ -5165,11 +5216,11 @@
       arms_setting: !ruby/object:UserObjectSettingInteger
         name: arms
         options: 
-          :breaks_cache: true
           :range: !ruby/range
             begin: 2
             end: 100
             excl: false
+          :breaks_cache: true
           :default: !ruby/range
             begin: 5
             end: 100
@@ -5179,11 +5230,11 @@
       radius_setting: !ruby/object:UserObjectSettingFloat
         name: radius
         options: 
-          :breaks_cache: true
           :range: !ruby/range
             begin: -2.0
             end: 2.0
             excl: false
+          :breaks_cache: true
           :default: !ruby/range
             begin: 0.2
             end: 1.0
@@ -5211,11 +5262,11 @@
       detail_setting: !ruby/object:UserObjectSettingInteger
         name: detail
         options: 
-          :breaks_cache: true
           :range: !ruby/range
             begin: 1
             end: 100
             excl: false
+          :breaks_cache: true
           :default: !ruby/range
             begin: 50
             end: 100
@@ -6751,11 +6802,11 @@
       knob_x_setting: !ruby/object:UserObjectSettingFloat
         name: knob_x
         options: 
-          :breaks_cache: true
           :range: !ruby/range
             begin: 0.0
             end: 1.0
             excl: false
+          :breaks_cache: true
           :default: !ruby/range
             begin: 0.25
             end: 1.0
@@ -6783,11 +6834,11 @@
       knob_y_setting: !ruby/object:UserObjectSettingFloat
         name: knob_y
         options: 
-          :breaks_cache: true
           :range: !ruby/range
             begin: 0.0
             end: 1.0
             excl: false
+          :breaks_cache: true
           :default: !ruby/range
             begin: 0.25
             end: 1.0
@@ -6815,11 +6866,11 @@
       detail_setting: !ruby/object:UserObjectSettingInteger
         name: detail
         options: 
-          :breaks_cache: true
           :range: !ruby/range
             begin: 1
             end: 50
             excl: false
+          :breaks_cache: true
           :default: !ruby/range
             begin: 16
             end: 50
@@ -7093,6 +7144,50 @@
         activation_curve: *id007
         activation_value: 0.4
         activation_variable: *id051
+    - !ruby/object:ProjectEffectReloadCodeOnEvent
+      conditions: !ruby/object:ChildConditions
+        enable_child_index: false
+        child_index_min: 0
+        child_index_max: 0
+        enable_event: false
+        event: 
+        event_invert: false
+        child_index_max: 0
+        child_index_min: 0
+        enable_child_index: false
+        enable_event: false
+        event: 
+        event_invert: false
+      title: Reload Code on Event
+      enabled: true
+      reload_setting: !ruby/object:UserObjectSettingEvent
+        event: *id056
+        name: reload
+        options: 
+          :summary: on %
+        breaks_cache: 
+    - !ruby/object:ProjectEffectReloadOnEvent
+      conditions: !ruby/object:ChildConditions
+        enable_child_index: false
+        child_index_min: 0
+        child_index_max: 0
+        enable_event: false
+        event: 
+        event_invert: false
+        child_index_max: 0
+        child_index_min: 0
+        enable_child_index: false
+        enable_event: false
+        event: 
+        event_invert: false
+      title: Reload on Event
+      enabled: true
+      reload_setting: !ruby/object:UserObjectSettingEvent
+        event: *id056
+        name: reload
+        options: 
+          :summary: on %
+        breaks_cache: 
     - !ruby/object:ProjectEffectEditor
       conditions: !ruby/object:ChildConditions
         enable_child_index: false
@@ -7112,11 +7207,11 @@
       show_amount_setting: !ruby/object:UserObjectSettingFloat
         name: show_amount
         options: 
-          :range: &id056 !ruby/range
+          :range: &id057 !ruby/range
             begin: 0.0
             end: 1.0
             excl: false
-          :default: *id056
+          :default: *id057
         breaks_cache: 
         min: 0.0
         max: 1.0
@@ -7136,7 +7231,7 @@
         activation_direction: :to
         activation_curve: *id007
         activation_value: 1.0
-        activation_variable: &id057 !ruby/object:Variable
+        activation_variable: &id058 !ruby/object:Variable
           effects: 
             - !ruby/object:VariableInputButtonToggle
               conditions: !ruby/object:ChildConditions
@@ -7216,7 +7311,7 @@
         activation_direction: :to
         activation_curve: *id007
         activation_value: 0.5
-        activation_variable: *id057
+        activation_variable: *id058
       debug_setting: !ruby/object:UserObjectSettingEvent
         event: !ruby/object:Event
           effects: 
@@ -7252,28 +7347,6 @@
           enabled: true
         name: debug
         options: {}
-        breaks_cache: 
-    - !ruby/object:ProjectEffectReloadOnEvent
-      conditions: !ruby/object:ChildConditions
-        enable_child_index: false
-        child_index_min: 0
-        child_index_max: 0
-        enable_event: false
-        event: 
-        event_invert: false
-        child_index_max: 0
-        child_index_min: 0
-        enable_child_index: false
-        enable_event: false
-        event: 
-        event_invert: false
-      title: Reload on Event
-      enabled: true
-      reload_setting: !ruby/object:UserObjectSettingEvent
-        event: *id058
-        name: reload
-        options: 
-          :summary: on %
         breaks_cache: 
     - !ruby/object:ProjectEffectDirector
       conditions: !ruby/object:ChildConditions
@@ -7410,7 +7483,7 @@
         activation_value: 1.0
         activation_variable: 
   :variables: 
-    - *id057
+    - *id058
     - *id052
     - *id049
     - *id051

@@ -59,43 +59,6 @@ class GuiDefault < GuiBox
 		@user_object_editors = {}
 	end
 
-	def build_editor_for(user_object, options)
-		pointer = options[:pointer]
-		editor = @user_object_editors[user_object]
-
-		if editor
-			if editor.hidden?
-				bring_to_top(editor)
-				editor.not_hidden!
-			else
-				# was already visible... ...hide self towards click spot
-				editor.animate({:offset_x => pointer.x, :offset_y => pointer.y, :opacity => 0.2}, duration=0.2) {
-					editor.hidden!
-				}
-				return
-			end
-		else
-			editor = GuiUserObjectEditor.new(user_object, {:scale_x => 0.3, :scale_y => 0.2}.merge(options))
-			self << editor
-			@user_object_editors[user_object] = editor
-		end
-
-		# Reveal
-#		editor.animate({:offset_x => pointer.x + 0.1 + (editor.scale_x / 2.0), :offset_y => pointer.y + 0.1 - (editor.scale_y / 2.0), :opacity => 1.0}, duration=0.2)
-
-		# Hide everything...
-		@user_object_editors.values.each { |e|
-			e.set({:opacity => 0.0, :hidden => true})	#, duration=0.4)
-		}
-		editor.set({:offset_x => pointer.x, :offset_y => pointer.y, :opacity => 0.0, :hidden => false})
-
-		# ...reveal just this one.
-		final_options = {:offset_x => -0.15, :offset_y => 0.15, :scale_x => 0.2, :scale_y => 0.25, :opacity => 1.0}
-		editor.animate(final_options, duration=0.2)
-
-		return editor
-	end
-
 	def toggle_actors_list!
 		if @actors_list.hidden?
 			@actors_list.set(:hidden => false, :opacity => 0.0).animate({:opacity => 1.0}, duration=0.2)
@@ -135,6 +98,49 @@ class GuiDefault < GuiBox
 			@events_list.animate({:offset_y => 0.5, :opacity => 0.0}, duration=0.25) { @events_list.set_hidden(true) }
 		end
 	end
+
+	def build_editor_for(user_object, options)
+		pointer = options[:pointer]
+		editor = @user_object_editors[user_object]
+
+		if editor
+			if editor.hidden?
+				bring_to_top(editor)
+				editor.not_hidden!
+			else
+				# was already visible... ...hide self towards click spot
+				editor.animate({:offset_x => pointer.x, :offset_y => pointer.y, :opacity => 0.2}, duration=0.2) {
+					editor.hidden!
+				}
+				return
+			end
+		else
+			if user_object.is_a? ParentUserObject
+				editor = GuiUserObjectEditor.new(user_object, {:scale_x => 0.3, :scale_y => 0.2}.merge(options))
+				self << editor
+				@user_object_editors[user_object] = editor
+			else
+				parent = @user_object_editors.keys.find { |uo| uo.effects.include? user_object }		# TODO: hacking around children not knowing their parents for easier puppetry
+				parent.on_child_user_object_selected(user_object)
+				return
+			end
+		end
+
+		# Reveal
+#		editor.animate({:offset_x => pointer.x + 0.1 + (editor.scale_x / 2.0), :offset_y => pointer.y + 0.1 - (editor.scale_y / 2.0), :opacity => 1.0}, duration=0.2)
+
+		# Hide everything...
+		@user_object_editors.values.each { |e|
+			e.set({:opacity => 0.0, :hidden => true})	#, duration=0.4)
+		}
+		editor.set({:offset_x => pointer.x, :offset_y => pointer.y, :opacity => 0.0, :hidden => false})
+
+		# ...reveal just this one.
+		final_options = {:offset_x => -0.15, :offset_y => 0.15, :scale_x => 0.2, :scale_y => 0.25, :opacity => 1.0}
+		editor.animate(final_options, duration=0.2)
+
+		return editor
+	end
 end
 
 class GuiUserObjectEditor < GuiBox
@@ -154,7 +160,7 @@ class GuiUserObjectEditor < GuiBox
 		@user_object.gui_build_editor(self)
 
 		# label
-		self << (@title_text=BitmapFont.new.set_string(@user_object.title).set(:scale_x => 0.95, :scale_y => 0.15, :offset_x => 0.0, :offset_y => 0.5))		#.set(:background_image => $engine.load_image('images/buttons/menu.png'))
+		self << (@title_text=BitmapFont.new.set_string(@user_object.title).set(:scale_x => 1.0, :scale_y => 0.08, :offset_x => 0.0, :offset_y => 0.5 - 0.04))		#.set(:background_image => $engine.load_image('images/buttons/menu.png'))
 
 		self << (@close_button=GuiButton.new.set(:scale_x => 0.15, :scale_y => 0.15, :offset_x => 0.5, :offset_y => 0.5, :background_image => $engine.load_image('images/buttons/close.png')))
 		@close_button.on_clicked {
