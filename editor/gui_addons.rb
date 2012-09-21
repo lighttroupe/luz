@@ -10,8 +10,8 @@ end
 class UserObjectSettingFloat
 	def gui_build_editor(container)
 		box = GuiBox.new
-		box << GuiFloat.new(self, :animation_min, 0.0, 1.0).set(:scale_x => 0.3, :offset_x => -0.5 + 0.15)
-		box << GuiFloat.new(self, :animation_max, 0.0, 1.0).set(:scale_x => 0.3, :offset_x => 0.5 - 0.15)
+		box << GuiFloat.new(self, :animation_min, @min, @max).set(:scale_x => 0.3, :offset_x => -0.5 + 0.15)
+		box << GuiFloat.new(self, :animation_max, @min, @max).set(:scale_x => 0.3, :offset_x => 0.5 - 0.15)
 		box << GuiToggle.new(self, :enable_animation).set(:scale_x => 0.1, :offset_x => -0.15, :color => [1,0,0,1])
 		container << box
 	end
