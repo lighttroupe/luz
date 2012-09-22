@@ -9,6 +9,7 @@ class GuiObject
 
 	easy_accessor :parent, :offset_x, :offset_y, :scale_x, :scale_y, :opacity, :color
 	boolean_accessor :hidden
+	boolean_accessor :draggable
 
 	def initialize
 		@parent = nil

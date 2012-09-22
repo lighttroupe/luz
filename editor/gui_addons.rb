@@ -29,6 +29,8 @@ class UserObject
 	empty_method :gui_tick!
 	easy_accessor :parent
 
+	boolean_accessor :draggable
+
 	def gui_build_editor(container)
 		if respond_to? :effects
 			# Two-lists side by side

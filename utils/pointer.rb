@@ -1,6 +1,10 @@
 class Pointer
 	easy_accessor :number, :background_image, :color, :size
 	DEFAULT_COLOR = [1,1,1,0.7]
+	HOLD_COLOR = [1,1,1,0.4]
+
+	boolean_accessor :click
+	boolean_accessor :dragging
 
 	def initialize
 		@number = 1
@@ -8,13 +12,51 @@ class Pointer
 		@color = DEFAULT_COLOR
 	end
 
+	def hold_time
+		@click_time ? Time.now - @click_time : 0.0
+	end
+
+	LONG_CLICK_HOLD_TIME = 1.0
+
+	def drop!
+		puts 'dropped!'
+	end
+
 	def tick!
 		if @hover_object
-			@hover_object.click(self) if click? && @hover_object.respond_to?(:click)
+			if click?
+				@hover_object.click(self) if @hover_object.respond_to?(:click)
+				@click_potential = true		# something could happen!
+				@click_time = Time.now
+
+			elsif dragging?
+				drop! unless hold?
+
+			elsif !@click_potential
+				# nothing...
+
+			elsif hold?
+				# TODO: check for dragging
+				if hold_time > LONG_CLICK_HOLD_TIME
+					@hover_object.long_click(self) if @hover_object.respond_to?(:long_click)
+					@click_potential = false
+				end
+
+			else
+				@click_potential = false
+			end
 			@hover_object.scroll_up!(self) if scroll_up? && @hover_object.respond_to?(:scroll_up!)
 			@hover_object.scroll_down!(self) if scroll_down? && @hover_object.respond_to?(:scroll_down!)
 			@hover_object.scroll_left!(self) if scroll_left? && @hover_object.respond_to?(:scroll_left!)
 			@hover_object.scroll_right!(self) if scroll_right? && @hover_object.respond_to?(:scroll_right!)
+		end
+	end
+
+	def color
+		if hold?
+			HOLD_COLOR
+		else
+			DEFAULT_COLOR
 		end
 	end
 
