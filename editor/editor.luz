@@ -4109,7 +4109,8 @@
                   green: 0.0
                   red: 0.0
                 name: background_color
-                options: 
+                options: &id075
+                  
                   :only_literal: true
                   :default: 
                     - 0.0
@@ -7647,3 +7648,271 @@
   :version: 1
   :themes: 
     - *id018
+    - !ruby/object:Theme
+      tags: 
+      effects: 
+        - !ruby/object:Style
+          title: ""
+          enabled: true
+          color_setting: !ruby/object:UserObjectSettingColor
+            color: !ruby/object:Color
+              alpha: 1.0
+              blue: 0.0
+              green: 0.269413290608072
+              red: 1.0
+            name: &id073 color
+            options: *id012
+            breaks_cache: 
+          image_setting: !ruby/object:UserObjectSettingImage
+            image_name: 
+            name: &id074 image
+            options: *id014
+            breaks_cache: 
+        - !ruby/object:Style
+          title: ""
+          enabled: true
+          color_setting: !ruby/object:UserObjectSettingColor
+            color: !ruby/object:Color
+              alpha: 1.0
+              blue: 0.0
+              green: 0.894560158693828
+              red: 1.0
+            name: *id073
+            options: *id012
+            breaks_cache: 
+          image_setting: !ruby/object:UserObjectSettingImage
+            image_name: 
+            name: *id074
+            options: *id014
+            breaks_cache: 
+        - !ruby/object:Style
+          title: ""
+          enabled: true
+          color_setting: !ruby/object:UserObjectSettingColor
+            color: !ruby/object:Color
+              alpha: 1.0
+              blue: 0.135072861829557
+              green: 0.838284885938811
+              red: 0.513176165407797
+            name: *id073
+            options: *id012
+            breaks_cache: 
+          image_setting: !ruby/object:UserObjectSettingImage
+            image_name: 
+            name: *id074
+            options: *id014
+            breaks_cache: 
+        - !ruby/object:Style
+          title: ""
+          enabled: true
+          color_setting: !ruby/object:UserObjectSettingColor
+            color: !ruby/object:Color
+              alpha: 1.0
+              blue: 0.0376897840848402
+              green: 0.0470283054856184
+              red: 0.780117494468605
+            name: *id073
+            options: *id012
+            breaks_cache: 
+          image_setting: !ruby/object:UserObjectSettingImage
+            image_name: 
+            name: *id074
+            options: *id014
+            breaks_cache: 
+      title: Autumn
+      enabled: true
+      background_color_setting: !ruby/object:UserObjectSettingColor
+        color: !ruby/object:Color
+          alpha: 1.0
+          blue: 0.0
+          green: 0.0
+          red: 0.0
+        name: &id076 background_color
+        options: *id075
+        breaks_cache: 
+    - !ruby/object:Theme
+      tags: 
+      effects: 
+        - !ruby/object:Style
+          title: ""
+          enabled: true
+          color_setting: !ruby/object:UserObjectSettingColor
+            color: !ruby/object:Color
+              alpha: 1.0
+              blue: 1.0
+              green: 1.0
+              red: 1.0
+            name: *id073
+            options: *id012
+            breaks_cache: 
+          image_setting: !ruby/object:UserObjectSettingImage
+            image_name: 
+            name: *id074
+            options: *id014
+            breaks_cache: 
+        - !ruby/object:Style
+          title: ""
+          enabled: true
+          color_setting: !ruby/object:UserObjectSettingColor
+            color: !ruby/object:Color
+              alpha: 1.0
+              blue: 0.0
+              green: 0.0
+              red: 0.0
+            name: *id073
+            options: *id012
+            breaks_cache: 
+          image_setting: !ruby/object:UserObjectSettingImage
+            image_name: 
+            name: *id074
+            options: *id014
+            breaks_cache: 
+        - !ruby/object:Style
+          title: ""
+          enabled: true
+          color_setting: !ruby/object:UserObjectSettingColor
+            color: !ruby/object:Color
+              alpha: 1.0
+              blue: 1.0
+              green: 1.0
+              red: 1.0
+            name: color
+            options: 
+              :only_literal: true
+              :default: 
+                - 1.0
+                - 1.0
+                - 1.0
+                - 1.0
+            breaks_cache: 
+          image_setting: !ruby/object:UserObjectSettingImage
+            image_name: 
+            name: image
+            options: {}
+            breaks_cache: 
+        - !ruby/object:Style
+          title: ""
+          enabled: true
+          color_setting: !ruby/object:UserObjectSettingColor
+            color: !ruby/object:Color
+              alpha: 1.0
+              blue: 0.0
+              green: 1.0
+              red: 1.0
+            name: color
+            options: 
+              :only_literal: true
+              :default: 
+                - 1.0
+                - 1.0
+                - 1.0
+                - 1.0
+            breaks_cache: 
+          image_setting: !ruby/object:UserObjectSettingImage
+            image_name: 
+            name: image
+            options: {}
+            breaks_cache: 
+        - !ruby/object:Style
+          title: ""
+          enabled: true
+          color_setting: !ruby/object:UserObjectSettingColor
+            color: !ruby/object:Color
+              alpha: 1.0
+              blue: 1.0
+              green: 1.0
+              red: 1.0
+            name: color
+            options: 
+              :only_literal: true
+              :default: 
+                - 1.0
+                - 1.0
+                - 1.0
+                - 1.0
+            breaks_cache: 
+          image_setting: !ruby/object:UserObjectSettingImage
+            image_name: 
+            name: image
+            options: {}
+            breaks_cache: 
+        - !ruby/object:Style
+          title: ""
+          enabled: true
+          color_setting: !ruby/object:UserObjectSettingColor
+            color: !ruby/object:Color
+              alpha: 1.0
+              blue: 0.0
+              green: 1.0
+              red: 1.0
+            name: color
+            options: 
+              :only_literal: true
+              :default: 
+                - 1.0
+                - 1.0
+                - 1.0
+                - 1.0
+            breaks_cache: 
+          image_setting: !ruby/object:UserObjectSettingImage
+            image_name: 
+            name: image
+            options: {}
+            breaks_cache: 
+        - !ruby/object:Style
+          title: ""
+          enabled: true
+          color_setting: !ruby/object:UserObjectSettingColor
+            color: !ruby/object:Color
+              alpha: 1.0
+              blue: 1.0
+              green: 1.0
+              red: 1.0
+            name: color
+            options: 
+              :only_literal: true
+              :default: 
+                - 1.0
+                - 1.0
+                - 1.0
+                - 1.0
+            breaks_cache: 
+          image_setting: !ruby/object:UserObjectSettingImage
+            image_name: 
+            name: image
+            options: {}
+            breaks_cache: 
+        - !ruby/object:Style
+          title: ""
+          enabled: true
+          color_setting: !ruby/object:UserObjectSettingColor
+            color: !ruby/object:Color
+              alpha: 1.0
+              blue: 0.0
+              green: 0.0
+              red: 0.0
+            name: color
+            options: 
+              :only_literal: true
+              :default: 
+                - 1.0
+                - 1.0
+                - 1.0
+                - 1.0
+            breaks_cache: 
+          image_setting: !ruby/object:UserObjectSettingImage
+            image_name: 
+            name: image
+            options: {}
+            breaks_cache: 
+      title: Buzz
+      enabled: true
+      background_color_setting: !ruby/object:UserObjectSettingColor
+        color: !ruby/object:Color
+          alpha: 1.0
+          blue: 0.0
+          green: 0.0
+          red: 0.0
+        name: *id076
+        options: *id075
+        breaks_cache: 
