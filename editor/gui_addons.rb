@@ -99,16 +99,31 @@ class UserObject
 		$gui.build_editor_for(self, :pointer => pointer)
 	end
 
+	LABEL_COLOR_CRASHY = [1,0,0,0.5]
+	LABEL_COLOR_ENABLED = [1,1,1,1]
+	LABEL_COLOR_DISABLED = [1.0, 1.0, 1.0, 0.25]
 	USER_OBJECT_TITLE_HEIGHT = 0.65
-	def gui_render_label
-		@title_label ||= BitmapFont.new.set(:string => title, :scale_x => 0.95, :scale_y => USER_OBJECT_TITLE_HEIGHT)
-		if pointer_hovering?
-			@title_label.gui_render!
+	def label_color
+		if crashy?
+			LABEL_COLOR_CRASHY
+		elsif enabled?
+			LABEL_COLOR_ENABLED
 		else
-			with_vertical_clip_plane_right_of(0.5) {
-				@title_label.gui_render!
-			}
+			LABEL_COLOR_DISABLED
 		end
+	end
+
+	def gui_render_label
+		with_color(label_color) {
+			@title_label ||= BitmapFont.new.set(:string => title, :scale_x => 0.95, :scale_y => USER_OBJECT_TITLE_HEIGHT)
+			if pointer_hovering?
+				@title_label.gui_render!
+			else
+				with_vertical_clip_plane_right_of(0.5) {
+					@title_label.gui_render!
+				}
+			end
+		}
 	end
 end
 
