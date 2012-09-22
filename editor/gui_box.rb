@@ -1,9 +1,12 @@
+require 'set'
+
 class GuiBox < GuiObject
 	def initialize(contents = [])
 		@contents = contents
 		@contents.each { |gui_object|
 			gui_object.parent = self
 		}
+		@selection = Set.new
 		super()
 	end
 
@@ -26,6 +29,30 @@ class GuiBox < GuiObject
 		if @contents.delete(object)
 			@contents << object
 		end
+	end
+
+	#
+	# Selection
+	#
+	def child_is_selected?(object)
+		@selection.include?(object)
+	end
+
+	def add_to_selection(object)
+		@selection << object
+	end
+
+	def remove_from_selection(object)
+		@selection.delete(object)
+	end
+
+	def set_selection(object)
+		clear_selection!
+		add_to_selection(object)
+	end
+
+	def clear_selection!
+		@selection.clear
 	end
 
 	#

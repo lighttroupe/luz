@@ -1,3 +1,5 @@
+require 'gui_selected_behavior'
+
 class UserObjectSetting
 	include GuiPointerBehavior
 	BACKGROUND_COLOR = [1,1,0,0.5]
@@ -19,10 +21,12 @@ class UserObjectSettingFloat
 end
 
 class UserObject
-	SELECTION_COLOR = [1.0,1.0,1.0,0.25]
+	BACKGROUND_COLOR_HOVERING = [1.0,1.0,1.0,0.25]
 	BACKGROUND_COLOR = [0.0,0.0,0.0,0.5]
+	BACKGROUND_COLOR_SELECTED = [1.0,1.0,1.0,0.15]
 
 	include GuiPointerBehavior
+	include GuiSelectedBehavior
 
 	easy_accessor :selection_scale_x, :selection_scale_y
 
@@ -59,18 +63,32 @@ class UserObject
 
 	def on_child_user_object_selected(user_object)
 		gui_build_settings_list(user_object)
+		@gui_effects_list.set_selection(user_object)
 	end
 
+	def background_color
+		if pointer_hovering?
+			BACKGROUND_COLOR_HOVERING
+		elsif selected?
+			BACKGROUND_COLOR_SELECTED
+		else
+			BACKGROUND_COLOR
+		end
+	end
+
+	def gui_render_background
+		with_color(background_color) {
+			unit_square
+		}
+	end
+
+	#
+	#
+	#
 	def gui_render!
 		# Label
 		gui_render_background
 		gui_render_label
-	end
-
-	def gui_render_background
-		with_color(BACKGROUND_COLOR) {
-			unit_square
-		}
 	end
 
 	def hit_test_render!
@@ -79,19 +97,6 @@ class UserObject
 
 	def click(pointer)
 		$gui.build_editor_for(self, :pointer => pointer)
-	end
-
-	def with_selection
-		render_selection if pointer_hovering?
-		yield
-	end
-
-	def render_selection
-		with_color(SELECTION_COLOR) {
-			with_scale(selection_scale_x || 1.0, selection_scale_y || 1.0) {		# TODO: avoid need for this
-				unit_square
-			}
-		}
 	end
 
 	USER_OBJECT_TITLE_HEIGHT = 0.65
@@ -126,19 +131,19 @@ end
 
 class ChildUserObject
 	def gui_render!
-		render_selection if pointer_hovering?
+		gui_render_background
 		gui_render_label
 	end
 end
 
 class Actor
 	def gui_render!
-		render_selection if pointer_hovering?
+		gui_render_background
 		render!
 
 		# Label and shading effect
 		if pointer_hovering?
-			gui_render_background
+			# TODO: add a shading helper
 			with_translation(-0.35, -0.35) {
 				with_scale(0.25, 0.25) {
 					gui_render_label
@@ -163,8 +168,6 @@ class Theme
 	end
 
 	def gui_render!
-		render_selection if pointer_hovering?
-
 		# Background
 		gui_render_background
 
@@ -172,7 +175,7 @@ class Theme
 
 		# Label and shading effect
 		if pointer_hovering?
-			gui_render_background
+			# TODO: draw darkening layer
 			gui_render_label
 		else
 #			with_multiplied_alpha(0.5) {
@@ -242,11 +245,7 @@ class Curve
 	POINTS_IN_ICON = 200
 
 	def gui_render!
-		if pointer_hovering?
-			render_selection
-		else
-			gui_render_background
-		end
+		gui_render_background
 
 		if pointer_hovering?
 			progress = ($env[:beat] % 4.0) / 4.0
@@ -310,7 +309,7 @@ class Variable
 	MARKER_COLOR = [0.8,0.0,0.0,0.15]
 
 	def gui_render!
-		render_selection if pointer_hovering?
+		gui_render_background
 
 		# Status Indicator
 		with_vertical_clip_plane_right_of(value - 0.5) {
@@ -358,7 +357,7 @@ class VariableInput
 	GUI_COLOR = [0.0,1.0,0.5,0.7]
 
 	def gui_render!
-		render_selection if pointer_hovering?
+		gui_render_background
 
 		# Status Indicator
 		with_vertical_clip_plane_right_of(do_value - 0.5) {
@@ -377,7 +376,7 @@ class Event
 	GUI_COLOR_OFF = [1.0,1.0,0.0,0.1]
 
 	def gui_render!
-		render_selection if pointer_hovering?
+		gui_render_background
 
 		# Status Indicator
 		with_translation(-0.5 + 0.1, 0.0) {
@@ -400,7 +399,7 @@ class EventInput
 	GUI_COLOR_OFF = [1.0,1.0,0.0,0.1]
 
 	def gui_render!
-		render_selection if pointer_hovering?
+		gui_render_background
 
 		# Status Indicator
 		with_translation(-0.5 + 0.1, 0.0) {

@@ -1,8 +1,11 @@
+require 'gui_selected_behavior'
+
 #
 # Gui base class
 #
 class GuiObject
 	include GuiPointerBehavior
+	include GuiSelectedBehavior
 	include ValueAnimation
 	include Drawing
 	include Engine::MethodsForUserObject
