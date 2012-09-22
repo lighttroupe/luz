@@ -361,7 +361,7 @@ class VariableInput
 		render_selection if pointer_hovering?
 
 		# Status Indicator
-		with_vertical_clip_plane_right_of(current_value - 0.5) {
+		with_vertical_clip_plane_right_of(do_value - 0.5) {
 			with_color(GUI_COLOR) {
 				unit_square
 			}
