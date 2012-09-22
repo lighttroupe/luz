@@ -63,7 +63,7 @@ class UserObject
 
 	def on_child_user_object_selected(user_object)
 		gui_build_settings_list(user_object)
-		@gui_effects_list.set_selection(user_object)
+		@gui_effects_list.set_selection(user_object) if @gui_effects_list
 	end
 
 	def background_color
