@@ -12,10 +12,11 @@ end
 class UserObjectSettingFloat
 	def gui_build_editor(container)
 		box = GuiBox.new
+		box << (@name_label = BitmapFont.new.set(:color => [0.5,0.5,1.0,0.9], :string => name.gsub('_',' '), :scale_x => 1.0, :scale_y => 0.4, :offset_y => 0.42))
 		box << GuiFloat.new(self, :animation_min, @min, @max).set(:scale_x => 0.3, :offset_x => -0.5 + 0.15)
-		box << GuiCurve.new(self, :animation_curve).set(:scale_x => 0.3, :offset_x => 0.05)
-		box << GuiFloat.new(self, :animation_max, @min, @max).set(:scale_x => 0.3, :offset_x => 0.5 - 0.15)
 		box << GuiToggle.new(self, :enable_animation).set(:scale_x => 0.1, :offset_x => -0.15, :color => [1,0,0,1])
+		box << GuiCurve.new(self, :animation_curve).set(:scale_x => 0.3, :scale_y => 0.8,:offset_x => 0.05)
+		box << GuiFloat.new(self, :animation_max, @min, @max).set(:scale_x => 0.3, :offset_x => 0.5 - 0.15)
 		container << box
 	end
 end
