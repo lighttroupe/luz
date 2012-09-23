@@ -26,6 +26,7 @@ module DrawingColor
 	end
 
 	def with_color(color)
+		return yield unless color
 		saved = GL.GetColorArray
 		c = color.to_a
 		GL.Color([c[0], c[1], c[2], (c[3] || 1.0) * (saved[3] || 1.0)])		# NOTE: doesn't set alpha-- instead multiplies it
