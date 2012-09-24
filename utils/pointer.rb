@@ -47,8 +47,9 @@ class Pointer
 		@drag_object.update_drag(self)
 	end
 
-	def handle_drop
-		puts 'dropped!'
+	def end_drag
+		@drag_object.end_drag(self)
+		@drag_object = nil
 	end
 
 	def tick!
@@ -66,6 +67,9 @@ class Pointer
 			elsif hold_time > LONG_CLICK_HOLD_TIME && (drag_delta_x < SMALL_DISTANCE && drag_delta_y < SMALL_DISTANCE)
 				@hover_object.long_click(self) if @hover_object.respond_to?(:long_click)
 			end
+
+		elsif dragging?
+			end_drag
 		end
 
 		target = @drag_object || @hover_object

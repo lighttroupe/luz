@@ -80,6 +80,9 @@ module MethodsForGuiObject
 	def update_drag(pointer)
 	end
 
+	def end_drag(pointer)
+	end
+
 	def with_positioning
 		with_translation(@offset_x, @offset_y) {
 			# Record the scaling we do, so it's possible to undo it when proper aspect ratio is needed (ie text)
