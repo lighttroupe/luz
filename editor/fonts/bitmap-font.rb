@@ -6,6 +6,7 @@ class BitmapFont < GuiObject
 	easy_accessor :string
 
 	def string=(str)
+		str ||= ''		# treat nil as blank
 		if str != @string
 			@string = str
 			@chars = str.chars.to_a
