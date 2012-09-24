@@ -15,8 +15,14 @@ class GuiEngineButton < GuiListValue
 		@selected_label.set_string(get_value)
 	end
 
+	VALUE_COLOR = [0.0, 0.0, 0.4, 0.8]
 	def gui_render!
-		with_positioning {
+		with_gui_object_properties {
+			if $engine.button_down?(get_value)
+				with_color(VALUE_COLOR) {
+					unit_square
+				}
+			end
 			@selected_label.gui_render!
 		}
 	end
