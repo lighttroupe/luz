@@ -116,7 +116,7 @@ class GuiDefault < GuiBox
 			end
 		else
 			if user_object.is_a? ParentUserObject
-				editor = GuiUserObjectEditor.new(user_object, {:scale_x => 0.3, :scale_y => 0.2}.merge(options))
+				editor = GuiUserObjectEditor.new(user_object, {:scale_x => 0.3, :scale_y => 0.05}.merge(options))
 				self << editor
 				@user_object_editors[user_object] = editor
 			else
@@ -126,17 +126,14 @@ class GuiDefault < GuiBox
 			end
 		end
 
-		# Reveal
-#		editor.animate({:offset_x => pointer.x + 0.1 + (editor.scale_x / 2.0), :offset_y => pointer.y + 0.1 - (editor.scale_y / 2.0), :opacity => 1.0}, duration=0.2)
-
 		# Hide everything...
-		@user_object_editors.values.each { |e|
-			e.set({:opacity => 0.0, :hidden => true})	#, duration=0.4)
+		@user_object_editors.each { |user_object, gui_object|
+			gui_object.set({:opacity => 0.0, :hidden => true})	#, duration=0.4)
 		}
-		editor.set({:offset_x => pointer.x, :offset_y => pointer.y, :opacity => 0.0, :hidden => false})
+		editor.set({:offset_x => pointer.x, :offset_y => pointer.y, :opacity => 0.0, :scale_x => 0.0, :scale_y => 0.0, :hidden => false})
 
 		# ...reveal just this one.
-		final_options = {:offset_x => -0.15, :offset_y => 0.15, :scale_x => 0.3, :scale_y => 0.375, :opacity => 1.0}
+		final_options = {:offset_x => 0.0, :offset_y => -0.15, :scale_x => 0.3, :scale_y => 0.375, :opacity => 1.0}
 		editor.animate(final_options, duration=0.2)
 
 		return editor
