@@ -13,6 +13,15 @@ class UserObjectSettingFloat
 	def gui_build_editor(container)
 		box = GuiBox.new
 		box << (@name_label = BitmapFont.new.set(:color => [0.5,0.5,1.0,0.9], :string => name.gsub('_',' '), :scale_x => 1.0, :scale_y => 0.4, :offset_y => 0.42))
+		
+		container << box
+	end
+end
+
+class UserObjectSettingFloat
+	def gui_build_editor(container)
+		box = GuiBox.new
+		box << (@name_label = BitmapFont.new.set(:color => [0.5,0.5,1.0,0.9], :string => name.gsub('_',' '), :scale_x => 1.0, :scale_y => 0.4, :offset_y => 0.42))
 		box << GuiFloat.new(self, :animation_min, @min, @max).set(:scale_x => 0.3, :offset_x => -0.5 + 0.15)
 		box << GuiToggle.new(self, :enable_animation).set(:scale_x => 0.1, :offset_x => -0.15, :color => [1,0,0,1])
 		box << GuiCurve.new(self, :animation_curve).set(:scale_x => 0.3, :scale_y => 0.8,:offset_x => 0.05)
@@ -22,19 +31,7 @@ class UserObjectSettingFloat
 end
 
 class UserObject
-	BACKGROUND_COLOR_HOVERING = [1.0,1.0,1.0,0.25]
-	BACKGROUND_COLOR = [0.0,0.0,0.0,0.5]
-	BACKGROUND_COLOR_SELECTED = [1.0,1.0,1.0,0.15]
-
-	include GuiPointerBehavior
-	include GuiSelectedBehavior
-
-	easy_accessor :selection_scale_x, :selection_scale_y
-
-	empty_method :gui_tick!
-	easy_accessor :parent
-
-	boolean_accessor :draggable
+	include MethodsForGuiObject
 
 	def gui_build_editor(container)
 		if respond_to? :effects
@@ -65,22 +62,6 @@ class UserObject
 	def on_child_user_object_selected(user_object)
 		gui_build_settings_list(user_object)
 		@gui_effects_list.set_selection(user_object) if @gui_effects_list
-	end
-
-	def background_color
-		if pointer_hovering?
-			BACKGROUND_COLOR_HOVERING
-		elsif selected?
-			BACKGROUND_COLOR_SELECTED
-		else
-			BACKGROUND_COLOR
-		end
-	end
-
-	def gui_render_background
-		with_color(background_color) {
-			unit_square
-		}
 	end
 
 	#
