@@ -15,9 +15,8 @@ class GuiListValue < GuiObject
 	end
 
 	def gui_render!
-		return if hidden?
 		return unless (object = get_value)
-		with_positioning {
+		with_gui_object_properties {
 			object.gui_render!
 		}
 	end

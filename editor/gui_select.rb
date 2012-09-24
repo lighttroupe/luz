@@ -19,7 +19,7 @@ class GuiSelect < GuiListValue
 	end
 
 	def gui_render!
-		with_positioning {
+		with_gui_object_properties {
 			@selected_label.gui_render!
 		}
 	end

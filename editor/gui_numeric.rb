@@ -2,7 +2,7 @@ class GuiNumeric < GuiObject
 	def initialize(object, method, min, max)
 		super()
 		@object, @method, @min, @max = object, '@'+method.to_s, min, max
-		@value_label = BitmapFont.new.set(:scale_x => 0.9, :scale_y => 0.65)
+		@value_label = BitmapFont.new.set(:offset_y => -0.12, :scale_x => 0.9, :scale_y => 0.65)
 		@color = [0.1, 0.1, 1.0, 1.0]
 	end
 
@@ -17,16 +17,9 @@ class GuiNumeric < GuiObject
 	end
 
 	def gui_render!
-		return if hidden?
-		with_positioning {
-			gui_render_background
-
-			#with_color([rand,rand,rand,0.5]) { unit_square } 		# test fill
+		with_gui_object_properties {
 			@value_label.set_string(generate_string)
-
-			with_color(color) {
-				@value_label.gui_render!
-			}
+			@value_label.gui_render!
 		}
 	end
 
