@@ -46,9 +46,9 @@ class ProjectEffectEditor < ProjectEffect
 	def tick
 		create_gui unless @gui
 
-		@gui.gui_tick!
-
 		if show_amount > 0.0
+			@gui.gui_tick!
+
 			# Perform hit testing-- TODO: this needn't be every frame...
 			# Nor full-frame
 
