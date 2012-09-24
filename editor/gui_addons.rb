@@ -7,6 +7,10 @@ class UserObjectSetting
 	def gui_build_editor
 		GuiObject.new.set(:color => [0,1,1,1])
 	end
+
+	def create_user_object_setting_name_label
+		@name_label ||= BitmapFont.new.set(:color => [0.5,0.5,1.0,0.9], :string => name.gsub('_',' '), :scale_x => 1.0, :scale_y => 0.4, :offset_y => 0.42)
+	end
 end
 
 class UserObjectSettingTheme
@@ -18,7 +22,7 @@ end
 class UserObjectSettingFloat
 	def gui_build_editor
 		box = GuiBox.new
-		box << (@name_label = BitmapFont.new.set(:color => [0.5,0.5,1.0,0.9], :string => name.gsub('_',' '), :scale_x => 1.0, :scale_y => 0.4, :offset_y => 0.42))
+		box << create_user_object_setting_name_label
 		box << GuiFloat.new(self, :animation_min, @min, @max).set(:scale_x => 0.3, :offset_x => -0.5 + 0.15)
 		box << GuiToggle.new(self, :enable_animation).set(:scale_x => 0.1, :offset_x => -0.15, :color => [1,0,0,1])
 		box << GuiCurve.new(self, :animation_curve).set(:scale_x => 0.3, :scale_y => 0.8,:offset_x => 0.05)
@@ -30,7 +34,7 @@ end
 class UserObjectSettingInteger
 	def gui_build_editor
 		box = GuiBox.new
-		box << (@name_label = BitmapFont.new.set(:color => [0.5,0.5,1.0,0.9], :string => name.gsub('_',' '), :scale_x => 1.0, :scale_y => 0.4, :offset_y => 0.42))
+		box << create_user_object_setting_name_label
 		box << GuiInteger.new(self, :animation_min, @min, @max).set(:scale_x => 0.3, :offset_x => -0.5 + 0.15)
 		box
 	end
@@ -39,7 +43,7 @@ end
 class UserObjectSettingSelect
 	def gui_build_editor
 		box = GuiBox.new
-		box << (@name_label = BitmapFont.new.set(:color => [0.5,0.5,1.0,0.9], :string => name.gsub('_',' '), :scale_x => 1.0, :scale_y => 0.4, :offset_y => 0.42))
+		box << create_user_object_setting_name_label
 		box << GuiSelect.new(self, :selected, @options[:options])
 		box
 	end
@@ -48,7 +52,7 @@ end
 class UserObjectSettingCurve
 	def gui_build_editor
 		box = GuiBox.new
-		box << (@name_label = BitmapFont.new.set(:color => [0.5,0.5,1.0,0.9], :string => name.gsub('_',' '), :scale_x => 1.0, :scale_y => 0.4, :offset_y => 0.42))
+		box << create_user_object_setting_name_label
 		box << GuiCurve.new(self, :curve)
 		box
 	end
@@ -57,7 +61,7 @@ end
 class UserObjectSettingActor
 	def gui_build_editor
 		box = GuiBox.new
-		box << (@name_label = BitmapFont.new.set(:color => [0.5,0.5,1.0,0.9], :string => name.gsub('_',' '), :scale_x => 1.0, :scale_y => 0.4, :offset_y => 0.42))
+		box << create_user_object_setting_name_label
 		box << GuiActor.new(self, :actor)
 		box
 	end
@@ -66,7 +70,7 @@ end
 class UserObjectSettingEvent
 	def gui_build_editor
 		box = GuiBox.new
-		box << (@name_label = BitmapFont.new.set(:color => [0.5,0.5,1.0,0.9], :string => name.gsub('_',' '), :scale_x => 1.0, :scale_y => 0.4, :offset_y => 0.42))
+		box << create_user_object_setting_name_label
 		box << GuiEvent.new(self, :event)
 		box
 	end
@@ -75,7 +79,7 @@ end
 class UserObjectSettingVariable
 	def gui_build_editor
 		box = GuiBox.new
-		box << (@name_label = BitmapFont.new.set(:color => [0.5,0.5,1.0,0.9], :string => name.gsub('_',' '), :scale_x => 1.0, :scale_y => 0.4, :offset_y => 0.42))
+		box << create_user_object_setting_name_label
 		box << GuiVariable.new(self, :variable)
 		box
 	end
@@ -84,7 +88,7 @@ end
 class UserObjectSettingTimespan
 	def gui_build_editor
 		box = GuiBox.new
-		box << (@name_label = BitmapFont.new.set(:color => [0.5,0.5,1.0,0.9], :string => name.gsub('_',' '), :scale_x => 1.0, :scale_y => 0.4, :offset_y => 0.42))
+		box << create_user_object_setting_name_label
 		box << GuiFloat.new(self, :time_number, 0.0, 999.0).set(:offset_x => -0.25, :scale_x => 0.5)
 		box << GuiSelect.new(self, :time_unit, TIME_UNIT_OPTIONS).set(:offset_x => 0.25, :scale_x => 0.5)
 		box
@@ -94,7 +98,7 @@ end
 class UserObjectSettingCurveIncreasing
 	def gui_build_editor
 		box = GuiBox.new
-		box << (@name_label = BitmapFont.new.set(:color => [0.5,0.5,1.0,0.9], :string => name.gsub('_',' '), :scale_x => 1.0, :scale_y => 0.4, :offset_y => 0.42))
+		box << create_user_object_setting_name_label
 		box << GuiCurveIncreasing.new(self, :curve)
 		box
 	end
