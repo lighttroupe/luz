@@ -14,10 +14,6 @@ class GuiListValue < GuiObject
 		@object.instance_variable_set(@method, value)
 	end
 
-	def current_index
-		list.index(get_value)
-	end
-
 	def gui_render!
 		return if hidden?
 		return unless (object = get_value)
@@ -28,14 +24,16 @@ class GuiListValue < GuiObject
 
 	def scroll_up!(pointer)
 		list_cached = list
-		index = current_index ? ((current_index - 1) % list_cached.size) : 0
-		set_value list_cached[index]
+		current_index = list_cached.index(get_value)
+		next_index = current_index ? ((current_index - 1) % list_cached.size) : 0
+		set_value list_cached[next_index]
 	end
 
 	def scroll_down!(pointer)
 		list_cached = list
-		index = current_index ? ((current_index + 1) % list_cached.size) : 0
-		set_value list_cached[index]
+		current_index = list_cached.index(get_value)
+		next_index = current_index ? ((current_index + 1) % list_cached.size) : 0
+		set_value list_cached[next_index]
 	end
 end
 
