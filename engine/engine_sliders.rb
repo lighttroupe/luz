@@ -28,7 +28,7 @@ module EngineSliders
 	def on_slider_change(name, value, delayed=false)
 		return if $engine.frame_number <= 1		# HACK: this seems to prevent a segfault when we receive input immediately
 
-		new_slider_notify(name) unless @slider_values[name]		# is it a slider we haven't seen before?
+		new_slider_notify_if_needed(name)
 
 		# special-case one type of change:
 		# - 2+ slider changes in one frame
@@ -49,6 +49,7 @@ module EngineSliders
 	end
 
 	def slider_value(name)
+		new_slider_notify_if_needed(name)
 		v = @slider_values[name]
 		unless v
 			@slider_values[name] = v = 0.0		# Otherwise we'll new_slider_notify endlessly...
@@ -58,8 +59,13 @@ module EngineSliders
 	end
 
 	def new_slider_notify_if_needed(name)
-		return if @slider_values[name]
+		return if @slider_values[name] || name.nil?
 		@slider_values[name] = 0.0				# Otherwise we'll new_slider_notify endlessly...
+		@seen_sliders_list = @slider_values.keys.sort
 		new_slider_notify(name)						# this lets us notify (fill GUI lists) after loading a set from disk
+	end
+
+	def seen_sliders_list
+		@seen_sliders_list || []
 	end
 end
