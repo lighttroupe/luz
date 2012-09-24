@@ -157,7 +157,7 @@ class GuiUserObjectEditor < GuiBox
 		# background
 		self << (@background=GuiObject.new.set(:color => [0,0,0,0.5]))
 
-		@user_object.gui_build_editor(self)
+		self << @user_object.gui_build_editor
 
 		# label
 		self << (@title_text=BitmapFont.new.set_string(@user_object.title).set(:scale_x => 1.0, :scale_y => 0.08, :offset_x => 0.0, :offset_y => 0.5 - 0.04))		#.set(:background_image => $engine.load_image('images/buttons/menu.png'))

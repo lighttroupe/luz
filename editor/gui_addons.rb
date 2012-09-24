@@ -4,69 +4,73 @@ class UserObjectSetting
 	include GuiPointerBehavior
 	BACKGROUND_COLOR = [1,1,0,0.5]
 
-	def gui_build_editor(container)
-		container << GuiObject.new.set(:color => [0,1,1,1])
+	def gui_build_editor
+		GuiObject.new.set(:color => [0,1,1,1])
 	end
 end
 
 class UserObjectSettingTheme
-	def gui_build_editor(container)
-		container << GuiTheme.new(self, :theme)
+	def gui_build_editor
+		GuiTheme.new(self, :theme)
 	end
 end
 
 class UserObjectSettingFloat
-	def gui_build_editor(container)
+	def gui_build_editor
 		box = GuiBox.new
 		box << (@name_label = BitmapFont.new.set(:color => [0.5,0.5,1.0,0.9], :string => name.gsub('_',' '), :scale_x => 1.0, :scale_y => 0.4, :offset_y => 0.42))
 		box << GuiFloat.new(self, :animation_min, @min, @max).set(:scale_x => 0.3, :offset_x => -0.5 + 0.15)
 		box << GuiToggle.new(self, :enable_animation).set(:scale_x => 0.1, :offset_x => -0.15, :color => [1,0,0,1])
 		box << GuiCurve.new(self, :animation_curve).set(:scale_x => 0.3, :scale_y => 0.8,:offset_x => 0.05)
 		box << GuiFloat.new(self, :animation_max, @min, @max).set(:scale_x => 0.3, :offset_x => 0.5 - 0.15)
-		container << box
+		box
 	end
 end
 
 class UserObjectSettingInteger
-	def gui_build_editor(container)
+	def gui_build_editor
 		box = GuiBox.new
 		box << (@name_label = BitmapFont.new.set(:color => [0.5,0.5,1.0,0.9], :string => name.gsub('_',' '), :scale_x => 1.0, :scale_y => 0.4, :offset_y => 0.42))
 		box << GuiInteger.new(self, :animation_min, @min, @max).set(:scale_x => 0.3, :offset_x => -0.5 + 0.15)
-		container << box
+		box
 	end
 end
 
 class UserObject
 	include MethodsForGuiObject
 
-	def gui_build_editor(container)
+	def gui_build_editor
+		box = GuiBox.new
 		if respond_to? :effects
 			# Two-lists side by side
 			@gui_effects_list = GuiList.new(effects).set({:spacing_y => -0.9, :scale_x => 0.5, :scale_y => 0.9, :offset_x => -0.25, :offset_y => -0.05, :item_aspect_ratio => 4.0})
-			container << @gui_effects_list
+			box << @gui_effects_list
 			@gui_settings_list = GuiList.new.set({:spacing_y => -0.9, :scale_x => 0.5, :scale_y => 0.9, :offset_x => 0.25, :offset_y => -0.05, :item_aspect_ratio => 4.0})
-			container << @gui_settings_list
+			box << @gui_settings_list
 		else
 			# Just a settings list (not used as of 2012/09/21)
 			@gui_settings_list = GuiList.new.set({:spacing_y => -0.9, :scale_x => 0.95, :scale_y => 0.9, :offset_x => 0.0, :offset_y => -0.05, :item_aspect_ratio => 4.0})
-			container << @gui_settings_list
+			box << @gui_settings_list
 		end
 
 		if @gui_settings_list
-			gui_build_settings_list(self)
+			@gui_settings_list.clear!
+			gui_fill_settings_list(self)
 		end
+
+		box
 	end
 
-	def gui_build_settings_list(user_object)
+	def gui_fill_settings_list(user_object)
 		return unless @gui_settings_list
 		@gui_settings_list.clear!
 		user_object.settings.each { |setting|
-			setting.gui_build_editor(@gui_settings_list)		# TODO: create a box container for each?
+			@gui_settings_list << setting.gui_build_editor
 		}
 	end
 
 	def on_child_user_object_selected(user_object)
-		gui_build_settings_list(user_object)
+		gui_fill_settings_list(user_object)
 		@gui_effects_list.set_selection(user_object) if @gui_effects_list
 	end
 
@@ -161,13 +165,15 @@ class Actor
 end
 
 class Theme
-	def gui_build_editor(container)
-		container << GuiGrid.new(effects).set(:min_columns => 4)
-		container << (@add_button=GuiButton.new.set(:scale_x => 0.15, :scale_y => 0.15, :offset_x => -0.5, :offset_y => 0.5, :background_image => $engine.load_image('images/buttons/menu.png')))
+	def gui_build_editor
+		box = GuiBox.new
+		box << GuiGrid.new(effects).set(:min_columns => 4)
+		box << (@add_button=GuiButton.new.set(:scale_x => 0.15, :scale_y => 0.15, :offset_x => -0.5, :offset_y => 0.5, :background_image => $engine.load_image('images/buttons/menu.png')))
 		@add_button.on_clicked {
 			effects << Style.new
 			GL.DestroyList(@gui_render_styles_list) ; @gui_render_styles_list = nil
 		}
+		box
 	end
 
 	def gui_render!
@@ -227,8 +233,8 @@ class Curve
 	MISC_COLOR = [0.5, 0.5, 0.8, 1.0]
 	FLOOR_COLOR = [0.0, 0.0, 0.0, 0.9]
 
-	def gui_build_editor(container)
-		container.prepend(GuiObjectRenderer.new(self))
+	def gui_build_editor
+		GuiObjectRenderer.new(self)
 	end
 
 	def gui_icon_color
