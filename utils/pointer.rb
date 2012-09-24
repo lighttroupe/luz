@@ -63,16 +63,17 @@ class Pointer
 			if dragging?
 				update_drag
 
-			elsif hold_time > LONG_CLICK_HOLD_TIME && (delta_x < SMALL_DISTANCE && delta_y < SMALL_DISTANCE)
+			elsif hold_time > LONG_CLICK_HOLD_TIME && (drag_delta_x < SMALL_DISTANCE && drag_delta_y < SMALL_DISTANCE)
 				@hover_object.long_click(self) if @hover_object.respond_to?(:long_click)
 			end
 		end
 
-		if @hover_object
-			@hover_object.scroll_up!(self) if scroll_up? && @hover_object.respond_to?(:scroll_up!)
-			@hover_object.scroll_down!(self) if scroll_down? && @hover_object.respond_to?(:scroll_down!)
-			@hover_object.scroll_left!(self) if scroll_left? && @hover_object.respond_to?(:scroll_left!)
-			@hover_object.scroll_right!(self) if scroll_right? && @hover_object.respond_to?(:scroll_right!)
+		target = @drag_object || @hover_object
+		if target
+			target.scroll_up!(self) if scroll_up? && target.respond_to?(:scroll_up!)
+			target.scroll_down!(self) if scroll_down? && target.respond_to?(:scroll_down!)
+			target.scroll_left!(self) if scroll_left? && target.respond_to?(:scroll_left!)
+			target.scroll_right!(self) if scroll_right? && target.respond_to?(:scroll_right!)
 		end
 	end
 

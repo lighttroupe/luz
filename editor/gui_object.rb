@@ -77,10 +77,6 @@ module MethodsForGuiObject
 	def begin_drag(pointer)
 	end
 
-	def draggable?
-		false
-	end
-
 	def update_drag(pointer)
 	end
 

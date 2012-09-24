@@ -5,10 +5,7 @@ class GuiFloat < GuiObject
 		@value_label = BitmapFont.new.set(:scale_x => 0.9, :scale_y => 0.65)
 		@change_speed_multiplier = 4.0
 		@format_string = "%+0.2f"
-	end
-
-	def draggable?
-		true
+		draggable!
 	end
 
 	def get_value
@@ -21,12 +18,8 @@ class GuiFloat < GuiObject
 		@object.instance_variable_set(@method, value)
 	end
 
-	def click(pointer)
-		#@pointer = pointer unless @pointer		# ignores 
-	end
-
 	def update_drag(pointer)
-		distance = pointer.drag_delta_x + pointer.drag_delta_y
+		distance = pointer.drag_delta_x + pointer.drag_delta_y		# NOTE: cummulative, so up+right is fastest
 		change_per_second = change_per_second_for_distance(distance)
 		set_value(get_value + (change_per_second * $env[:frame_time_delta])) unless change_per_second == 0.0
 	end
