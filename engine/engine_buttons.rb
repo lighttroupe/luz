@@ -86,4 +86,8 @@ module EngineButtons
 		@button_press_count[name] = 0			# Otherwise we'll new_slider_notify endlessly...
 		new_button_notify(name)						# this lets us notify (fill GUI lists) after loading a set from disk
 	end
+
+	def seen_button_list
+		@button_press_count.keys
+	end
 end
