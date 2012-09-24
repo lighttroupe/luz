@@ -91,6 +91,15 @@ class UserObjectSettingTimespan
 	end
 end
 
+class UserObjectSettingCurveIncreasing
+	def gui_build_editor
+		box = GuiBox.new
+		box << (@name_label = BitmapFont.new.set(:color => [0.5,0.5,1.0,0.9], :string => name.gsub('_',' '), :scale_x => 1.0, :scale_y => 0.4, :offset_y => 0.42))
+		box << GuiCurveIncreasing.new(self, :curve)
+		box
+	end
+end
+
 class UserObject
 	include MethodsForGuiObject
 
