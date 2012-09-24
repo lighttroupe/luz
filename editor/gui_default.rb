@@ -103,40 +103,42 @@ class GuiDefault < GuiBox
 		pointer = options[:pointer]
 		editor = @user_object_editors[user_object]
 
-		if editor
-			if editor.hidden?
-				bring_to_top(editor)
-				editor.not_hidden!
-			else
-				# was already visible... ...hide self towards click spot
-				editor.animate({:offset_x => pointer.x, :offset_y => pointer.y, :opacity => 0.2}, duration=0.2) {
-					editor.hidden!
-				}
-				return
-			end
+		if editor && !editor.hidden?
+			# was already visible... ...hide self towards click spot
+			bring_to_top(editor)
+			editor.animate({:offset_x => pointer.x, :offset_y => pointer.y, :scale_x => 0.0, :scale_y => 0.0, :opacity => 0.2}, duration=0.2) {
+				editor.remove_from_parent!		# trashed forever! (no cache)
+				@user_object_editors.delete(user_object)
+			}
+			return
 		else
 			if user_object.is_a? ParentUserObject
+				clear_editors!		# only support one for now
+
 				editor = GuiUserObjectEditor.new(user_object, {:scale_x => 0.3, :scale_y => 0.05}.merge(options))
 				self << editor
 				@user_object_editors[user_object] = editor
+
+				editor.set({:offset_x => pointer.x, :offset_y => pointer.y, :opacity => 0.0, :scale_x => 0.0, :scale_y => 0.0, :hidden => false})
+				final_options = {:offset_x => 0.0, :offset_y => -0.15, :scale_x => 0.3, :scale_y => 0.375, :opacity => 1.0}
+				editor.animate(final_options, duration=0.2)
+				return editor
 			else
+				# tell editor its child was clicked (this is needed due to non-propagation of click messages: the user object gets notified, it tells us)
 				parent = @user_object_editors.keys.find { |uo| uo.effects.include? user_object }		# TODO: hacking around children not knowing their parents for easier puppetry
-				parent.on_child_user_object_selected(user_object)
+				parent.on_child_user_object_selected(user_object) if parent		# NOTE: can't click a child if parent is not visible, but the 'if' doesn't hurt
 				return
 			end
 		end
+	end
 
-		# Hide everything...
-		@user_object_editors.each { |user_object, gui_object|
-			gui_object.set({:opacity => 0.0, :hidden => true})	#, duration=0.4)
+	def clear_editors!
+		@user_object_editors.each { |user_object, editor|
+			editor.animate({:offset_y => editor.offset_y - 0.25, :scale_x => 0.4, :scale_y => 0.1, :opacity => 0.2}, duration=0.3) {
+				editor.remove_from_parent!		# trashed forever! (no cache)
+			}
 		}
-		editor.set({:offset_x => pointer.x, :offset_y => pointer.y, :opacity => 0.0, :scale_x => 0.0, :scale_y => 0.0, :hidden => false})
-
-		# ...reveal just this one.
-		final_options = {:offset_x => 0.0, :offset_y => -0.15, :scale_x => 0.3, :scale_y => 0.375, :opacity => 1.0}
-		editor.animate(final_options, duration=0.2)
-
-		return editor
+		@user_object_editors.clear
 	end
 end
 
