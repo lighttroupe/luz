@@ -48,9 +48,13 @@ module MethodsForGuiObject
 	def gui_render!
 		return if hidden?
 		with_positioning {
-			with_color(color) {
-				unit_square
-			}
+			gui_render_placeholder
+		}
+	end
+
+	def gui_render_placeholder
+		with_color(color) {
+			unit_square
 		}
 	end
 
