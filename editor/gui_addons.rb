@@ -104,6 +104,15 @@ class UserObjectSettingButton
 	end
 end
 
+class UserObjectSettingSlider
+	def gui_build_editor
+		box = GuiBox.new
+		box << create_user_object_setting_name_label
+		box << GuiEngineSlider.new(self, :slider)
+		box
+	end
+end
+
 class UserObjectSettingCurveIncreasing
 	def gui_build_editor
 		box = GuiBox.new
