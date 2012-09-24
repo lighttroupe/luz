@@ -103,6 +103,10 @@ module MethodsForGuiObject
 			}
 		}
 	end
+
+	def remove_from_parent!
+		@parent.remove_child(self) if @parent
+	end
 end
 
 #
