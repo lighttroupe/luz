@@ -36,6 +36,15 @@ class UserObjectSettingInteger
 	end
 end
 
+class UserObjectSettingSelect
+	def gui_build_editor
+		box = GuiBox.new
+		box << (@name_label = BitmapFont.new.set(:color => [0.5,0.5,1.0,0.9], :string => name.gsub('_',' '), :scale_x => 1.0, :scale_y => 0.4, :offset_y => 0.42))
+		box << GuiSelect.new(self, :selected, @options[:options])
+		box
+	end
+end
+
 class UserObject
 	include MethodsForGuiObject
 
