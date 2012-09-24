@@ -87,6 +87,14 @@ module MethodsForGuiObject
 	def end_drag(pointer)
 	end
 
+	def with_gui_object_properties
+		return if hidden?
+		with_positioning {
+			gui_render_background
+			yield
+		}
+	end
+
 	def with_positioning
 		with_translation(@offset_x, @offset_y) {
 			# Record the scaling we do, so it's possible to undo it when proper aspect ratio is needed (ie text)
