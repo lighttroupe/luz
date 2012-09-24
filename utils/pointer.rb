@@ -4,6 +4,7 @@ class Pointer
 	HOLD_COLOR = [1,1,1,0.4]
 
 	LONG_CLICK_HOLD_TIME = 1.0
+	SMALL_DISTANCE = 0.02
 
 	boolean_accessor :click
 	boolean_accessor :dragging
@@ -19,10 +20,10 @@ class Pointer
 		@click_time ? Time.now - @click_time : 0.0
 	end
 
-	SMALL_DISTANCE = 0.02
 	def drag_delta_x
 		x - @click_x
 	end
+
 	def drag_delta_y
 		y - @click_y
 	end
