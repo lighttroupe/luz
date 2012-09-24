@@ -74,6 +74,16 @@ module MethodsForGuiObject
 		@parent.click(pointer) if @parent			# Default is to pass it up the stack
 	end
 
+	def begin_drag(pointer)
+	end
+
+	def draggable?
+		false
+	end
+
+	def update_drag(pointer)
+	end
+
 	def with_positioning
 		with_translation(@offset_x, @offset_y) {
 			# Record the scaling we do, so it's possible to undo it when proper aspect ratio is needed (ie text)

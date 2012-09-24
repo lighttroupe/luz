@@ -3,8 +3,11 @@ class Pointer
 	DEFAULT_COLOR = [1,1,1,0.7]
 	HOLD_COLOR = [1,1,1,0.4]
 
+	LONG_CLICK_HOLD_TIME = 1.0
+
 	boolean_accessor :click
 	boolean_accessor :dragging
+	attr_accessor :click_x, :click_y		# point at which mouse was clicked, only while holding
 
 	def initialize
 		@number = 1
@@ -16,35 +19,55 @@ class Pointer
 		@click_time ? Time.now - @click_time : 0.0
 	end
 
-	LONG_CLICK_HOLD_TIME = 1.0
+	SMALL_DISTANCE = 0.02
+	def drag_delta_x
+		x - @click_x
+	end
+	def drag_delta_y
+		y - @click_y
+	end
 
-	def drop!
+	# Dragging
+	def dragging?
+		!@drag_object.nil?
+	end
+
+	def begin_drag(object)
+		@drag_object = object		# NOTE: only dragging if @dragging is then set (below)
+		@drag_object.begin_drag(self)
+	end
+
+	#def drag_distance
+	#	return 0.0 unless dragging?
+	#	Math.sqrt(drag_delta_x**2 + drag_delta_y**2)
+	#end
+
+	def update_drag
+		@drag_object.update_drag(self)
+	end
+
+	def handle_drop
 		puts 'dropped!'
 	end
 
 	def tick!
-		if @hover_object
-			if click?
+		if click?
+			if @hover_object
 				@hover_object.click(self) if @hover_object.respond_to?(:click)
-				@click_potential = true		# something could happen!
-				@click_time = Time.now
-
-			elsif dragging?
-				drop! unless hold?
-
-			elsif !@click_potential
-				# nothing...
-
-			elsif hold?
-				# TODO: check for dragging
-				if hold_time > LONG_CLICK_HOLD_TIME
-					@hover_object.long_click(self) if @hover_object.respond_to?(:long_click)
-					@click_potential = false
-				end
-
-			else
-				@click_potential = false
+				@click_x, @click_y, @click_time = x, y, Time.now
+				begin_drag(@hover_object) if @hover_object.draggable?
 			end
+
+		elsif hold?
+			if dragging?
+				update_drag
+
+			elsif hold_time > LONG_CLICK_HOLD_TIME && (delta_x < SMALL_DISTANCE && delta_y < SMALL_DISTANCE)
+				@hover_object.long_click(self) if @hover_object.respond_to?(:long_click)
+			end
+		end
+
+		if @hover_object
 			@hover_object.scroll_up!(self) if scroll_up? && @hover_object.respond_to?(:scroll_up!)
 			@hover_object.scroll_down!(self) if scroll_down? && @hover_object.respond_to?(:scroll_down!)
 			@hover_object.scroll_left!(self) if scroll_left? && @hover_object.respond_to?(:scroll_left!)

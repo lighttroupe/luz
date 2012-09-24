@@ -7,6 +7,10 @@ class GuiFloat < GuiObject
 		@format_string = "%+0.2f"
 	end
 
+	def draggable?
+		true
+	end
+
 	def get_value
 		@object.instance_variable_get(@method).to_f
 	end
@@ -17,15 +21,22 @@ class GuiFloat < GuiObject
 		@object.instance_variable_set(@method, value)
 	end
 
-	def generate_string
-		sprintf(@format_string, get_value).sub('+',' ')
+	def click(pointer)
+		#@pointer = pointer unless @pointer		# ignores 
+	end
+
+	def update_drag(pointer)
+		distance = pointer.drag_delta_x + pointer.drag_delta_y
+		change_per_second = change_per_second_for_distance(distance)
+		set_value(get_value + (change_per_second * $env[:frame_time_delta])) unless change_per_second == 0.0
 	end
 
 	COLOR = [0.1, 0.1, 1.0, 1.0]
 	def gui_render!
 		return if hidden?
 		with_positioning {
-			render_selection if pointer_hovering?
+			gui_render_background
+
 			#with_color([rand,rand,rand,0.5]) { unit_square } 		# test fill
 			@value_label.set_string(generate_string)
 
@@ -35,29 +46,14 @@ class GuiFloat < GuiObject
 		}
 	end
 
-	def click(pointer)
-		return if @pointer
-		@pointer = pointer
-		@pointer_starting_x = @pointer.x
-		@pointer_starting_y = @pointer.y
+	def generate_string
+		sprintf(@format_string, get_value).sub('+',' ')
 	end
 
-	def gui_tick!
-		super
-		handle_drag
-	end
-
-	def handle_drag
-		return unless @pointer
-		if @pointer.hold?
-			distance = (@pointer.x - @pointer_starting_x) + (@pointer.y - @pointer_starting_y)
-			change_per_second = change_per_second_for_distance(distance)
-
-			set_value(get_value + (change_per_second * $env[:frame_time_delta])) unless change_per_second == 0.0
-		else
-			@pointer = nil
-		end
-	end
+#	def gui_tick!
+#		super
+#		handle_drag
+#	end
 
 	def change_per_second_for_distance(distance)		# distance is in screen space-- the mouse's playground!
 		distance_abs = distance.abs
@@ -65,13 +61,6 @@ class GuiFloat < GuiObject
 		scaled_progress = ((progress ** 3) + 1.0) / 2.0
 		min, max = -20.0, 20.0		# TODO: base these on @min/@max somehow
 		scaled_progress.scale(min, max)
-	end
-
-	SELECTION_COLOR = [1.0,1.0,1.0,0.25]
-	def render_selection
-		with_color(SELECTION_COLOR) {
-			unit_square
-		}
 	end
 
 	def step_amount
