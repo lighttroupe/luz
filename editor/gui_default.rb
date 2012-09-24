@@ -1,7 +1,8 @@
-require 'gui_pointer_behavior', 'gui_object', 'gui_box', 'gui_list', 'gui_grid', 'gui_message_bar', 'gui_beat_monitor', 'gui_button', 'gui_float', 'gui_toggle', 'gui_curve'
+require 'gui_pointer_behavior', 'gui_object', 'gui_box', 'gui_list', 'gui_grid', 'gui_message_bar', 'gui_beat_monitor', 'gui_button', 'gui_float', 'gui_toggle', 'gui_curve', 'gui_theme'
 require 'editor/fonts/bitmap-font'
-
 require 'gui_addons'
+
+#load_directory(Dir.pwd + '/editor/widgets/', '**.rb')
 
 class GuiDefault < GuiBox
 	pipe :positive_message, :message_bar
