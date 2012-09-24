@@ -81,6 +81,16 @@ class UserObjectSettingVariable
 	end
 end
 
+class UserObjectSettingTimespan
+	def gui_build_editor
+		box = GuiBox.new
+		box << (@name_label = BitmapFont.new.set(:color => [0.5,0.5,1.0,0.9], :string => name.gsub('_',' '), :scale_x => 1.0, :scale_y => 0.4, :offset_y => 0.42))
+		box << GuiFloat.new(self, :time_number, 0.0, 999.0).set(:offset_x => -0.25, :scale_x => 0.5)
+		box << GuiSelect.new(self, :time_unit, TIME_UNIT_OPTIONS).set(:offset_x => 0.25, :scale_x => 0.5)
+		box
+	end
+end
+
 class UserObject
 	include MethodsForGuiObject
 
