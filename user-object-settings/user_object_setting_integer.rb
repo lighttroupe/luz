@@ -33,6 +33,10 @@ class UserObjectSettingInteger < UserObjectSettingNumeric
 		@options[:default] = (@options[:default] or @options[:range] or 1..2)
 
 		set_default_instance_variables(:animation_min => @options[:default].first, :animation_step => 1, :animation_type => :none)
+
+		@min ||= @options[:range].first
+		@max ||= @options[:range].last
+
 		super
 	end
 
