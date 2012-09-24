@@ -24,6 +24,7 @@ module EngineButtons
 
 	# returns whether button was eaten by a grab
 	def on_button_down(name, frame_offset = 0)
+		return unless name		# don't allow nil
 		return if $engine.frame_number <= 1		# HACK: this seems to prevent a segfault when we receive input immediately
 
 		new_button_notify_if_needed(name)
@@ -58,7 +59,7 @@ module EngineButtons
 
 	def button_down?(name)
 		new_button_notify_if_needed(name)
-		@button_down[name] || false  # NOTE: remember it can be nil
+		@button_down[name] || false  # NOTE: can be nil if unseen
 	end
 
 	def button_up?(name)
@@ -81,13 +82,13 @@ module EngineButtons
 	end
 
 	def new_button_notify_if_needed(name)
-		return if @button_press_count[name]
-
+		return if @button_press_count[name] || name.nil?
 		@button_press_count[name] = 0			# Otherwise we'll new_slider_notify endlessly...
+		@seen_buttons_list = @button_press_count.keys.sort
 		new_button_notify(name)						# this lets us notify (fill GUI lists) after loading a set from disk
 	end
 
-	def seen_button_list
-		@button_press_count.keys
+	def seen_buttons_list
+		@seen_buttons_list || []
 	end
 end
