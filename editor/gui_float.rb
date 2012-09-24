@@ -5,6 +5,7 @@ class GuiFloat < GuiObject
 		@value_label = BitmapFont.new.set(:scale_x => 0.9, :scale_y => 0.65)
 		@change_speed_multiplier = 4.0
 		@format_string = "%+0.2f"
+		@color = [0.1, 0.1, 1.0, 1.0]
 		draggable!
 	end
 
@@ -24,7 +25,6 @@ class GuiFloat < GuiObject
 		set_value(get_value + (change_per_second * $env[:frame_time_delta])) unless change_per_second == 0.0
 	end
 
-	COLOR = [0.1, 0.1, 1.0, 1.0]
 	def gui_render!
 		return if hidden?
 		with_positioning {
@@ -33,7 +33,7 @@ class GuiFloat < GuiObject
 			#with_color([rand,rand,rand,0.5]) { unit_square } 		# test fill
 			@value_label.set_string(generate_string)
 
-			with_color(COLOR) {
+			with_color(color) {
 				@value_label.gui_render!
 			}
 		}
