@@ -157,6 +157,7 @@ class GuiUserObjectEditor < GuiBox
 		# background
 		self << (@background=GuiObject.new.set(:color => [0,0,0,0.5]))
 
+		# content
 		self << @user_object.gui_build_editor
 
 		# label
