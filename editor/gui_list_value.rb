@@ -28,13 +28,13 @@ class GuiListValue < GuiObject
 
 	def scroll_up!(pointer)
 		list_cached = list
-		index = (current_index - 1) % list_cached.size
+		index = current_index ? ((current_index - 1) % list_cached.size) : 0
 		set_value list_cached[index]
 	end
 
 	def scroll_down!(pointer)
 		list_cached = list
-		index = (current_index + 1) % list_cached.size
+		index = current_index ? ((current_index + 1) % list_cached.size) : 0
 		set_value list_cached[index]
 	end
 end
