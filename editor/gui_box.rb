@@ -15,6 +15,10 @@ class GuiBox < GuiObject
 		gui_object.parent = self
 	end
 
+	def remove(gui_object)
+		@contents.delete(gui_object)
+	end
+
 	def prepend(gui_object)
 		@contents.unshift(gui_object)
 		gui_object.parent = self
