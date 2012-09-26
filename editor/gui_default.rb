@@ -4,6 +4,26 @@ require 'gui_addons'
 
 #load_directory(Dir.pwd + '/editor/widgets/', '**.rb')
 
+class GuiPreferencesBox < GuiBox
+	def initialize
+		super
+	end
+
+	def build
+		self << GuiObject.new.set(:color => [0.7, 1.0, 0.7, 0.4])
+		self << (@fps_label=BitmapFont.new.set_string("Animation Frames Per Second").set(:scale_x => 0.05, :scale_y => 0.06, :offset_x => -0.42, :offset_y => 0.45))
+		self << GuiInteger.new($application, :frames_per_second, 20, 70).set(:offset_x => 0.4, :offset_y => 0.45, :scale_x => 0.2, :scale_y => 0.1)
+		self
+	end
+
+	def fps
+		$settings['performer-fps']
+	end
+	def fps=(fps)
+		$settings['performer-fps'] = fps
+	end
+end
+
 class GuiDefault < GuiBox
 	pipe :positive_message, :message_bar
 	pipe :negative_message, :message_bar
@@ -18,6 +38,7 @@ class GuiDefault < GuiBox
 	CURVES_BUTTON    = 'Keyboard / F6'
 	VARIABLES_BUTTON = 'Keyboard / F7'
 	EVENTS_BUTTON    = 'Keyboard / F8'
+	PREFERENCES_BUTTON    = 'Keyboard / F12'
 
 	def reload_notify
 #		clear!
@@ -50,6 +71,10 @@ class GuiDefault < GuiBox
 
 		positive_message('Welcome to Luz 2.0')
 
+		self << (@preferences_box = GuiPreferencesBox.new.build.set(:scale_x => 0.3, :scale_y => 0.4, :offset_x => 0.35, :offset_y => -0.3, :opacity => 0.0, :hidden => true))
+		self << (@preferences_button = GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.50, :offset_y => -0.50, :color => [0.5,1.0,0.5,1.0], :background_image => $engine.load_image('images/buttons/menu.png')))
+		@preferences_button.on_clicked { toggle_preferences_box! }
+
 		@user_object_editors = {}
 	end
 
@@ -60,6 +85,15 @@ class GuiDefault < GuiBox
 		toggle_themes_list! if $engine.button_pressed_this_frame?(THEMES_BUTTON)
 		toggle_variables_list! if $engine.button_pressed_this_frame?(VARIABLES_BUTTON)
 		toggle_events_list! if $engine.button_pressed_this_frame?(EVENTS_BUTTON)
+		toggle_preferences_box! if $engine.button_pressed_this_frame?(PREFERENCES_BUTTON)
+	end
+
+	def toggle_preferences_box!
+		if @preferences_box.hidden?		# TODO: this is not a good way to toggle
+			@preferences_box.set(:hidden => false, :opacity => 0.0).animate({:opacity => 1.0, :offset_x => 0.35, :offset_y => -0.3}, duration=0.2)
+		else
+			@preferences_box.animate({:opacity => 0.0, :offset_x => 0.6, :offset_y => -0.6}, duration=0.25) { @preferences_box.set_hidden(true) }
+		end
 	end
 
 	def toggle_actors_list!
@@ -160,7 +194,7 @@ class GuiUserObjectEditor < GuiBox
 		self << (@background=GuiObject.new.set(:color => [0,0,0,0.5]))
 
 		# content
-		self << @user_object.gui_build_editor
+		self << @user_object.gui_build_editor		# find gui_build_editor implementations for everything in gui_addons.rb
 
 		# label
 		self << (@title_text=BitmapFont.new.set_string(@user_object.title).set(:scale_x => 1.0, :scale_y => 0.08, :offset_x => 0.0, :offset_y => 0.5 - 0.04))		#.set(:background_image => $engine.load_image('images/buttons/menu.png'))
