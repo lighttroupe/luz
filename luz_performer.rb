@@ -139,11 +139,11 @@ class LuzPerformer
 	# Run Performer (interactive)
 	#
 	def run
-		ms_per_frame = (1000 / @frames_per_second)
-
 		start_time = SDL.getTicks
 
 		while not finished?
+			ms_per_frame = (1000 / @frames_per_second)		# NOTE: this can change at any time
+
 			frame_start_ms = SDL.getTicks
 
 			while event = SDL::Event2.poll
