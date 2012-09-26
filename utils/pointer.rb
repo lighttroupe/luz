@@ -104,7 +104,10 @@ class Pointer
 	end
 
 	def is_over(object)
-		return if @hover_object == object
+		return if @hover_object == object		# this gets called repeatedly-- do no work for the common case of "still hovering"
+
+		# don't hover over anything but drag object while dragging (TODO: allow for drop?!)
+		return if @drag_object && object != @drag_object
 
 		exit_hover_object!		# pointer exits current object
 
