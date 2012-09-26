@@ -4109,7 +4109,7 @@
                   green: 0.0
                   red: 0.0
                 name: background_color
-                options: &id074
+                options: &id070
                   
                   :only_literal: true
                   :default: 
@@ -5924,8 +5924,7 @@
                       green: 0.0
                       red: 0.0
                     name: color
-                    options: &id069
-                      
+                    options: 
                       :default: 
                         - 1.0
                         - 1.0
@@ -5934,8 +5933,7 @@
                     breaks_cache: 
                   amount_setting: !ruby/object:UserObjectSettingFloat
                     name: amount
-                    options: &id070
-                      
+                    options: 
                       :range: !ruby/range
                         begin: 0.0
                         end: 1.0
@@ -7245,37 +7243,11 @@
                 options: 
                   :summary: true
                 breaks_cache: 
-            - !ruby/object:DirectorEffectActor
-              conditions: !ruby/object:ChildConditions
-                enable_child_index: false
-                child_index_min: 0
-                child_index_max: 0
-                enable_event: false
-                event: 
-                event_invert: false
-                child_index_max: 0
-                child_index_min: 0
-                enable_child_index: false
-                enable_event: false
-                event: 
-                event_invert: false
-              title: &id066 Actor
-              enabled: true
-              actor_setting: !ruby/object:UserObjectSettingActor
-                name: &id067 actor
-                options: &id068
-                  
-                  :summary: true
-                breaks_cache: 
-                actor: *id044
-                x: -0.1
-                y: 0.1
-                z: 0.3
           title: Director One
           enabled: true
           offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
             name: offscreen_render_actor
-            options: &id071
+            options: &id067
               
               :summary: renders on %
             breaks_cache: 
@@ -7456,11 +7428,12 @@
             enable_event: false
             event: 
             event_invert: false
-          title: *id066
+          title: Actor
           enabled: true
           actor_setting: !ruby/object:UserObjectSettingActor
-            name: *id067
-            options: *id068
+            name: actor
+            options: 
+              :summary: true
             breaks_cache: 
             actor: !ruby/object:ActorRoundedRectangle
               x: 0.0
@@ -7485,7 +7458,15 @@
                   enabled: true
                   amount_x_setting: !ruby/object:UserObjectSettingFloat
                     name: amount_x
-                    options: *id039
+                    options: 
+                      :range: &id066 !ruby/range
+                        begin: -1000.0
+                        end: 1000.0
+                        excl: false
+                      :default: !ruby/range
+                        begin: 1.0
+                        end: 2.0
+                        excl: false
                     breaks_cache: 
                     min: -1000.0
                     max: 1000.0
@@ -7508,7 +7489,12 @@
                     activation_variable: 
                   amount_y_setting: !ruby/object:UserObjectSettingFloat
                     name: amount_y
-                    options: *id040
+                    options: 
+                      :range: *id066
+                      :default: !ruby/range
+                        begin: 1.0
+                        end: 2.0
+                        excl: false
                     breaks_cache: 
                     min: -1000.0
                     max: 1000.0
@@ -7531,7 +7517,12 @@
                     activation_variable: 
                   pivot_offset_x_setting: !ruby/object:UserObjectSettingFloat
                     name: pivot_offset_x
-                    options: *id041
+                    options: 
+                      :range: *id066
+                      :default: !ruby/range
+                        begin: 0.0
+                        end: 0.5
+                        excl: false
                     breaks_cache: 
                     min: -1000.0
                     max: 1000.0
@@ -7554,7 +7545,12 @@
                     activation_variable: 
                   pivot_offset_y_setting: !ruby/object:UserObjectSettingFloat
                     name: pivot_offset_y
-                    options: *id042
+                    options: 
+                      :range: *id066
+                      :default: !ruby/range
+                        begin: 0.0
+                        end: 0.5
+                        excl: false
                     breaks_cache: 
                     min: -1000.0
                     max: 1000.0
@@ -7598,11 +7594,24 @@
                       green: 1.0
                       red: 0.983672846570535
                     name: color
-                    options: *id069
+                    options: 
+                      :default: 
+                        - 1.0
+                        - 1.0
+                        - 1.0
+                        - 1.0
                     breaks_cache: 
                   amount_setting: !ruby/object:UserObjectSettingFloat
                     name: amount
-                    options: *id070
+                    options: 
+                      :range: !ruby/range
+                        begin: 0.0
+                        end: 1.0
+                        excl: false
+                      :default: !ruby/range
+                        begin: 1.0
+                        end: 1.0
+                        excl: false
                     breaks_cache: 
                     min: 0.0
                     max: 1.0
@@ -7710,7 +7719,7 @@
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
-        options: *id071
+        options: *id067
         breaks_cache: 
         actor: 
         x: 0.0
@@ -7731,12 +7740,12 @@
               blue: 0.0
               green: 0.269413290608072
               red: 1.0
-            name: &id072 color
+            name: &id068 color
             options: *id012
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: &id073 image
+            name: &id069 image
             options: *id014
             breaks_cache: 
         - !ruby/object:Style
@@ -7748,12 +7757,12 @@
               blue: 0.0
               green: 0.894560158693828
               red: 1.0
-            name: *id072
+            name: *id068
             options: *id012
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id073
+            name: *id069
             options: *id014
             breaks_cache: 
         - !ruby/object:Style
@@ -7765,12 +7774,12 @@
               blue: 0.135072861829557
               green: 0.838284885938811
               red: 0.513176165407797
-            name: *id072
+            name: *id068
             options: *id012
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id073
+            name: *id069
             options: *id014
             breaks_cache: 
         - !ruby/object:Style
@@ -7782,12 +7791,12 @@
               blue: 0.0376897840848402
               green: 0.0470283054856184
               red: 0.780117494468605
-            name: *id072
+            name: *id068
             options: *id012
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id073
+            name: *id069
             options: *id014
             breaks_cache: 
       title: Autumn
@@ -7798,8 +7807,8 @@
           blue: 0.0
           green: 0.0
           red: 0.0
-        name: &id075 background_color
-        options: *id074
+        name: &id071 background_color
+        options: *id070
         breaks_cache: 
     - !ruby/object:Theme
       tags: 
@@ -7813,12 +7822,12 @@
               blue: 1.0
               green: 1.0
               red: 1.0
-            name: *id072
+            name: *id068
             options: *id012
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id073
+            name: *id069
             options: *id014
             breaks_cache: 
         - !ruby/object:Style
@@ -7830,12 +7839,12 @@
               blue: 0.0
               green: 0.0
               red: 0.0
-            name: *id072
+            name: *id068
             options: *id012
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id073
+            name: *id069
             options: *id014
             breaks_cache: 
         - !ruby/object:Style
@@ -7948,6 +7957,6 @@
           blue: 0.0
           green: 0.0
           red: 0.0
-        name: *id075
-        options: *id074
+        name: *id071
+        options: *id070
         breaks_cache: 
