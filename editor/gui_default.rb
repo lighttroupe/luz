@@ -177,6 +177,33 @@ class GuiDefault < GuiBox
 		}
 		@user_object_editors.clear
 	end
+
+	def pointer_click_on_nothing(pointer)
+		if !@preferences_box.hidden?
+			toggle_preferences_box!
+
+		elsif !@user_object_editors.empty?
+			clear_editors!
+
+		elsif !@actors_list.hidden?
+			toggle_actors_list!
+
+		elsif !@themes_list.hidden?
+			toggle_themes_list!
+
+		elsif !@curves_list.hidden?
+			toggle_curves_list!
+
+		elsif !@variables_list.hidden?
+			toggle_variables_list!
+
+		elsif !@events_list.hidden?
+			toggle_events_list!
+
+		else
+			# TODO: close editor interface?
+		end
+	end
 end
 
 class GuiUserObjectEditor < GuiBox
@@ -191,7 +218,7 @@ class GuiUserObjectEditor < GuiBox
 
 	def create!
 		# background
-		self << (@background=GuiObject.new.set(:color => [0,0,0,0.5]))
+		self << (@background=GuiObject.new.set(:color => [0,0,0,0.8]))
 
 		# content
 		self << @user_object.gui_build_editor		# find gui_build_editor implementations for everything in gui_addons.rb

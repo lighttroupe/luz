@@ -58,6 +58,8 @@ class Pointer
 				@hover_object.click(self) if @hover_object.respond_to?(:click)
 				@click_x, @click_y, @click_time = x, y, Time.now
 				begin_drag(@hover_object) if @hover_object.draggable?
+			else
+				$gui.pointer_click_on_nothing(self) if $gui.respond_to? :pointer_click_on_nothing
 			end
 
 		elsif hold?
