@@ -44,8 +44,8 @@ module DrawingHitTesting
 
 	# returns [hit_test_id, handle_id] or [0, nil]
 	def hit_test_object_at_luz_coordinates(x, y)		# coordinates with 0-centered unit square
-		pixel_x, pixel_y = (x + 0.5) * $application.width, ((y + 0.5)) * $application.height
-		hit_test_object_at(pixel_x, pixel_y)
+		x_index, y_index = (x + 0.5) * ($application.width-1), ((y + 0.5)) * ($application.height-1)
+		hit_test_object_at(x_index, y_index)
 	end
 
 	def hit_test_object_at(x, y)		# pixel coordinates
