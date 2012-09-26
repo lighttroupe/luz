@@ -1,5 +1,5 @@
 class GuiGrid < GuiBox
-	easy_accessor :spacing_x, :spacing_y, :min_columns
+	easy_accessor :spacing_x, :spacing_y, :item_scale_x, :item_scale_y, :min_columns
 
 	DEFAULT_MIN_COLUMNS = 3
 
@@ -12,7 +12,7 @@ class GuiGrid < GuiBox
 			@contents.each_with_index { |gui_object, index|
 				row_index, column_index = index.divmod(num_per_row)
 				with_translation(-0.5 + (distance_x / 2.0) + (column_index * distance_x), 0.5 - (distance_y / 2.0) - (row_index * distance_y)) {
-					with_scale(1.0 / num_per_row) {
+					with_scale((1.0 / num_per_row) * (item_scale_x || 1.0), (1.0 / num_per_row) * (item_scale_y || 1.0)) {
 						yield gui_object
 					}
 				}
