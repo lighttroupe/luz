@@ -5,6 +5,7 @@ class GuiInteger < GuiNumeric
 		super(object, method, min, max)
 		@change_speed_multiplier = 4.0
 		@format_string = "%+d"
+		@zero_value = 0
 		draggable!
 	end
 

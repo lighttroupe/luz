@@ -13,6 +13,7 @@ class GuiNumeric < GuiObject
 	def set_value(value)
 		value = @min if @min && value < @min
 		value = @max if @max && value > @max
+		value = @zero_value if value == -@zero_value		# HACK to avoid odd case of -0.0
 		@object.instance_variable_set(@method, value)
 	end
 
@@ -27,14 +28,18 @@ class GuiNumeric < GuiObject
 		sprintf(@format_string, get_value).sub('+',' ')
 	end
 
+	def purify_value(value)
+		value		# default implementation does nothing
+	end
+
 	#
 	# Mouse Interaction
 	#
 	def scroll_up!(pointer)
-		set_value(get_value + step_amount)
+		set_value(purify_value(get_value + step_amount))
 	end
 
 	def scroll_down!(pointer)
-		set_value(get_value - step_amount)
+		set_value(purify_value(get_value - step_amount))
 	end
 end

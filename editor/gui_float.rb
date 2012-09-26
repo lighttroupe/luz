@@ -5,6 +5,7 @@ class GuiFloat < GuiNumeric
 		super(object, method, min, max)
 		@change_speed_multiplier = 4.0
 		@format_string = "%+0.2f"
+		@zero_value = 0.0
 		draggable!
 	end
 
@@ -16,6 +17,14 @@ class GuiFloat < GuiNumeric
 		distance = pointer.drag_delta_x + pointer.drag_delta_y		# NOTE: cummulative, so up+right is fastest
 		change_per_second = change_per_second_for_distance(distance)
 		set_value(get_value + (change_per_second * $env[:frame_time_delta])) unless change_per_second == 0.0
+	end
+
+	def purify_value(value)
+		sprintf(@format_string, value).to_f
+	end
+
+	def end_drag(pointer)
+		set_value(purify_value(get_value))
 	end
 
 	def change_per_second_for_distance(distance)		# distance is in screen space-- the mouse's playground!
