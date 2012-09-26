@@ -29,6 +29,7 @@ class ProjectEffectEditor < ProjectEffect
 	setting 'show_amount', :float, :range => 0.0..1.0
 	setting 'output_opacity', :float, :range => 0.0..1.0, :default => 1.0..1.0
 	setting 'debug', :event
+	setting 'gui_color', :color
 
 	def after_load
 		super
@@ -71,7 +72,9 @@ class ProjectEffectEditor < ProjectEffect
 
 		if show_amount > 0.0
 			with_enter_and_exit(show_amount, 0.0) {
-				@gui.gui_render!
+				with_color(gui_color) {
+					@gui.gui_render!
+				}
 				render_pointers
 			}
 		end

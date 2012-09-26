@@ -11,7 +11,7 @@ class GuiButton < GuiObject
 	BUTTON_CLICK_COLOR = [0.5,1.0,0.5]
 
 	def gui_color
-		(pointer_clicking?) ? BUTTON_CLICK_COLOR : ((pointer_hovering?) ? BUTTON_HOVER_COLOR : BUTTON_COLOR)
+		(pointer_clicking?) ? BUTTON_CLICK_COLOR : ((pointer_hovering?) ? BUTTON_HOVER_COLOR : nil)
 	end
 
 	def gui_render!
