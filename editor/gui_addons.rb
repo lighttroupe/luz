@@ -23,10 +23,10 @@ class UserObjectSettingFloat
 	def gui_build_editor
 		box = GuiBox.new
 		box << create_user_object_setting_name_label
-		box << GuiFloat.new(self, :animation_min, @min, @max).set(:scale_x => 0.3, :offset_x => -0.5 + 0.15)
-		box << GuiToggle.new(self, :enable_animation).set(:scale_x => 0.1, :offset_x => -0.15, :color => [1,0,0,1])
-		box << GuiCurve.new(self, :animation_curve).set(:scale_x => 0.3, :scale_y => 0.8,:offset_x => 0.05)
-		box << GuiFloat.new(self, :animation_max, @min, @max).set(:scale_x => 0.3, :offset_x => 0.5 - 0.15)
+		box << GuiFloat.new(self, :animation_min, @min, @max).set(:scale_x => 0.15, :offset_x => -0.42)
+		box << GuiToggle.new(self, :enable_animation).set(:scale_x => 0.07, :offset_x => -0.30, :color => [1,0,0,1])
+		box << GuiCurve.new(self, :animation_curve).set(:scale_x => 0.15, :scale_y => 0.8, :offset_x => -0.175)
+		box << GuiFloat.new(self, :animation_max, @min, @max).set(:scale_x => 0.15, :offset_x => -0.024)
 		box
 	end
 end
