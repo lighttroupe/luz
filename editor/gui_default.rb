@@ -206,7 +206,7 @@ class GuiUserObjectEditor < GuiBox
 		# label
 		self << (@title_text=BitmapFont.new.set_string(@user_object.title).set(:scale_x => 0.95, :scale_y => 0.08, :offset_x => 0.0, :offset_y => 0.5 - 0.04))		#.set(:background_image => $engine.load_image('images/buttons/menu.png'))
 
-		self << (@close_button=GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.15, :offset_x => -0.5, :offset_y => 0.5, :background_image => $engine.load_image('images/buttons/close.png')))
+		self << (@close_button=GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.15, :offset_x => 0.5, :offset_y => 0.5, :background_image => $engine.load_image('images/buttons/close.png')))
 		@close_button.on_clicked {
 			animate({:opacity => 0.0, :offset_y => offset_y - 0.1, :scale_x => scale_x * 1.1}, duration=0.2) { set_hidden(true) }
 		}
