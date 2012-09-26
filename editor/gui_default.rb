@@ -137,7 +137,7 @@ class GuiDefault < GuiBox
 				@user_object_editors[user_object] = editor
 
 				editor.set({:offset_x => pointer.x, :offset_y => pointer.y, :opacity => 0.0, :scale_x => 0.0, :scale_y => 0.0, :hidden => false})
-				final_options = {:offset_x => 0.0, :offset_y => -0.15, :scale_x => 0.3, :scale_y => 0.375, :opacity => 1.0}
+				final_options = {:offset_x => 0.0, :offset_y => -0.24, :scale_x => 0.5, :scale_y => 0.325, :opacity => 1.0}
 				editor.animate(final_options, duration=0.2)
 				return editor
 			else
