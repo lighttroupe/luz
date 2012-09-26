@@ -22,13 +22,17 @@ class GuiList < GuiBox
 		each_with_positioning { |gui_object| gui_object.hit_test_render! }
 	end
 
+	def velocity_damper
+		0.94
+	end
+
 	def gui_tick!
 		super
 		@scroll ||= 0.0
 		@scroll_velocity ||= 0.0
 		@scroll += @scroll_velocity * $env[:frame_time_delta]
-		@scroll_velocity *= 0.9
-		@scroll_velocity = 0.0 if @scroll_velocity.abs < 0.001		# damper
+		@scroll_velocity *= velocity_damper
+		@scroll_velocity = 0.0 if @scroll_velocity.abs < 0.001		# floating points...
 	end
 
 	def each_with_positioning
