@@ -198,11 +198,6 @@ class Engine
 		@event_values = Hash.new
 
 		$env = Hash.new
-		init_environment
-		update_environment
-
-		button_init
-		slider_init
 
 		@num_known_user_object_classes = 0
 
@@ -242,6 +237,12 @@ class Engine
 
 	# Some init has to be done after we have the $engine variable set (so after initialize returns)
 	def post_initialize
+		init_environment
+		update_environment
+
+		button_init
+		slider_init
+
 		@project = Project.new
 		@frame_number -= 1 ; tick(@last_frame_time)		# set up the environment HACK: without counting it
 	end
@@ -495,6 +496,8 @@ private
 	def init_environment
 		$env[:time] = 0.0
 		$env[:beat] = 0.0
+		$env[:output_width] = $application.width
+		$env[:output_height] = $application.height
 
 		# Because of the nature of with_x { } blocks, we only need to set some things once
 		# NOTE: an editor GUI *can* mess with these values, though, and this is intentional!

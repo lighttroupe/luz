@@ -24,7 +24,16 @@ module DrawingHitTesting
 		$engine.with_env(:hit_test, true) {
 			$hit_test_id = 0
 			$hit_test_options = {}
-			yield
+
+			with_offscreen_buffer(:small) { |buffer|
+				buffer.using {
+					with_env(:output_height, buffer.height) {		# hit testing code needs to know how big the output buffer is
+						with_env(:output_width, buffer.width) {
+							yield
+						}
+					}
+				}
+			}
 		}
 	end
 
@@ -44,7 +53,7 @@ module DrawingHitTesting
 
 	# returns [hit_test_id, handle_id] or [0, nil]
 	def hit_test_object_at_luz_coordinates(x, y)		# coordinates with 0-centered unit square
-		x_index, y_index = (x + 0.5) * ($application.width-1), ((y + 0.5)) * ($application.height-1)
+		x_index, y_index = (x + 0.5) * ($env[:output_width]-1), ((y + 0.5)) * ($env[:output_height]-1)
 		hit_test_object_at(x_index, y_index)
 	end
 

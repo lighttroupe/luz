@@ -3,7 +3,7 @@ require 'drawing'
 class FramebufferObject
 	include Drawing
 
-	attr_reader :image
+	attr_reader :image, :height, :width
 
 	def initialize(settings={})
 		@width, @height = (settings[:width] || 1024), (settings[:height] || 768)		# TODO: use screen resolution

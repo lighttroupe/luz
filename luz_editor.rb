@@ -49,9 +49,7 @@ require 'addons_gl'
 class LuzEditor < Application
 	attr_reader :width, :height
 
-	def initialize
-		super
-
+	def create!
 		GC.disable
 
 		Gtk.init
@@ -122,6 +120,7 @@ GLADE_FILE_NAME = 'luz_editor.glade'
 settings_path = File.join(Dir.home, SETTINGS_DIRECTORY, SETTINGS_FILENAME)
 $settings = Settings.new.load(settings_path)
 $application = LuzEditor.new
+$application.create!
 Gtk.main_clear_queue	# Give GUI a chance to draw before loading project
 $engine.load_from_path(project) if (project and File.extname(project) == '.luz')
 $application.run
