@@ -10,7 +10,7 @@ class GuiDefault < GuiBox
 
 	def initialize
 		super
-		create_default_gui
+		create!
 	end
 
 	ACTORS_BUTTON    = 'Keyboard / F1'
@@ -24,16 +24,7 @@ class GuiDefault < GuiBox
 #		create_default_gui
 	end
 
-	def gui_tick!
-		super
-		toggle_actors_list! if $engine.button_pressed_this_frame?(ACTORS_BUTTON)
-		toggle_curves_list! if $engine.button_pressed_this_frame?(CURVES_BUTTON)
-		toggle_themes_list! if $engine.button_pressed_this_frame?(THEMES_BUTTON)
-		toggle_variables_list! if $engine.button_pressed_this_frame?(VARIABLES_BUTTON)
-		toggle_events_list! if $engine.button_pressed_this_frame?(EVENTS_BUTTON)
-	end
-
-	def create_default_gui
+	def create!
 		self << (@actors_list = GuiList.new($engine.project.actors).set(:scroll_wrap => true, :scale_x => 0.2, :scale_y => 0.5, :offset_x => -0.4, :offset_y => 0.0, :hidden => true, :spacing_y => -1.0))
 		self << (@actors_button = GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.08, :offset_x => -0.46, :offset_y => 0.5 - 0.14, :background_image => $engine.load_image('images/buttons/menu.png')))
 		@actors_button.on_clicked { toggle_actors_list! }
@@ -60,6 +51,15 @@ class GuiDefault < GuiBox
 		positive_message('Welcome to Luz 2.0')
 
 		@user_object_editors = {}
+	end
+
+	def gui_tick!
+		super
+		toggle_actors_list! if $engine.button_pressed_this_frame?(ACTORS_BUTTON)
+		toggle_curves_list! if $engine.button_pressed_this_frame?(CURVES_BUTTON)
+		toggle_themes_list! if $engine.button_pressed_this_frame?(THEMES_BUTTON)
+		toggle_variables_list! if $engine.button_pressed_this_frame?(VARIABLES_BUTTON)
+		toggle_events_list! if $engine.button_pressed_this_frame?(EVENTS_BUTTON)
 	end
 
 	def toggle_actors_list!
