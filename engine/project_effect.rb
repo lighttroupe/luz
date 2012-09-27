@@ -21,7 +21,7 @@ require 'child_user_object'
 class ProjectEffect < ChildUserObject
 	include Drawing
 
-	empty_method :pretick, :tick
+	empty_method :pretick, :tick, :inhibit_hardware?
 
 	def render
 		yield

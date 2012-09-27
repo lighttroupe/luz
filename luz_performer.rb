@@ -243,7 +243,7 @@ options.parse!
 
 $application.create
 $engine.load_from_path(project_path)
-$engine.hardwire!
+$engine.hardwire! unless $engine.project.effects.find { |effect| effect.inhibit_hardware? }
 
 if @record_video
 	#

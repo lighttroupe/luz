@@ -31,6 +31,10 @@ class ProjectEffectEditor < ProjectEffect
 	setting 'debug', :event
 	setting 'gui_color', :color
 
+	def inhibit_hardware?
+		true
+	end
+
 	def after_load
 		super
 		@gui = nil
