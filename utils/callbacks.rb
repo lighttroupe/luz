@@ -36,6 +36,12 @@ module Callbacks
 						@#{name}_handlers << proc
 					end
 
+					def on_#{name}_with_init(&proc)
+						@#{name}_handlers ||= []
+						@#{name}_handlers << proc
+						proc.call
+					end
+
 					def #{name}_notify(*args)
 						@#{name}_handlers.each { |handler| handler.call(*args) } if @#{name}_handlers
 					end
