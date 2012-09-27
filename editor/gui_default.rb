@@ -162,8 +162,8 @@ class GuiDefault < GuiBox
 		if !@preferences_box.hidden?
 			toggle_preferences_box!
 
-		elsif !@user_object_editors.empty?
-			clear_editors!
+		#elsif !@user_object_editors.empty?
+		#	clear_editors!
 
 		elsif !@actors_list.hidden?
 			toggle_actors_list!
@@ -198,7 +198,7 @@ class GuiUserObjectEditor < GuiBox
 
 	def create!
 		# background
-		self << (@background=GuiObject.new.set(:color => [0,0,0,0.8]))
+		self << (@background=GuiObject.new.set(:color => [0,0,0,0.9]))
 
 		# content
 		self << @user_object.gui_build_editor		# find gui_build_editor implementations for everything in gui_addons.rb
