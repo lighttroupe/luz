@@ -1,8 +1,10 @@
 class GuiNumeric < GuiObject
+	easy_accessor :step_amount
+
 	def initialize(object, method, min, max)
 		super()
 		@object, @method, @min, @max = object, '@'+method.to_s, min, max
-		@value_label = BitmapFont.new.set(:offset_y => -0.12, :scale_x => 0.9, :scale_y => 0.65)
+		@value_label = BitmapFont.new.set(:scale_x => 0.9, :scale_y => 0.65, :offset_y => -0.12)
 		@color = [0.1, 0.1, 1.0, 1.0]
 	end
 
