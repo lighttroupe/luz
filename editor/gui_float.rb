@@ -40,10 +40,25 @@ class GuiFloat < GuiNumeric
 			@step_amount
 			# enough to step up to next value
 			#(get_value + @step_amount) - (get_value + @step_amount) % @step_amount
-		elsif @min
-			1.0		# calculate a good value based on min/max?
+		elsif @min && @max
+			# calculate a good value based on min/max
+			range = (@max - @min)
+			if range > 8
+				value_abs = get_value.abs
+				if value_abs >= 1000.0
+					100.0
+				elsif value_abs >= 100.0
+					10.0
+				elsif value_abs >= 1
+					1.0
+				else
+					0.1
+				end
+			else
+				0.1
+			end
 		else
-			0.01
+			1.0
 		end
 	end
 end
