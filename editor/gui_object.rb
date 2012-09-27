@@ -6,7 +6,7 @@ module MethodsForGuiObject
 	include GuiSelectedBehavior
 	include ValueAnimation
 
-	BACKGROUND_COLOR = [0.0,0.0,0.0,0.5]
+	BACKGROUND_COLOR = [0.0,0.0,0.0,0.0]
 	BACKGROUND_COLOR_HOVERING = [1.0,1.0,1.0,0.25]
 	BACKGROUND_COLOR_SELECTED = [1.0,1.0,1.0,0.15]
 
