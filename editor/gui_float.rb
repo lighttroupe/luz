@@ -36,7 +36,14 @@ class GuiFloat < GuiNumeric
 	end
 
 	def step_amount
-		return 1.0 unless @min
-		return 0.01
+		if @step_amount
+			@step_amount
+			# enough to step up to next value
+			#(get_value + @step_amount) - (get_value + @step_amount) % @step_amount
+		elsif @min
+			1.0		# calculate a good value based on min/max?
+		else
+			0.01
+		end
 	end
 end
