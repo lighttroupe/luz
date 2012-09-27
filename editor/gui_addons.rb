@@ -25,10 +25,10 @@ class UserObjectSettingFloat
 		row << create_user_object_setting_name_label
 		row << GuiFloat.new(self, :animation_min, @min, @max).set(:scale_x => 0.15, :offset_x => -0.42)
 		row << (@enable_animation_toggle=GuiToggle.new(self, :enable_animation).set(:scale_x => 0.07, :offset_x => -0.30, :color => [1,0,0,1], :image => $engine.load_image('images/buttons/play.png')))
-		row << (@animation_curve_widget=GuiCurve.new(self, :animation_curve).set(:scale_x => 0.15, :scale_y => 0.8, :offset_x => -0.175, :opacity => 1.0))
-		row << (@animation_max_widget=GuiFloat.new(self, :animation_max, @min, @max).set(:scale_x => 0.15, :offset_x => -0.024, :opacity => 1.0))
-		row << (@animation_repeat_number_widget=GuiFloat.new(self, :animation_repeat_number, 0.25, 128.0).set(:step_amount => 0.25, :scale_x => 0.2, :offset_x => 0.15, :opacity => 1.0))
-		row << (@animation_repeat_unit_widget=GuiSelect.new(self, :animation_repeat_unit, TIME_UNIT_OPTIONS).set(:scale_x => 0.15, :offset_x => 0.33, :opacity => 1.0))
+		row << (@animation_curve_widget=GuiCurve.new(self, :animation_curve).set(:scale_x => 0.15, :scale_y => 0.8, :offset_x => -0.175, :opacity => 0.6))
+		row << (@animation_max_widget=GuiFloat.new(self, :animation_max, @min, @max).set(:scale_x => 0.15, :offset_x => -0.024, :opacity => 0.6))
+		row << (@animation_repeat_number_widget=GuiFloat.new(self, :animation_repeat_number, 0.25, 128.0).set(:step_amount => 0.25, :scale_x => 0.2, :offset_x => 0.15, :opacity => 0.6))
+		row << (@animation_repeat_unit_widget=GuiSelect.new(self, :animation_repeat_unit, TIME_UNIT_OPTIONS).set(:scale_x => 0.15, :offset_x => 0.33, :opacity => 0.6))
 		box = GuiBox.new
 		box << row
 
@@ -38,7 +38,7 @@ class UserObjectSettingFloat
 			if @enable_animation_toggle.on?
 				@animation_widgets.each_with_index { |widget, index| widget.animate({:opacity => 1.0}, duration = (0.05 + (index * 0.2))) }
 			else
-				@animation_widgets.each_with_index { |widget, index| widget.animate({:opacity => 0.2}, duration = (0.05 + (index * 0.1))) }
+				@animation_widgets.each_with_index { |widget, index| widget.animate({:opacity => 0.4}, duration = (0.05 + (index * 0.1))) }
 			end
 		}
 
