@@ -9,7 +9,7 @@ class UserObjectSetting
 	end
 
 	def create_user_object_setting_name_label
-		@name_label ||= BitmapFont.new.set(:color => [0.5,0.5,1.0,0.9], :string => name.gsub('_',' '), :scale_x => 1.0, :scale_y => 0.4, :offset_y => 0.33)
+		@name_label ||= BitmapFont.new.set(:color => [1.0,1.0,1.0,0.9], :string => name.gsub('_',' '), :scale_x => 1.0, :scale_y => 0.4, :offset_y => 0.33)
 	end
 end
 
@@ -27,6 +27,8 @@ class UserObjectSettingFloat
 		box << GuiToggle.new(self, :enable_animation).set(:scale_x => 0.07, :offset_x => -0.30, :color => [1,0,0,1])
 		box << GuiCurve.new(self, :animation_curve).set(:scale_x => 0.15, :scale_y => 0.8, :offset_x => -0.175)
 		box << GuiFloat.new(self, :animation_max, @min, @max).set(:scale_x => 0.15, :offset_x => -0.024)
+		box << GuiFloat.new(self, :animation_repeat_number, 0.25, 128.0).set(:step_amount => 0.25, :scale_x => 0.2, :offset_x => 0.15)
+		box << GuiSelect.new(self, :animation_repeat_unit, TIME_UNIT_OPTIONS).set(:scale_x => 0.15, :offset_x => 0.33)
 		box
 	end
 end
@@ -131,7 +133,7 @@ class UserObject
 			# Two-lists side by side
 			@gui_effects_list = GuiList.new(effects).set({:spacing_y => -0.8, :scale_x => 0.3, :scale_y => 0.9, :offset_x => -0.35, :offset_y => -0.05, :item_aspect_ratio => 3.0})
 			box << @gui_effects_list
-			@gui_settings_list = GuiList.new.set({:spacing_y => -0.9, :scale_x => 0.7, :scale_y => 0.9, :offset_x => 0.15, :offset_y => -0.05, :item_aspect_ratio => 8.0})
+			@gui_settings_list = GuiList.new.set({:spacing_y => -1.0, :scale_x => 0.7, :scale_y => 0.9, :offset_x => 0.15, :offset_y => -0.05, :item_aspect_ratio => 8.0})
 			box << @gui_settings_list
 		else
 			# Just a settings list (not used as of 2012/09/21)
