@@ -1,5 +1,6 @@
 class GuiToggle < GuiObject
 	callback :clicked
+	easy_accessor :image
 
 	COLOR_ON = [0.7,1,0.7,1]
 	COLOR_OFF = [1.0,0.7,0.7,0.5]
@@ -30,7 +31,9 @@ class GuiToggle < GuiObject
 		with_gui_object_properties {
 			with_scale(0.6, 0.4) {
 				with_color(get_value ? COLOR_ON : COLOR_OFF) {
-					unit_square
+					image.using {
+						unit_square
+					}
 				}
 			}
 		}
