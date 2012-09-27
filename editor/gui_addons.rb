@@ -21,14 +21,27 @@ end
 
 class UserObjectSettingFloat
 	def gui_build_editor
+		row = GuiBox.new.set(:scale_y => 0.5, :offset_y => 0.25)
+		row << create_user_object_setting_name_label
+		row << GuiFloat.new(self, :animation_min, @min, @max).set(:scale_x => 0.15, :offset_x => -0.42)
+		row << (@enable_animation_toggle=GuiToggle.new(self, :enable_animation).set(:scale_x => 0.07, :offset_x => -0.30, :color => [1,0,0,1], :image => $engine.load_image('images/buttons/play.png')))
+		row << (@animation_curve_widget=GuiCurve.new(self, :animation_curve).set(:scale_x => 0.15, :scale_y => 0.8, :offset_x => -0.175, :opacity => 1.0))
+		row << (@animation_max_widget=GuiFloat.new(self, :animation_max, @min, @max).set(:scale_x => 0.15, :offset_x => -0.024, :opacity => 1.0))
+		row << (@animation_repeat_number_widget=GuiFloat.new(self, :animation_repeat_number, 0.25, 128.0).set(:step_amount => 0.25, :scale_x => 0.2, :offset_x => 0.15, :opacity => 1.0))
+		row << (@animation_repeat_unit_widget=GuiSelect.new(self, :animation_repeat_unit, TIME_UNIT_OPTIONS).set(:scale_x => 0.15, :offset_x => 0.33, :opacity => 1.0))
 		box = GuiBox.new
-		box << create_user_object_setting_name_label
-		box << GuiFloat.new(self, :animation_min, @min, @max).set(:scale_x => 0.15, :offset_x => -0.42)
-		box << GuiToggle.new(self, :enable_animation).set(:scale_x => 0.07, :offset_x => -0.30, :color => [1,0,0,1])
-		box << GuiCurve.new(self, :animation_curve).set(:scale_x => 0.15, :scale_y => 0.8, :offset_x => -0.175)
-		box << GuiFloat.new(self, :animation_max, @min, @max).set(:scale_x => 0.15, :offset_x => -0.024)
-		box << GuiFloat.new(self, :animation_repeat_number, 0.25, 128.0).set(:step_amount => 0.25, :scale_x => 0.2, :offset_x => 0.15)
-		box << GuiSelect.new(self, :animation_repeat_unit, TIME_UNIT_OPTIONS).set(:scale_x => 0.15, :offset_x => 0.33)
+		box << row
+
+		@animation_widgets = [@animation_curve_widget, @animation_max_widget, @animation_repeat_number_widget, @animation_repeat_unit_widget]
+
+		@enable_animation_toggle.on_clicked_with_init {
+			if @enable_animation_toggle.on?
+				@animation_widgets.each_with_index { |widget, index| widget.animate({:opacity => 1.0}, duration = (0.05 + (index * 0.2))) }
+			else
+				@animation_widgets.each_with_index { |widget, index| widget.animate({:opacity => 0.2}, duration = (0.05 + (index * 0.1))) }
+			end
+		}
+
 		box
 	end
 end
@@ -133,7 +146,7 @@ class UserObject
 			# Two-lists side by side
 			@gui_effects_list = GuiList.new(effects).set({:spacing_y => -0.8, :scale_x => 0.3, :scale_y => 0.9, :offset_x => -0.35, :offset_y => -0.05, :item_aspect_ratio => 3.0})
 			box << @gui_effects_list
-			@gui_settings_list = GuiList.new.set({:spacing_y => -1.0, :scale_x => 0.7, :scale_y => 0.9, :offset_x => 0.15, :offset_y => -0.05, :item_aspect_ratio => 8.0})
+			@gui_settings_list = GuiList.new.set({:spacing_y => -1.0, :scale_x => 0.7, :scale_y => 0.9, :offset_x => 0.15, :offset_y => -0.05, :item_aspect_ratio => 4.0})
 			box << @gui_settings_list
 		else
 			# Just a settings list (not used as of 2012/09/21)
