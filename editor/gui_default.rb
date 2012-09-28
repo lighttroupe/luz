@@ -27,23 +27,23 @@ class GuiDefault < GuiBox
 
 	def create!
 		self << (@actors_list = GuiList.new($engine.project.actors).set(:scroll_wrap => true, :scale_x => 0.2, :scale_y => 0.75, :offset_x => -0.395, :offset_y => -0.08, :hidden => true, :spacing_y => -1.0))
-		self << (@actors_button = GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.08, :offset_x => -0.46, :offset_y => 0.5 - 0.14, :background_image => $engine.load_image('images/buttons/menu.png')))
+		self << (@actors_button = GuiButton.new.set(:hotkey => ACTORS_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => -0.46, :offset_y => 0.5 - 0.14, :background_image => $engine.load_image('images/buttons/menu.png')))
 		@actors_button.on_clicked { toggle_actors_list! }
 
 		self << (@themes_list = GuiList.new($engine.project.themes).set(:scale_x => 0.08, :scale_y => 0.5, :offset_x => -0.11, :offset_y => 0.5, :item_aspect_ratio => 1.6, :hidden => true, :spacing_y => -1.0))
-		self << (@theme_button = GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.08, :offset_x => -0.11, :offset_y => 0.5 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
+		self << (@theme_button = GuiButton.new.set(:hotkey => THEMES_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => -0.11, :offset_y => 0.5 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
 		@theme_button.on_clicked { toggle_themes_list! }
 
 		self << (@curves_list = GuiList.new($engine.project.curves).set(:scale_x => 0.08, :scale_y => 0.5, :offset_x => 0.06, :offset_y => 0.5, :item_aspect_ratio => 1.6, :hidden => true, :spacing_y => -1.0))
-		self << (@curve_button = GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.06, :offset_y => 0.50 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
+		self << (@curve_button = GuiButton.new.set(:hotkey => CURVES_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.06, :offset_y => 0.50 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
 		@curve_button.on_clicked { toggle_curves_list! }
 
 		self << (@variables_list = GuiList.new($engine.project.variables).set(:scale_x => 0.12, :scale_y => 0.5, :offset_x => 0.23, :offset_y => 0.5, :item_aspect_ratio => 2.5, :hidden => true, :spacing_y => -1.0))
-		self << (@variable_button = GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.23, :offset_y => 0.50 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
+		self << (@variable_button = GuiButton.new.set(:hotkey => VARIABLES_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.23, :offset_y => 0.50 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
 		@variable_button.on_clicked { toggle_variables_list! }
 
 		self << (@events_list = GuiList.new($engine.project.events).set(:scale_x => 0.12, :scale_y => 0.5, :offset_x => 0.40, :offset_y => 0.5, :item_aspect_ratio => 2.5, :hidden => true, :spacing_y => -1.0))
-		self << (@event_button = GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.40, :offset_y => 0.50 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
+		self << (@event_button = GuiButton.new.set(:hotkey => EVENTS_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.40, :offset_y => 0.50 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
 		@event_button.on_clicked { toggle_events_list! }
 
 		self << (@message_bar = GuiMessageBar.new.set(:offset_x => -0.33, :offset_y => 0.5 - 0.04, :scale_x => 0.32, :scale_y => 0.05))
@@ -52,7 +52,7 @@ class GuiDefault < GuiBox
 		positive_message('Welcome to Luz 2.0')
 
 		self << (@preferences_box = GuiPreferencesBox.new.build.set(:scale_x => 0.22, :scale_y => 0.4, :offset_x => 0.4, :offset_y => -0.3, :opacity => 0.0, :hidden => true))
-		self << (@preferences_button = GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.50, :offset_y => -0.50, :color => [0.5,1.0,0.5,1.0], :background_image => $engine.load_image('images/buttons/menu.png')))
+		self << (@preferences_button = GuiButton.new.set(:hotkey => PREFERENCES_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.50, :offset_y => -0.50, :color => [0.5,1.0,0.5,1.0], :background_image => $engine.load_image('images/buttons/menu.png')))
 		@preferences_button.on_clicked { toggle_preferences_box! }
 
 		@user_object_editors = {}
@@ -60,12 +60,6 @@ class GuiDefault < GuiBox
 
 	def gui_tick!
 		super
-		toggle_actors_list! if $engine.button_pressed_this_frame?(ACTORS_BUTTON)
-		toggle_curves_list! if $engine.button_pressed_this_frame?(CURVES_BUTTON)
-		toggle_themes_list! if $engine.button_pressed_this_frame?(THEMES_BUTTON)
-		toggle_variables_list! if $engine.button_pressed_this_frame?(VARIABLES_BUTTON)
-		toggle_events_list! if $engine.button_pressed_this_frame?(EVENTS_BUTTON)
-		toggle_preferences_box! if $engine.button_pressed_this_frame?(PREFERENCES_BUTTON)
 	end
 
 	def toggle_preferences_box!
