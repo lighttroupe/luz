@@ -104,10 +104,19 @@ class Pointer
 	end
 
 	def is_over(object)
-		return if @hover_object == object		# this gets called repeatedly-- do no work for the common case of "still hovering"
+		# do no work for the common case of "still hovering" (this gets called repeatedly with the same value)
+		return if @hover_object == object
 
-		# don't hover over anything but drag object while dragging (TODO: allow for drop?!)
-		return if @drag_object && object != @drag_object
+		# now hovering over something new!
+		#puts "now over #{object ? object.class : 'nil'} #{$env[:frame_number]}"
+
+		if @drag_object
+			@drag_object.drag_out(self) if @drag_object.respond_to? :drag_out
+			#puts 'drag out'
+
+			# don't hover over anything but drag object while dragging (TODO: allow for drop?!)
+			return if object != @drag_object
+		end
 
 		exit_hover_object!		# pointer exits current object
 
