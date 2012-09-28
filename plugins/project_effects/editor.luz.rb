@@ -82,6 +82,10 @@ class ProjectEffectEditor < ProjectEffect
 				render_pointers
 			}
 		end
+
+#		@fps_label ||= BitmapFont.new.set(:string => 'FPS', :scale_y => 0.05)
+#		@fps_label.set_string(sprintf("%2d FPS", $env[:current_frames_per_second] || 0)) if $env[:frame_number] % 10 == 0
+#		@fps_label.gui_render!
 	end
 
 	def tick_pointers
