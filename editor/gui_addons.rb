@@ -422,11 +422,16 @@ class Variable
 		gui_render_background
 
 		# Status Indicator
-		with_vertical_clip_plane_right_of(value - 0.5) {
-			with_color(GUI_COLOR) {
-				unit_square
+		#with_vertical_clip_plane_right_of(value - 0.5) {
+		if (v=do_value) > 0.0
+			with_translation(-0.5 + v/2.0, 0.0) {
+				with_scale_unsafe(v, 1.0) {
+					with_color(GUI_COLOR) {
+						unit_square
+					}
+				}
 			}
-		}
+		end
 
 		#Value Display
 		with_translation(0.45, 0.25) {
@@ -470,11 +475,15 @@ class VariableInput
 		gui_render_background
 
 		# Status Indicator
-		with_vertical_clip_plane_right_of(do_value - 0.5) {
-			with_color(GUI_COLOR) {
-				unit_square
+		if (v=value) > 0.0
+			with_translation(-0.5 + v/2.0, 0.0) {
+				with_scale_unsafe(v, 1.0) {
+					with_color(GUI_COLOR) {
+						unit_square
+					}
+				}
 			}
-		}
+		end
 
 		# Label
 		gui_render_label
