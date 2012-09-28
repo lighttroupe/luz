@@ -4440,7 +4440,7 @@
             event: 
             event_invert: false
           title: Image
-          enabled: true
+          enabled: false
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: border-red.png
             name: image
@@ -4554,7 +4554,7 @@
         activation_curve: *id015
         activation_value: 1.0
         activation_variable: 
-    - &id049 !ruby/object:ActorStar
+    - &id051 !ruby/object:ActorStar
       x: 0.0
       y: 0.0
       tags: 
@@ -5567,7 +5567,7 @@
                     output_max: 1.0
                     output_curve: *id015
                     name: slider
-                    options: &id050
+                    options: &id052
                       
                       :summary: true
                     breaks_cache: 
@@ -5576,7 +5576,7 @@
               combine_method_setting: !ruby/object:UserObjectSettingSelect
                 selected: :sum
                 name: &id072 combine_method
-                options: &id051
+                options: &id049
                   
                   :options: 
                     - - :sum
@@ -5594,7 +5594,7 @@
               damper_method_setting: !ruby/object:UserObjectSettingSelect
                 selected: :none
                 name: &id073 damper_method
-                options: &id052
+                options: &id050
                   
                   :options: 
                     - - :none
@@ -6294,11 +6294,60 @@
                     animation_repeat_unit: :beats
                     enable_exit_animation: false
                     exit_curve: *id015
-                    enable_activation: false
+                    enable_activation: true
                     activation_direction: :to
                     activation_curve: *id015
-                    activation_value: 1.0
-                    activation_variable: 
+                    activation_value: 0.99
+                    activation_variable: &id075 !ruby/object:Variable
+                      effects: 
+                        - !ruby/object:VariableInputButton
+                          conditions: !ruby/object:ChildConditions
+                            enable_child_index: false
+                            child_index_min: 0
+                            child_index_max: 0
+                            enable_event: false
+                            event: 
+                            event_invert: false
+                            child_index_max: 0
+                            child_index_min: 0
+                            enable_child_index: false
+                            enable_event: false
+                            event: 
+                            event_invert: false
+                          title: Button
+                          enabled: true
+                          button_setting: !ruby/object:UserObjectSettingButton
+                            button: Keyboard / Backspace
+                            name: button
+                            options: 
+                              :summary: true
+                            breaks_cache: 
+                          on_time_setting: !ruby/object:UserObjectSettingTimespan
+                            time_number: 0.1
+                            time_unit: :seconds
+                            name: on_time
+                            options: 
+                              :summary: % on
+                            breaks_cache: 
+                          off_time_setting: !ruby/object:UserObjectSettingTimespan
+                            time_number: 0.1
+                            time_unit: :seconds
+                            name: off_time
+                            options: 
+                              :summary: % off
+                            breaks_cache: 
+                      title: erase
+                      enabled: true
+                      combine_method_setting: !ruby/object:UserObjectSettingSelect
+                        selected: :sum
+                        name: combine_method
+                        options: *id049
+                        breaks_cache: 
+                      damper_method_setting: !ruby/object:UserObjectSettingSelect
+                        selected: :none
+                        name: damper_method
+                        options: *id050
+                        breaks_cache: 
                 - !ruby/object:ActorEffectDrawMethod
                   conditions: !ruby/object:ChildConditions
                     enable_child_index: false
@@ -6314,7 +6363,7 @@
                     event: 
                     event_invert: false
                   title: Draw Method
-                  enabled: false
+                  enabled: true
                   draw_method_setting: !ruby/object:UserObjectSettingSelect
                     selected: :multiply
                     name: draw_method
@@ -6368,7 +6417,7 @@
             name: actor
             options: {}
             breaks_cache: 
-            actor: *id049
+            actor: *id051
             x: 0.0
             y: 0.0
             z: 0.0
@@ -6427,19 +6476,19 @@
                     output_max: 1.0
                     output_curve: *id015
                     name: slider
-                    options: *id050
+                    options: *id052
                     breaks_cache: 
               title: mouse x
               enabled: true
               combine_method_setting: !ruby/object:UserObjectSettingSelect
                 selected: :sum
                 name: combine_method
-                options: *id051
+                options: *id049
                 breaks_cache: 
               damper_method_setting: !ruby/object:UserObjectSettingSelect
                 selected: :none
                 name: damper_method
-                options: *id052
+                options: *id050
                 breaks_cache: 
           offset_y_setting: !ruby/object:UserObjectSettingFloat
             name: offset_y
@@ -6552,19 +6601,19 @@
                     output_max: 1.0
                     output_curve: *id015
                     name: slider
-                    options: *id050
+                    options: *id052
                     breaks_cache: 
               title: pressure
               enabled: true
               combine_method_setting: !ruby/object:UserObjectSettingSelect
                 selected: :sum
                 name: combine_method
-                options: *id051
+                options: *id049
                 breaks_cache: 
               damper_method_setting: !ruby/object:UserObjectSettingSelect
                 selected: :none
                 name: damper_method
-                options: *id052
+                options: *id050
                 breaks_cache: 
           alpha_setting: !ruby/object:UserObjectSettingFloat
             name: alpha
@@ -6832,19 +6881,19 @@
                     output_max: 1.0
                     output_curve: *id015
                     name: slider
-                    options: *id050
+                    options: *id052
                     breaks_cache: 
               title: audio / red
               enabled: true
               combine_method_setting: !ruby/object:UserObjectSettingSelect
                 selected: :sum
                 name: combine_method
-                options: *id051
+                options: *id049
                 breaks_cache: 
               damper_method_setting: !ruby/object:UserObjectSettingSelect
                 selected: :none
                 name: damper_method
-                options: *id052
+                options: *id050
                 breaks_cache: 
         - !ruby/object:ActorEffectPixelStorm
           conditions: !ruby/object:ChildConditions
@@ -7540,28 +7589,6 @@
         activation_curve: *id015
         activation_value: 0.4
         activation_variable: *id055
-    - !ruby/object:ProjectEffectReloadCodeOnEvent
-      conditions: !ruby/object:ChildConditions
-        enable_child_index: false
-        child_index_min: 0
-        child_index_max: 0
-        enable_event: false
-        event: 
-        event_invert: false
-        child_index_max: 0
-        child_index_min: 0
-        enable_child_index: false
-        enable_event: false
-        event: 
-        event_invert: false
-      title: Reload Code on Event
-      enabled: true
-      reload_setting: !ruby/object:UserObjectSettingEvent
-        event: *id063
-        name: reload
-        options: 
-          :summary: on %
-        breaks_cache: 
     - !ruby/object:ProjectEffectReloadOnEvent
       conditions: !ruby/object:ChildConditions
         enable_child_index: false
@@ -7670,12 +7697,12 @@
           combine_method_setting: !ruby/object:UserObjectSettingSelect
             selected: :sum
             name: combine_method
-            options: *id051
+            options: *id049
             breaks_cache: 
           damper_method_setting: !ruby/object:UserObjectSettingSelect
             selected: :none
             name: damper_method
-            options: *id052
+            options: *id050
             breaks_cache: 
       output_opacity_setting: !ruby/object:UserObjectSettingFloat
         name: output_opacity
@@ -7774,7 +7801,7 @@
         options: 
           :summary: true
         breaks_cache: 
-        director: &id075 !ruby/object:Director
+        director: &id076 !ruby/object:Director
           tags: 
           effects: 
             - !ruby/object:DirectorEffectActor
@@ -7795,7 +7822,7 @@
               enabled: true
               actor_setting: !ruby/object:UserObjectSettingActor
                 name: actor
-                options: &id076
+                options: &id077
                   
                   :summary: true
                 breaks_cache: 
@@ -7848,7 +7875,7 @@
           enabled: true
           offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
             name: offscreen_render_actor
-            options: &id078
+            options: &id079
               
               :summary: renders on %
             breaks_cache: 
@@ -8002,16 +8029,17 @@
       combine_method_setting: !ruby/object:UserObjectSettingSelect
         selected: :minimum
         name: *id072
-        options: *id051
+        options: *id049
         breaks_cache: 
       damper_method_setting: !ruby/object:UserObjectSettingSelect
         selected: :medium
         name: *id073
-        options: *id052
+        options: *id050
         breaks_cache: 
     - *id074
-  :directors: 
     - *id075
+  :directors: 
+    - *id076
     - !ruby/object:Director
       tags: 
       effects: 
@@ -8033,7 +8061,7 @@
           enabled: true
           actor_setting: !ruby/object:UserObjectSettingActor
             name: actor
-            options: *id076
+            options: *id077
             breaks_cache: 
             actor: !ruby/object:ActorRoundedRectangle
               x: 0.0
@@ -8059,7 +8087,7 @@
                   amount_x_setting: !ruby/object:UserObjectSettingFloat
                     name: amount_x
                     options: 
-                      :range: &id077 !ruby/range
+                      :range: &id078 !ruby/range
                         begin: -1000.0
                         end: 1000.0
                         excl: false
@@ -8090,7 +8118,7 @@
                   amount_y_setting: !ruby/object:UserObjectSettingFloat
                     name: amount_y
                     options: 
-                      :range: *id077
+                      :range: *id078
                       :default: !ruby/range
                         begin: 1.0
                         end: 2.0
@@ -8118,7 +8146,7 @@
                   pivot_offset_x_setting: !ruby/object:UserObjectSettingFloat
                     name: pivot_offset_x
                     options: 
-                      :range: *id077
+                      :range: *id078
                       :default: !ruby/range
                         begin: 0.0
                         end: 0.5
@@ -8146,7 +8174,7 @@
                   pivot_offset_y_setting: !ruby/object:UserObjectSettingFloat
                     name: pivot_offset_y
                     options: 
-                      :range: *id077
+                      :range: *id078
                       :default: !ruby/range
                         begin: 0.0
                         end: 0.5
@@ -8319,7 +8347,7 @@
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
-        options: *id078
+        options: *id079
         breaks_cache: 
         actor: 
         x: 0.0
