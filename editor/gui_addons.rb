@@ -38,7 +38,7 @@ class UserObjectSettingFloat
 			if @enable_animation_toggle.on?
 				@animation_widgets.each_with_index { |widget, index| widget.animate({:opacity => 1.0}, duration = (0.05 + (index * 0.2))) }
 			else
-				@animation_widgets.each_with_index { |widget, index| widget.animate({:opacity => 0.4}, duration = (0.05 + (index * 0.1))) }
+				@animation_widgets.each_with_index { |widget, index| widget.animate({:opacity => 0.3}, duration = (0.05 + (index * 0.1))) }
 			end
 		}
 
