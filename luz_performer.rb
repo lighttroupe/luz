@@ -46,6 +46,8 @@ class LuzPerformer
 	attr_accessor :width, :height, :fullscreen, :border, :bits_per_pixel, :frames_per_second, :relay_port
 	boolean_accessor :finished, :escape_quits
 
+	TIMING_COUNT = 10
+
 	def initialize
 		@width, @height, @bits_per_pixel = 0, 0, 0		# NOTE: setting bpp to 0 means "current" in SDL
 		@fullscreen = true
@@ -140,11 +142,15 @@ class LuzPerformer
 	#
 	def run
 		start_time = SDL.getTicks
+		current_frames_per_second = nil
+		frame_number = 1
+		timing_start_ms = start_time
 
 		while not finished?
-			ms_per_frame = (1000 / @frames_per_second)		# NOTE: this can change at any time
+			desired_ms_per_frame = (1000 / @frames_per_second)		# NOTE: desired FPS can change at any time
 
 			frame_start_ms = SDL.getTicks
+			timing_start_ms ||= frame_start_ms
 
 			while event = SDL::Event2.poll
 				parse_event(event)
@@ -154,10 +160,33 @@ class LuzPerformer
 			# Render then sleep until time for next frame
 			#
 			$engine.do_frame((frame_start_ms - start_time) / 1000.0)
-			SDL.GL_swap_buffers
 
-			frame_time_ms = SDL.getTicks - frame_start_ms
-			SDL.delay(ms_per_frame - frame_time_ms) if frame_time_ms < ms_per_frame
+			frame_end_ms = SDL.getTicks
+			frame_duration_ms = (frame_end_ms - frame_start_ms)
+
+			SDL.GL_swap_buffers		# note trying to not include swap in fps timing
+			swap_time_ms = SDL.getTicks - frame_end_ms
+
+			# HACK: recalculate so as not to sleep too much
+			frame_end_ms = SDL.getTicks
+			frame_duration_ms = (frame_end_ms - frame_start_ms)
+
+			sleep_time_ms = desired_ms_per_frame - frame_duration_ms
+			SDL.delay(sleep_time_ms) if sleep_time_ms > 3		# for tiny amounts it doesn't make sense
+
+			frames_per_second = 1000.0 / frame_duration_ms
+#			current_frames_per_second ||= frames_per_second
+#			current_frames_per_second = (current_frames_per_second + frames_per_second * 9.0) / 10.0		# ...
+
+			if frame_number % TIMING_COUNT == 0
+				timing_duration_ms = (frame_end_ms - timing_start_ms)		# we've been timing for many frames
+				timing_duration_in_seconds = timing_duration_ms / 1000.0
+				seconds_per_frame = timing_duration_in_seconds / TIMING_COUNT
+				$env[:current_frames_per_second] = (1.0 / seconds_per_frame).ceil
+				timing_start_ms = frame_end_ms
+			end
+
+			frame_number += 1
 		end
 		SDL.quit
 
