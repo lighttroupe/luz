@@ -51,7 +51,7 @@ class GuiDefault < GuiBox
 
 		positive_message('Welcome to Luz 2.0')
 
-		self << (@preferences_box = GuiPreferencesBox.new.build.set(:scale_x => 0.3, :scale_y => 0.4, :offset_x => 0.35, :offset_y => -0.3, :opacity => 0.0, :hidden => true))
+		self << (@preferences_box = GuiPreferencesBox.new.build.set(:scale_x => 0.22, :scale_y => 0.4, :offset_x => 0.4, :offset_y => -0.3, :opacity => 0.0, :hidden => true))
 		self << (@preferences_button = GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.50, :offset_y => -0.50, :color => [0.5,1.0,0.5,1.0], :background_image => $engine.load_image('images/buttons/menu.png')))
 		@preferences_button.on_clicked { toggle_preferences_box! }
 
@@ -70,7 +70,7 @@ class GuiDefault < GuiBox
 
 	def toggle_preferences_box!
 		if @preferences_box.hidden?		# TODO: this is not a good way to toggle
-			@preferences_box.set(:hidden => false, :opacity => 0.0).animate({:opacity => 1.0, :offset_x => 0.35, :offset_y => -0.3}, duration=0.2)
+			@preferences_box.set(:hidden => false, :opacity => 0.0).animate({:opacity => 1.0, :offset_x => 0.38, :offset_y => -0.3}, duration=0.2)
 		else
 			@preferences_box.animate({:opacity => 0.0, :offset_x => 0.6, :offset_y => -0.6}, duration=0.25) { @preferences_box.set_hidden(true) }
 		end
@@ -220,7 +220,7 @@ class GuiPreferencesBox < GuiBox
 
 	def build
 		self << GuiObject.new.set(:color => [0.7, 1.0, 0.7, 0.4])
-		self << (@fps_label=BitmapFont.new.set_string("Animation Frames Per Second").set(:scale_x => 0.05, :scale_y => 0.06, :offset_x => -0.42, :offset_y => 0.45))
+		self << (@fps_label=BitmapFont.new.set_string("Frames Per Second").set(:scale_x => 0.05, :scale_y => 0.06, :offset_x => -0.42, :offset_y => 0.45))
 		self << GuiInteger.new($application, :frames_per_second, 20, 70).set(:offset_x => 0.4, :offset_y => 0.45, :scale_x => 0.2, :scale_y => 0.1)
 		self
 	end
