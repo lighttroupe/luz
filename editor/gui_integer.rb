@@ -20,6 +20,7 @@ class GuiInteger < GuiNumeric
 		set_value(get_value + change) unless change == 0
 	end
 
+	# NOTE: always returns positive amount
 	def change_for_distance(distance)		# distance is in screen space-- the mouse's playground!
 		@gui_previous_count ||= 0
 
