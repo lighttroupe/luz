@@ -3,7 +3,7 @@ class GuiToggle < GuiObject
 	easy_accessor :image
 
 	COLOR_ON = [0.7,1,0.7,1]
-	COLOR_OFF = [1.0,0.7,0.7,0.5]
+	COLOR_OFF = [1.0,0.7,0.7,0.3]
 
 	def initialize(object, method)
 		super()
