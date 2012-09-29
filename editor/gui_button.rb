@@ -1,9 +1,14 @@
 class GuiButton < GuiObject
 	callback :clicked
+	callback :holding
 	easy_accessor :background_image, :hotkey
 
 	def click(pointer)
 		clicked_notify(pointer)
+	end
+
+	def click_hold(pointer)
+		holding_notify(pointer)
 	end
 
 	BUTTON_COLOR = [1.0,1.0,1.0,1.0]

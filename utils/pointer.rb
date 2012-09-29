@@ -63,6 +63,8 @@ class Pointer
 			end
 
 		elsif hold?
+			@hover_object.click_hold(self) if @hover_object.respond_to?(:click_hold)
+
 			if dragging?
 				update_drag
 
@@ -118,16 +120,15 @@ class Pointer
 			return if object != @drag_object
 		end
 
-		exit_hover_object!		# pointer exits current object
+		exit_hover_object!		# pointer exits current object (if present)
 
-		if object
+		if object		# NOTE: can be nil
 			# enter new object
 			object.pointer_enter(self) if object.respond_to?(:pointer_enter)
-
-			# save
 			@hover_object = object
 			#puts "hovering over #{@hover_object.title}"
 		end
+
 		self
 	end
 

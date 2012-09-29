@@ -1,6 +1,6 @@
 class GuiList < GuiBox
 	easy_accessor :spacing_x, :spacing_y, :item_aspect_ratio, :scroll_wrap
-	easy_accessor :scroll
+	easy_accessor :scroll, :scroll_velocity
 
 	def gui_render!
 		return if hidden?
@@ -106,5 +106,25 @@ class GuiList < GuiBox
 				}
 			end
 		}
+	end
+end
+
+class GuiListWithControls < GuiBox
+	def scroll_wrap=(v) ; @list.scroll_wrap = v ; end
+	def spacing_y=(v) ; @list.spacing_y = v ; end
+
+	def initialize(contents)
+		super()
+		self << @list=GuiList.new(contents)
+
+		# up
+		self << @up_button=GuiButton.new.set(:scale_x => 0.2, :scale_y => 0.09, :offset_y => 0.5)
+		@up_button.on_clicked { @list.scroll_velocity -= 0.4 }
+		@up_button.on_holding { @list.scroll_velocity -= 0.2 }
+
+		# down
+		self << @down_button=GuiButton.new.set(:scale_x => 0.2, :scale_y => 0.09, :offset_y => -0.5)
+		@down_button.on_clicked { @list.scroll_velocity += 0.4 }
+		@down_button.on_holding { @list.scroll_velocity += 0.2 }
 	end
 end
