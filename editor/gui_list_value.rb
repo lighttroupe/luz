@@ -1,9 +1,12 @@
 # superclass for single-value setting widgets like GuiTheme
 
 class GuiListValue < GuiObject
+	easy_accessor :no_value_text
+
 	def initialize(object, method)
 		super()
 		@object, @method = object, '@'+method.to_s
+		@no_value_text = 'none'
 	end
 
 	def get_value
@@ -15,10 +18,18 @@ class GuiListValue < GuiObject
 	end
 
 	def gui_render!
-		return unless (object = get_value)
 		with_gui_object_properties {
-			object.gui_render!
+			if (object = get_value)
+				object.gui_render!
+			else
+				gui_render_no_value
+			end
 		}
+	end
+
+	def gui_render_no_value
+		@no_value_label ||= BitmapFont.new.set(:string => @no_value_text, :scale => 0.75, :opacity => 0.1)
+		@no_value_label.gui_render!
 	end
 
 	def scroll_up!(pointer)
