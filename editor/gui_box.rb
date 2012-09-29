@@ -16,6 +16,9 @@ class GuiBox < GuiObject
 		@contents << gui_object
 		gui_object.parent = self
 
+		#
+		# crude float:left support (add it to object, it gets stacked left by the container)
+		#
 		if gui_object.float == :left
 			extra_spacing = (gui_object.offset_x || 0.0)
 			gui_object.offset_x = @float_left + (gui_object.scale_x / 2.0) + extra_spacing
