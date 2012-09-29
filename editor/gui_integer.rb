@@ -13,18 +13,31 @@ class GuiInteger < GuiNumeric
 		super.to_i
 	end
 
-#	def update_drag(pointer)
-#		distance = pointer.drag_delta_x + pointer.drag_delta_y		# NOTE: cummulative, so up+right is fastest
-#		change_per_second = change_per_second_for_distance(distance)
-#		set_value(get_value + (change_per_second * $env[:frame_time_delta])) unless change_per_second == 0.0
-#	end
+	def update_drag(pointer)
+		distance = pointer.drag_delta_x + pointer.drag_delta_y		# NOTE: cummulative, so up+right is fastest
+		change = change_for_distance(distance)
+		change *= -1 if distance < 0.0
+		set_value(get_value + change) unless change == 0
+	end
 
-	def change_per_second_for_distance(distance)		# distance is in screen space-- the mouse's playground!
+	def change_for_distance(distance)		# distance is in screen space-- the mouse's playground!
+		@gui_previous_count ||= 0
+
 		distance_abs = distance.abs
-		progress = distance.clamp(-0.25, 0.25) / 0.25
-		scaled_progress = ((progress ** 3) + 1.0) / 2.0
-		min, max = -20.0, 20.0		# TODO: base these on @min/@max somehow
-		scaled_progress.scale(min, max)
+		count, remainder = $env[:beat].divmod(0.5)
+		delta = (count - @gui_previous_count)
+
+		@gui_previous_count = count		# save for next time
+
+		if distance_abs > 0.2
+			delta > 0 ? 4 : 0
+		elsif distance_abs > 0.1
+			delta > 0 ? 2 : 0
+		elsif distance_abs > 0.01
+			($env[:is_beat]) ? 1 : 0
+		else
+			0
+		end
 	end
 
 	def step_amount
