@@ -32,6 +32,10 @@ class GuiListValue < GuiObject
 		@no_value_label.gui_render!
 	end
 
+	def click(pointer)
+		scroll_down!(pointer)
+	end
+
 	def scroll_up!(pointer)
 		list_cached = list
 		current_index = list_cached.index(get_value)
