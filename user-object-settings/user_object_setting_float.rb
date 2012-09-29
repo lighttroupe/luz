@@ -29,6 +29,8 @@ class UserObjectSettingFloat < UserObjectSettingNumeric
 	ENTER_PAGE_TITLE = 'Enter'
 	EXIT_TAB_TITLE = 'Exit'
 
+	ACTIVATION_DIRECTION_OPTIONS = [[:to, 'to'], [:from, 'from']]
+
 	def to_yaml_properties
 		super + ['@min', '@max', '@enter_value', '@exit_value', '@enable_enter_animation', '@enter_curve', '@enable_animation', '@animation_curve', '@animation_min', '@animation_max', '@animation_repeat_number', '@animation_repeat_unit', '@enable_exit_animation', '@exit_curve', '@enable_activation', '@activation_direction', '@activation_curve', '@activation_value', '@activation_variable']
 	end
@@ -154,7 +156,7 @@ class UserObjectSettingFloat < UserObjectSettingNumeric
 			activation_curve_combobox,
 
 			# "from" / "to"
-			create_combobox(:activation_direction, [[:to, 'to'], [:from, 'from']]),
+			create_combobox(:activation_direction, ACTIVATION_DIRECTION_OPTIONS),
 
 			create_spinbutton(:activation_value, range, step, page, digits),
 
