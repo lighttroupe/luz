@@ -59,9 +59,9 @@ module EngineSliders
 	end
 
 	def new_slider_notify_if_needed(name)
-		return if @slider_values[name] || name.nil?
+		return if @slider_values[name]
 		@slider_values[name] = 0.0				# Otherwise we'll new_slider_notify endlessly...
-		@seen_sliders_list = @slider_values.keys.sort
+		@seen_sliders_list = @slider_values.keys.delete_if { |key, value| key.nil? }.sort		# TODO: fix need for this nil check!?
 		new_slider_notify(name)						# this lets us notify (fill GUI lists) after loading a set from disk
 	end
 
