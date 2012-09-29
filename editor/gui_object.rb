@@ -10,7 +10,7 @@ module MethodsForGuiObject
 	BACKGROUND_COLOR_HOVERING = [1.0,1.0,1.0,0.25]
 	BACKGROUND_COLOR_SELECTED = [1.0,1.0,1.0,0.15]
 
-	easy_accessor :parent, :offset_x, :offset_y, :scale_x, :scale_y, :opacity, :color, :background_image
+	easy_accessor :parent, :offset_x, :offset_y, :scale_x, :scale_y, :opacity, :color, :background_image, :float
 	boolean_accessor :hidden
 	boolean_accessor :draggable
 

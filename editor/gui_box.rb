@@ -1,18 +1,26 @@
 require 'set'
 
 class GuiBox < GuiObject
+
 	def initialize(contents = [])
 		@contents = contents
 		@contents.each { |gui_object|
 			gui_object.parent = self
 		}
 		@selection = Set.new
+		@float_left = -0.5
 		super()
 	end
 
 	def <<(gui_object)
 		@contents << gui_object
 		gui_object.parent = self
+
+		if gui_object.float == :left
+			extra_spacing = (gui_object.offset_x || 0.0)
+			gui_object.offset_x = @float_left + (gui_object.scale_x / 2.0) + extra_spacing
+			@float_left += gui_object.scale_x + extra_spacing
+		end
 	end
 
 	def remove(gui_object)
