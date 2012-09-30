@@ -118,12 +118,12 @@ class GuiListWithControls < GuiBox
 		self << @list=GuiList.new(contents)
 
 		# up
-		self << @up_button=GuiButton.new.set(:scale_x => 0.2, :scale_y => 0.09, :offset_y => 0.5)
+		self << @up_button=GuiButton.new.set(:scale_x => 1.0, :scale_y => 0.08, :offset_y => 0.5 - 0.04, :opacity => 0.5)
 		@up_button.on_clicked { @list.scroll_velocity -= 0.4 }
 		@up_button.on_holding { @list.scroll_velocity -= 0.2 }
 
 		# down
-		self << @down_button=GuiButton.new.set(:scale_x => 0.2, :scale_y => 0.09, :offset_y => -0.5)
+		self << @down_button=GuiButton.new.set(:scale_x => 1.0, :scale_y => 0.09, :offset_y => -0.5 + 0.04, :opacity => 0.5)
 		@down_button.on_clicked { @list.scroll_velocity += 0.4 }
 		@down_button.on_holding { @list.scroll_velocity += 0.2 }
 	end
