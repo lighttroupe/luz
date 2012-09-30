@@ -70,8 +70,10 @@ class ProjectEffectEditor < ProjectEffect
 	end
 
 	def render
-		with_multiplied_alpha(output_opacity) {
-			yield
+		@gui.render {
+			with_multiplied_alpha(output_opacity) {
+				yield
+			}
 		}
 
 		if show_amount > 0.0

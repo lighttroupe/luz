@@ -8,6 +8,8 @@ class GuiDefault < GuiBox
 	pipe :positive_message, :message_bar
 	pipe :negative_message, :message_bar
 
+	ACTOR_MODE, DIRECTOR_MODE, OUTPUT_MODE = 1, 2, 3
+
 	def initialize
 		super
 		create!
@@ -23,6 +25,14 @@ class GuiDefault < GuiBox
 	def reload_notify
 #		clear!
 #		create_default_gui
+	end
+
+	def render
+		if @mode == OUTPUT_MODE
+			yield
+		elsif @mode == ACTOR_MODE
+			@chosen_actor.render!
+		end
 	end
 
 	def create!
@@ -56,6 +66,22 @@ class GuiDefault < GuiBox
 		@preferences_button.on_clicked { toggle_preferences_box! }
 
 		@user_object_editors = {}
+
+		self.mode = OUTPUT_MODE
+	end
+
+	def mode=(mode)
+		return if mode == @mode
+		@mode = mode
+
+		case mode
+		when ACTOR_MODE
+			
+		when DIRECTOR_MODE
+			
+		when OUTPUT_MODE
+			
+		end
 	end
 
 	def gui_tick!
@@ -72,11 +98,13 @@ class GuiDefault < GuiBox
 
 	def toggle_actors_list!
 		if @actors_list.hidden?
-			@actors_list.set(:hidden => false, :opacity => 0.0).animate({:opacity => 1.0}, duration=0.2)
+			show_actors_list!
 		else
-			@actors_list.animate(:opacity, 0.0, duration=0.25) { @actors_list.set_hidden(true) }
+			close_actors_list!
 		end
 	end
+	def show_actors_list! ; @actors_list.set(:hidden => false, :opacity => 0.0).animate({:opacity => 1.0}, duration=0.2) ; end
+	def close_actors_list! ; @actors_list.animate(:opacity, 0.0, duration=0.25) { @actors_list.set_hidden(true) } ; end
 
 	def toggle_curves_list!
 		if @curves_list.hidden?
@@ -124,6 +152,12 @@ class GuiDefault < GuiBox
 			return
 		else
 			if user_object.is_a? ParentUserObject
+				if user_object.is_a? Actor
+					@mode = ACTOR_MODE
+					@chosen_actor = user_object
+					close_actors_list!
+				end
+
 				clear_editors!		# only support one for now
 
 				editor = GuiUserObjectEditor.new(user_object, {:scale_x => 0.3, :scale_y => 0.05}.merge(options))
@@ -213,7 +247,7 @@ class GuiPreferencesBox < GuiBox
 	end
 
 	def build
-		self << GuiObject.new.set(:color => [0.7, 1.0, 0.7, 0.4])
+		self << GuiObject.new.set(:color => [0.7, 1.0, 0.7, 0.9])
 		self << (@fps_label=BitmapFont.new.set_string("Frames Per Second").set(:scale_x => 0.05, :scale_y => 0.06, :offset_x => -0.42, :offset_y => 0.45))
 		self << GuiInteger.new($application, :frames_per_second, 20, 70).set(:offset_x => 0.4, :offset_y => 0.45, :scale_x => 0.2, :scale_y => 0.1)
 		self
