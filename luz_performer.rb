@@ -61,20 +61,16 @@ class LuzPerformer
 		@frames_per_second = 60
 	end
 
+	def toggle_fullscreen!
+		@fullscreen = !@fullscreen
+		set_video_mode
+	end
+
 	def create
 		SDL.init(SDL::INIT_VIDEO | SDL::INIT_TIMER)
 		puts "Using SDL version #{SDL::VERSION}"
 
-		@sdl_video_mode_flags = SDL::HWSURFACE | SDL::OPENGL
-		@sdl_video_mode_flags |= SDL::FULLSCREEN if @fullscreen
-		@sdl_video_mode_flags |= SDL::NOFRAME unless @border
-		SDL.setGLAttr(SDL::GL_STENCIL_SIZE, 8) if @stencil_buffer
-
-		@screen = SDL.set_video_mode(@width, @height, @bits_per_pixel, @sdl_video_mode_flags)
-		@width, @height = @screen.w, @screen.h
-
-		# save useful info if we were using bpp=0 ("current")
-		@bits_per_pixel = @screen.bpp if @bits_per_pixel == 0
+		set_video_mode
 		puts "Running at #{@screen.w}x#{@screen.h} @ #{@bits_per_pixel}bpp, #{@frames_per_second}fps (max)"
 
 		SDL::WM.set_caption(APP_NAME, '')
@@ -83,9 +79,6 @@ class LuzPerformer
 		SDL::Mouse.setCursor(SDL::Surface.new(SDL::HWSURFACE,8,8,8,0,0,0,0),1,1,0,1,0,0)
 
 		SDL::Key.disable_key_repeat		# We want one Down and one Up message per key press
-
-		GL.Viewport(0, 0, @width, @height)
-		clear_screen([0.0, 0.0, 0.0, 0.0])
 
 		# Create Luz Engine
 		require 'engine'
@@ -97,6 +90,23 @@ class LuzPerformer
 		$engine.on_user_object_exception { |obj, e| on_user_object_exception(obj,e) }
 		$engine.on_render_settings_changed { $engine.render_settings }	# TODO: remove 'render_settings_changed' concept
 		$engine.on_render { $engine.render(enable_frame_saving=true) }		# NOTE: We just have one global context, so this renders to it
+	end
+
+	def set_video_mode
+		@sdl_video_mode_flags = SDL::HWSURFACE | SDL::OPENGL
+		@sdl_video_mode_flags |= SDL::FULLSCREEN if @fullscreen
+		@sdl_video_mode_flags |= SDL::RESIZABLE if !@fullscreen
+		@sdl_video_mode_flags |= SDL::NOFRAME unless @border
+		SDL.setGLAttr(SDL::GL_STENCIL_SIZE, 8) if @stencil_buffer
+
+		@screen = SDL.set_video_mode(@width, @height, @bits_per_pixel, @sdl_video_mode_flags)
+		@width, @height = @screen.w, @screen.h
+
+		# save useful info if we were using bpp=0 ("current")
+		@bits_per_pixel = @screen.bpp if @bits_per_pixel == 0
+
+		GL.Viewport(0, 0, @width, @height)
+		clear_screen([0.0, 0.0, 0.0, 0.0])
 	end
 
 	#
@@ -124,7 +134,8 @@ class LuzPerformer
 		# Keyboard input
 		when SDL::Event2::KeyDown
 			if event.sym == SDL::Key::ESCAPE and escape_quits?
-				finished!
+				toggle_fullscreen!
+				#finished!
 			else
 				$engine.on_button_down(sdl_to_luz_button_name(SDL::Key.get_key_name(event.sym)), frame_offset=1)
 			end
