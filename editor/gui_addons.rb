@@ -215,6 +215,7 @@ class UserObject
 
 	def click(pointer)
 		$gui.build_editor_for(self, :pointer => pointer)
+		@parent.child_click(pointer)
 	end
 
 	LABEL_COLOR_CRASHY = [1,0,0,0.5]

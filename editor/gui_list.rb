@@ -27,6 +27,10 @@ class GuiList < GuiBox
 		0.94
 	end
 
+	def child_click(pointer)
+		@scroll_velocity *= 0.05
+	end
+
 	def move_child_up(child)
 		if (index = @contents.index(child)) > 0
 			@contents[index], @contents[index-1] = @contents[index-1], @contents[index]
