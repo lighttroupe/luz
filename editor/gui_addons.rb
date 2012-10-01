@@ -138,8 +138,8 @@ class UserObjectSettingTimespan
 	def gui_build_editor
 		box = GuiBox.new
 		box << create_user_object_setting_name_label
-		box << GuiFloat.new(self, :time_number, 0.0, 999.0).set(:offset_x => -0.25, :scale_x => 0.5)
-		box << GuiSelect.new(self, :time_unit, TIME_UNIT_OPTIONS).set(:offset_x => 0.25, :scale_x => 0.5)
+		box << GuiFloat.new(self, :time_number, 0.0, 999.0).set(:float => :left, :scale_x => 0.20, :scale_y => 0.5)
+		box << GuiSelect.new(self, :time_unit, TIME_UNIT_OPTIONS).set(:float => :left, :scale_x => 0.25, :scale_y => 0.5)
 		box
 	end
 end
@@ -148,7 +148,7 @@ class UserObjectSettingButton
 	def gui_build_editor
 		box = GuiBox.new
 		box << create_user_object_setting_name_label
-		box << GuiEngineButton.new(self, :button)
+		box << GuiEngineButton.new(self, :button).set(:scale_y => 0.5)
 		box
 	end
 end
