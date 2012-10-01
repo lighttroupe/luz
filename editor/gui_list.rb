@@ -27,6 +27,18 @@ class GuiList < GuiBox
 		0.94
 	end
 
+	def move_child_up(child)
+		if (index = @contents.index(child)) > 0
+			@contents[index], @contents[index-1] = @contents[index-1], @contents[index]
+		end
+	end
+
+	def move_child_down(child)
+		if (index = @contents.index(child)) < (@contents.size - 1)
+			@contents[index], @contents[index+1] = @contents[index+1], @contents[index]
+		end
+	end
+
 	def gui_tick!
 		super
 		@scroll ||= 0.0

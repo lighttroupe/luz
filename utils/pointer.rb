@@ -35,6 +35,7 @@ class Pointer
 
 	def begin_drag(object)
 		@drag_object = object		# NOTE: only dragging if @dragging is then set (below)
+		@drag_out_notify_potential = true
 		@drag_object.begin_drag(self)
 	end
 
@@ -64,7 +65,7 @@ class Pointer
 			end
 
 		elsif hold?
-			@hover_object.click_hold(self) if @hover_object.respond_to?(:click_hold)
+			@hover_object.click_hold(self) if @hover_object.respond_to?(:click_hold)		# repeated calls once per frame
 
 			if dragging?
 				update_drag
@@ -109,16 +110,25 @@ class Pointer
 
 	def is_over(object)
 		# do no work for the common case of "still hovering" (this gets called repeatedly with the same value)
-		return if @hover_object == object
+		if @hover_object == object
+			@drag_out_notify_potential = true
+			return
+		end
 
 		# now hovering over something new!
 		#puts "now over #{object ? object.class : 'nil'} #{$env[:frame_number]}"
 
 		if @drag_object
-			@drag_object.drag_out(self) if @drag_object.respond_to? :drag_out
-			#puts 'drag out'
+			# drag_out notify.  callee can check in with us about which direction using eg. drag_delta_y
+			if @drag_out_notify_potential
+				if @drag_object.respond_to?(:drag_out)
+					@drag_object.drag_out(self)
+					@click_x, @click_y = x, y		# TODO: more effectively begin a new drag here?
+				end
+				@drag_out_notify_potential = false		# don't notify of this repeatedly
+			end
 
-			# don't hover over anything but drag object while dragging (TODO: allow for drop?!)
+			# don't hover over anything but 'drag object' while dragging (TODO: allow for drop?!)
 			return if object != @drag_object
 		end
 
