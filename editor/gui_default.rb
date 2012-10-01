@@ -23,8 +23,8 @@ class GuiDefault < GuiBox
 	PREFERENCES_BUTTON    = 'Keyboard / F12'
 
 	def reload_notify
-#		clear!
-#		create_default_gui
+		clear!
+		create!
 	end
 
 	def render
@@ -59,13 +59,12 @@ class GuiDefault < GuiBox
 		self << (@message_bar = GuiMessageBar.new.set(:offset_x => -0.33, :offset_y => 0.5 - 0.04, :scale_x => 0.32, :scale_y => 0.05))
 		self << (@beat_monitor = GuiBeatMonitor.new(beats_per_measure=4).set(:offset_y => -0.45 - 0.03, :scale_x => 0.08, :scale_y => 0.02, :spacing_x => 1.0))
 
-		positive_message('Welcome to Luz 2.0')
-
 		self << (@preferences_box = GuiPreferencesBox.new.build.set(:scale_x => 0.22, :scale_y => 0.4, :offset_x => 0.4, :offset_y => -0.3, :opacity => 0.0, :hidden => true))
 		self << (@preferences_button = GuiButton.new.set(:hotkey => PREFERENCES_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.50, :offset_y => -0.50, :color => [0.5,1.0,0.5,1.0], :background_image => $engine.load_image('images/buttons/menu.png')))
 		@preferences_button.on_clicked { toggle_preferences_box! }
 
 		@user_object_editors = {}
+		@chosen_actor = nil
 
 		self.mode = OUTPUT_MODE
 	end
@@ -84,9 +83,9 @@ class GuiDefault < GuiBox
 		end
 	end
 
-	def gui_tick!
-		super
-	end
+#	def gui_tick!
+#		super
+#	end
 
 	def toggle_preferences_box!
 		if @preferences_box.hidden?		# TODO: this is not a good way to toggle
