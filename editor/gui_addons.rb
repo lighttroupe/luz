@@ -169,14 +169,14 @@ class UserObject
 		box = GuiBox.new
 		if respond_to? :effects
 			# Two-lists side by side
-			@gui_effects_list = GuiList.new(effects).set({:spacing_y => -0.8, :scale_x => 0.3, :scale_y => 0.9, :offset_x => -0.35, :offset_y => -0.05, :item_aspect_ratio => 3.0})
+			@gui_effects_list = GuiList.new(effects).set({:spacing_y => -0.8, :scale_x => 0.29, :offset_x => -0.35, :scale_y => 0.87, :offset_y => -0.06, :item_aspect_ratio => 3.0})
 			box << @gui_effects_list
-			@gui_settings_list = GuiList.new.set({:spacing_y => -1.0, :scale_x => 0.7, :scale_y => 0.9, :offset_x => 0.15, :offset_y => -0.05, :item_aspect_ratio => 4.0})
+			@gui_settings_list = GuiList.new.set({:spacing_y => -1.0, :scale_x => 0.69, :offset_x => 0.15, :scale_y => 0.87, :offset_y => -0.06, :item_aspect_ratio => 4.0})
 			box << @gui_settings_list
 		else
 			# Just a settings list (not used as of 2012/09/21)
-			@gui_settings_list = GuiList.new.set({:spacing_y => -0.9, :scale_x => 0.95, :scale_y => 0.9, :offset_x => 0.0, :offset_y => -0.05, :item_aspect_ratio => 4.0})
-			box << @gui_settings_list
+			#@gui_settings_list = GuiList.new.set({:spacing_y => -1.0, :scale_x => 1.0, :offset_x => 0.0, :scale_y => 0.88, :offset_y => -0.06, :item_aspect_ratio => 4.0})
+			#box << @gui_settings_list
 		end
 
 		if @gui_settings_list
