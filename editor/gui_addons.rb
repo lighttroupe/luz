@@ -269,7 +269,7 @@ class ChildUserObject
 	end
 
 	def draggable?
-		true
+		true		# needed for list reordering
 	end
 
 	def drag_out(pointer)
