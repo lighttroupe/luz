@@ -567,7 +567,7 @@
             name: *id009
             options: *id005
             breaks_cache: 
-      title: New Theme
+      title: Forest
       enabled: true
       background_color_setting: !ruby/object:UserObjectSettingColor
         color: !ruby/object:Color
@@ -6952,7 +6952,7 @@
             name: *id079
             options: *id080
             breaks_cache: 
-    - !ruby/object:ProjectEffectReloadOnEvent
+    - !ruby/object:ProjectEffectReloadCode
       conditions: !ruby/object:ChildConditions
         enable_child_index: false
         child_index_min: 0
@@ -6966,10 +6966,32 @@
         enable_event: false
         event: 
         event_invert: false
-      title: Reload on Event
+      title: Reload Code
       enabled: true
       reload_setting: !ruby/object:UserObjectSettingEvent
         event: *id081
+        name: reload
+        options: 
+          :summary: on %
+        breaks_cache: 
+    - !ruby/object:ProjectEffectReloadProject
+      conditions: !ruby/object:ChildConditions
+        enable_child_index: false
+        child_index_min: 0
+        child_index_max: 0
+        enable_event: false
+        event: 
+        event_invert: false
+        child_index_max: 0
+        child_index_min: 0
+        enable_child_index: false
+        enable_event: false
+        event: 
+        event_invert: false
+      title: Reload Project
+      enabled: true
+      reload_setting: !ruby/object:UserObjectSettingEvent
+        event: 
         name: reload
         options: 
           :summary: on %
