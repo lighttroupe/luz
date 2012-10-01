@@ -248,18 +248,25 @@ end
 
 # HACK to render an object without reparenting it
 class GuiObjectRenderer < GuiObject
+	callback :clicked
+
+	attr_reader :object
+
 	def initialize(object)
 		@object = object
 	end
 
 	def gui_render!
-		#with_positioning {
-			@object.gui_render!		# TODO: send a symbol for customizable render method (ie simple curves)
-		#}
+		gui_render_background
+		@object.gui_render!		# TODO: send a symbol for customizable render method (ie simple curves)
 	end
 
 	def gui_tick!
 		@object.gui_tick!
+	end
+
+	def click(pointer)
+		clicked_notify(pointer)
 	end
 end
 

@@ -77,7 +77,7 @@ module MethodsForGuiObject
 	end
 
 	def click(pointer)
-		@parent.click(pointer) if @parent			# Default is to pass it up the stack
+		@parent.click(pointer) if @parent			# Default is to pass it up the stack		TODO: change this to "child_click" ? (see UserObject monkeypatching)
 	end
 
 	def begin_drag(pointer)
@@ -116,6 +116,11 @@ module MethodsForGuiObject
 
 	def remove_from_parent!
 		@parent.remove(self) if @parent
+	end
+
+	def add_to_root(object)
+		return @parent.add_to_root(object) if @parent
+		self << object
 	end
 end
 
