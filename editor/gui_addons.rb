@@ -26,7 +26,7 @@ class UserObjectSettingFloat
 	def gui_build_editor
 		box = GuiBox.new
 		box << create_user_object_setting_name_label
-		row = GuiBox.new.set(:scale_y => 0.5, :offset_y => 0.25)
+		row = GuiBox.new.set(:scale_y => 0.5, :offset_y => 0.23)
 			row << GuiFloat.new(self, :animation_min, @min, @max).set(:scale_x => 0.15, :float => :left)
 			row << (@enable_animation_toggle=GuiToggle.new(self, :enable_animation).set(:scale_x => 0.07, :float => :left, :color => [1,0,0,1], :image => $engine.load_image('images/buttons/play.png')))
 			row << (@animation_curve_widget=GuiCurve.new(self, :animation_curve).set(:scale_x => 0.15, :scale_y => 0.8, :float => :left, :opacity => 0.4))
@@ -263,6 +263,10 @@ class GuiObjectRenderer < GuiObject
 end
 
 class ChildUserObject
+	def long_click(pointer)
+		toggle_enabled!
+	end
+
 	def gui_render!
 		gui_render_background
 		gui_render_label
