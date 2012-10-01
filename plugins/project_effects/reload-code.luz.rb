@@ -16,26 +16,21 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-class ProjectEffectReloadOnEvent < ProjectEffect
-	virtual		# deprecated
-
-	title				"Reload on Event"
-	description "Reloads the Luz project off disk."
+class ProjectEffectReloadCode < ProjectEffect
+	title				"Reload Code"
+	description "Reloads the source code off disk.  For developers."
 
 	setting 'reload', :event, :summary => 'on %'
 
-	def render
-		if $gui
-			yield
-		elsif reload.on_this_frame?
-			puts 'Reloading project!'
-			path = $engine.project.path
-			$engine.load_from_path(path)
-			$engine.hardwire!
-
-			# does not yield -- no point in continuing this frame
-		else
-			yield		# fullscreen normal case
+	def tick
+		if reload.on_this_frame?
+			change_count = $engine.reload
+			$gui.reload_notify
+			if change_count > 0
+				$gui.positive_message "Reloaded #{change_count.plural('file', 'files')}."
+			else
+				$gui.positive_message "No modified source files found."
+			end
 		end
 	end
 end
