@@ -69,10 +69,17 @@ class Pointer
 
 			if dragging?
 				update_drag
+			end
 
-			elsif @long_click_potential && hold_time > LONG_CLICK_HOLD_TIME && (drag_delta_x < SMALL_DISTANCE && drag_delta_y < SMALL_DISTANCE)
-				@hover_object.long_click(self) if @hover_object.respond_to?(:long_click)
-				@long_click_potential = false
+			if @long_click_potential
+				if (drag_delta_x < SMALL_DISTANCE && drag_delta_y < SMALL_DISTANCE)
+					if hold_time > LONG_CLICK_HOLD_TIME
+						@hover_object.long_click(self) if @hover_object.respond_to?(:long_click)
+						@long_click_potential = false
+					end
+				else
+					@long_click_potential = false		# wandered too far
+				end
 			end
 
 		elsif dragging?
@@ -124,6 +131,7 @@ class Pointer
 				if @drag_object.respond_to?(:drag_out)
 					@drag_object.drag_out(self)
 					@click_x, @click_y = x, y		# TODO: more effectively begin a new drag here?
+					@long_click_potential = false
 				end
 				@drag_out_notify_potential = false		# don't notify of this repeatedly
 			end
