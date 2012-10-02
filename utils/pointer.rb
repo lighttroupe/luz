@@ -53,11 +53,30 @@ class Pointer
 		@drag_object = nil
 	end
 
+	def capture_object!(object, &proc)
+		@capture_object = object
+		@capture_drop_proc = proc
+	end
+
+	def uncapture_object!
+		@capture_object, @capture_drop_proc = nil, nil
+	end
+
 	#
 	# This is the entrance for most features
 	#
 	def tick!
 		if click?
+			#
+			# Pointer capture feature: all clicks go to the "capture object", which can uncapture via return value
+			#
+			if @capture_object
+				unless @capture_drop_proc.call		# returns: still captured?		TODO: add parameters?  currently only used by popup context menus/lists
+					@capture_object, @capture_drop_proc = nil, nil
+				end
+				return if @capture_object
+			end
+
 			if @hover_object
 				@hover_object.click(self) if @hover_object.respond_to?(:click)
 				@click_x, @click_y, @click_time = x, y, Time.now
