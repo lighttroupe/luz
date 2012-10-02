@@ -331,19 +331,12 @@ class Theme
 	end
 
 	def gui_render!
-		# Background
-		gui_render_background
-
 		gui_render_styles
 
 		# Label and shading effect
 		if pointer_hovering?
 			# TODO: draw darkening layer
 			gui_render_label
-		else
-#			with_multiplied_alpha(0.5) {
-#				gui_render_label
-#			}
 		end
 	end
 
