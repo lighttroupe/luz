@@ -165,30 +165,34 @@ end
 class UserObject
 	include MethodsForGuiObject
 
+	def has_settings_list?
+		!@gui_settings_list.nil?
+	end
+
 	def gui_build_editor
-		box = GuiBox.new
 		if respond_to? :effects
+			box = GuiBox.new
+
 			# Two-lists side by side
 			@gui_effects_list = GuiList.new(effects).set({:spacing_y => -0.8, :scale_x => 0.29, :offset_x => -0.35, :scale_y => 0.87, :offset_y => -0.06, :item_aspect_ratio => 3.0})
 			box << @gui_effects_list
+
 			@gui_settings_list = GuiList.new.set({:spacing_y => -1.0, :scale_x => 0.69, :offset_x => 0.15, :scale_y => 0.87, :offset_y => -0.06, :item_aspect_ratio => 4.0})
 			box << @gui_settings_list
+
+			gui_fill_settings_list(self)		# show this object's settings
+
+			box
 		else
-			# Just a settings list (not used as of 2012/09/21)
-			#@gui_settings_list = GuiList.new.set({:spacing_y => -1.0, :scale_x => 1.0, :offset_x => 0.0, :scale_y => 0.88, :offset_y => -0.06, :item_aspect_ratio => 4.0})
-			#box << @gui_settings_list
+			GuiObject.new		# nothing
 		end
-
-		if @gui_settings_list
-			@gui_settings_list.clear!
-			gui_fill_settings_list(self)
-		end
-
-		box
 	end
 
 	def gui_fill_settings_list(user_object)
 		return unless @gui_settings_list
+
+		@gui_effects_list.clear_selection! if user_object == self
+
 		@gui_settings_list.clear!
 		user_object.settings.each { |setting|
 			@gui_settings_list << setting.gui_build_editor
