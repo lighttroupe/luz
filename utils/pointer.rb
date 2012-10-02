@@ -53,6 +53,9 @@ class Pointer
 		@drag_object = nil
 	end
 
+	#
+	# This is the entrance for most features
+	#
 	def tick!
 		if click?
 			if @hover_object
@@ -95,14 +98,6 @@ class Pointer
 		end
 	end
 
-	def color
-		if hold?
-			HOLD_COLOR
-		else
-			DEFAULT_COLOR
-		end
-	end
-
 	def render!
 		background_image.using {
 			with_color(color) {
@@ -113,6 +108,14 @@ class Pointer
 				}
 			}
 		}
+	end
+
+	def color
+		if hold?
+			HOLD_COLOR
+		else
+			DEFAULT_COLOR
+		end
 	end
 
 	def is_over(object)

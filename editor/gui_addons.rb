@@ -75,7 +75,7 @@ class UserObjectSettingInteger
 	def gui_build_editor
 		box = GuiBox.new
 		box << create_user_object_setting_name_label
-		box << GuiInteger.new(self, :animation_min, @min, @max).set(:scale_x => 0.3, :scale_y => 0.5, :offset_x => -0.5 + 0.15, :offset_y => 0.25)
+		box << GuiInteger.new(self, :animation_min, @min, @max).set(:scale_x => 0.3, :float => :left, :scale_y => 0.5, :offset_y => 0.25)
 		box
 	end
 end
@@ -84,7 +84,7 @@ class UserObjectSettingSelect
 	def gui_build_editor
 		box = GuiBox.new
 		box << create_user_object_setting_name_label
-		box << GuiSelect.new(self, :selected, @options[:options])
+		box << GuiSelect.new(self, :selected, @options[:options]).set(:scale_x => 1.0, :scale_y => 0.5, :offset_y => 0.25)
 		box
 	end
 end
@@ -93,7 +93,16 @@ class UserObjectSettingCurve
 	def gui_build_editor
 		box = GuiBox.new
 		box << create_user_object_setting_name_label
-		box << GuiCurve.new(self, :curve)
+		box << GuiCurve.new(self, :curve).set(:scale_x => 0.15, :scale_y => 0.4, :float => :left, :offset_x => 0.04, :offset_y => 0.14)
+		box
+	end
+end
+
+class UserObjectSettingCurveIncreasing
+	def gui_build_editor
+		box = GuiBox.new
+		box << create_user_object_setting_name_label
+		box << GuiCurveIncreasing.new(self, :curve).set(:scale_x => 0.15, :scale_y => 0.4, :float => :left, :offset_x => 0.04, :offset_y => 0.14)
 		box
 	end
 end
@@ -129,8 +138,8 @@ class UserObjectSettingTimespan
 	def gui_build_editor
 		box = GuiBox.new
 		box << create_user_object_setting_name_label
-		box << GuiFloat.new(self, :time_number, 0.0, 999.0).set(:offset_x => -0.25, :scale_x => 0.5)
-		box << GuiSelect.new(self, :time_unit, TIME_UNIT_OPTIONS).set(:offset_x => 0.25, :scale_x => 0.5)
+		box << GuiFloat.new(self, :time_number, 0.0, 999.0).set(:float => :left, :scale_x => 0.20, :scale_y => 0.5)
+		box << GuiSelect.new(self, :time_unit, TIME_UNIT_OPTIONS).set(:float => :left, :scale_x => 0.25, :scale_y => 0.5)
 		box
 	end
 end
@@ -139,7 +148,7 @@ class UserObjectSettingButton
 	def gui_build_editor
 		box = GuiBox.new
 		box << create_user_object_setting_name_label
-		box << GuiEngineButton.new(self, :button)
+		box << GuiEngineButton.new(self, :button).set(:scale_y => 0.5)
 		box
 	end
 end
@@ -148,16 +157,7 @@ class UserObjectSettingSlider
 	def gui_build_editor
 		box = GuiBox.new
 		box << create_user_object_setting_name_label
-		box << GuiEngineSlider.new(self, :slider)
-		box
-	end
-end
-
-class UserObjectSettingCurveIncreasing
-	def gui_build_editor
-		box = GuiBox.new
-		box << create_user_object_setting_name_label
-		box << GuiCurveIncreasing.new(self, :curve)
+		box << GuiEngineSlider.new(self, :slider).set(:scale_x => 0.5, :float => :left, :scale_y => 0.5, :offset_y => 0.0)
 		box
 	end
 end
@@ -165,30 +165,34 @@ end
 class UserObject
 	include MethodsForGuiObject
 
+	def has_settings_list?
+		!@gui_settings_list.nil?
+	end
+
 	def gui_build_editor
-		box = GuiBox.new
 		if respond_to? :effects
+			box = GuiBox.new
+
 			# Two-lists side by side
-			@gui_effects_list = GuiList.new(effects).set({:spacing_y => -0.8, :scale_x => 0.3, :scale_y => 0.9, :offset_x => -0.35, :offset_y => -0.05, :item_aspect_ratio => 3.0})
+			@gui_effects_list = GuiList.new(effects).set({:spacing_y => -0.8, :scale_x => 0.29, :offset_x => -0.35, :scale_y => 0.87, :offset_y => -0.06, :item_aspect_ratio => 3.0})
 			box << @gui_effects_list
-			@gui_settings_list = GuiList.new.set({:spacing_y => -1.0, :scale_x => 0.7, :scale_y => 0.9, :offset_x => 0.15, :offset_y => -0.05, :item_aspect_ratio => 4.0})
+
+			@gui_settings_list = GuiList.new.set({:spacing_y => -1.0, :scale_x => 0.69, :offset_x => 0.15, :scale_y => 0.87, :offset_y => -0.06, :item_aspect_ratio => 4.0})
 			box << @gui_settings_list
+
+			gui_fill_settings_list(self)		# show this object's settings
+
+			box
 		else
-			# Just a settings list (not used as of 2012/09/21)
-			@gui_settings_list = GuiList.new.set({:spacing_y => -0.9, :scale_x => 0.95, :scale_y => 0.9, :offset_x => 0.0, :offset_y => -0.05, :item_aspect_ratio => 4.0})
-			box << @gui_settings_list
+			GuiObject.new		# nothing
 		end
-
-		if @gui_settings_list
-			@gui_settings_list.clear!
-			gui_fill_settings_list(self)
-		end
-
-		box
 	end
 
 	def gui_fill_settings_list(user_object)
 		return unless @gui_settings_list
+
+		@gui_effects_list.clear_selection! if user_object == self
+
 		@gui_settings_list.clear!
 		user_object.settings.each { |setting|
 			@gui_settings_list << setting.gui_build_editor
@@ -276,7 +280,7 @@ class ChildUserObject
 	end
 
 	def draggable?
-		true
+		true		# needed for list reordering
 	end
 
 	def drag_out(pointer)
@@ -318,7 +322,7 @@ class Theme
 	def gui_build_editor
 		box = GuiBox.new
 		box << GuiGrid.new(effects).set(:min_columns => 4)
-		box << (@add_button=GuiButton.new.set(:scale_x => 0.15, :scale_y => 0.15, :offset_x => -0.5, :offset_y => 0.5, :background_image => $engine.load_image('images/buttons/menu.png')))
+		box << (@add_button=GuiButton.new.set(:scale_x => 0.075, :scale_y => 0.15, :offset_x => -0.5, :offset_y => 0.5, :background_image => $engine.load_image('images/buttons/menu.png')))
 		@add_button.on_clicked {
 			effects << Style.new
 			GL.DestroyList(@gui_render_styles_list) ; @gui_render_styles_list = nil
