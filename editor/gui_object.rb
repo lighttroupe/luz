@@ -66,6 +66,21 @@ module MethodsForGuiObject
 		}
 	end
 
+	boolean_accessor :exiting
+	def exit!
+		return if exiting?
+		exiting!
+		after_exit_animation {
+			remove_from_parent!
+		}
+	end
+
+	def after_exit_animation
+		set_opacity(opacity || 1.0).animate({:scale_x => 0.0, :scale_y => 0.0, :opacity => 0.0}, duration=0.12) {
+			yield
+		}
+	end
+
 	def background_color
 		if pointer_hovering?
 			BACKGROUND_COLOR_HOVERING
