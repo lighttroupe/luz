@@ -38,10 +38,23 @@ class GuiListValue < GuiObject
 
 	def create_popup_list(pointer)
 		box = GuiBox.new.set(:offset_x => pointer.x, :offset_y => pointer.y, :color => [1,1,0,1], :scale_x => 0.0, :scale_y => 0.0).animate({:scale_x => 0.1, :scale_y => 0.4}, duration=0.1)
+
+		# Wrap the objects with a Renderer
 		renderers = list.map { |item| GuiObjectRenderer.new(item) }
-		renderers.each { |r| r.on_clicked { set_value(r.object) ; box.remove_from_parent! } } 
-		box << GuiList.new(renderers).set(:scroll_wrap => true, :spacing_y => -1.0)
+		renderers.each { |r|
+			r.on_clicked {
+				set_value(r.object)
+				box.exit!
+			}
+		}
+
+		box << (popup=GuiList.new(renderers).set(:scroll_wrap => true, :spacing_y => -1.0))
 		add_to_root(box)
+
+		pointer.capture_object!(popup) {
+			pointer.uncapture_object!
+			box.exit!
+		}
 	end
 
 	def scroll_up!(pointer)
