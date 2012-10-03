@@ -76,7 +76,7 @@ module MethodsForGuiObject
 	end
 
 	def after_exit_animation
-		set_opacity(opacity || 1.0).animate({:scale_x => 0.0, :scale_y => 0.0, :opacity => 0.0}, duration=0.12) {
+		set_opacity(opacity || 1.0).animate({:scale_x => 0.0, :scale_y => 0.0, :opacity => 0.0}, duration=0.2) {
 			yield
 		}
 	end
@@ -93,6 +93,12 @@ module MethodsForGuiObject
 
 	def click(pointer)
 		@parent.click(pointer) if @parent			# Default is to pass it up the stack		TODO: change this to "child_click" ? (see UserObject monkeypatching)
+	end
+	def scroll_up!(pointer)
+		@parent.scroll_up!(pointer) if @parent			# Default is to pass it up the stack		TODO: change this to "child_click" ? (see UserObject monkeypatching)
+	end
+	def scroll_down!(pointer)
+		@parent.scroll_down!(pointer) if @parent			# Default is to pass it up the stack		TODO: change this to "child_click" ? (see UserObject monkeypatching)
 	end
 
 	def begin_drag(pointer)
