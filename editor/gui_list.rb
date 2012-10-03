@@ -145,4 +145,8 @@ class GuiListWithControls < GuiBox
 		@down_button.on_clicked { @list.scroll_velocity += 0.4 }
 		@down_button.on_holding { @list.scroll_velocity += 0.2 }
 	end
+
+	def includes_gui_object?(object)
+		(@up_button == object) || (@down_button == object)
+	end
 end

@@ -52,8 +52,9 @@ class GuiListValue < GuiObject		# TODO: rename! GuiListSelect ?
 		box << (popup=GuiListWithControls.new(renderers).set(:scroll_wrap => true, :spacing_y => -1.0, :item_aspect_ratio => 1.6))
 		add_to_root(box)
 
-		pointer.capture_object!(popup) { |click_object|
-			if popup.has_widget_object?(click_object)
+		# Pointer takes responsibility for this window, and it auto-closes when pointer clicks away
+		pointer.capture_object!(popup) { |click_object|		# callback is for a click
+			if click_object.is_a?(GuiObject) && popup.includes_gui_object?(click_object)
 				true		# user is working with the popup... keep the capture
 			else
 				pointer.uncapture_object!
