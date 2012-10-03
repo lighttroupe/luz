@@ -174,7 +174,7 @@ class UserObject
 			box = GuiBox.new
 
 			# Two-lists side by side
-			@gui_effects_list = GuiList.new(effects).set({:spacing_y => -0.8, :scale_x => 0.29, :offset_x => -0.35, :scale_y => 0.87, :offset_y => -0.06, :item_aspect_ratio => 3.0})
+			@gui_effects_list = GuiListWithControls.new(effects).set({:spacing_y => -0.8, :scale_x => 0.29, :offset_x => -0.35, :scale_y => 0.87, :offset_y => -0.06, :item_aspect_ratio => 3.0})
 			box << @gui_effects_list
 
 			@gui_settings_list = GuiList.new.set({:spacing_y => -1.0, :scale_x => 0.69, :offset_x => 0.15, :scale_y => 0.87, :offset_y => -0.06, :item_aspect_ratio => 4.0})
