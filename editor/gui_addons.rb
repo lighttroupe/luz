@@ -261,12 +261,19 @@ class GuiObjectRenderer < GuiObject
 	end
 
 	def gui_render!
+		return if hidden?
 		gui_render_background
-		@object.gui_render!		# TODO: send a symbol for customizable render method (ie simple curves)
+		if @object.respond_to? :gui_render!
+			@object.gui_render!		# TODO: send a symbol for customizable render method (ie simple curves)
+		else
+			with_color([rand,rand,rand,1]) {
+				unit_square
+			}
+		end
 	end
 
 	def gui_tick!
-		@object.gui_tick!
+		@object.gui_tick! if @object.respond_to? :gui_tick!
 	end
 
 	def click(pointer)
@@ -275,6 +282,7 @@ class GuiObjectRenderer < GuiObject
 end
 
 class ChildUserObject
+
 	def long_click(pointer)
 		toggle_enabled!
 	end
