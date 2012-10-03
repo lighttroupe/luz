@@ -82,6 +82,7 @@ class Pointer
 				@click_x, @click_y, @click_time = x, y, Time.now
 				begin_drag(@hover_object) if @hover_object.draggable?
 				@long_click_potential = true
+				@click_object = @hover_object
 			else
 				$gui.pointer_click_on_nothing(self) if $gui.respond_to? :pointer_click_on_nothing
 			end
@@ -93,7 +94,7 @@ class Pointer
 				update_drag
 			end
 
-			if @long_click_potential
+			if @long_click_potential && @hover_object == @click_object
 				if (drag_delta_x < SMALL_DISTANCE && drag_delta_y < SMALL_DISTANCE)
 					if hold_time > LONG_CLICK_HOLD_TIME
 						@hover_object.long_click(self) if @hover_object.respond_to?(:long_click)
