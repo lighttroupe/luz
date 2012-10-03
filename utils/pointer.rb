@@ -71,7 +71,7 @@ class Pointer
 			# Pointer capture feature: all clicks go to the "capture object", which can uncapture via return value
 			#
 			if @capture_object
-				unless @capture_drop_proc.call		# returns: still captured?		TODO: add parameters?  currently only used by popup context menus/lists
+				unless @capture_drop_proc.call(@hover_object)		# returns: still captured?		TODO: add parameters?  currently only used by popup context menus/lists
 					@capture_object, @capture_drop_proc = nil, nil
 				end
 				return if @capture_object

@@ -1,6 +1,6 @@
 # superclass for single-value setting widgets like GuiTheme
 
-class GuiListValue < GuiObject
+class GuiListValue < GuiObject		# TODO: rename! GuiListSelect ?
 	easy_accessor :no_value_text
 
 	def initialize(object, method)
@@ -43,17 +43,23 @@ class GuiListValue < GuiObject
 		renderers = list.map { |item| GuiObjectRenderer.new(item) }
 		renderers.each { |r|
 			r.on_clicked {
+				renderers.each { |r2| r2.hidden! unless r==r2 }		# FX: all but the selected item disappears
 				set_value(r.object)
 				box.exit!
 			}
 		}
 
-		box << (popup=GuiList.new(renderers).set(:scroll_wrap => true, :spacing_y => -1.0))
+		box << (popup=GuiListWithControls.new(renderers).set(:scroll_wrap => true, :spacing_y => -1.0, :item_aspect_ratio => 1.6))
 		add_to_root(box)
 
-		pointer.capture_object!(popup) {
-			pointer.uncapture_object!
-			box.exit!
+		pointer.capture_object!(popup) { |click_object|
+			if popup.has_widget_object?(click_object)
+				true		# user is working with the popup... keep the capture
+			else
+				pointer.uncapture_object!
+				box.exit!
+				false
+			end
 		}
 	end
 

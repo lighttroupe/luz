@@ -129,6 +129,7 @@ end
 class GuiListWithControls < GuiBox
 	def scroll_wrap=(v) ; @list.scroll_wrap = v ; end
 	def spacing_y=(v) ; @list.spacing_y = v ; end
+	def item_aspect_ratio=(v) ; @list.item_aspect_ratio = v ; end
 
 	def initialize(contents)
 		super()
