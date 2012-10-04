@@ -9,6 +9,7 @@ class GuiList < GuiBox
 		@scroll = 0.0
 		@scroll_velocity = 0.0
 		@one_fake_scroll_change_notify = true
+		@visible_slots = 0.0
 	end
 
 	VELOCITY_PER_SCROLL = 2.0
@@ -80,7 +81,7 @@ class GuiList < GuiBox
 	end
 
 	def allow_scrolling?
-		@visible_slots && @contents.size > @visible_slots
+		@contents.size > @visible_slots
 	end
 
 	def each_with_positioning
