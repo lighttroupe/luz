@@ -23,10 +23,10 @@ end
 class GuiBeatMonitor < GuiList
 	def initialize(beats_per_measure)
 		super()
-		self << (@halve_bpm_button = GuiButton.new.set(:scale_x => 1.0, :scale_y => 1.0, :offset_x => 0.0, :offset_y => 0.0, :background_image => $engine.load_image('images/buttons/menu.png')))
+		self << (@halve_bpm_button = GuiButton.new.set(:scale_x => 1.0, :scale_y => 1.0, :offset_x => 0.0, :offset_y => 0.0, :background_image => $engine.load_image('images/buttons/halve.png')))
 		@halve_bpm_button.on_clicked { $engine.beat_half_time! }
 		beats_per_measure.times { |i| self << GuiBeatLight.new.set_beat_index(i).set_beats_per_measure(beats_per_measure) }
-		self << (@double_bpm_button = GuiButton.new.set(:scale_x => 1.0, :scale_y => 1.0, :offset_x => 0.0, :offset_y => 0.0, :background_image => $engine.load_image('images/buttons/menu.png')))
+		self << (@double_bpm_button = GuiButton.new.set(:scale_x => 1.0, :scale_y => 1.0, :offset_x => 0.0, :offset_y => 0.0, :background_image => $engine.load_image('images/buttons/double.png')))
 		@double_bpm_button.on_clicked { $engine.beat_double_time! }
 	end
 
