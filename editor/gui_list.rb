@@ -160,21 +160,24 @@ class GuiList < GuiBox
 end
 
 class GuiListWithControls < GuiBox
-	def scroll_wrap=(v) ; @list.scroll_wrap = v ; end
-	def spacing_y=(v) ; @list.spacing_y = v ; end
-	def item_aspect_ratio=(v) ; @list.item_aspect_ratio = v ; end
+	# List configuration goes to list
+	pipe :scroll_wrap=, :list
+	pipe :spacing_y=, :list
+	pipe :item_aspect_ratio=, :list
+	pipe :set_selection, :list
+	pipe :add_to_selection, :list
 
 	def initialize(contents)
 		super()
 		self << @list=GuiList.new(contents)
 
 		# up
-		self << @up_button=GuiButton.new.set(:scale_x => 1.0, :scale_y => 0.12, :offset_y => 0.5 - 0.06, :opacity => 0.5)
+		self << @up_button=GuiButton.new.set(:scale_x => 1.0, :scale_y => 0.12, :offset_y => 0.5 - 0.06, :opacity => 0.5, :background_image => $engine.load_image('images/buttons/scroll-up.png'))
 		@up_button.on_clicked { @list.scroll_velocity -= 0.4 }
 		@up_button.on_holding { @list.scroll_velocity -= 0.2 }
 
 		# down
-		self << @down_button=GuiButton.new.set(:scale_x => 1.0, :scale_y => 0.12, :offset_y => -0.5 + 0.06, :opacity => 0.5)
+		self << @down_button=GuiButton.new.set(:scale_x => 1.0, :scale_y => -0.12, :offset_y => -0.5 + 0.06, :opacity => 0.5, :background_image => $engine.load_image('images/buttons/scroll-up.png'))
 		@down_button.on_clicked { @list.scroll_velocity += 0.4 }
 		@down_button.on_holding { @list.scroll_velocity += 0.2 }
 
