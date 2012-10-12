@@ -111,9 +111,7 @@ class UserObjectSettingImage < UserObjectSetting
 		load_images if @image_list.nil?
 		return yield unless @image_list
 
-		index %= @image_list.size unless index == 0
-
-		@image_list[index].using {
+		@image_list[index % @image_list.size].using {
 			# TODO: add texture options
 			yield
 		}
