@@ -16,50 +16,32 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-require 'user_object', 'drawing'
-require 'color_pixbuf' if $gui
+require 'plugins/project_effects/screen-capture.luz.rb'
 
-class Style < UserObject
-	title 'Style'
+class ProjectEffectScreenCaptureWithThemeStorage < ProjectEffectScreenCapture
+	title				"Screen Capture w/ Theme Storage"
+	description "Like Screen Capture, but also stores "
 
-	def default_title
-		''
+	setting 'container', :theme
+
+	def save_to_theme(pixels)
+		@capture_index ||= 0
+
+		style = container.effects[@capture_index]
+		style.set_pixels(pixels, $application.width, $application.height)
+
+		@capture_index = (@capture_index + 1) % container.effects.size
 	end
 
-	include Drawing
+	def tick
+		if (event.now? and $gui.nil?)	# NOTE: only operates in performer
+			output_filepath = generate_output_filepath
 
-	setting 'color', :color, :default => [1.0,1.0,1.0,1.0], :only_literal => true
-	setting 'image', :image
+			# Get pixels and write them to temporary file
+			return if (pixels = get_framebuffer_rgb8).nil?
 
-	pipe :color=, :color_setting
-
-	def set_color(color)
-		self.color = color
-		self
-	end
-
-	def icon
-		ColorPixbuf.pixbuf(window=nil, ICON_WIDTH, ICON_HEIGHT, color)
-	end
-
-	def using
-		image.using {
-			with_color(color_setting.color) {		# TODO: seems to be a caching issue with using 'color' directly?
-				yield
-			}
-		}
-	end
-
-	def using_amount(amount)
-		return yield if amount == 0.0
-		# note: currently ignores image
-
-		with_color(current_color.fade_to(amount, color_setting.color)) {
-			yield
-		}
-	end
-
-	def set_pixels(pixels, width, height)
-		image_setting.set_pixels(pixels, width, height)
+			save_to_theme(pixels)
+			save_pixels_to_path(pixels, output_filepath)
+		end
 	end
 end
