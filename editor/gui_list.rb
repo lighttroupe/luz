@@ -68,6 +68,7 @@ class GuiList < GuiBox
 		with_positioning { with_color(BACKGROUND_COLOR) { unit_square } }
 		each_with_positioning { |gui_object| gui_object.gui_render! }
 
+		# this allows those that respond to our scroll changes to init themselves
 		scroll_change_notify if @one_fake_scroll_change_notify
 		@one_fake_scroll_change_notify = false
 	end
