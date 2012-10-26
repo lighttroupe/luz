@@ -15,32 +15,30 @@ class ActorEffectVideoFile < ActorEffect
 
 	def after_load
 		require 'video-file/ffmpeg'
-		@frame_index = 0
-		@fast_forward_time = 0.0
+		@frame_index = 0.0		# NOTE: float
 		super
 	end
 
 	def tick
 		reload_if_needed
-		@fast_forward_time += (speed - 1.0)
-		@skip_frames, remainder = @fast_forward_time.divmod(1.0)
-		#puts @skip_frames unless @skip_frames == 0.0 
-		@fast_forward_time = remainder
+		@frame_index += (speed)
 
-		@skip_frames += jump_frames if jump_forward.now?
-		@skip_frames -= jump_frames if jump_backward.now?
-
-		@frame_index += (1 + @skip_frames)
+		#@skip_frames += jump_frames if jump_forward.now?
+		#@skip_frames -= jump_frames if jump_backward.now?
+		#@frame_index += (1 + @skip_frames)
 	end
 
 	def render
 		return yield unless @file
 
-		@file.with_frame(@frame_index) {
+		frame_index_integer, remainder = @frame_index.divmod(1.0)
+
+		@file.with_frame(frame_index_integer) {
 			yield
 		}
-		@frame_index = @file.frame_index - 1		# since it progresses automatically after reading the next frame
-		@skip_frames = 0
+
+		#@frame_index = @file.frame_index - 1		# since it progresses automatically after reading the next frame
+		#@skip_frames = 0
 	end
 
 private
