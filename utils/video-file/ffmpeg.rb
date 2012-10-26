@@ -16,46 +16,38 @@ module FFmpeg
 	class File
 		attr_reader :frame_index
 		def with_frame(index=0)
-			@frame_index ||= 0
-			@last_frame_load ||= 0
-			@frame_cache ||= {}
+			@image ||= Image.new
 
-			# wrap index around (this works both positively and negatively)
-			index = (index % self.frame_count) if index < 0 || index > (self.frame_count-1) if self.frame_count > 0 # avoids div yy 0
+			# loop index around on both sides
+			index = index % self.frame_count if self.frame_count > 0		# sometimes it's 0?!
 
-			# attempt to satisfy via cache?
-			if(cache_hit = @frame_cache[index])
-				#puts "#{index} cache hit"
-				cache_hit.using {
-					yield
-				}
-				return
-			end
+			#
+			# Can we satisfy this from cache?
+			#
+			if(index == @last_frame_index || @last_frame_load == $env[:frame_number])
+				#puts 'not moving forward'
+			else
+				# loop around?		TODO: this assumes video is moving forward
+				if(index == 0 && @last_frame_index && @last_frame_index != 0)
+					#puts 'seeking to 0'
+					self.seek_to_frame(0)
+				end
 
-			image = nil		# we will render with this image as texture
+				if(new_data = self.read_next_frame)
+					#puts "#{index} got frame"
+					@image.from_rgb8(new_data, self.width, self.height)
+				end
 
-			# Reuse an existing image if if necessary
-			if (@frame_cache.size >= MAX_FRAME_CACHE_SIZE)
-				index_to_remove = @frame_cache.keys.random
-				#puts "#{index_to_remove} removing"
-				image = @frame_cache.delete(index_to_remove)
-			end
-
-			# if we're still filling cache, make a new Image
-			image ||= Image.new
-			@frame_cache[index] = image
-
-			# Get next frame
-			if @last_frame_load < $env[:frame_number]
-				read_frame_index_into_image(index, image)
+				@last_frame_index = index
 				@last_frame_load = $env[:frame_number]
 			end
 
-			image.using {
+			@image.using {
 				yield
 			}
 		end
 
+=begin
 		def read_frame_index_into_image(index, image)
 			if index != @frame_index
 				#puts "#{index} seeking to"
@@ -76,5 +68,6 @@ module FFmpeg
 				@frame_index = 0
 			end
 		end
+=end
 	end
 end
