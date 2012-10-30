@@ -7,6 +7,10 @@ VALUE vModule;
 VALUE vFileClass;
 int g_ffmpeg_initialized = 0;
 
+#ifndef CODEC_TYPE_VIDEO
+#define CODEC_TYPE_VIDEO (AVMEDIA_TYPE_VIDEO)		// Newer library renamed it CODEC_TYPE_VIDEO => AVMEDIA_TYPE_VIDEO
+#endif
+
 static void lazy_init_ffmpeg() {
 	if(g_ffmpeg_initialized == 1) { return; }
 	printf("ruby-ffmpeg: initializing...\n");
@@ -37,7 +41,8 @@ static VALUE FFmpeg_File_read_next_frame(VALUE self) {
 	Data_Get_Struct(self, video_file_t, video_file);
 
 	int frame_finished = 0;
-	while(av_read_frame(video_file->av_format_context, &(video_file->packet)) >= 0) {
+	int ret;
+	while((ret=av_read_frame(video_file->av_format_context, &(video_file->packet))) >= 0) {
 		// Is this a packet from the video stream?
 		if(video_file->packet.stream_index == video_file->video_index) {
 			// Decode video frame
@@ -51,6 +56,7 @@ static VALUE FFmpeg_File_read_next_frame(VALUE self) {
 			}
 		}
 	}
+	printf("av_read_frame() = %d\n", ret);
 	return Qnil;		// TODO: better to now decode a new frame?
 }
 
