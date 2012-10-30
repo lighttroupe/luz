@@ -16,6 +16,8 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
+require 'opengl'
+
 class GtkGLDrawingArea < Gtk::DrawingArea
 	@@shared_gl_context = nil
 
