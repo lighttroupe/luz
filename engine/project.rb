@@ -25,6 +25,8 @@ begin
 	require 'ftools'		# ruby 1.8
 rescue LoadError
 	require 'fileutils'	# ruby 1.9
+
+	YAML::ENGINE.yamler = 'syck'
 end
 
 require 'callbacks'
@@ -61,8 +63,6 @@ class Project
 	def initialize
 		@last_save_time = Time.now
 		clear
-		@change_count = 0
-		@path = nil
 		@missing_plugin_names = []
 
 		$engine.on_clear_objects { clear }
@@ -92,6 +92,8 @@ class Project
 		}
 		# set all to []
 		OBJECT_SYMBOLS.each { |obj_type| instance_variable_set("@#{obj_type}", []) }
+		@change_count = 0
+		@path = nil
 	end
 
 	def time_since_save
