@@ -26,7 +26,7 @@ begin
 rescue LoadError
 	require 'fileutils'	# ruby 1.9
 
-	YAML::ENGINE.yamler = 'syck'
+	YAML::ENGINE.yamler = 'syck' if defined?(YAML::ENGINE) && YAML::ENGINE.respond_to?(:yamler)
 end
 
 require 'callbacks'
