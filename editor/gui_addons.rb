@@ -260,6 +260,10 @@ class GuiObjectRenderer < GuiObject
 		@object = object
 	end
 
+	def ==(o)		# usefor for being found in lists, etc.
+		super || (@object == o)
+	end
+
 	def gui_render!
 		return if hidden?
 		gui_render_background
