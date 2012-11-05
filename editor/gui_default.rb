@@ -2,6 +2,8 @@ require 'gui_pointer_behavior', 'gui_object', 'gui_box', 'gui_list', 'gui_grid',
 require 'editor/fonts/bitmap-font'
 require 'gui_addons'
 
+require 'gui_radio_buttons'
+
 #load_directory(Dir.pwd + '/editor/widgets/', '**.rb')
 
 class GuiDefault < GuiBox
@@ -31,7 +33,7 @@ class GuiDefault < GuiBox
 		if @mode == OUTPUT_MODE
 			yield
 		elsif @mode == ACTOR_MODE
-			@chosen_actor.render!
+			@chosen_actor.render! if @chosen_actor
 		end
 	end
 
@@ -62,6 +64,8 @@ class GuiDefault < GuiBox
 		self << (@preferences_box = GuiPreferencesBox.new.build.set(:scale_x => 0.22, :scale_y => 0.4, :offset_x => 0.4, :offset_y => -0.3, :opacity => 0.0, :hidden => true))
 		self << (@preferences_button = GuiButton.new.set(:hotkey => PREFERENCES_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.50, :offset_y => -0.50, :color => [0.5,1.0,0.5,1.0], :background_image => $engine.load_image('images/buttons/menu.png')))
 		@preferences_button.on_clicked { toggle_preferences_box! }
+
+		self << GuiRadioButtons.new(self, :mode, [ACTOR_MODE, OUTPUT_MODE]).set(:offset_x => -0.35, :offset_y => -0.45 - 0.03, :scale_x => 0.12, :scale_y => 0.02, :spacing_x => 1.0)
 
 		@user_object_editors = {}
 		@chosen_actor = nil
@@ -152,7 +156,7 @@ class GuiDefault < GuiBox
 		else
 			if user_object.is_a? ParentUserObject
 				if user_object.is_a? Actor
-					@mode = ACTOR_MODE
+					# @mode = ACTOR_MODE   TODO: perhaps some way to auto-switch to user view when selecting
 					@chosen_actor = user_object
 					close_actors_list!
 				end
