@@ -86,12 +86,27 @@ class GuiList < GuiBox
 		@contents.size > @visible_slots
 	end
 
+	def distance_between_items
+		(spacing_y || 1.0) / (item_aspect_ratio || 1.0)
+	end
+
+	def index_of(value)
+		@contents.index(value)
+	end
+
+	def scroll_to(value)
+		if(index = index_of(value))
+			@scroll = (index * -distance_between_items) # NOTE: this puts selected at the top.  putting it under the pointer that invoked us might be nice.
+		end
+		self
+	end
+
 	def each_with_positioning
 		with_positioning {
 			if spacing_y && spacing_y != 0.0
 				with_horizontal_clip_plane_above(0.5) {
 					with_horizontal_clip_plane_below(-0.5) {
-						final_spacing_y = (spacing_y || 1.0) / (item_aspect_ratio || 1.0)
+						final_spacing_y = distance_between_items
 
 						with_translation(0.0, 0.5) {
 							with_aspect_ratio_fix_y { |fix_y|
@@ -209,5 +224,9 @@ class GuiListWithControls < GuiBox
 
 	def scroll_down!(pointer)
 		@list.scroll_down!(pointer)
+	end
+	
+	def scroll_to(value)
+		@list.scroll_to(value)
 	end
 end

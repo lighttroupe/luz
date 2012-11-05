@@ -49,7 +49,7 @@ class GuiListValue < GuiObject		# TODO: rename! GuiListSelect ?
 			}
 		}
 
-		box << (popup=GuiListWithControls.new(renderers).set(:scroll_wrap => true, :spacing_y => -1.0, :item_aspect_ratio => 1.6))
+		box << (popup=GuiListWithControls.new(renderers).set(:scroll_wrap => true, :spacing_y => -1.0, :item_aspect_ratio => 1.6)).scroll_to(self.get_value)
 		add_to_root(box)
 
 		# Pointer takes responsibility for this window, and it auto-closes when pointer clicks away
