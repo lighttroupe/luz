@@ -157,7 +157,7 @@ class GuiDefault < GuiBox
 			if user_object.is_a? ParentUserObject
 				if user_object.is_a? Actor
 					# @mode = ACTOR_MODE   TODO: perhaps some way to auto-switch to user view when selecting
-					@chosen_actor = user_object
+					@chosen_actor = user_object		# this way, if user then switches to the actor list, this actor will be showing
 					close_actors_list!
 				end
 
