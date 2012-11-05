@@ -39,9 +39,13 @@ module MethodsForGuiObject
 	def hit_test_render!
 		return if hidden?
 		with_positioning {
-			with_unique_hit_test_color_for_object(self, 0) {
-				unit_square
-			}
+			render_hit_test_unit_square
+		}
+	end
+
+	def render_hit_test_unit_square
+		with_unique_hit_test_color_for_object(self, 0) {
+			unit_square
 		}
 	end
 
