@@ -23,6 +23,7 @@ class GuiList < GuiBox
 
 	def hit_test_render!
 		return if hidden?
+		with_positioning { render_hit_test_unit_square }										# list blank space is clickable
 		each_with_positioning { |gui_object| gui_object.hit_test_render! }
 	end
 
