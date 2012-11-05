@@ -38,8 +38,15 @@ class GuiRadioButtons < GuiList
 		@object.instance_variable_set(@method, value)
 	end
 
+	def selected_index
+		@options.index(get_value)
+	end
+
+	def set_index(index)
+		set_value(@options[(index) % @options.size])
+	end
+
 	def click(pointer)
-		index = @options.index(get_value)
-		set_value(@options[(index + 1) % @options.size])
+		set_index(selected_index + 1)
 	end
 end
