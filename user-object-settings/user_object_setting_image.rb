@@ -135,4 +135,11 @@ class UserObjectSettingImage < UserObjectSetting
 		end
 		@image_list
 	end
+
+	# Somewhat of a hack to save screenshots live to a theme
+	def set_pixels(pixels, width, height)
+		@image_list ||= []
+		@image_list[0] ||= Image.new
+		@image_list[0].from_rgb8(pixels, @width=width, @height=height)
+	end
 end

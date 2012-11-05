@@ -6,7 +6,7 @@ require 'drawing'
 class DrawableObject
 	include Drawing
 
-	attr_accessor :body, :shapes, :shape_offset, :level_object, :display_list, :angle, :scale_x, :scale_y, :render_actor, :child_index, :draw_proc, :fully_static, :entered_at, :enter_time, :exited_at, :exit_time, :activation, :activation_count, :activation_time, :sound_id, :scheduled_exit_at, :damage, :z
+	attr_accessor :body, :shapes, :shape_offset, :level_object, :display_list, :angle, :scale_x, :scale_y, :render_actor, :child_index, :draw_proc, :fully_static, :entered_at, :enter_time, :exited_at, :exit_time, :activation, :activation_count, :activation_time, :sound_id, :scheduled_exit_at, :damage, :z, :gibs
 	boolean_accessor :takes_damage, :exit_still
 
 	AIM_AT_SEARCH_EVERY_N_FRAMES = 3
@@ -252,10 +252,25 @@ class DrawableObject
 		# End looping sound
 		$sound.stop_by_id(@sound_id) if $sound and @sound_id
 		@sound_id = nil
+
+		spawn_gibs!
 	end
 
 	def exiting?
 		!@exited_at.nil?		# Already on the way out?
+	end
+
+	def spawn_gibs!
+		@gibs.each { |gib|
+			next if (gib.options[:gib_chance] && (rand > as_float(gib.options[:gib_chance], 1.0)))
+
+			@simulator.create_object!(gib) { |drawable|
+				# gibs inherit position, velocity, angle (this could perhaps be more precise)
+				drawable.body.p = @body.p + CP::Vec2.new(gib.x - @level_object.x, gib.y - @level_object.y).rotate(@body.rot)
+				drawable.body.v += (@body.v * as_float(gib.options[:gib_velocity_multiplier], 1.0))		# use += in case it got its own velocity (ie velocity-x property)
+				drawable.body.a = @body.a
+			}
+		} if @gibs
 	end
 
 	#

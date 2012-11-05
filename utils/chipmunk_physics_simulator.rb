@@ -573,12 +573,26 @@ class ChipmunkPhysicsSimulator
 			else
 				# Groups without a mass are for organization, and...
 				one_body = body		# possibly nil
+				drawables = []
+				gibs = []
 				children.each { |child_object|
+					# Feature: gib: yes! pull out gibs, so we can attach them to any physical bodies we create (below)
+					if (child_object.options[:gib] == YES)
+						gibs << child_object
+						next
+					end
+
 					create_object(child_object, body, from_spawner=false) { |drawable|		# note setting from_spawner false to allow spawner creation
+						drawables << drawable
 						one_body ||= drawable.body
 						yield drawable
 					}
 				}
+
+				# Feature: gibs attach gibs to the non-gib body it was grouped with
+				if !gibs.empty? && (parent=drawables.find { |d| d.body })
+					parent.gibs = gibs
+				end
 
 				# ...tell any spawners made that they're body-relative, and...
 				children.each { |child_object|
