@@ -1,6 +1,6 @@
 --- 
   :events: 
-    - &id010 !ruby/object:Event
+    - &id014 !ruby/object:Event
       effects: 
         - !ruby/object:EventInputButtonPress
           conditions: !ruby/object:ChildConditions
@@ -16,12 +16,12 @@
             enable_event: false
             event: 
             event_invert: false
-          title: &id009 Button Press
+          title: &id012 Button Press
           enabled: true
           button_setting: !ruby/object:UserObjectSettingButton
             button: Keyboard / Space
             name: &id001 button
-            options: &id002
+            options: &id013
               
               :summary: true
             breaks_cache: 
@@ -63,21 +63,25 @@
             enable_event: false
             event: 
             event_invert: false
-          title: &id007 Button Toggle
+          title: &id008 Button Toggle
           enabled: true
           button_setting: !ruby/object:UserObjectSettingButton
-            button: &id014 Keyboard / Grave
+            button: &id018 Keyboard / Grave
             name: *id001
-            options: *id002
+            options: &id009
+              
+              :summary: true
             breaks_cache: 
           clear_setting: !ruby/object:UserObjectSettingButton
             button: Keyboard / Escape
-            name: &id008 clear
-            options: *id002
+            name: &id010 clear
+            options: &id011
+              
+              :summary: true
             breaks_cache: 
       title: show editor
       enabled: true
-    - &id012 !ruby/object:Event
+    - &id016 !ruby/object:Event
       effects: 
         - !ruby/object:EventInputButtonComboDown
           conditions: !ruby/object:ChildConditions
@@ -93,17 +97,21 @@
             enable_event: false
             event: 
             event_invert: false
-          title: &id003 Button Combo Down
+          title: &id002 Button Combo Down
           enabled: true
           button_one_setting: !ruby/object:UserObjectSettingButton
             button: Keyboard / Right Control
-            name: &id004 button_one
-            options: *id002
+            name: &id003 button_one
+            options: &id004
+              
+              :summary: true
             breaks_cache: 
           button_two_setting: !ruby/object:UserObjectSettingButton
             button: &id005 Keyboard / R
             name: &id006 button_two
-            options: *id002
+            options: &id007
+              
+              :summary: true
             breaks_cache: 
         - !ruby/object:EventInputButtonComboDown
           conditions: !ruby/object:ChildConditions
@@ -119,17 +127,17 @@
             enable_event: false
             event: 
             event_invert: false
-          title: *id003
+          title: *id002
           enabled: true
           button_one_setting: !ruby/object:UserObjectSettingButton
             button: Keyboard / Left Control
-            name: *id004
-            options: *id002
+            name: *id003
+            options: *id004
             breaks_cache: 
           button_two_setting: !ruby/object:UserObjectSettingButton
             button: *id005
             name: *id006
-            options: *id002
+            options: *id007
             breaks_cache: 
       title: reload set!
       enabled: true
@@ -149,17 +157,17 @@
             enable_event: false
             event: 
             event_invert: false
-          title: *id007
+          title: *id008
           enabled: true
           button_setting: !ruby/object:UserObjectSettingButton
             button: Keyboard / 1
             name: *id001
-            options: *id002
+            options: *id009
             breaks_cache: 
           clear_setting: !ruby/object:UserObjectSettingButton
             button: 
-            name: *id008
-            options: *id002
+            name: *id010
+            options: *id011
             breaks_cache: 
       title: toggle test 1
       enabled: true
@@ -179,17 +187,17 @@
             enable_event: false
             event: 
             event_invert: false
-          title: *id007
+          title: *id008
           enabled: true
           button_setting: !ruby/object:UserObjectSettingButton
             button: Keyboard / 2
             name: *id001
-            options: *id002
+            options: *id009
             breaks_cache: 
           clear_setting: !ruby/object:UserObjectSettingButton
             button: 
-            name: *id008
-            options: *id002
+            name: *id010
+            options: *id011
             breaks_cache: 
         - !ruby/object:EventInputButtonRepeater
           conditions: !ruby/object:ChildConditions
@@ -210,17 +218,19 @@
           button_setting: !ruby/object:UserObjectSettingButton
             button: Keyboard / Right Shift
             name: *id001
-            options: *id002
+            options: 
+              :summary: true
             breaks_cache: 
           period_setting: !ruby/object:UserObjectSettingTimespan
             time_number: 0.25
             time_unit: :beats
             name: period
-            options: *id002
+            options: 
+              :summary: true
             breaks_cache: 
       title: toggle test 2
       enabled: true
-    - &id025 !ruby/object:Event
+    - &id027 !ruby/object:Event
       effects: 
         - !ruby/object:EventInputButtonPress
           conditions: !ruby/object:ChildConditions
@@ -236,16 +246,16 @@
             enable_event: false
             event: 
             event_invert: false
-          title: *id009
+          title: *id012
           enabled: true
           button_setting: !ruby/object:UserObjectSettingButton
             button: Keyboard / Equal
             name: *id001
-            options: *id002
+            options: *id013
             breaks_cache: 
       title: next
       enabled: true
-    - &id026 !ruby/object:Event
+    - &id028 !ruby/object:Event
       effects: 
         - !ruby/object:EventInputButtonPress
           conditions: !ruby/object:ChildConditions
@@ -261,12 +271,12 @@
             enable_event: false
             event: 
             event_invert: false
-          title: *id009
+          title: *id012
           enabled: true
           button_setting: !ruby/object:UserObjectSettingButton
             button: Keyboard / Minus
             name: *id001
-            options: *id002
+            options: *id013
             breaks_cache: 
       title: previous
       enabled: true
@@ -288,7 +298,7 @@
       title: Beat Tapping
       enabled: true
       event_setting: !ruby/object:UserObjectSettingEvent
-        event: *id010
+        event: *id014
         name: event
         options: 
           :summary: true
@@ -339,7 +349,7 @@
         enter_value: 0.0
         exit_value: 0.0
         enable_enter_animation: false
-        enter_curve: &id011 !ruby/object:Curve
+        enter_curve: &id015 !ruby/object:Curve
           vector: 
             - 0.0
             - 0.125
@@ -353,23 +363,23 @@
           approximation: 
             - 0.0
             - 1.0
-          effects: &id019
+          effects: &id023
             []
           title: Linear
           enabled: true
         enable_animation: false
-        animation_curve: *id011
-        animation_min: 0.9
+        animation_curve: *id015
+        animation_min: 1.0
         animation_max: 0.0
         animation_repeat_number: 4
         animation_repeat_unit: :beats
         enable_exit_animation: false
-        exit_curve: *id011
+        exit_curve: *id015
         enable_activation: true
         activation_direction: :to
-        activation_curve: *id011
+        activation_curve: *id015
         activation_value: 0.4
-        activation_variable: &id029 !ruby/object:Variable
+        activation_variable: &id032 !ruby/object:Variable
           effects: 
             - !ruby/object:VariableInputSlider
               conditions: !ruby/object:ChildConditions
@@ -385,7 +395,7 @@
                 enable_event: false
                 event: 
                 event_invert: false
-              title: &id027 Slider
+              title: &id029 Slider
               enabled: true
               slider_setting: !ruby/object:UserObjectSettingSlider
                 slider: Tablet 01 / Pressure
@@ -395,16 +405,18 @@
                 dead_center_size: 0.0
                 output_min: 0.0
                 output_max: 1.0
-                output_curve: *id011
-                name: &id028 slider
-                options: *id002
+                output_curve: *id015
+                name: &id030 slider
+                options: &id031
+                  
+                  :summary: true
                 breaks_cache: 
           title: pressure
           enabled: true
           combine_method_setting: !ruby/object:UserObjectSettingSelect
             selected: :sum
-            name: &id015 combine_method
-            options: &id016
+            name: &id019 combine_method
+            options: &id020
               
               :options: 
                 - - :sum
@@ -413,17 +425,16 @@
                   - Minimum
                 - - :maximum
                   - Maximum
-                - &id051
-                  - :average
+                - - :average
                   - Average
                 - - :product
-                  - &id052 Multiply
+                  - Multiply
               :default: :sum
             breaks_cache: 
           damper_method_setting: !ruby/object:UserObjectSettingSelect
             selected: :none
-            name: &id017 damper_method
-            options: &id018
+            name: &id021 damper_method
+            options: &id022
               
               :options: 
                 - - :none
@@ -457,7 +468,7 @@
       title: Reload Code
       enabled: true
       reload_setting: !ruby/object:UserObjectSettingEvent
-        event: *id012
+        event: *id016
         name: reload
         options: 
           :summary: on %
@@ -503,31 +514,31 @@
       show_amount_setting: !ruby/object:UserObjectSettingFloat
         name: show_amount
         options: 
-          :range: &id013 !ruby/range
+          :range: &id017 !ruby/range
             begin: 0.0
             end: 1.0
             excl: false
-          :default: *id013
+          :default: *id017
         breaks_cache: 
         min: 0.0
         max: 1.0
         enter_value: 0.0
         exit_value: 0.0
         enable_enter_animation: false
-        enter_curve: *id011
+        enter_curve: *id015
         enable_animation: false
-        animation_curve: *id011
+        animation_curve: *id015
         animation_min: 0.0
         animation_max: 1.0
         animation_repeat_number: 4
         animation_repeat_unit: :beats
         enable_exit_animation: false
-        exit_curve: *id011
+        exit_curve: *id015
         enable_activation: true
         activation_direction: :to
-        activation_curve: *id011
+        activation_curve: *id015
         activation_value: 1.0
-        activation_variable: &id020 !ruby/object:Variable
+        activation_variable: &id024 !ruby/object:Variable
           effects: 
             - !ruby/object:VariableInputButtonToggle
               conditions: !ruby/object:ChildConditions
@@ -543,12 +554,13 @@
                 enable_event: false
                 event: 
                 event_invert: false
-              title: *id007
+              title: *id008
               enabled: true
               button_setting: !ruby/object:UserObjectSettingButton
-                button: *id014
+                button: *id018
                 name: *id001
-                options: *id002
+                options: 
+                  :summary: true
                 breaks_cache: 
               on_time_setting: !ruby/object:UserObjectSettingTimespan
                 time_number: 0.2
@@ -568,13 +580,13 @@
           enabled: true
           combine_method_setting: !ruby/object:UserObjectSettingSelect
             selected: :sum
-            name: *id015
-            options: *id016
+            name: *id019
+            options: *id020
             breaks_cache: 
           damper_method_setting: !ruby/object:UserObjectSettingSelect
             selected: :none
-            name: *id017
-            options: *id018
+            name: *id021
+            options: *id022
             breaks_cache: 
       output_opacity_setting: !ruby/object:UserObjectSettingFloat
         name: output_opacity
@@ -593,9 +605,9 @@
         enter_value: 0.0
         exit_value: 0.0
         enable_enter_animation: false
-        enter_curve: *id011
+        enter_curve: *id015
         enable_animation: false
-        animation_curve: &id049 !ruby/object:Curve
+        animation_curve: &id052 !ruby/object:Curve
           vector: 
             - 0.0
             - 0.0912469774484634
@@ -807,7 +819,7 @@
             - 0.00171596743166447
             - 0.000844957015942782
             - 0.0
-          effects: *id019
+          effects: *id023
           title: Smooth
           enabled: true
         animation_min: 1.0
@@ -815,12 +827,12 @@
         animation_repeat_number: 0.1
         animation_repeat_unit: :beats
         enable_exit_animation: false
-        exit_curve: *id011
+        exit_curve: *id015
         enable_activation: true
         activation_direction: :to
-        activation_curve: *id011
+        activation_curve: *id015
         activation_value: 0.8
-        activation_variable: *id020
+        activation_variable: *id024
       debug_setting: !ruby/object:UserObjectSettingEvent
         event: 
         name: debug
@@ -856,7 +868,7 @@
         options: 
           :summary: true
         breaks_cache: 
-        director: &id033 !ruby/object:Director
+        director: &id036 !ruby/object:Director
           tags: 
           effects: 
             - !ruby/object:DirectorEffectActor
@@ -877,11 +889,11 @@
               enabled: true
               actor_setting: !ruby/object:UserObjectSettingActor
                 name: actor
-                options: &id034
+                options: &id037
                   
                   :summary: true
                 breaks_cache: 
-                actor: &id108 !ruby/object:ActorRectangle
+                actor: &id109 !ruby/object:ActorRectangle
                   x: 0.0
                   y: 0.0
                   tags: 
@@ -916,35 +928,38 @@
                         enable_event: false
                         event: 
                         event_invert: false
-                      title: &id053 Fade
+                      title: &id054 Fade
                       enabled: true
                       amount_setting: !ruby/object:UserObjectSettingFloat
-                        name: &id022 amount
-                        options: &id030
+                        name: &id025 amount
+                        options: &id055
                           
-                          :range: &id021 !ruby/range
+                          :range: !ruby/range
                             begin: 0.0
                             end: 1.0
                             excl: false
-                          :default: *id021
+                          :default: !ruby/range
+                            begin: 0.0
+                            end: 1.0
+                            excl: false
                         breaks_cache: 
                         min: 0.0
                         max: 1.0
                         enter_value: 0.0
                         exit_value: 0.0
                         enable_enter_animation: false
-                        enter_curve: *id011
+                        enter_curve: *id015
                         enable_animation: false
-                        animation_curve: *id011
+                        animation_curve: *id015
                         animation_min: 0.95
                         animation_max: 1.0
                         animation_repeat_number: 4
                         animation_repeat_unit: :beats
                         enable_exit_animation: false
-                        exit_curve: *id011
+                        exit_curve: *id015
                         enable_activation: false
                         activation_direction: :to
-                        activation_curve: *id011
+                        activation_curve: *id015
                         activation_value: 1.0
                         activation_variable: 
                     - !ruby/object:ActorEffectShake
@@ -964,9 +979,12 @@
                       title: Shake
                       enabled: true
                       amount_setting: !ruby/object:UserObjectSettingFloat
-                        name: *id022
+                        name: *id025
                         options: 
-                          :range: *id021
+                          :range: !ruby/range
+                            begin: 0.0
+                            end: 1.0
+                            excl: false
                           :default: !ruby/range
                             begin: 0.0
                             end: 0.05
@@ -977,18 +995,18 @@
                         enter_value: 0.0
                         exit_value: 0.0
                         enable_enter_animation: false
-                        enter_curve: *id011
+                        enter_curve: *id015
                         enable_animation: false
-                        animation_curve: *id011
+                        animation_curve: *id015
                         animation_min: 0.0
                         animation_max: 0.05
                         animation_repeat_number: 4
                         animation_repeat_unit: :beats
                         enable_exit_animation: false
-                        exit_curve: *id011
+                        exit_curve: *id015
                         enable_activation: false
                         activation_direction: :to
-                        activation_curve: *id011
+                        activation_curve: *id015
                         activation_value: 1.0
                         activation_variable: 
                     - !ruby/object:ActorEffectPixelStorm
@@ -1005,36 +1023,39 @@
                         enable_event: false
                         event: 
                         event_invert: false
-                      title: &id063 Pixel Storm
+                      title: &id058 Pixel Storm
                       enabled: true
                       amount_setting: !ruby/object:UserObjectSettingFloat
-                        name: *id022
-                        options: &id023
+                        name: *id025
+                        options: &id059
                           
                           :shader: true
-                          :range: &id024 !ruby/range
+                          :range: &id026 !ruby/range
                             begin: -1000.0
                             end: 1000.0
                             excl: false
-                          :default: *id021
+                          :default: !ruby/range
+                            begin: 0.0
+                            end: 1.0
+                            excl: false
                         breaks_cache: 
                         min: -1000.0
                         max: 1000.0
                         enter_value: 0.0
                         exit_value: 0.0
                         enable_enter_animation: false
-                        enter_curve: *id011
+                        enter_curve: *id015
                         enable_animation: false
-                        animation_curve: *id011
+                        animation_curve: *id015
                         animation_min: 0.0
                         animation_max: 1.0
                         animation_repeat_number: 4
                         animation_repeat_unit: :beats
                         enable_exit_animation: false
-                        exit_curve: *id011
+                        exit_curve: *id015
                         enable_activation: false
                         activation_direction: :to
-                        activation_curve: *id011
+                        activation_curve: *id015
                         activation_value: 1.0
                         activation_variable: 
                     - !ruby/object:ActorEffectPixelWarp
@@ -1051,37 +1072,44 @@
                         enable_event: false
                         event: 
                         event_invert: false
-                      title: &id065 Pixel Warp
+                      title: &id060 Pixel Warp
                       enabled: true
                       amount_setting: !ruby/object:UserObjectSettingFloat
-                        name: *id022
-                        options: *id023
+                        name: *id025
+                        options: &id061
+                          
+                          :shader: true
+                          :range: *id026
+                          :default: !ruby/range
+                            begin: 0.0
+                            end: 1.0
+                            excl: false
                         breaks_cache: 
                         min: -1000.0
                         max: 1000.0
                         enter_value: 0.0
                         exit_value: 0.0
                         enable_enter_animation: false
-                        enter_curve: *id011
+                        enter_curve: *id015
                         enable_animation: false
-                        animation_curve: *id011
+                        animation_curve: *id015
                         animation_min: 0.0
                         animation_max: 1.0
                         animation_repeat_number: 4
                         animation_repeat_unit: :beats
                         enable_exit_animation: false
-                        exit_curve: *id011
+                        exit_curve: *id015
                         enable_activation: false
                         activation_direction: :to
-                        activation_curve: *id011
+                        activation_curve: *id015
                         activation_value: 1.0
                         activation_variable: 
                       frequency_setting: !ruby/object:UserObjectSettingFloat
-                        name: &id066 frequency
-                        options: &id067
+                        name: &id062 frequency
+                        options: &id063
                           
                           :shader: true
-                          :range: *id024
+                          :range: *id026
                           :default: !ruby/range
                             begin: 0.1
                             end: 1.0
@@ -1092,24 +1120,24 @@
                         enter_value: 0.0
                         exit_value: 0.0
                         enable_enter_animation: false
-                        enter_curve: *id011
+                        enter_curve: *id015
                         enable_animation: false
-                        animation_curve: *id011
+                        animation_curve: *id015
                         animation_min: 0.1
                         animation_max: 1.0
                         animation_repeat_number: 4
                         animation_repeat_unit: :beats
                         enable_exit_animation: false
-                        exit_curve: *id011
+                        exit_curve: *id015
                         enable_activation: false
                         activation_direction: :to
-                        activation_curve: *id011
+                        activation_curve: *id015
                         activation_value: 1.0
                         activation_variable: 
                       method_setting: !ruby/object:UserObjectSettingSelect
                         selected: :warp_horizontal
-                        name: &id068 method
-                        options: &id069
+                        name: &id064 method
+                        options: &id065
                           
                           :options: 
                             - - :bulge
@@ -1120,8 +1148,8 @@
                               - Warp Horizontal
                             - - :warp_vertical
                               - Warp Vertical
-                          :default: :warp_horizontal
                           :summary: true
+                          :default: :warp_horizontal
                         breaks_cache: 
                     - !ruby/object:ActorEffectKScope
                       conditions: !ruby/object:ChildConditions
@@ -1146,7 +1174,7 @@
                             begin: 0
                             end: 100
                             excl: false
-                          :default: &id054 !ruby/range
+                          :default: !ruby/range
                             begin: 1
                             end: 2
                             excl: false
@@ -1155,30 +1183,36 @@
                   title: Previous Frame
                   enabled: true
                   hole_size_setting: !ruby/object:UserObjectSettingFloat
-                    name: &id071 hole_size
-                    options: &id072
+                    name: &id066 hole_size
+                    options: &id067
                       
                       :breaks_cache: true
-                      :range: *id021
-                      :default: *id021
+                      :range: !ruby/range
+                        begin: 0.0
+                        end: 1.0
+                        excl: false
+                      :default: !ruby/range
+                        begin: 0.0
+                        end: 1.0
+                        excl: false
                     breaks_cache: 
                     min: 0.0
                     max: 1.0
                     enter_value: 0.0
                     exit_value: 0.0
                     enable_enter_animation: false
-                    enter_curve: *id011
+                    enter_curve: *id015
                     enable_animation: false
-                    animation_curve: *id011
+                    animation_curve: *id015
                     animation_min: 0.0
                     animation_max: 1.0
                     animation_repeat_number: 4
                     animation_repeat_unit: :beats
                     enable_exit_animation: false
-                    exit_curve: *id011
+                    exit_curve: *id015
                     enable_activation: false
                     activation_direction: :to
-                    activation_curve: *id011
+                    activation_curve: *id015
                     activation_value: 1.0
                     activation_variable: 
                 x: 0.0
@@ -1207,13 +1241,13 @@
                 breaks_cache: 
                 tag: all
               forwards_setting: !ruby/object:UserObjectSettingEvent
-                event: *id025
+                event: *id027
                 name: forwards
                 options: 
                   :summary: % forward
                 breaks_cache: 
               backwards_setting: !ruby/object:UserObjectSettingEvent
-                event: *id026
+                event: *id028
                 name: backwards
                 options: 
                   :summary: % backward
@@ -1229,7 +1263,7 @@
           enabled: true
           offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
             name: offscreen_render_actor
-            options: &id036
+            options: &id039
               
               :summary: renders on %
             breaks_cache: 
@@ -1254,22 +1288,22 @@
         enter_value: 0.0
         exit_value: 0.0
         enable_enter_animation: false
-        enter_curve: *id011
+        enter_curve: *id015
         enable_animation: false
-        animation_curve: *id011
+        animation_curve: *id015
         animation_min: 0.5
         animation_max: 1.0
         animation_repeat_number: 4
         animation_repeat_unit: :beats
         enable_exit_animation: false
-        exit_curve: *id011
+        exit_curve: *id015
         enable_activation: false
         activation_direction: :to
-        activation_curve: *id011
+        activation_curve: *id015
         activation_value: 1.0
         activation_variable: 
   :variables: 
-    - *id020
+    - *id024
     - !ruby/object:Variable
       effects: 
         - !ruby/object:VariableInputSlider
@@ -1286,7 +1320,7 @@
             enable_event: false
             event: 
             event_invert: false
-          title: *id027
+          title: *id029
           enabled: true
           slider_setting: !ruby/object:UserObjectSettingSlider
             slider: Mouse 01 / X
@@ -1296,23 +1330,23 @@
             dead_center_size: 0.0
             output_min: 0.0
             output_max: 1.0
-            output_curve: *id011
-            name: *id028
-            options: *id002
+            output_curve: *id015
+            name: *id030
+            options: *id031
             breaks_cache: 
       title: mouse x
       enabled: true
       combine_method_setting: !ruby/object:UserObjectSettingSelect
         selected: :sum
-        name: *id015
-        options: *id016
+        name: *id019
+        options: *id020
         breaks_cache: 
       damper_method_setting: !ruby/object:UserObjectSettingSelect
         selected: :none
-        name: *id017
-        options: *id018
+        name: *id021
+        options: *id022
         breaks_cache: 
-    - &id098 !ruby/object:Variable
+    - &id096 !ruby/object:Variable
       effects: 
         - !ruby/object:VariableInputSlider
           conditions: !ruby/object:ChildConditions
@@ -1328,7 +1362,7 @@
             enable_event: false
             event: 
             event_invert: false
-          title: *id027
+          title: *id029
           enabled: true
           slider_setting: !ruby/object:UserObjectSettingSlider
             slider: Mouse 01 / Y
@@ -1338,23 +1372,23 @@
             dead_center_size: 0.0
             output_min: 0.0
             output_max: 1.0
-            output_curve: *id011
-            name: *id028
-            options: *id002
+            output_curve: *id015
+            name: *id030
+            options: *id031
             breaks_cache: 
       title: mouse y
       enabled: true
       combine_method_setting: !ruby/object:UserObjectSettingSelect
         selected: :sum
-        name: *id015
-        options: *id016
+        name: *id019
+        options: *id020
         breaks_cache: 
       damper_method_setting: !ruby/object:UserObjectSettingSelect
         selected: :none
-        name: *id017
-        options: *id018
+        name: *id021
+        options: *id022
         breaks_cache: 
-    - *id029
+    - *id032
     - !ruby/object:Variable
       effects: 
         - !ruby/object:VariableInputManual
@@ -1371,20 +1405,29 @@
             enable_event: false
             event: 
             event_invert: false
-          title: &id031 Manual
+          title: &id033 Manual
           enabled: true
           activation_setting: !ruby/object:UserObjectSettingFloat
-            name: &id032 activation
-            options: *id030
+            name: &id034 activation
+            options: &id035
+              
+              :range: !ruby/range
+                begin: 0.0
+                end: 1.0
+                excl: false
+              :default: !ruby/range
+                begin: 0.0
+                end: 1.0
+                excl: false
             breaks_cache: 
             min: 0.0
             max: 1.0
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: true
-            animation_curve: &id048 !ruby/object:Curve
+            animation_curve: &id051 !ruby/object:Curve
               vector: 
                 - 0.5
                 - 0.94306093454361
@@ -1596,7 +1639,7 @@
                 - 0.5006143450737
                 - 0.500316083431244
                 - 0.5
-              effects: *id019
+              effects: *id023
               title: Bong!
               enabled: true
             animation_min: 0.0
@@ -1604,10 +1647,10 @@
             animation_repeat_number: 4
             animation_repeat_unit: :beats
             enable_exit_animation: false
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 1.0
             activation_variable: 
         - !ruby/object:VariableInputSeconds
@@ -1640,20 +1683,20 @@
             enable_event: false
             event: 
             event_invert: false
-          title: *id031
+          title: *id033
           enabled: true
           activation_setting: !ruby/object:UserObjectSettingFloat
-            name: *id032
-            options: *id030
+            name: *id034
+            options: *id035
             breaks_cache: 
             min: 0.0
             max: 1.0
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: true
-            animation_curve: &id050 !ruby/object:Curve
+            animation_curve: &id053 !ruby/object:Curve
               vector: 
                 - 0.0
                 - 0.288459807634354
@@ -1865,7 +1908,7 @@
                 - 0.00206161988899112
                 - 0.00101739075034857
                 - 0.0
-              effects: *id019
+              effects: *id023
               title: Coaster
               enabled: true
             animation_min: 0.0
@@ -1873,23 +1916,23 @@
             animation_repeat_number: 8.0
             animation_repeat_unit: :beats
             enable_exit_animation: false
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 1.0
             activation_variable: 
       title: zoom!
       enabled: true
       combine_method_setting: !ruby/object:UserObjectSettingSelect
         selected: :minimum
-        name: *id015
-        options: *id016
+        name: *id019
+        options: *id020
         breaks_cache: 
       damper_method_setting: !ruby/object:UserObjectSettingSelect
         selected: :medium
-        name: *id017
-        options: *id018
+        name: *id021
+        options: *id022
         breaks_cache: 
     - !ruby/object:Variable
       effects: 
@@ -1917,48 +1960,21 @@
             dead_center_size: 0.0
             output_min: 0.0
             output_max: 1.0
-            output_curve: *id011
+            output_curve: *id015
             name: slider
-            options: 
-              :summary: true
+            options: *id031
             breaks_cache: 
       title: audio / red
       enabled: true
       combine_method_setting: !ruby/object:UserObjectSettingSelect
         selected: :sum
         name: combine_method
-        options: 
-          :options: 
-            - - :sum
-              - Sum
-            - - :minimum
-              - Minimum
-            - - :maximum
-              - Maximum
-            - - :average
-              - Average
-            - - :product
-              - Multiply
-          :default: :sum
+        options: *id020
         breaks_cache: 
       damper_method_setting: !ruby/object:UserObjectSettingSelect
         selected: :none
         name: damper_method
-        options: 
-          :options: 
-            - - :none
-              - None
-            - - :very_low
-              - Very Low
-            - - :low
-              - Low
-            - - :medium
-              - Medium
-            - - :high
-              - High
-            - - :very_high
-              - Very High
-          :default: :none
+        options: *id022
         breaks_cache: 
     - !ruby/object:Variable
       effects: 
@@ -1986,48 +2002,21 @@
             dead_center_size: 0.0
             output_min: 0.0
             output_max: 1.0
-            output_curve: *id011
+            output_curve: *id015
             name: slider
-            options: 
-              :summary: true
+            options: *id031
             breaks_cache: 
       title: audio / green
       enabled: true
       combine_method_setting: !ruby/object:UserObjectSettingSelect
         selected: :sum
         name: combine_method
-        options: 
-          :options: 
-            - - :sum
-              - Sum
-            - - :minimum
-              - Minimum
-            - - :maximum
-              - Maximum
-            - - :average
-              - Average
-            - - :product
-              - Multiply
-          :default: :sum
+        options: *id020
         breaks_cache: 
       damper_method_setting: !ruby/object:UserObjectSettingSelect
         selected: :none
         name: damper_method
-        options: 
-          :options: 
-            - - :none
-              - None
-            - - :very_low
-              - Very Low
-            - - :low
-              - Low
-            - - :medium
-              - Medium
-            - - :high
-              - High
-            - - :very_high
-              - Very High
-          :default: :none
+        options: *id022
         breaks_cache: 
     - !ruby/object:Variable
       effects: 
@@ -2055,48 +2044,21 @@
             dead_center_size: 0.0
             output_min: 0.0
             output_max: 1.0
-            output_curve: *id011
+            output_curve: *id015
             name: slider
-            options: 
-              :summary: true
+            options: *id031
             breaks_cache: 
       title: audio / blue
       enabled: true
       combine_method_setting: !ruby/object:UserObjectSettingSelect
         selected: :sum
         name: combine_method
-        options: 
-          :options: 
-            - - :sum
-              - Sum
-            - - :minimum
-              - Minimum
-            - - :maximum
-              - Maximum
-            - - :average
-              - Average
-            - - :product
-              - Multiply
-          :default: :sum
+        options: *id020
         breaks_cache: 
       damper_method_setting: !ruby/object:UserObjectSettingSelect
         selected: :none
         name: damper_method
-        options: 
-          :options: 
-            - - :none
-              - None
-            - - :very_low
-              - Very Low
-            - - :low
-              - Low
-            - - :medium
-              - Medium
-            - - :high
-              - High
-            - - :very_high
-              - Very High
-          :default: :none
+        options: *id022
         breaks_cache: 
     - !ruby/object:Variable
       effects: 
@@ -2114,7 +2076,7 @@
             enable_event: false
             event: 
             event_invert: false
-          title: *id027
+          title: *id029
           enabled: true
           slider_setting: !ruby/object:UserObjectSettingSlider
             slider: Spectrum Analyzer 01 / Yellow
@@ -2124,24 +2086,24 @@
             dead_center_size: 0.0
             output_min: 0.0
             output_max: 1.0
-            output_curve: *id011
-            name: *id028
-            options: *id002
+            output_curve: *id015
+            name: *id030
+            options: *id031
             breaks_cache: 
       title: audio / yellow
       enabled: true
       combine_method_setting: !ruby/object:UserObjectSettingSelect
         selected: :sum
-        name: *id015
-        options: *id016
+        name: *id019
+        options: *id020
         breaks_cache: 
       damper_method_setting: !ruby/object:UserObjectSettingSelect
         selected: :none
-        name: *id017
-        options: *id018
+        name: *id021
+        options: *id022
         breaks_cache: 
   :directors: 
-    - *id033
+    - *id036
     - !ruby/object:Director
       tags: 
       effects: 
@@ -2163,7 +2125,7 @@
           enabled: true
           actor_setting: !ruby/object:UserObjectSettingActor
             name: actor
-            options: *id034
+            options: *id037
             breaks_cache: 
             actor: !ruby/object:ActorRoundedRectangle
               x: 0.0
@@ -2189,7 +2151,7 @@
                   amount_x_setting: !ruby/object:UserObjectSettingFloat
                     name: amount_x
                     options: 
-                      :range: &id035 !ruby/range
+                      :range: &id038 !ruby/range
                         begin: -1000.0
                         end: 1000.0
                         excl: false
@@ -2203,24 +2165,24 @@
                     enter_value: 0.0
                     exit_value: 0.0
                     enable_enter_animation: false
-                    enter_curve: *id011
+                    enter_curve: *id015
                     enable_animation: false
-                    animation_curve: *id011
+                    animation_curve: *id015
                     animation_min: 0.1
                     animation_max: 2.0
                     animation_repeat_number: 4
                     animation_repeat_unit: :beats
                     enable_exit_animation: false
-                    exit_curve: *id011
+                    exit_curve: *id015
                     enable_activation: false
                     activation_direction: :to
-                    activation_curve: *id011
+                    activation_curve: *id015
                     activation_value: 1.0
                     activation_variable: 
                   amount_y_setting: !ruby/object:UserObjectSettingFloat
                     name: amount_y
                     options: 
-                      :range: *id035
+                      :range: *id038
                       :default: !ruby/range
                         begin: 1.0
                         end: 2.0
@@ -2231,24 +2193,24 @@
                     enter_value: 0.0
                     exit_value: 0.0
                     enable_enter_animation: false
-                    enter_curve: *id011
+                    enter_curve: *id015
                     enable_animation: false
-                    animation_curve: *id011
+                    animation_curve: *id015
                     animation_min: 1.0
                     animation_max: 2.0
                     animation_repeat_number: 4
                     animation_repeat_unit: :beats
                     enable_exit_animation: false
-                    exit_curve: *id011
+                    exit_curve: *id015
                     enable_activation: false
                     activation_direction: :to
-                    activation_curve: *id011
+                    activation_curve: *id015
                     activation_value: 1.0
                     activation_variable: 
                   pivot_offset_x_setting: !ruby/object:UserObjectSettingFloat
                     name: pivot_offset_x
                     options: 
-                      :range: *id035
+                      :range: *id038
                       :default: !ruby/range
                         begin: 0.0
                         end: 0.5
@@ -2259,24 +2221,24 @@
                     enter_value: 0.0
                     exit_value: 0.0
                     enable_enter_animation: false
-                    enter_curve: *id011
+                    enter_curve: *id015
                     enable_animation: false
-                    animation_curve: *id011
+                    animation_curve: *id015
                     animation_min: 0.0
                     animation_max: 0.5
                     animation_repeat_number: 4
                     animation_repeat_unit: :beats
                     enable_exit_animation: false
-                    exit_curve: *id011
+                    exit_curve: *id015
                     enable_activation: false
                     activation_direction: :to
-                    activation_curve: *id011
+                    activation_curve: *id015
                     activation_value: 1.0
                     activation_variable: 
                   pivot_offset_y_setting: !ruby/object:UserObjectSettingFloat
                     name: pivot_offset_y
                     options: 
-                      :range: *id035
+                      :range: *id038
                       :default: !ruby/range
                         begin: 0.0
                         end: 0.5
@@ -2287,18 +2249,18 @@
                     enter_value: 0.0
                     exit_value: 0.0
                     enable_enter_animation: false
-                    enter_curve: *id011
+                    enter_curve: *id015
                     enable_animation: false
-                    animation_curve: *id011
+                    animation_curve: *id015
                     animation_min: 0.0
                     animation_max: 0.5
                     animation_repeat_number: 4
                     animation_repeat_unit: :beats
                     enable_exit_animation: false
-                    exit_curve: *id011
+                    exit_curve: *id015
                     enable_activation: false
                     activation_direction: :to
-                    activation_curve: *id011
+                    activation_curve: *id015
                     activation_value: 1.0
                     activation_variable: 
                 - !ruby/object:ActorEffectColor
@@ -2348,18 +2310,18 @@
                     enter_value: 0.0
                     exit_value: 0.0
                     enable_enter_animation: false
-                    enter_curve: *id011
+                    enter_curve: *id015
                     enable_animation: false
-                    animation_curve: *id011
+                    animation_curve: *id015
                     animation_min: 1.0
                     animation_max: 1.0
                     animation_repeat_number: 4
                     animation_repeat_unit: :beats
                     enable_exit_animation: false
-                    exit_curve: *id011
+                    exit_curve: *id015
                     enable_activation: false
                     activation_direction: :to
-                    activation_curve: *id011
+                    activation_curve: *id015
                     activation_value: 1.0
                     activation_variable: 
               title: Rounded Rectangle
@@ -2382,18 +2344,18 @@
                 enter_value: 0.0
                 exit_value: 0.0
                 enable_enter_animation: false
-                enter_curve: *id011
+                enter_curve: *id015
                 enable_animation: false
-                animation_curve: *id011
+                animation_curve: *id015
                 animation_min: 0.9
                 animation_max: 1.0
                 animation_repeat_number: 4
                 animation_repeat_unit: :beats
                 enable_exit_animation: false
-                exit_curve: *id011
+                exit_curve: *id015
                 enable_activation: false
                 activation_direction: :to
-                activation_curve: *id011
+                activation_curve: *id015
                 activation_value: 1.0
                 activation_variable: 
               knob_y_setting: !ruby/object:UserObjectSettingFloat
@@ -2414,18 +2376,18 @@
                 enter_value: 0.0
                 exit_value: 0.0
                 enable_enter_animation: false
-                enter_curve: *id011
+                enter_curve: *id015
                 enable_animation: false
-                animation_curve: *id011
+                animation_curve: *id015
                 animation_min: 0.1
                 animation_max: 1.0
                 animation_repeat_number: 4
                 animation_repeat_unit: :beats
                 enable_exit_animation: false
-                exit_curve: *id011
+                exit_curve: *id015
                 enable_activation: false
                 activation_direction: :to
-                activation_curve: *id011
+                activation_curve: *id015
                 activation_value: 1.0
                 activation_variable: 
               detail_setting: !ruby/object:UserObjectSettingInteger
@@ -2449,7 +2411,7 @@
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
-        options: *id036
+        options: *id039
         breaks_cache: 
         actor: 
         x: 0.0
@@ -2457,11 +2419,11 @@
         z: 0.0
   :version: 1
   :themes: 
-    - &id060 !ruby/object:Theme
+    - &id057 !ruby/object:Theme
       tags: 
       effects: 
         - !ruby/object:Style
-          title: &id037 ""
+          title: &id040 ""
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -2469,8 +2431,8 @@
               blue: 0.0
               green: 0.474509803921569
               red: 0.96078431372549
-            name: &id038 color
-            options: &id039
+            name: &id041 color
+            options: &id042
               
               :only_literal: true
               :default: 
@@ -2481,12 +2443,12 @@
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: &id040 image
-            options: &id041
+            name: &id043 image
+            options: &id044
               {}
             breaks_cache: 
         - !ruby/object:Style
-          title: *id037
+          title: *id040
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -2494,16 +2456,16 @@
               blue: 0.0
               green: 0.831372549019608
               red: 0.929411764705882
-            name: *id038
-            options: *id039
+            name: *id041
+            options: *id042
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id040
-            options: *id041
+            name: *id043
+            options: *id044
             breaks_cache: 
         - !ruby/object:Style
-          title: *id037
+          title: *id040
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -2511,16 +2473,16 @@
               blue: 0.0862745098039216
               green: 0.823529411764706
               red: 0.450980392156863
-            name: *id038
-            options: *id039
+            name: *id041
+            options: *id042
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id040
-            options: *id041
+            name: *id043
+            options: *id044
             breaks_cache: 
         - !ruby/object:Style
-          title: *id037
+          title: *id040
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -2528,16 +2490,16 @@
               blue: 0.811764705882353
               green: 0.623529411764706
               red: 0.447058823529412
-            name: *id038
-            options: *id039
+            name: *id041
+            options: *id042
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id040
-            options: *id041
+            name: *id043
+            options: *id044
             breaks_cache: 
         - !ruby/object:Style
-          title: *id037
+          title: *id040
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -2545,16 +2507,16 @@
               blue: 0.643137254901961
               green: 0.396078431372549
               red: 0.203921568627451
-            name: *id038
-            options: *id039
+            name: *id041
+            options: *id042
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id040
-            options: *id041
+            name: *id043
+            options: *id044
             breaks_cache: 
         - !ruby/object:Style
-          title: *id037
+          title: *id040
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -2562,16 +2524,16 @@
               blue: 0.630212863355459
               green: 0.149553673609522
               red: 0.563134203097581
-            name: *id038
-            options: *id039
+            name: *id041
+            options: *id042
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id040
-            options: *id041
+            name: *id043
+            options: *id044
             breaks_cache: 
         - !ruby/object:Style
-          title: *id037
+          title: *id040
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -2579,16 +2541,16 @@
               blue: 0.0392156862745098
               green: 0.0392156862745098
               red: 0.866666666666667
-            name: *id038
-            options: *id039
+            name: *id041
+            options: *id042
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id040
-            options: *id041
+            name: *id043
+            options: *id044
             breaks_cache: 
         - !ruby/object:Style
-          title: *id037
+          title: *id040
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -2596,16 +2558,16 @@
               blue: 0.353490501258869
               green: 0.353490501258869
               red: 0.936827649347677
-            name: *id038
-            options: *id039
+            name: *id041
+            options: *id042
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id040
-            options: *id041
+            name: *id043
+            options: *id044
             breaks_cache: 
         - !ruby/object:Style
-          title: *id037
+          title: *id040
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -2613,13 +2575,13 @@
               blue: 0.079819943541619
               green: 1.0
               red: 0.924208438239109
-            name: *id038
-            options: *id039
+            name: *id041
+            options: *id042
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id040
-            options: *id041
+            name: *id043
+            options: *id044
             breaks_cache: 
       title: Tango
       enabled: true
@@ -2630,95 +2592,7 @@
           green: 0.0
           red: 0.0
         name: background_color
-        options: 
-          :only_literal: true
-          :default: 
-            - 0.0
-            - 0.0
-            - 0.0
-            - 1.0
-        breaks_cache: 
-    - !ruby/object:Theme
-      tags: 
-      effects: 
-        - !ruby/object:Style
-          title: *id037
-          enabled: true
-          color_setting: !ruby/object:UserObjectSettingColor
-            color: !ruby/object:Color
-              alpha: 1.0
-              blue: 0.0
-              green: 0.269413290608072
-              red: 1.0
-            name: *id038
-            options: *id039
-            breaks_cache: 
-          image_setting: !ruby/object:UserObjectSettingImage
-            image_name: 
-            name: *id040
-            options: *id041
-            breaks_cache: 
-        - !ruby/object:Style
-          title: *id037
-          enabled: true
-          color_setting: !ruby/object:UserObjectSettingColor
-            color: !ruby/object:Color
-              alpha: 1.0
-              blue: 0.0
-              green: 0.894560158693828
-              red: 1.0
-            name: *id038
-            options: *id039
-            breaks_cache: 
-          image_setting: !ruby/object:UserObjectSettingImage
-            image_name: 
-            name: *id040
-            options: *id041
-            breaks_cache: 
-        - !ruby/object:Style
-          title: *id037
-          enabled: true
-          color_setting: !ruby/object:UserObjectSettingColor
-            color: !ruby/object:Color
-              alpha: 1.0
-              blue: 0.135072861829557
-              green: 0.838284885938811
-              red: 0.513176165407797
-            name: *id038
-            options: *id039
-            breaks_cache: 
-          image_setting: !ruby/object:UserObjectSettingImage
-            image_name: 
-            name: *id040
-            options: *id041
-            breaks_cache: 
-        - !ruby/object:Style
-          title: *id037
-          enabled: true
-          color_setting: !ruby/object:UserObjectSettingColor
-            color: !ruby/object:Color
-              alpha: 1.0
-              blue: 0.0376897840848402
-              green: 0.0470283054856184
-              red: 0.780117494468605
-            name: *id038
-            options: *id039
-            breaks_cache: 
-          image_setting: !ruby/object:UserObjectSettingImage
-            image_name: 
-            name: *id040
-            options: *id041
-            breaks_cache: 
-      title: Autumn
-      enabled: true
-      background_color_setting: !ruby/object:UserObjectSettingColor
-        color: !ruby/object:Color
-          alpha: 1.0
-          blue: 0.0
-          green: 0.0
-          red: 0.0
-        name: &id042 background_color
-        options: &id043
+        options: &id045
           
           :only_literal: true
           :default: 
@@ -2731,7 +2605,89 @@
       tags: 
       effects: 
         - !ruby/object:Style
-          title: *id037
+          title: *id040
+          enabled: true
+          color_setting: !ruby/object:UserObjectSettingColor
+            color: !ruby/object:Color
+              alpha: 1.0
+              blue: 0.0
+              green: 0.269413290608072
+              red: 1.0
+            name: *id041
+            options: *id042
+            breaks_cache: 
+          image_setting: !ruby/object:UserObjectSettingImage
+            image_name: 
+            name: *id043
+            options: *id044
+            breaks_cache: 
+        - !ruby/object:Style
+          title: *id040
+          enabled: true
+          color_setting: !ruby/object:UserObjectSettingColor
+            color: !ruby/object:Color
+              alpha: 1.0
+              blue: 0.0
+              green: 0.894560158693828
+              red: 1.0
+            name: *id041
+            options: *id042
+            breaks_cache: 
+          image_setting: !ruby/object:UserObjectSettingImage
+            image_name: 
+            name: *id043
+            options: *id044
+            breaks_cache: 
+        - !ruby/object:Style
+          title: *id040
+          enabled: true
+          color_setting: !ruby/object:UserObjectSettingColor
+            color: !ruby/object:Color
+              alpha: 1.0
+              blue: 0.135072861829557
+              green: 0.838284885938811
+              red: 0.513176165407797
+            name: *id041
+            options: *id042
+            breaks_cache: 
+          image_setting: !ruby/object:UserObjectSettingImage
+            image_name: 
+            name: *id043
+            options: *id044
+            breaks_cache: 
+        - !ruby/object:Style
+          title: *id040
+          enabled: true
+          color_setting: !ruby/object:UserObjectSettingColor
+            color: !ruby/object:Color
+              alpha: 1.0
+              blue: 0.0376897840848402
+              green: 0.0470283054856184
+              red: 0.780117494468605
+            name: *id041
+            options: *id042
+            breaks_cache: 
+          image_setting: !ruby/object:UserObjectSettingImage
+            image_name: 
+            name: *id043
+            options: *id044
+            breaks_cache: 
+      title: Autumn
+      enabled: true
+      background_color_setting: !ruby/object:UserObjectSettingColor
+        color: !ruby/object:Color
+          alpha: 1.0
+          blue: 0.0
+          green: 0.0
+          red: 0.0
+        name: &id046 background_color
+        options: *id045
+        breaks_cache: 
+    - !ruby/object:Theme
+      tags: 
+      effects: 
+        - !ruby/object:Style
+          title: *id040
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -2739,16 +2695,16 @@
               blue: 1.0
               green: 1.0
               red: 1.0
-            name: *id038
-            options: *id039
+            name: *id041
+            options: *id042
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id040
-            options: *id041
+            name: *id043
+            options: *id044
             breaks_cache: 
         - !ruby/object:Style
-          title: *id037
+          title: *id040
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -2756,16 +2712,16 @@
               blue: 0.0
               green: 0.0
               red: 0.0
-            name: *id038
-            options: *id039
+            name: *id041
+            options: *id042
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id040
-            options: *id041
+            name: *id043
+            options: *id044
             breaks_cache: 
         - !ruby/object:Style
-          title: *id037
+          title: *id040
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -2773,16 +2729,16 @@
               blue: 1.0
               green: 1.0
               red: 1.0
-            name: *id038
-            options: *id039
+            name: *id041
+            options: *id042
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id040
-            options: *id041
+            name: *id043
+            options: *id044
             breaks_cache: 
         - !ruby/object:Style
-          title: *id037
+          title: *id040
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -2790,16 +2746,16 @@
               blue: 0.0
               green: 1.0
               red: 1.0
-            name: *id038
-            options: *id039
+            name: *id041
+            options: *id042
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id040
-            options: *id041
+            name: *id043
+            options: *id044
             breaks_cache: 
         - !ruby/object:Style
-          title: *id037
+          title: *id040
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -2807,16 +2763,16 @@
               blue: 1.0
               green: 1.0
               red: 1.0
-            name: *id038
-            options: *id039
+            name: *id041
+            options: *id042
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id040
-            options: *id041
+            name: *id043
+            options: *id044
             breaks_cache: 
         - !ruby/object:Style
-          title: *id037
+          title: *id040
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -2824,16 +2780,16 @@
               blue: 0.0
               green: 1.0
               red: 1.0
-            name: *id038
-            options: *id039
+            name: *id041
+            options: *id042
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id040
-            options: *id041
+            name: *id043
+            options: *id044
             breaks_cache: 
         - !ruby/object:Style
-          title: *id037
+          title: *id040
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -2841,16 +2797,16 @@
               blue: 1.0
               green: 1.0
               red: 1.0
-            name: *id038
-            options: *id039
+            name: *id041
+            options: *id042
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id040
-            options: *id041
+            name: *id043
+            options: *id044
             breaks_cache: 
         - !ruby/object:Style
-          title: *id037
+          title: *id040
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -2858,13 +2814,13 @@
               blue: 0.0
               green: 0.0
               red: 0.0
-            name: *id038
-            options: *id039
+            name: *id041
+            options: *id042
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id040
-            options: *id041
+            name: *id043
+            options: *id044
             breaks_cache: 
       title: Buzz
       enabled: true
@@ -2874,8 +2830,8 @@
           blue: 0.0
           green: 0.0
           red: 0.0
-        name: *id042
-        options: *id043
+        name: *id046
+        options: *id045
         breaks_cache: 
     - !ruby/object:Theme
       tags: 
@@ -2889,13 +2845,13 @@
               blue: 0.351400015259022
               green: 0.351400015259022
               red: 0.842145418478676
-            name: &id044 color
-            options: *id039
+            name: &id047 color
+            options: *id042
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: &id045 image
-            options: *id041
+            name: &id048 image
+            options: *id044
             breaks_cache: 
         - !ruby/object:Style
           title: ""
@@ -2906,13 +2862,13 @@
               blue: 0.143968871595331
               green: 0.143968871595331
               red: 0.662485694666972
-            name: *id044
-            options: *id039
+            name: *id047
+            options: *id042
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id045
-            options: *id041
+            name: *id048
+            options: *id044
             breaks_cache: 
         - !ruby/object:Style
           title: ""
@@ -2923,13 +2879,13 @@
               blue: 0.160845349813077
               green: 0.160845349813077
               red: 0.355291065842679
-            name: *id044
-            options: *id039
+            name: *id047
+            options: *id042
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id045
-            options: *id041
+            name: *id048
+            options: *id044
             breaks_cache: 
         - !ruby/object:Style
           title: ""
@@ -2940,13 +2896,13 @@
               blue: 0.309742885481041
               green: 0.309742885481041
               red: 0.383810177767605
-            name: *id044
-            options: *id039
+            name: *id047
+            options: *id042
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id045
-            options: *id041
+            name: *id048
+            options: *id044
             breaks_cache: 
       title: Down
       enabled: true
@@ -2956,8 +2912,8 @@
           blue: 0.0
           green: 0.0
           red: 0.0
-        name: &id046 background_color
-        options: *id043
+        name: &id049 background_color
+        options: *id045
         breaks_cache: 
     - !ruby/object:Theme
       tags: 
@@ -2971,13 +2927,13 @@
               blue: 0.349889372091249
               green: 0.964812695506218
               red: 0.744777599755856
-            name: *id044
-            options: *id039
+            name: *id047
+            options: *id042
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id045
-            options: *id041
+            name: *id048
+            options: *id044
             breaks_cache: 
         - !ruby/object:Style
           title: ""
@@ -2988,13 +2944,13 @@
               blue: 0.35020981155108
               green: 0.868116273746853
               red: 0.213778896772717
-            name: *id044
-            options: *id039
+            name: *id047
+            options: *id042
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id045
-            options: *id041
+            name: *id048
+            options: *id044
             breaks_cache: 
         - !ruby/object:Style
           title: ""
@@ -3005,13 +2961,13 @@
               blue: 0.0189059281300069
               green: 0.83224231326772
               red: 0.575234607461662
-            name: *id044
-            options: *id039
+            name: *id047
+            options: *id042
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id045
-            options: *id041
+            name: *id048
+            options: *id044
             breaks_cache: 
         - !ruby/object:Style
           title: ""
@@ -3022,13 +2978,13 @@
               blue: 0.0501564049744411
               green: 0.493781948577096
               red: 0.255466544594491
-            name: *id044
-            options: *id039
+            name: *id047
+            options: *id042
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id045
-            options: *id041
+            name: *id048
+            options: *id044
             breaks_cache: 
       title: Forest
       enabled: true
@@ -3038,11 +2994,11 @@
           blue: 0.0
           green: 0.0
           red: 0.0
-        name: *id046
-        options: *id043
+        name: *id049
+        options: *id045
         breaks_cache: 
   :curves: 
-    - *id011
+    - *id015
     - !ruby/object:Curve
       vector: 
         - 0.0
@@ -3255,7 +3211,7 @@
         - 0.998661935329437
         - 0.999331414699554
         - 1.0
-      effects: &id047
+      effects: &id050
         []
       title: Fast
       enabled: true
@@ -3471,7 +3427,7 @@
         - 0.978655099868774
         - 0.989327073097229
         - 1.0
-      effects: *id047
+      effects: *id050
       title: Slow
       enabled: true
     - !ruby/object:Curve
@@ -3686,7 +3642,7 @@
         - 0.999280989170074
         - 0.999642431735992
         - 1.0
-      effects: *id047
+      effects: *id050
       title: Easy
       enabled: true
     - !ruby/object:Curve
@@ -3901,7 +3857,7 @@
         - 0.959363162517548
         - 0.979675114154816
         - 1.0
-      effects: *id047
+      effects: *id050
       title: Psych
       enabled: true
     - !ruby/object:Curve
@@ -4116,10 +4072,10 @@
         - 0.97583019733429
         - 0.987901508808136
         - 1.0
-      effects: *id047
+      effects: *id050
       title: Wobble
       enabled: true
-    - &id090 !ruby/object:Curve
+    - &id091 !ruby/object:Curve
       vector: 
         - 0.5
         - 0.850356936454773
@@ -4331,7 +4287,7 @@
         - 0.469508677721024
         - 0.484748065471649
         - 0.5
-      effects: *id019
+      effects: *id023
       title: Sine
       enabled: true
     - &id056 !ruby/object:Curve
@@ -4546,10 +4502,10 @@
         - 0.534838259220123
         - 0.519747257232666
         - 0.5
-      effects: *id019
+      effects: *id023
       title: Sine Inv
       enabled: true
-    - *id048
+    - *id051
     - !ruby/object:Curve
       vector: 
         - 0.0
@@ -4762,10 +4718,10 @@
         - 0.0304495617747307
         - 0.0152266481891274
         - 0.0
-      effects: *id047
+      effects: *id050
       title: Wide
       enabled: true
-    - *id049
+    - *id052
     - !ruby/object:Curve
       vector: 
         - 0.0
@@ -4978,10 +4934,10 @@
         - 0.00325438962318003
         - 0.00159761554095894
         - 0.0
-      effects: *id047
+      effects: *id050
       title: Plateau
       enabled: true
-    - *id050
+    - *id053
     - !ruby/object:Curve
       vector: 
         - 0.0
@@ -5194,7 +5150,7 @@
         - 0.0
         - 0.0
         - 0.0
-      effects: *id047
+      effects: *id050
       title: Ramp
       enabled: true
     - !ruby/object:Curve
@@ -5409,7 +5365,7 @@
         - 0.0592498257756233
         - 0.0315002426505089
         - 0.0
-      effects: *id047
+      effects: *id050
       title: Climb
       enabled: true
     - !ruby/object:Curve
@@ -5624,14 +5580,14 @@
         - 0.517381072044373
         - 0.508691847324371
         - 0.5
-      effects: *id047
+      effects: *id050
       title: Lob
       enabled: true
   :actors: 
     - !ruby/object:ActorRectangle
       x: 0.0
       y: 0.0
-      tags: &id073
+      tags: &id068
         
         all: true
       effects: 
@@ -5649,21 +5605,22 @@
             enable_event: false
             event: 
             event_invert: false
-          title: &id074 Draw Method
+          title: &id069 Draw Method
           enabled: true
           draw_method_setting: !ruby/object:UserObjectSettingSelect
             selected: :brighten
-            name: &id075 draw_method
-            options: &id076
+            name: &id070 draw_method
+            options: &id071
               
               :options: 
-                - *id051
+                - - :average
+                  - Average
                 - - :brighten
                   - Brighten
                 - - :darken
                   - Darken
                 - - :multiply
-                  - *id052
+                  - Multiply
                 - - :invert
                   - Invert
                 - - :min
@@ -5686,29 +5643,29 @@
             enable_event: false
             event: 
             event_invert: false
-          title: *id053
+          title: *id054
           enabled: true
           amount_setting: !ruby/object:UserObjectSettingFloat
-            name: *id022
-            options: *id030
+            name: *id025
+            options: *id055
             breaks_cache: 
             min: 0.0
             max: 1.0
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: false
-            animation_curve: *id011
+            animation_curve: *id015
             animation_min: 0.8
             animation_max: 1.0
             animation_repeat_number: 4
             animation_repeat_unit: :beats
             enable_exit_animation: false
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 1.0
             activation_variable: 
         - !ruby/object:ActorEffectRepeat
@@ -5725,18 +5682,21 @@
             enable_event: false
             event: 
             event_invert: false
-          title: &id077 Repeat
+          title: &id072 Repeat
           enabled: true
           number_setting: !ruby/object:UserObjectSettingInteger
-            name: &id078 number
-            options: &id079
+            name: &id073 number
+            options: &id074
               
-              :range: &id055 !ruby/range
+              :range: !ruby/range
                 begin: 1
                 end: 100
                 excl: false
-              :default: *id054
               :summary: true
+              :default: !ruby/range
+                begin: 1
+                end: 2
+                excl: false
             breaks_cache: 
             animation_min: 8
         - !ruby/object:ActorEffectBeatShiftChildren
@@ -5753,22 +5713,31 @@
             enable_event: false
             event: 
             event_invert: false
-          title: &id084 Beat Shift Children
+          title: &id081 Beat Shift Children
           enabled: true
           beats_per_child_setting: !ruby/object:UserObjectSettingInteger
-            name: &id085 beats_per_child
-            options: &id086
+            name: &id082 beats_per_child
+            options: &id083
               
-              :range: *id055
-              :default: *id054
+              :range: !ruby/range
+                begin: 1
+                end: 100
+                excl: false
+              :default: !ruby/range
+                begin: 1
+                end: 2
+                excl: false
             breaks_cache: 
             animation_min: 1
           amount_setting: !ruby/object:UserObjectSettingFloat
-            name: *id022
-            options: &id061
+            name: *id025
+            options: &id084
               
-              :range: *id021
-              :default: &id092 !ruby/range
+              :range: !ruby/range
+                begin: 0.0
+                end: 1.0
+                excl: false
+              :default: !ruby/range
                 begin: 1.0
                 end: 1.0
                 excl: false
@@ -5778,18 +5747,18 @@
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: false
-            animation_curve: *id011
+            animation_curve: *id015
             animation_min: 1.0
             animation_max: 1.0
             animation_repeat_number: 4
             animation_repeat_unit: :beats
             enable_exit_animation: false
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 1.0
             activation_variable: 
         - !ruby/object:ActorEffectScale2D
@@ -5810,10 +5779,9 @@
           enabled: true
           amount_x_setting: !ruby/object:UserObjectSettingFloat
             name: amount_x
-            options: &id057
-              
-              :range: *id024
-              :default: &id062 !ruby/range
+            options: 
+              :range: *id026
+              :default: !ruby/range
                 begin: 1.0
                 end: 2.0
                 excl: false
@@ -5823,7 +5791,7 @@
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: true
             animation_curve: *id056
             animation_min: 0.1
@@ -5831,40 +5799,44 @@
             animation_repeat_number: 4
             animation_repeat_unit: :beats
             enable_exit_animation: false
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 1.0
             activation_variable: 
           amount_y_setting: !ruby/object:UserObjectSettingFloat
             name: amount_y
-            options: *id057
+            options: 
+              :range: *id026
+              :default: !ruby/range
+                begin: 1.0
+                end: 2.0
+                excl: false
             breaks_cache: 
             min: -1000.0
             max: 1000.0
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: false
-            animation_curve: *id011
+            animation_curve: *id015
             animation_min: 1.0
             animation_max: 2.0
             animation_repeat_number: 4
             animation_repeat_unit: :beats
             enable_exit_animation: false
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 1.0
             activation_variable: 
           pivot_offset_x_setting: !ruby/object:UserObjectSettingFloat
             name: pivot_offset_x
-            options: &id058
-              
-              :range: *id024
+            options: 
+              :range: *id026
               :default: !ruby/range
                 begin: 0.0
                 end: 0.5
@@ -5875,41 +5847,46 @@
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: false
-            animation_curve: *id011
+            animation_curve: *id015
             animation_min: 0.0
             animation_max: 0.5
             animation_repeat_number: 4
             animation_repeat_unit: :beats
             enable_exit_animation: false
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 1.0
             activation_variable: 
           pivot_offset_y_setting: !ruby/object:UserObjectSettingFloat
             name: pivot_offset_y
-            options: *id058
+            options: 
+              :range: *id026
+              :default: !ruby/range
+                begin: 0.0
+                end: 0.5
+                excl: false
             breaks_cache: 
             min: -1000.0
             max: 1000.0
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: false
-            animation_curve: *id011
+            animation_curve: *id015
             animation_min: 0.0
             animation_max: 0.5
             animation_repeat_number: 4
             animation_repeat_unit: :beats
             enable_exit_animation: false
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 1.0
             activation_variable: 
         - !ruby/object:ActorEffectSlide
@@ -5926,55 +5903,64 @@
             enable_event: false
             event: 
             event_invert: false
-          title: &id088 Slide
+          title: &id087 Slide
           enabled: true
           amount_setting: !ruby/object:UserObjectSettingFloat
-            name: *id022
-            options: &id059
+            name: *id025
+            options: &id088
               
-              :range: *id024
-              :default: *id021
+              :range: *id026
+              :default: !ruby/range
+                begin: 0.0
+                end: 1.0
+                excl: false
             breaks_cache: 
             min: -1000.0
             max: 1000.0
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: true
-            animation_curve: *id049
+            animation_curve: *id052
             animation_min: -0.75
             animation_max: 0.75
             animation_repeat_number: 8.0
             animation_repeat_unit: :beats
             enable_exit_animation: false
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 1.0
             activation_variable: 
           angle_setting: !ruby/object:UserObjectSettingFloat
             name: &id089 angle
-            options: *id059
+            options: &id090
+              
+              :range: *id026
+              :default: !ruby/range
+                begin: 0.0
+                end: 1.0
+                excl: false
             breaks_cache: 
             min: -1000.0
             max: 1000.0
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: false
-            animation_curve: *id011
+            animation_curve: *id015
             animation_min: 0.25
             animation_max: 1.0
             animation_repeat_number: 4
             animation_repeat_unit: :beats
             enable_exit_animation: false
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 1.0
             activation_variable: 
         - !ruby/object:ActorEffectThemeChildren
@@ -5991,40 +5977,49 @@
             enable_event: false
             event: 
             event_invert: false
-          title: &id080 Theme Children
+          title: &id075 Theme Children
           enabled: true
           theme_setting: !ruby/object:UserObjectSettingTheme
-            theme: *id060
-            name: &id081 theme
-            options: &id070
+            theme: *id057
+            name: &id076 theme
+            options: &id077
               {}
             breaks_cache: 
           amount_setting: !ruby/object:UserObjectSettingFloat
-            name: *id022
-            options: *id061
+            name: *id025
+            options: &id078
+              
+              :range: !ruby/range
+                begin: 0.0
+                end: 1.0
+                excl: false
+              :default: !ruby/range
+                begin: 1.0
+                end: 1.0
+                excl: false
             breaks_cache: 
             min: 0.0
             max: 1.0
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: false
-            animation_curve: *id011
+            animation_curve: *id015
             animation_min: 1.0
             animation_max: 1.0
             animation_repeat_number: 4
             animation_repeat_unit: :beats
             enable_exit_animation: false
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 1.0
             activation_variable: 
           offset_setting: !ruby/object:UserObjectSettingInteger
-            name: &id082 offset
-            options: &id083
+            name: &id079 offset
+            options: &id080
               
               :range: !ruby/range
                 begin: -1000
@@ -6053,32 +6048,35 @@
           title: Saturate
           enabled: true
           amount_setting: !ruby/object:UserObjectSettingFloat
-            name: *id022
+            name: *id025
             options: 
               :shader: true
               :range: !ruby/range
                 begin: 0.0
                 end: 100.0
                 excl: false
-              :default: *id062
+              :default: !ruby/range
+                begin: 1.0
+                end: 2.0
+                excl: false
             breaks_cache: 
             min: 0.0
             max: 100.0
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: false
-            animation_curve: *id011
+            animation_curve: *id015
             animation_min: 1.0
             animation_max: 2.0
             animation_repeat_number: 4
             animation_repeat_unit: :beats
             enable_exit_animation: false
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 1.0
             activation_variable: 
         - !ruby/object:ActorEffectImage
@@ -6100,7 +6098,8 @@
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: grid-3x3.png
             name: image
-            options: *id002
+            options: 
+              :summary: true
             breaks_cache: 
         - !ruby/object:ActorEffectPixelStorm
           conditions: !ruby/object:ChildConditions
@@ -6116,29 +6115,29 @@
             enable_event: false
             event: 
             event_invert: false
-          title: *id063
+          title: *id058
           enabled: true
           amount_setting: !ruby/object:UserObjectSettingFloat
-            name: *id022
-            options: *id023
+            name: *id025
+            options: *id059
             breaks_cache: 
             min: -1000.0
             max: 1000.0
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: false
-            animation_curve: *id011
+            animation_curve: *id015
             animation_min: 0.0
             animation_max: 1.0
             animation_repeat_number: 4
             animation_repeat_unit: :beats
             enable_exit_animation: false
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 1.0
             activation_variable: 
         - !ruby/object:ActorEffectPixelMask
@@ -6159,98 +6158,130 @@
           enabled: true
           red_cutoff_setting: !ruby/object:UserObjectSettingFloat
             name: red_cutoff
-            options: &id064
-              
+            options: 
               :shader: true
-              :range: *id021
-              :default: *id021
+              :range: !ruby/range
+                begin: 0.0
+                end: 1.0
+                excl: false
+              :default: !ruby/range
+                begin: 0.0
+                end: 1.0
+                excl: false
             breaks_cache: 
             min: 0.0
             max: 1.0
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: false
-            animation_curve: *id011
+            animation_curve: *id015
             animation_min: 0.0
             animation_max: 1.0
             animation_repeat_number: 4
             animation_repeat_unit: :beats
             enable_exit_animation: false
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 1.0
             activation_variable: 
           green_cutoff_setting: !ruby/object:UserObjectSettingFloat
             name: green_cutoff
-            options: *id064
+            options: 
+              :shader: true
+              :range: !ruby/range
+                begin: 0.0
+                end: 1.0
+                excl: false
+              :default: !ruby/range
+                begin: 0.0
+                end: 1.0
+                excl: false
             breaks_cache: 
             min: 0.0
             max: 1.0
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: false
-            animation_curve: *id011
+            animation_curve: *id015
             animation_min: 0.0
             animation_max: 1.0
             animation_repeat_number: 4
             animation_repeat_unit: :beats
             enable_exit_animation: false
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 1.0
             activation_variable: 
           blue_cutoff_setting: !ruby/object:UserObjectSettingFloat
             name: blue_cutoff
-            options: *id064
+            options: 
+              :shader: true
+              :range: !ruby/range
+                begin: 0.0
+                end: 1.0
+                excl: false
+              :default: !ruby/range
+                begin: 0.0
+                end: 1.0
+                excl: false
             breaks_cache: 
             min: 0.0
             max: 1.0
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: false
-            animation_curve: *id011
+            animation_curve: *id015
             animation_min: 0.0
             animation_max: 1.0
             animation_repeat_number: 4
             animation_repeat_unit: :beats
             enable_exit_animation: false
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 1.0
             activation_variable: 
           alpha_cutoff_setting: !ruby/object:UserObjectSettingFloat
             name: alpha_cutoff
-            options: *id064
+            options: 
+              :shader: true
+              :range: !ruby/range
+                begin: 0.0
+                end: 1.0
+                excl: false
+              :default: !ruby/range
+                begin: 0.0
+                end: 1.0
+                excl: false
             breaks_cache: 
             min: 0.0
             max: 1.0
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: false
-            animation_curve: *id011
+            animation_curve: *id015
             animation_min: 0.0
             animation_max: 1.0
             animation_repeat_number: 4
             animation_repeat_unit: :beats
             enable_exit_animation: false
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 1.0
             activation_variable: 
         - !ruby/object:ActorEffectPixelWarp
@@ -6267,58 +6298,58 @@
             enable_event: false
             event: 
             event_invert: false
-          title: *id065
+          title: *id060
           enabled: true
           amount_setting: !ruby/object:UserObjectSettingFloat
-            name: *id022
-            options: *id023
+            name: *id025
+            options: *id061
             breaks_cache: 
             min: -1000.0
             max: 1000.0
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: false
-            animation_curve: *id011
+            animation_curve: *id015
             animation_min: 0.0
             animation_max: 1.0
             animation_repeat_number: 4
             animation_repeat_unit: :beats
             enable_exit_animation: false
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 1.0
             activation_variable: 
           frequency_setting: !ruby/object:UserObjectSettingFloat
-            name: *id066
-            options: *id067
+            name: *id062
+            options: *id063
             breaks_cache: 
             min: -1000.0
             max: 1000.0
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: false
-            animation_curve: *id011
+            animation_curve: *id015
             animation_min: 0.1
             animation_max: 1.0
             animation_repeat_number: 4
             animation_repeat_unit: :beats
             enable_exit_animation: false
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 1.0
             activation_variable: 
           method_setting: !ruby/object:UserObjectSettingSelect
             selected: :warp_horizontal
-            name: *id068
-            options: *id069
+            name: *id064
+            options: *id065
             breaks_cache: 
         - !ruby/object:ActorEffectPixelStorm
           conditions: !ruby/object:ChildConditions
@@ -6334,29 +6365,29 @@
             enable_event: false
             event: 
             event_invert: false
-          title: *id063
+          title: *id058
           enabled: true
           amount_setting: !ruby/object:UserObjectSettingFloat
-            name: *id022
-            options: *id023
+            name: *id025
+            options: *id059
             breaks_cache: 
             min: -1000.0
             max: 1000.0
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: false
-            animation_curve: *id011
+            animation_curve: *id015
             animation_min: 0.0
             animation_max: 1.0
             animation_repeat_number: 4
             animation_repeat_unit: :beats
             enable_exit_animation: false
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 1.0
             activation_variable: 
         - !ruby/object:ActorEffectRoll
@@ -6373,29 +6404,35 @@
             enable_event: false
             event: 
             event_invert: false
-          title: &id087 Roll
+          title: &id085 Roll
           enabled: true
           amount_setting: !ruby/object:UserObjectSettingFloat
-            name: *id022
-            options: *id059
+            name: *id025
+            options: &id086
+              
+              :range: *id026
+              :default: !ruby/range
+                begin: 0.0
+                end: 1.0
+                excl: false
             breaks_cache: 
             min: -1000.0
             max: 1000.0
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: false
-            animation_curve: *id011
+            animation_curve: *id015
             animation_min: 0.0
             animation_max: 1.0
             animation_repeat_number: 4
             animation_repeat_unit: :beats
             enable_exit_animation: false
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 1.0
             activation_variable: 
         - !ruby/object:ActorEffectTextChildren
@@ -6412,47 +6449,49 @@
             enable_event: false
             event: 
             event_invert: false
-          title: &id099 Text Children
+          title: &id097 Text Children
           enabled: false
           font_setting: !ruby/object:UserObjectSettingFont
             font: Star Jedi
-            name: &id100 font
-            options: *id070
+            name: &id098 font
+            options: &id099
+              {}
             breaks_cache: 
           text_setting: !ruby/object:UserObjectSettingString
             string: "12345678"
-            name: &id101 text
-            options: *id070
+            name: &id100 text
+            options: &id101
+              {}
             breaks_cache: 
       title: Rectangle
       enabled: true
       hole_size_setting: !ruby/object:UserObjectSettingFloat
-        name: *id071
-        options: *id072
+        name: *id066
+        options: *id067
         breaks_cache: 
         min: 0.0
         max: 1.0
         enter_value: 0.0
         exit_value: 0.0
         enable_enter_animation: false
-        enter_curve: *id011
+        enter_curve: *id015
         enable_animation: false
-        animation_curve: *id011
+        animation_curve: *id015
         animation_min: 0.0
         animation_max: 1.0
         animation_repeat_number: 4
         animation_repeat_unit: :beats
         enable_exit_animation: false
-        exit_curve: *id011
+        exit_curve: *id015
         enable_activation: false
         activation_direction: :to
-        activation_curve: *id011
+        activation_curve: *id015
         activation_value: 1.0
         activation_variable: 
     - !ruby/object:ActorStar
       x: 0.0
       y: 0.0
-      tags: *id073
+      tags: *id068
       effects: 
         - !ruby/object:ActorEffectScale
           conditions: !ruby/object:ChildConditions
@@ -6468,29 +6507,35 @@
             enable_event: false
             event: 
             event_invert: false
-          title: &id091 Scale
+          title: &id092 Scale
           enabled: true
           amount_setting: !ruby/object:UserObjectSettingFloat
-            name: *id022
-            options: *id057
+            name: *id025
+            options: &id093
+              
+              :range: *id026
+              :default: !ruby/range
+                begin: 1.0
+                end: 2.0
+                excl: false
             breaks_cache: 
             min: -1000.0
             max: 1000.0
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: false
-            animation_curve: *id011
+            animation_curve: *id015
             animation_min: 0.2
             animation_max: 2.0
             animation_repeat_number: 4
             animation_repeat_unit: :beats
             enable_exit_animation: false
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 1.0
             activation_variable: 
         - !ruby/object:ActorEffectDrawMethod
@@ -6507,12 +6552,12 @@
             enable_event: false
             event: 
             event_invert: false
-          title: *id074
+          title: *id069
           enabled: true
           draw_method_setting: !ruby/object:UserObjectSettingSelect
             selected: :brighten
-            name: *id075
-            options: *id076
+            name: *id070
+            options: *id071
             breaks_cache: 
         - !ruby/object:ActorEffectRepeat
           conditions: !ruby/object:ChildConditions
@@ -6528,11 +6573,11 @@
             enable_event: false
             event: 
             event_invert: false
-          title: *id077
+          title: *id072
           enabled: true
           number_setting: !ruby/object:UserObjectSettingInteger
-            name: *id078
-            options: *id079
+            name: *id073
+            options: *id074
             breaks_cache: 
             animation_min: 8
         - !ruby/object:ActorEffectThemeChildren
@@ -6549,39 +6594,39 @@
             enable_event: false
             event: 
             event_invert: false
-          title: *id080
+          title: *id075
           enabled: true
           theme_setting: !ruby/object:UserObjectSettingTheme
-            theme: *id060
-            name: *id081
-            options: *id070
+            theme: *id057
+            name: *id076
+            options: *id077
             breaks_cache: 
           amount_setting: !ruby/object:UserObjectSettingFloat
-            name: *id022
-            options: *id061
+            name: *id025
+            options: *id078
             breaks_cache: 
             min: 0.0
             max: 1.0
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: false
-            animation_curve: *id011
+            animation_curve: *id015
             animation_min: 1.0
             animation_max: 1.0
             animation_repeat_number: 4
             animation_repeat_unit: :beats
             enable_exit_animation: false
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 1.0
             activation_variable: 
           offset_setting: !ruby/object:UserObjectSettingInteger
-            name: *id082
-            options: *id083
+            name: *id079
+            options: *id080
             breaks_cache: 
             animation_min: 0
         - !ruby/object:ActorEffectBeatShiftChildren
@@ -6598,34 +6643,34 @@
             enable_event: false
             event: 
             event_invert: false
-          title: *id084
+          title: *id081
           enabled: true
           beats_per_child_setting: !ruby/object:UserObjectSettingInteger
-            name: *id085
-            options: *id086
+            name: *id082
+            options: *id083
             breaks_cache: 
             animation_min: 1
           amount_setting: !ruby/object:UserObjectSettingFloat
-            name: *id022
-            options: *id061
+            name: *id025
+            options: *id084
             breaks_cache: 
             min: 0.0
             max: 1.0
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: false
-            animation_curve: *id011
+            animation_curve: *id015
             animation_min: 1.0
             animation_max: 1.0
             animation_repeat_number: 4
             animation_repeat_unit: :beats
             enable_exit_animation: false
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 1.0
             activation_variable: 
         - !ruby/object:ActorEffectRoll
@@ -6642,29 +6687,29 @@
             enable_event: false
             event: 
             event_invert: false
-          title: *id087
+          title: *id085
           enabled: true
           amount_setting: !ruby/object:UserObjectSettingFloat
-            name: *id022
-            options: *id059
+            name: *id025
+            options: *id086
             breaks_cache: 
             min: -1000.0
             max: 1000.0
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: false
-            animation_curve: *id049
+            animation_curve: *id052
             animation_min: -0.1
             animation_max: 0.1
             animation_repeat_number: 4
             animation_repeat_unit: :beats
             enable_exit_animation: false
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 1.0
             activation_variable: 
         - !ruby/object:ActorEffectSlide
@@ -6681,52 +6726,52 @@
             enable_event: false
             event: 
             event_invert: false
-          title: *id088
+          title: *id087
           enabled: true
           amount_setting: !ruby/object:UserObjectSettingFloat
-            name: *id022
-            options: *id059
+            name: *id025
+            options: *id088
             breaks_cache: 
             min: -1000.0
             max: 1000.0
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: true
-            animation_curve: *id049
+            animation_curve: *id052
             animation_min: -2.0
             animation_max: 2.0
             animation_repeat_number: 4
             animation_repeat_unit: :beats
             enable_exit_animation: false
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 1.0
             activation_variable: 
           angle_setting: !ruby/object:UserObjectSettingFloat
             name: *id089
-            options: *id059
+            options: *id090
             breaks_cache: 
             min: -1000.0
             max: 1000.0
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: true
-            animation_curve: *id090
+            animation_curve: *id091
             animation_min: 0.0
             animation_max: 1.0
             animation_repeat_number: 16.0
             animation_repeat_unit: :beats
             enable_exit_animation: false
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 1.0
             activation_variable: 
         - !ruby/object:ActorEffectScale
@@ -6743,29 +6788,29 @@
             enable_event: false
             event: 
             event_invert: false
-          title: *id091
+          title: *id092
           enabled: true
           amount_setting: !ruby/object:UserObjectSettingFloat
-            name: *id022
-            options: *id057
+            name: *id025
+            options: *id093
             breaks_cache: 
             min: -1000.0
             max: 1000.0
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: true
-            animation_curve: *id049
+            animation_curve: *id052
             animation_min: 1.0
             animation_max: 0.9
             animation_repeat_number: 1.0
             animation_repeat_unit: :beats
             enable_exit_animation: false
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 1.0
             activation_variable: 
         - !ruby/object:ActorEffectSpotlight
@@ -6785,71 +6830,88 @@
           title: Spotlight
           enabled: false
           number_setting: !ruby/object:UserObjectSettingInteger
-            name: *id078
+            name: *id073
             options: 
               :range: !ruby/range
                 begin: 1
                 end: 1000
                 excl: false
-              :default: *id054
+              :default: !ruby/range
+                begin: 1
+                end: 2
+                excl: false
             breaks_cache: 
             animation_min: 7
           roll_setting: !ruby/object:UserObjectSettingFloat
             name: roll
-            options: *id059
+            options: 
+              :range: !ruby/range
+                begin: -1000.0
+                end: 1000.0
+                excl: false
+              :default: !ruby/range
+                begin: 0.0
+                end: 1.0
+                excl: false
             breaks_cache: 
             min: -1000.0
             max: 1000.0
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: false
-            animation_curve: *id011
+            animation_curve: *id015
             animation_min: 0.0
             animation_max: 1.0
             animation_repeat_number: 4
             animation_repeat_unit: :beats
             enable_exit_animation: false
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 1.0
             activation_variable: 
           smallest_setting: !ruby/object:UserObjectSettingFloat
             name: smallest
             options: 
-              :range: &id093 !ruby/range
+              :range: !ruby/range
                 begin: 0.0
                 end: 1000.0
                 excl: false
-              :default: *id092
+              :default: !ruby/range
+                begin: 1.0
+                end: 1.0
+                excl: false
             breaks_cache: 
             min: 0.0
             max: 1000.0
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: false
-            animation_curve: *id011
+            animation_curve: *id015
             animation_min: 0.4
             animation_max: 1.0
             animation_repeat_number: 4
             animation_repeat_unit: :beats
             enable_exit_animation: false
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 1.0
             activation_variable: 
           height_setting: !ruby/object:UserObjectSettingFloat
             name: height
             options: 
-              :range: *id093
-              :default: &id094 !ruby/range
+              :range: !ruby/range
+                begin: 0.0
+                end: 1000.0
+                excl: false
+              :default: !ruby/range
                 begin: 0.5
                 end: 1.0
                 excl: false
@@ -6859,51 +6921,56 @@
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: false
-            animation_curve: *id011
+            animation_curve: *id015
             animation_min: 0.056
             animation_max: 1.0
             animation_repeat_number: 4
             animation_repeat_unit: :beats
             enable_exit_animation: false
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 1.0
             activation_variable: 
           alpha_setting: !ruby/object:UserObjectSettingFloat
-            name: &id105 alpha
+            name: &id107 alpha
             options: 
-              :range: *id021
-              :default: *id094
+              :range: !ruby/range
+                begin: 0.0
+                end: 1.0
+                excl: false
+              :default: !ruby/range
+                begin: 0.5
+                end: 1.0
+                excl: false
             breaks_cache: 
             min: 0.0
             max: 1.0
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: false
-            animation_curve: *id011
+            animation_curve: *id015
             animation_min: 0.5
             animation_max: 1.0
             animation_repeat_number: 4
             animation_repeat_unit: :beats
             enable_exit_animation: false
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 1.0
             activation_variable: 
       title: Starfield
       enabled: true
       arms_setting: !ruby/object:UserObjectSettingInteger
-        name: &id095 arms
-        options: &id096
-          
+        name: &id094 arms
+        options: 
           :breaks_cache: true
           :range: !ruby/range
             begin: 2
@@ -6916,11 +6983,14 @@
         breaks_cache: 
         animation_min: 5
       radius_setting: !ruby/object:UserObjectSettingFloat
-        name: &id097 radius
+        name: &id095 radius
         options: 
           :breaks_cache: true
-          :range: *id021
-          :default: &id106 !ruby/range
+          :range: !ruby/range
+            begin: 0.0
+            end: 1.0
+            excl: false
+          :default: !ruby/range
             begin: 0.25
             end: 1.0
             excl: false
@@ -6930,47 +7000,56 @@
         enter_value: 0.0
         exit_value: 0.0
         enable_enter_animation: false
-        enter_curve: *id011
+        enter_curve: *id015
         enable_animation: false
-        animation_curve: *id011
+        animation_curve: *id015
         animation_min: 0.25
         animation_max: 1.0
         animation_repeat_number: 4
         animation_repeat_unit: :beats
         enable_exit_animation: false
-        exit_curve: *id011
+        exit_curve: *id015
         enable_activation: false
         activation_direction: :to
-        activation_curve: *id011
+        activation_curve: *id015
         activation_value: 1.0
         activation_variable: 
       cutout_size_setting: !ruby/object:UserObjectSettingFloat
         name: cutout_size
-        options: *id072
+        options: 
+          :breaks_cache: true
+          :range: !ruby/range
+            begin: 0.0
+            end: 1.0
+            excl: false
+          :default: !ruby/range
+            begin: 0.0
+            end: 1.0
+            excl: false
         breaks_cache: 
         min: 0.0
         max: 1.0
         enter_value: 1.0
         exit_value: 1.0
         enable_enter_animation: true
-        enter_curve: *id011
+        enter_curve: *id015
         enable_animation: false
-        animation_curve: *id011
+        animation_curve: *id015
         animation_min: 0.0
         animation_max: 1.0
         animation_repeat_number: 4
         animation_repeat_unit: :beats
         enable_exit_animation: true
-        exit_curve: *id011
+        exit_curve: *id015
         enable_activation: false
         activation_direction: :to
-        activation_curve: *id011
+        activation_curve: *id015
         activation_value: 1.0
         activation_variable: 
     - !ruby/object:ActorStarFlower
       x: 0.0
       y: 0.0
-      tags: *id073
+      tags: *id068
       effects: 
         - !ruby/object:ActorEffectScale
           conditions: !ruby/object:ChildConditions
@@ -6986,29 +7065,29 @@
             enable_event: false
             event: 
             event_invert: false
-          title: *id091
+          title: *id092
           enabled: true
           amount_setting: !ruby/object:UserObjectSettingFloat
-            name: *id022
-            options: *id057
+            name: *id025
+            options: *id093
             breaks_cache: 
             min: -1000.0
             max: 1000.0
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: true
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: false
-            animation_curve: *id011
+            animation_curve: *id015
             animation_min: 1.0
             animation_max: 2.0
             animation_repeat_number: 4
             animation_repeat_unit: :beats
             enable_exit_animation: true
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 1.0
             activation_variable: 
         - !ruby/object:ActorEffectThemeStyleVoyage
@@ -7028,31 +7107,38 @@
           title: &id102 Theme Voyage
           enabled: true
           theme_setting: !ruby/object:UserObjectSettingTheme
-            theme: *id060
-            name: *id081
-            options: *id070
+            theme: *id057
+            name: *id076
+            options: &id103
+              {}
             breaks_cache: 
           progress_setting: !ruby/object:UserObjectSettingFloat
-            name: &id103 progress
-            options: *id059
+            name: &id104 progress
+            options: &id105
+              
+              :range: *id026
+              :default: !ruby/range
+                begin: 0.0
+                end: 1.0
+                excl: false
             breaks_cache: 
             min: -1000.0
             max: 1000.0
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: true
-            animation_curve: *id011
+            animation_curve: *id015
             animation_min: 0.0
             animation_max: 1.0
             animation_repeat_number: 4
             animation_repeat_unit: :beats
             enable_exit_animation: false
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 1.0
             activation_variable: 
         - !ruby/object:ActorEffectSlice
@@ -7072,37 +7158,50 @@
           title: Slice
           enabled: true
           number_setting: !ruby/object:UserObjectSettingInteger
-            name: *id078
-            options: *id086
+            name: *id073
+            options: 
+              :range: !ruby/range
+                begin: 1
+                end: 100
+                excl: false
+              :default: !ruby/range
+                begin: 1
+                end: 2
+                excl: false
             breaks_cache: 
             animation_min: 10
           angle_setting: !ruby/object:UserObjectSettingFloat
             name: *id089
-            options: *id059
+            options: 
+              :range: *id026
+              :default: !ruby/range
+                begin: 0.0
+                end: 1.0
+                excl: false
             breaks_cache: 
             min: -1000.0
             max: 1000.0
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: false
-            animation_curve: *id011
+            animation_curve: *id015
             animation_min: 0.0
             animation_max: 1.0
             animation_repeat_number: 4
             animation_repeat_unit: :beats
             enable_exit_animation: false
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 1.0
             activation_variable: 
           distribution_setting: !ruby/object:UserObjectSettingCurve
-            curve: *id011
+            curve: *id015
             name: distribution
-            options: *id070
+            options: {}
             breaks_cache: 
         - !ruby/object:ActorEffectBeatShiftChildren
           conditions: !ruby/object:ChildConditions
@@ -7118,34 +7217,34 @@
             enable_event: false
             event: 
             event_invert: false
-          title: *id084
+          title: *id081
           enabled: true
           beats_per_child_setting: !ruby/object:UserObjectSettingInteger
-            name: *id085
-            options: *id086
+            name: *id082
+            options: *id083
             breaks_cache: 
             animation_min: 1
           amount_setting: !ruby/object:UserObjectSettingFloat
-            name: *id022
-            options: *id061
+            name: *id025
+            options: *id084
             breaks_cache: 
             min: 0.0
             max: 1.0
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: false
-            animation_curve: *id011
+            animation_curve: *id015
             animation_min: 1.0
             animation_max: 1.0
             animation_repeat_number: 4
             animation_repeat_unit: :beats
             enable_exit_animation: false
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 1.0
             activation_variable: 
         - !ruby/object:ActorEffectRoll
@@ -7162,40 +7261,49 @@
             enable_event: false
             event: 
             event_invert: false
-          title: *id087
+          title: *id085
           enabled: true
           amount_setting: !ruby/object:UserObjectSettingFloat
-            name: *id022
-            options: *id059
+            name: *id025
+            options: *id086
             breaks_cache: 
             min: -1000.0
             max: 1000.0
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: true
-            animation_curve: *id011
+            animation_curve: *id015
             animation_min: 0.0
             animation_max: 1.0
             animation_repeat_number: 4
             animation_repeat_unit: :beats
             enable_exit_animation: false
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 1.0
             activation_variable: 
       title: MirrorFlower
       enabled: true
       arms_setting: !ruby/object:UserObjectSettingInteger
-        name: *id095
-        options: *id096
+        name: *id094
+        options: 
+          :breaks_cache: true
+          :range: !ruby/range
+            begin: 2
+            end: 100
+            excl: false
+          :default: !ruby/range
+            begin: 5
+            end: 100
+            excl: false
         breaks_cache: 
         animation_min: 5
       radius_setting: !ruby/object:UserObjectSettingFloat
-        name: *id097
+        name: *id095
         options: 
           :breaks_cache: true
           :range: !ruby/range
@@ -7212,25 +7320,28 @@
         enter_value: 0.0
         exit_value: 0.0
         enable_enter_animation: false
-        enter_curve: *id011
+        enter_curve: *id015
         enable_animation: false
-        animation_curve: *id011
+        animation_curve: *id015
         animation_min: 0.2
         animation_max: 1.0
         animation_repeat_number: 4
         animation_repeat_unit: :beats
         enable_exit_animation: false
-        exit_curve: *id011
+        exit_curve: *id015
         enable_activation: false
         activation_direction: :to
-        activation_curve: *id011
+        activation_curve: *id015
         activation_value: 1.0
         activation_variable: 
       detail_setting: !ruby/object:UserObjectSettingInteger
         name: detail
         options: 
           :breaks_cache: true
-          :range: *id055
+          :range: !ruby/range
+            begin: 1
+            end: 100
+            excl: false
           :default: !ruby/range
             begin: 50
             end: 100
@@ -7240,7 +7351,7 @@
     - !ruby/object:ActorRectangle
       x: 0.0
       y: 0.0
-      tags: *id073
+      tags: *id068
       effects: 
         - !ruby/object:ActorEffectTranslate
           conditions: !ruby/object:ChildConditions
@@ -7260,48 +7371,58 @@
           enabled: true
           x_setting: !ruby/object:UserObjectSettingFloat
             name: x
-            options: *id059
+            options: 
+              :range: *id026
+              :default: !ruby/range
+                begin: 0.0
+                end: 1.0
+                excl: false
             breaks_cache: 
             min: -1000.0
             max: 1000.0
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: false
-            animation_curve: *id011
+            animation_curve: *id015
             animation_min: -0.289
             animation_max: 1.0
             animation_repeat_number: 4
             animation_repeat_unit: :beats
             enable_exit_animation: false
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 1.0
             activation_variable: 
           y_setting: !ruby/object:UserObjectSettingFloat
             name: y
-            options: *id059
+            options: 
+              :range: *id026
+              :default: !ruby/range
+                begin: 0.0
+                end: 1.0
+                excl: false
             breaks_cache: 
             min: -1000.0
             max: 1000.0
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: false
-            animation_curve: *id011
+            animation_curve: *id015
             animation_min: 0.0
             animation_max: 1.0
             animation_repeat_number: 4
             animation_repeat_unit: :beats
             enable_exit_animation: false
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 1.0
             activation_variable: 
         - !ruby/object:ActorEffectPixelWarp
@@ -7318,58 +7439,58 @@
             enable_event: false
             event: 
             event_invert: false
-          title: *id065
+          title: *id060
           enabled: true
           amount_setting: !ruby/object:UserObjectSettingFloat
-            name: *id022
-            options: *id023
+            name: *id025
+            options: *id061
             breaks_cache: 
             min: -1000.0
             max: 1000.0
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: false
-            animation_curve: *id011
+            animation_curve: *id015
             animation_min: 0.0
             animation_max: 1.0
             animation_repeat_number: 4
             animation_repeat_unit: :beats
             enable_exit_animation: false
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: true
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 0.005
-            activation_variable: *id098
+            activation_variable: *id096
           frequency_setting: !ruby/object:UserObjectSettingFloat
-            name: *id066
-            options: *id067
+            name: *id062
+            options: *id063
             breaks_cache: 
             min: -1000.0
             max: 1000.0
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: false
-            animation_curve: *id011
+            animation_curve: *id015
             animation_min: 0.1
             animation_max: 1.0
             animation_repeat_number: 4
             animation_repeat_unit: :beats
             enable_exit_animation: false
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 1.0
             activation_variable: 
           method_setting: !ruby/object:UserObjectSettingSelect
             selected: :warp_horizontal
-            name: *id068
-            options: *id069
+            name: *id064
+            options: *id065
             breaks_cache: 
         - !ruby/object:ActorEffectScale
           conditions: !ruby/object:ChildConditions
@@ -7385,29 +7506,29 @@
             enable_event: false
             event: 
             event_invert: false
-          title: *id091
+          title: *id092
           enabled: true
           amount_setting: !ruby/object:UserObjectSettingFloat
-            name: *id022
-            options: *id057
+            name: *id025
+            options: *id093
             breaks_cache: 
             min: -1000.0
             max: 1000.0
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: false
-            animation_curve: *id011
+            animation_curve: *id015
             animation_min: 0.731
             animation_max: 2.0
             animation_repeat_number: 4
             animation_repeat_unit: :beats
             enable_exit_animation: false
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 1.0
             activation_variable: 
         - !ruby/object:ActorEffectLine
@@ -7427,8 +7548,17 @@
           title: Line
           enabled: true
           number_setting: !ruby/object:UserObjectSettingInteger
-            name: *id078
-            options: *id079
+            name: *id073
+            options: 
+              :range: !ruby/range
+                begin: 1
+                end: 100
+                excl: false
+              :summary: true
+              :default: !ruby/range
+                begin: 1
+                end: 2
+                excl: false
             breaks_cache: 
             animation_min: 3
           angle_setting: !ruby/object:UserObjectSettingFloat
@@ -7438,53 +7568,59 @@
                 begin: -1.0
                 end: 1.0
                 excl: false
-              :default: *id021
+              :default: !ruby/range
+                begin: 0.0
+                end: 1.0
+                excl: false
             breaks_cache: 
             min: -1.0
             max: 1.0
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: false
-            animation_curve: *id011
+            animation_curve: *id015
             animation_min: 0.25
             animation_max: 1.0
             animation_repeat_number: 4
             animation_repeat_unit: :beats
             enable_exit_animation: false
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 1.0
             activation_variable: 
           distance_setting: !ruby/object:UserObjectSettingFloat
-            name: &id104 distance
+            name: &id106 distance
             options: 
               :range: !ruby/range
                 begin: -100.0
                 end: 100.0
                 excl: false
-              :default: *id062
+              :default: !ruby/range
+                begin: 1.0
+                end: 2.0
+                excl: false
             breaks_cache: 
             min: -100.0
             max: 100.0
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: false
-            animation_curve: *id011
+            animation_curve: *id015
             animation_min: 0.423
             animation_max: 2.0
             animation_repeat_number: 4
             animation_repeat_unit: :beats
             enable_exit_animation: false
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 1.0
             activation_variable: 
         - !ruby/object:ActorEffectTextChildren
@@ -7501,17 +7637,17 @@
             enable_event: false
             event: 
             event_invert: false
-          title: *id099
+          title: *id097
           enabled: true
           font_setting: !ruby/object:UserObjectSettingFont
             font: Zipty Do Std
-            name: *id100
-            options: *id070
+            name: *id098
+            options: *id099
             breaks_cache: 
           text_setting: !ruby/object:UserObjectSettingString
-            string: &id107 Luz
-            name: *id101
-            options: *id070
+            string: &id108 Luz
+            name: *id100
+            options: *id101
             breaks_cache: 
         - !ruby/object:ActorEffectBeatShiftChildren
           conditions: !ruby/object:ChildConditions
@@ -7527,34 +7663,34 @@
             enable_event: false
             event: 
             event_invert: false
-          title: *id084
+          title: *id081
           enabled: true
           beats_per_child_setting: !ruby/object:UserObjectSettingInteger
-            name: *id085
-            options: *id086
+            name: *id082
+            options: *id083
             breaks_cache: 
             animation_min: 1
           amount_setting: !ruby/object:UserObjectSettingFloat
-            name: *id022
-            options: *id061
+            name: *id025
+            options: *id084
             breaks_cache: 
             min: 0.0
             max: 1.0
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: false
-            animation_curve: *id011
+            animation_curve: *id015
             animation_min: 1.0
             animation_max: 1.0
             animation_repeat_number: 4
             animation_repeat_unit: :beats
             enable_exit_animation: false
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 1.0
             activation_variable: 
         - !ruby/object:ActorEffectThemeStyleVoyage
@@ -7574,31 +7710,31 @@
           title: *id102
           enabled: true
           theme_setting: !ruby/object:UserObjectSettingTheme
-            theme: *id060
-            name: *id081
-            options: *id070
+            theme: *id057
+            name: *id076
+            options: *id103
             breaks_cache: 
           progress_setting: !ruby/object:UserObjectSettingFloat
-            name: *id103
-            options: *id059
+            name: *id104
+            options: *id105
             breaks_cache: 
             min: -1000.0
             max: 1000.0
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: true
-            animation_curve: *id011
+            animation_curve: *id015
             animation_min: 0.0
             animation_max: 1.0
             animation_repeat_number: 4
             animation_repeat_unit: :beats
             enable_exit_animation: false
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 1.0
             activation_variable: 
         - !ruby/object:ActorEffectGhost
@@ -7619,121 +7755,142 @@
           enabled: true
           size_setting: !ruby/object:UserObjectSettingFloat
             name: size
-            options: *id057
+            options: 
+              :range: *id026
+              :default: !ruby/range
+                begin: 1.0
+                end: 2.0
+                excl: false
             breaks_cache: 
             min: -1000.0
             max: 1000.0
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: false
-            animation_curve: *id011
+            animation_curve: *id015
             animation_min: 1.015
             animation_max: 2.0
             animation_repeat_number: 4
             animation_repeat_unit: :beats
             enable_exit_animation: false
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 1.0
             activation_variable: 
           distance_setting: !ruby/object:UserObjectSettingFloat
-            name: *id104
-            options: *id059
+            name: *id106
+            options: 
+              :range: *id026
+              :default: !ruby/range
+                begin: 0.0
+                end: 1.0
+                excl: false
             breaks_cache: 
             min: -1000.0
             max: 1000.0
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: false
-            animation_curve: *id011
+            animation_curve: *id015
             animation_min: 0.027
             animation_max: 1.0
             animation_repeat_number: 4
             animation_repeat_unit: :beats
             enable_exit_animation: false
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 1.0
             activation_variable: 
           angle_setting: !ruby/object:UserObjectSettingFloat
             name: *id089
-            options: *id059
+            options: 
+              :range: *id026
+              :default: !ruby/range
+                begin: 0.0
+                end: 1.0
+                excl: false
             breaks_cache: 
             min: -1000.0
             max: 1000.0
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: true
-            animation_curve: *id011
+            animation_curve: *id015
             animation_min: 0.0
             animation_max: 1.0
             animation_repeat_number: 0.1
             animation_repeat_unit: :beats
             enable_exit_animation: false
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 1.0
             activation_variable: 
           alpha_setting: !ruby/object:UserObjectSettingFloat
-            name: *id105
+            name: *id107
             options: 
-              :range: *id021
-              :default: *id106
+              :range: !ruby/range
+                begin: 0.0
+                end: 1.0
+                excl: false
+              :default: !ruby/range
+                begin: 0.25
+                end: 1.0
+                excl: false
             breaks_cache: 
             min: 0.0
             max: 1.0
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
-            enter_curve: *id011
+            enter_curve: *id015
             enable_animation: false
-            animation_curve: *id011
+            animation_curve: *id015
             animation_min: 0.45
             animation_max: 1.0
             animation_repeat_number: 4
             animation_repeat_unit: :beats
             enable_exit_animation: false
-            exit_curve: *id011
+            exit_curve: *id015
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id011
+            activation_curve: *id015
             activation_value: 1.0
             activation_variable: 
-      title: *id107
+      title: *id108
       enabled: true
       hole_size_setting: !ruby/object:UserObjectSettingFloat
-        name: *id071
-        options: *id072
+        name: *id066
+        options: *id067
         breaks_cache: 
         min: 0.0
         max: 1.0
         enter_value: 0.0
         exit_value: 0.0
         enable_enter_animation: false
-        enter_curve: *id011
+        enter_curve: *id015
         enable_animation: false
-        animation_curve: *id011
+        animation_curve: *id015
         animation_min: 0.0
         animation_max: 1.0
         animation_repeat_number: 4
         animation_repeat_unit: :beats
         enable_exit_animation: false
-        exit_curve: *id011
+        exit_curve: *id015
         enable_activation: false
         activation_direction: :to
-        activation_curve: *id011
+        activation_curve: *id015
         activation_value: 1.0
         activation_variable: 
-    - *id108
+    - *id109
