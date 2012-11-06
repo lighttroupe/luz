@@ -38,10 +38,10 @@ class GuiNumeric < GuiObject
 	# Mouse Interaction
 	#
 	def scroll_up!(pointer)
-		set_value(purify_value(get_value + step_amount))
+		set_value(purify_value(get_value + step_amount(:up)))
 	end
 
 	def scroll_down!(pointer)
-		set_value(purify_value(get_value - step_amount))
+		set_value(purify_value(get_value + step_amount(:down)))
 	end
 end

@@ -41,7 +41,7 @@ class GuiInteger < GuiNumeric
 		end
 	end
 
-	def step_amount
+	def step_amount(direction)		# :up or :down
 		1
 	end
 end

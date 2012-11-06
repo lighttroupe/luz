@@ -35,30 +35,47 @@ class GuiFloat < GuiNumeric
 		scaled_progress.scale(min, max)
 	end
 
-	def step_amount
-		if @step_amount
-			@step_amount
-			# enough to step up to next value
-			#(get_value + @step_amount) - (get_value + @step_amount) % @step_amount
-		elsif @min && @max
-			# calculate a good value based on min/max
-			range = (@max - @min)
-			if range > 8
-				value_abs = get_value.abs
-				if value_abs >= 1000.0
-					100.0
-				elsif value_abs >= 100.0
-					10.0
-				elsif value_abs >= 1
-					1.0
-				else
-					0.1
-				end
+	def self.calculate_step_amount(value, direction)
+		swapped = false
+		swapped, value, direction = true, -value, ((direction == :up) ? :down : :up) if value < 0.0
+
+		# Now we can pretend we're in the positive range going up or down
+		step = if direction == :up
+			if value >= 1000.0
+				1000.0
+			elsif value >= 100.0
+				100.0
+			elsif value >= 10.0
+				10.0
+			elsif value >= 1.0
+				1.0
 			else
 				0.1
 			end
 		else
-			1.0
+			if value <= 1.0
+				-0.1
+			elsif value <= 10.0
+				-1.0
+			elsif value <= 100.0
+				-10.0
+			elsif value <= 1000.0
+				-100.0
+			else
+				-1000.0
+			end
 		end
+
+		# the amount needed to get up to the next multiple of step
+
+		# Finally, transform back
+		step = -step if swapped
+		step
+	end
+
+	def step_amount(direction)		# :up or :down
+		return @step_amount if @step_amount			# TODO: enough to step up to next value (get_value + @step_amount) - (get_value + @step_amount) % @step_amount
+
+		GuiFloat.calculate_step_amount(get_value, direction)
 	end
 end
