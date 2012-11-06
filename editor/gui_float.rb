@@ -35,47 +35,28 @@ class GuiFloat < GuiNumeric
 		scaled_progress.scale(min, max)
 	end
 
-	def self.calculate_step_amount(value, direction)
+	# This chooses how much to "step" when using scroll wheel or buttons to go up/down in value
+	# TODO: this implementation seems overly complex for such a pattern-rich job
+	def self.calculate_step_value(value, direction)
 		swapped = false
-		swapped, value, direction = true, -value, ((direction == :up) ? :down : :up) if value < 0.0
-
+		swapped, value, direction = true, value.abs, ((direction == :up) ? :down : :up) if value < 0.0
 		# Now we can pretend we're in the positive range going up or down
+
 		step = if direction == :up
-			if value >= 1000.0
-				1000.0
-			elsif value >= 100.0
-				100.0
-			elsif value >= 10.0
-				10.0
-			elsif value >= 1.0
-				1.0
-			else
-				0.1
-			end
+			if value >= 1000.0 ; 1000.0 ; elsif value >= 100.0 ; 100.0 ; elsif value >= 10.0; 10.0 ; elsif value >= 1.0 ; 1.0 ; elsif value >= 0.1 ; 0.1 ; else ; 0.01 ; end
 		else
-			if value <= 1.0
-				-0.1
-			elsif value <= 10.0
-				-1.0
-			elsif value <= 100.0
-				-10.0
-			elsif value <= 1000.0
-				-100.0
-			else
-				-1000.0
-			end
+			if value <= 0.1 ; -0.01 ; elsif value <= 1.0 ; -0.1 ; elsif value <= 10.0 ; -1.0 ; elsif value <= 100.0 ; -10.0 ; elsif value <= 1000.0 ; -100.0 ; else ; -1000.0 ; end
 		end
 
-		# the amount needed to get up to the next multiple of step
-
 		# Finally, transform back
-		step = -step if swapped
-		step
+		value, step = -value, -step if swapped
+
+		value + step
 	end
 
-	def step_amount(direction)		# :up or :down
+	def calculate_step_value(direction)		# :up or :down
 		return @step_amount if @step_amount			# TODO: enough to step up to next value (get_value + @step_amount) - (get_value + @step_amount) % @step_amount
 
-		GuiFloat.calculate_step_amount(get_value, direction)
+		GuiFloat.calculate_step_value(get_value, direction)
 	end
 end
