@@ -2,6 +2,14 @@
 
 A live motion graphics creator and performer.
 
+About Luz
+
+<http://createdigitalmotion.com/2011/03/luz-live-motion-graphics-controlled-by-anything-free-on-linux-and-now-with-dmx>
+
+Video Tutorials
+
+<http://lighttroupe.com/luz>
+
 The Luz Project consists of:
 
 - **Luz Studio**: a live motion graphics editor (Ruby, Gtk+, OpenGL)
@@ -18,7 +26,7 @@ Luz currently only runs on Linux.  Help is wanted porting it to OSX.
 
 Luz currently works best on Ubuntu 11.10.  It runs on Ubuntu 12.04 if you provide the Ruby GTK+ OpenGL bindings, either compiled from source or downloaded here and placed in the base Luz directory:
 
-    http://openanswers.org/gtkglext.so (32-bit version)
+<http://openanswers.org/gtkglext.so> (32-bit version)
 
 1. Clone this repository.
 
