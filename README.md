@@ -2,15 +2,15 @@
 
 A live motion graphics creator and performer.
 
-About Luz
+## About Luz
 
 <http://createdigitalmotion.com/2011/03/luz-live-motion-graphics-controlled-by-anything-free-on-linux-and-now-with-dmx>
 
-Video Tutorials
+## Video Tutorials
 
 <http://lighttroupe.com/luz>
 
-The Luz Project consists of:
+## The Luz Project consists of:
 
 - **Luz Studio**: a live motion graphics editor (Ruby, Gtk+, OpenGL)
 - **Luz Performer**: plays Luz projects fullscreen (Ruby, SDL, OpenGL)
