@@ -18,7 +18,7 @@ Luz currently only runs on Linux.  Help is wanted porting it to OSX.
 
 Luz currently works best on Ubuntu 11.10.  It runs on Ubuntu 12.04 if you provide the Ruby GTK+ OpenGL bindings, either compiled from source or downloaded here and placed in the base Luz directory:
 
-    <http://openanswers.org/gtkglext.so> (32-bit version)
+    http://openanswers.org/gtkglext.so (32-bit version)
 
 1. Clone this repository.
 
