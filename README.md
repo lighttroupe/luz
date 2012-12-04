@@ -2,8 +2,6 @@
 
 A live motion graphics editor and performer.
 
-## About Luz
-
 <http://createdigitalmotion.com/2011/03/luz-live-motion-graphics-controlled-by-anything-free-on-linux-and-now-with-dmx>
 
 ## Video Tutorials
