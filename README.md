@@ -28,6 +28,6 @@ The Luz Project consists of:
 
 4. Optionally run the ./build scripts to build optional addons:
 
-    - cd utils/video-file ; ./build ; cd ..
-    - cd utils/video ; ./build ; cd ..
-    - cd utils/chipmunk ; ./build ; cd ..
+    cd utils/video-file ; ./build ; cd ..
+    cd utils/video ; ./build ; cd ..
+    cd utils/chipmunk ; ./build ; cd ..
