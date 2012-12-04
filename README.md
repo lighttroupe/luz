@@ -1,6 +1,6 @@
 # Luz Studio
 
-A live motion graphics creator and performer.
+A live motion graphics editor and performer.
 
 ## About Luz
 
