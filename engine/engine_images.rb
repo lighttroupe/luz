@@ -4,7 +4,8 @@ module EngineImages
 	#
 	def load_images(path)
 		# all images paths are relative and with/below project file
-		file_path = File.join(@project.file_path, path)
+		path = path.sub(@project.file_path, '') if path.index(@project.file_path) == 0
+		file_path = (File.exists?(path)) ? path : File.join(@project.file_path, path)
 
 		# Note: cache using the full path name, so that two projects with similar relative paths won't get confused
 		@images_cache ||= {}
