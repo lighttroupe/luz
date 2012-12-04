@@ -26,8 +26,4 @@ The Luz Project consists of:
 
 3. Run 'make' in the root directory to build Input Manager and Spectrum Analyzer
 
-4. Optionally run the ./build scripts to build optional addons:
-
-    cd utils/video-file ; ./build ; cd ../..
-    cd utils/video ; ./build ; cd ../..
-    cd utils/chipmunk ; ./build ; cd ../..
+4. Optionally run the ./build scripts in utils/video-file, utils/video, and utils/chipmunk.
