@@ -32,24 +32,24 @@ module EasyDSL
 	module ClassMethods
 		def dsl_string(*names)
 			names.to_a.each { |name|
-		    	self.class_eval <<-end_class_eval
-			    	def self.#{name}(value = nil)
-			    		@#{name} = value if value
-			    		return @#{name} || ''
-			    	end
+				self.class_eval <<-end_class_eval
+					def self.#{name}(value = nil)
+						@#{name} = value if value
+						return @#{name} || ''
+					end
 				end_class_eval
 			}
 		end
 
 		def dsl_flag(*names)
 			names.to_a.each { |name|
-			    self.class_eval <<-end_class_eval
-				    def self.#{name}(rhs = true)
-				    	@#{name} = rhs
-				    end
-			    	def self.#{name}?
-			    		@#{name} || false
-			    	end
+				self.class_eval <<-end_class_eval
+					def self.#{name}(rhs = true)
+						@#{name} = rhs
+					end
+					def self.#{name}?
+						@#{name} || false
+					end
 				end_class_eval
 			}
 		end
