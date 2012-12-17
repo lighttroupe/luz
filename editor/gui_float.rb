@@ -36,12 +36,12 @@ class GuiFloat < GuiNumeric
 	end
 
 	# This chooses how much to "step" when using scroll wheel or buttons to go up/down in value
-	# TODO: this implementation seems overly complex for such a pattern-rich job
 	def self.calculate_step_value(value, direction)
 		swapped = false
 		swapped, value, direction = true, value.abs, ((direction == :up) ? :down : :up) if value < 0.0
 		# Now we can pretend we're in the positive range going up or down
 
+		# TODO: this implementation seems overly complex for such a pattern-rich job
 		step = if direction == :up
 			if value >= 1000.0 ; 1000.0 ; elsif value >= 100.0 ; 100.0 ; elsif value >= 10.0; 10.0 ; elsif value >= 1.0 ; 1.0 ; elsif value >= 0.1 ; 0.1 ; else ; 0.01 ; end
 		else
