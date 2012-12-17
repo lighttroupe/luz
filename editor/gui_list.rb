@@ -32,7 +32,7 @@ class GuiList < GuiBox
 	end
 
 	def child_click(pointer)
-		@scroll_velocity *= 0.05
+		@scroll_velocity = 0.0
 	end
 
 	def move_child_up(child)
