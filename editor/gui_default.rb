@@ -4,7 +4,7 @@ require 'gui_addons'
 
 require 'gui_radio_buttons'
 
-load_directory(Dir.pwd + '/editor/renderers/', '**.rb')
+load_directory(Dir.pwd + '/editor/addons/', '**.rb')
 
 class GuiDefault < GuiBox
 	pipe :positive_message, :message_bar
