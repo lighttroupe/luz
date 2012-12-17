@@ -50,13 +50,14 @@ class GuiFloat < GuiNumeric
 
 		# Finally, transform back
 		value, step = -value, -step if swapped
-
-		value + step
+		step
 	end
 
 	def calculate_step_value(direction)		# :up or :down
-		return @step_amount if @step_amount			# TODO: enough to step up to next value (get_value + @step_amount) - (get_value + @step_amount) % @step_amount
-
-		GuiFloat.calculate_step_value(get_value, direction)
+		if @step_amount
+			(get_value + ((direction==:up) ? @step_amount : -@step_amount))			# TODO: enough to step up to next value (get_value + @step_amount) - (get_value + @step_amount) % @step_amount
+		else
+			get_value + GuiFloat.calculate_step_value(get_value, direction)
+		end
 	end
 end
