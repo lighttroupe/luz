@@ -97,6 +97,7 @@ module DrawingTransformations
 		# make object as wide as it is tall, in screen coordinates
 		fix = ($accumulated_scale_y / $accumulated_scale_x)
 		with_scale(fix, 1.0) {
+			# assert_equal 1.0, ($accumulated_scale_x / $accumulated_scale_y)
 			yield
 		}
 	end
@@ -105,6 +106,7 @@ module DrawingTransformations
 		# make object as tall as it is wide, in screen coordinates
 		fix = $accumulated_scale_x / $accumulated_scale_y
 		with_scale(1.0, fix) {
+			# assert_equal 1.0, ($accumulated_scale_x / $accumulated_scale_y)
 			yield fix
 		}
 	end
