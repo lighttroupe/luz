@@ -1,6 +1,9 @@
 require 'gui_box'
 
 class GuiList < GuiBox
+	VELOCITY_PER_SCROLL = 2.0
+	MAX_SCROLL_VELOCITY = 16.0
+
 	easy_accessor :spacing_x, :spacing_y, :item_aspect_ratio, :scroll_wrap, :scroll, :scroll_velocity
 
 	callback :scroll_change
@@ -13,41 +16,9 @@ class GuiList < GuiBox
 		@visible_slots = 0.0
 	end
 
-	VELOCITY_PER_SCROLL = 2.0
-	MAX_SCROLL_VELOCITY = 16.0
-	def scroll_up!(pointer)
-		@scroll_velocity = (@scroll_velocity - VELOCITY_PER_SCROLL).clamp(-MAX_SCROLL_VELOCITY, MAX_SCROLL_VELOCITY)
-	end
-	def scroll_down!(pointer)
-		@scroll_velocity = (@scroll_velocity + VELOCITY_PER_SCROLL).clamp(-MAX_SCROLL_VELOCITY, MAX_SCROLL_VELOCITY) 
-	end
-
-	def hit_test_render!
-		return if hidden?
-		with_positioning { render_hit_test_unit_square }										# list blank space is clickable
-		each_with_positioning { |gui_object| gui_object.hit_test_render! }
-	end
-
-	def velocity_damper
-		0.94
-	end
-
-	def child_click(pointer)
-		@scroll_velocity = 0.0
-	end
-
-	def move_child_up(child)
-		if (index = @contents.index(child)) > 0
-			@contents[index], @contents[index-1] = @contents[index-1], @contents[index]
-		end
-	end
-
-	def move_child_down(child)
-		if (index = @contents.index(child)) < (@contents.size - 1)
-			@contents[index], @contents[index+1] = @contents[index+1], @contents[index]
-		end
-	end
-
+	#
+	# tick, render
+	#
 	def gui_tick!
 		super
 		if allow_scrolling?
@@ -75,6 +46,46 @@ class GuiList < GuiBox
 		@one_fake_scroll_change_notify = false
 	end
 
+	def hit_test_render!
+		return if hidden?
+		with_positioning { render_hit_test_unit_square }										# list blank space is clickable
+		each_with_positioning { |gui_object| gui_object.hit_test_render! }
+	end
+
+	#
+	# Pointer interaction
+	#
+	def child_click(pointer)
+		@scroll_velocity = 0.0
+	end
+
+	# NOTE: these are mousewheel-like activity
+	def scroll_up!(pointer)
+		@scroll_velocity = (@scroll_velocity - VELOCITY_PER_SCROLL).clamp(-MAX_SCROLL_VELOCITY, MAX_SCROLL_VELOCITY)
+	end
+
+	def scroll_down!(pointer)
+		@scroll_velocity = (@scroll_velocity + VELOCITY_PER_SCROLL).clamp(-MAX_SCROLL_VELOCITY, MAX_SCROLL_VELOCITY) 
+	end
+
+	#
+	# Reordering (one at a time)
+	#
+	def move_child_up(child)
+		if (index = @contents.index(child)) > 0
+			@contents[index], @contents[index-1] = @contents[index-1], @contents[index]
+		end
+	end
+
+	def move_child_down(child)
+		if (index = @contents.index(child)) < (@contents.size - 1)
+			@contents[index], @contents[index+1] = @contents[index+1], @contents[index]
+		end
+	end
+
+	#
+	# Scrolling
+	#
 	def scrolled_to_start?
 		@scroll == 0.0
 	end
@@ -87,21 +98,32 @@ class GuiList < GuiBox
 		@contents.size > @visible_slots
 	end
 
-	def distance_between_items
-		(spacing_y || 1.0) / (item_aspect_ratio || 1.0)
-	end
-
-	def index_of(value)
-		@contents.index(value)
-	end
-
+	# instant-scroll a list to given value
 	def scroll_to(value)
 		if(index = index_of(value))
-			@scroll = (index * -distance_between_items) # NOTE: this puts selected at the top.  putting it under the pointer that invoked us might be nice.
+			@scroll = (index * -distance_between_items) # NOTE: this puts 'value' at the top of the list.  putting it under the pointer that invoked us might be nice.
 		end
 		self
 	end
 
+	def velocity_damper
+		0.94
+	end
+
+	#
+	# Helpers
+	#
+	def index_of(value)
+		@contents.index(value)
+	end
+
+	def distance_between_items
+		(spacing_y || 1.0) / (item_aspect_ratio || 1.0)		# TODO: this would be prettier if easy_attributes had defaults
+	end
+
+	#
+	# Iteration
+	#
 	def each_with_positioning
 		with_positioning {
 			if spacing_y && spacing_y != 0.0
@@ -113,7 +135,6 @@ class GuiList < GuiBox
 							with_aspect_ratio_fix_y { |fix_y|
 								@visible_slots = ((1.0 / fix_y) / (final_spacing_y.abs))
 
-								# Enable scrolling?
 								if allow_scrolling?
 									unless scroll_wrap
 										@scroll_max = (@contents.size - @visible_slots) * final_spacing_y.abs
