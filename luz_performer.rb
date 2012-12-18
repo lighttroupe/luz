@@ -134,8 +134,8 @@ class LuzPerformer
 		# Keyboard input
 		when SDL::Event2::KeyDown
 			if event.sym == SDL::Key::ESCAPE and escape_quits?
-				toggle_fullscreen!
-				#finished!
+				#toggle_fullscreen!
+				finished!
 			else
 				$engine.on_button_down(sdl_to_luz_button_name(SDL::Key.get_key_name(event.sym)), frame_offset=1)
 			end
