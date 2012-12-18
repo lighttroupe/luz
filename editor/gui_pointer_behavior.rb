@@ -1,3 +1,6 @@
+#
+# This is default behavior for objects that can be hovered over.
+#
 module GuiPointerBehavior
 	empty_method :on_pointer_enter, :on_pointer_exit, :on_first_pointer_enter, :on_last_pointer_exit
 
@@ -27,8 +30,9 @@ module GuiPointerBehavior
 			on_last_pointer_exit if pointers_hovering.empty?
 		end
 	end
+
 	def child_click(pointer)
-		@parent.child_click(pointer) if @parent
+		parent.child_click(pointer) if parent
 	end
 	def scroll_left!(pointer)
 		parent.scroll_left!(pointer) if parent
