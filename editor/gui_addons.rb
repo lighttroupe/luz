@@ -34,5 +34,3 @@ class GuiObjectRenderer < GuiObject
 		clicked_notify(pointer)
 	end
 end
-
-
