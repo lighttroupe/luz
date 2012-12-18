@@ -1,27 +1,29 @@
 class PointerMouse < Pointer
-	X,Y,BUTTON_01,WHEEL_UP,WHEEL_DOWN,WHEEL_LEFT,WHEEL_RIGHT = 'Mouse 01 / X', 'Mouse 01 / Y', 'Mouse 01 / Button 01', 'Mouse 01 / Button 04', 'Mouse 01 / Button 05', 'Mouse 01 / Button 06', 'Mouse 01 / Button 07'
-	def x
-		$engine.slider_value(X) - 0.5
+	def x_name
+		@x_name ||= sprintf("Mouse %02d / X", number)
 	end
-	def y
-		$engine.slider_value(Y) - 0.5
+
+	def y_name
+		@y_name ||= sprintf("Mouse %02d / Y", number)
 	end
-	def click?
-		$engine.button_pressed_this_frame?(BUTTON_01)
+
+	def button_one_name
+		@button_one_name ||= sprintf("Mouse %02d / Button 01", number)
 	end
-	def hold?
-		$engine.button_down?(BUTTON_01)
+
+	def scroll_up_name
+		@scroll_up_name ||= sprintf("Mouse %02d / Button 04", number)
 	end
-	def scroll_up?
-		$engine.button_pressed_this_frame?(WHEEL_UP)
+
+	def scroll_down_name
+		@scroll_down_name ||= sprintf("Mouse %02d / Button 05", number)
 	end
-	def scroll_down?
-		$engine.button_pressed_this_frame?(WHEEL_DOWN)
+
+	def scroll_left_name
+		@scroll_left_name ||= sprintf("Mouse %02d / Button 06", number)
 	end
-	def scroll_left?
-		$engine.button_pressed_this_frame?(WHEEL_LEFT)
-	end
-	def scroll_right?
-		$engine.button_pressed_this_frame?(WHEEL_RIGHT)
+
+	def scroll_right_name
+		@scroll_right_name ||= sprintf("Mouse %02d / Button 07", number)
 	end
 end
