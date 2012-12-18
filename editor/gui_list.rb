@@ -1,6 +1,7 @@
+require 'gui_box'
+
 class GuiList < GuiBox
-	easy_accessor :spacing_x, :spacing_y, :item_aspect_ratio, :scroll_wrap
-	easy_accessor :scroll, :scroll_velocity
+	easy_accessor :spacing_x, :spacing_y, :item_aspect_ratio, :scroll_wrap, :scroll, :scroll_velocity
 
 	callback :scroll_change
 
