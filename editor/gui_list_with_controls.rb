@@ -1,3 +1,6 @@
+#
+# This is a list with up and down arrows for easy scrolling.
+#
 class GuiListWithControls < GuiBox
 	# List configuration goes to list
 	pipe :scroll_wrap=, :list
