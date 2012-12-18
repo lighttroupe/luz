@@ -35,6 +35,7 @@ class Pointer
 
 	def begin_drag(object)
 		@drag_object = object		# NOTE: only dragging if @dragging is then set (below)
+		@drag_out_notify_potential = true
 		@drag_object.begin_drag(self)
 	end
 
@@ -52,24 +53,56 @@ class Pointer
 		@drag_object = nil
 	end
 
+	def capture_object!(object, &proc)
+		@capture_object = object
+		@capture_drop_proc = proc
+	end
+
+	def uncapture_object!
+		@capture_object, @capture_drop_proc = nil, nil
+	end
+
+	#
+	# This is the entrance for most features
+	#
 	def tick!
 		if click?
+			#
+			# Pointer capture feature: all clicks go to the "capture object", which can uncapture via return value
+			#
+			if @capture_object
+				if @capture_drop_proc.call(@hover_object) != true		# returns: still captured?
+					@capture_object, @capture_drop_proc = nil, nil
+				end
+				return if @capture_object
+			end
+
 			if @hover_object
 				@hover_object.click(self) if @hover_object.respond_to?(:click)
 				@click_x, @click_y, @click_time = x, y, Time.now
 				begin_drag(@hover_object) if @hover_object.draggable?
+				@long_click_potential = true
+				@click_object = @hover_object
 			else
 				$gui.pointer_click_on_nothing(self) if $gui.respond_to? :pointer_click_on_nothing
 			end
 
 		elsif hold?
-			@hover_object.click_hold(self) if @hover_object.respond_to?(:click_hold)
+			@hover_object.click_hold(self) if @hover_object.respond_to?(:click_hold)		# repeated calls once per frame
 
 			if dragging?
 				update_drag
+			end
 
-			elsif hold_time > LONG_CLICK_HOLD_TIME && (drag_delta_x < SMALL_DISTANCE && drag_delta_y < SMALL_DISTANCE)
-				@hover_object.long_click(self) if @hover_object.respond_to?(:long_click)
+			if @long_click_potential && @hover_object == @click_object
+				if (drag_delta_x < SMALL_DISTANCE && drag_delta_y < SMALL_DISTANCE)
+					if hold_time > LONG_CLICK_HOLD_TIME
+						@hover_object.long_click(self) if @hover_object.respond_to?(:long_click)
+						@long_click_potential = false
+					end
+				else
+					@long_click_potential = false		# wandered too far
+				end
 			end
 
 		elsif dragging?
@@ -85,14 +118,6 @@ class Pointer
 		end
 	end
 
-	def color
-		if hold?
-			HOLD_COLOR
-		else
-			DEFAULT_COLOR
-		end
-	end
-
 	def render!
 		background_image.using {
 			with_color(color) {
@@ -105,18 +130,36 @@ class Pointer
 		}
 	end
 
+	def color
+		if hold?
+			HOLD_COLOR
+		else
+			DEFAULT_COLOR
+		end
+	end
+
 	def is_over(object)
 		# do no work for the common case of "still hovering" (this gets called repeatedly with the same value)
-		return if @hover_object == object
+		if @hover_object == object
+			@drag_out_notify_potential = true
+			return
+		end
 
 		# now hovering over something new!
 		#puts "now over #{object ? object.class : 'nil'} #{$env[:frame_number]}"
 
 		if @drag_object
-			@drag_object.drag_out(self) if @drag_object.respond_to? :drag_out
-			#puts 'drag out'
+			# drag_out notify.  callee can check in with us about which direction using eg. drag_delta_y
+			if @drag_out_notify_potential
+				if @drag_object.respond_to?(:drag_out)
+					@drag_object.drag_out(self)
+					@click_x, @click_y = x, y		# TODO: more effectively begin a new drag here?
+					@long_click_potential = false
+				end
+				@drag_out_notify_potential = false		# don't notify of this repeatedly
+			end
 
-			# don't hover over anything but drag object while dragging (TODO: allow for drop?!)
+			# don't hover over anything but 'drag object' while dragging (TODO: allow for drop?!)
 			return if object != @drag_object
 		end
 

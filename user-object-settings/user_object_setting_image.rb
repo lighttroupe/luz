@@ -111,9 +111,7 @@ class UserObjectSettingImage < UserObjectSetting
 		load_images if @image_list.nil?
 		return yield unless @image_list
 
-		index %= @image_list.size unless index == 0
-
-		@image_list[index].using {
+		@image_list[index % @image_list.size].using {
 			# TODO: add texture options
 			yield
 		}
@@ -136,5 +134,12 @@ class UserObjectSettingImage < UserObjectSetting
 			end
 		end
 		@image_list
+	end
+
+	# Somewhat of a hack to save screenshots live to a theme
+	def set_pixels(pixels, width, height)
+		@image_list ||= []
+		@image_list[0] ||= Image.new
+		@image_list[0].from_rgb8(pixels, @width=width, @height=height)
 	end
 end

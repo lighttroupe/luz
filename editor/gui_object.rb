@@ -39,9 +39,13 @@ module MethodsForGuiObject
 	def hit_test_render!
 		return if hidden?
 		with_positioning {
-			with_unique_hit_test_color_for_object(self, 0) {
-				unit_square
-			}
+			render_hit_test_unit_square
+		}
+	end
+
+	def render_hit_test_unit_square
+		with_unique_hit_test_color_for_object(self, 0) {
+			unit_square
 		}
 	end
 
@@ -66,6 +70,21 @@ module MethodsForGuiObject
 		}
 	end
 
+	boolean_accessor :exiting
+	def exit!
+		return if exiting?
+		exiting!
+		after_exit_animation {
+			remove_from_parent!
+		}
+	end
+
+	def after_exit_animation
+		set_opacity(opacity || 1.0).animate({:scale_x => 0.0, :scale_y => 0.0, :opacity => 0.0}, duration=0.2) {
+			yield
+		}
+	end
+
 	def background_color
 		if pointer_hovering?
 			BACKGROUND_COLOR_HOVERING
@@ -77,7 +96,13 @@ module MethodsForGuiObject
 	end
 
 	def click(pointer)
-		@parent.click(pointer) if @parent			# Default is to pass it up the stack
+		@parent.click(pointer) if @parent			# Default is to pass it up the stack		TODO: change this to "child_click" ? (see UserObject monkeypatching)
+	end
+	def scroll_up!(pointer)
+		@parent.scroll_up!(pointer) if @parent			# Default is to pass it up the stack		TODO: change this to "child_click" ? (see UserObject monkeypatching)
+	end
+	def scroll_down!(pointer)
+		@parent.scroll_down!(pointer) if @parent			# Default is to pass it up the stack		TODO: change this to "child_click" ? (see UserObject monkeypatching)
 	end
 
 	def begin_drag(pointer)
@@ -116,6 +141,11 @@ module MethodsForGuiObject
 
 	def remove_from_parent!
 		@parent.remove(self) if @parent
+	end
+
+	def add_to_root(object)
+		return @parent.add_to_root(object) if @parent
+		self << object
 	end
 end
 

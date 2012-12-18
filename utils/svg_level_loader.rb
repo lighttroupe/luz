@@ -231,6 +231,8 @@ private
 			path = path.gsub(/file:.*\/(worlds\/.*\....)/, '\1')
 			path = path.gsub(/file:.*\/(images\/.*\....)/, '\1')
 			path = path.gsub('%20',' ')
+			path = path.gsub('file://','')		# down to just /home/user/path/file.ext
+
 			image = $engine.load_images(path)
 			rect.options[:image] = image.first if image	# no gif support yet
 			yield rect

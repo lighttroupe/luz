@@ -40,9 +40,17 @@ class ProjectEffectEditor < ProjectEffect
 		@gui = nil
 	end
 
+	def luz_2?
+		!defined?(GUI)		# the 1.0 Gui manager
+	end
+
 	def create_gui
 		@gui = GuiDefault.new
-		$gui ||= @gui		# HACK: allows GuiObject and others to send events to the gui
+
+		if luz_2?
+			$gui = @gui		# HACK: allows GuiObject and others to send events to the gui, but not in Luz 1.0
+			$gui.positive_message('Welcome to Luz 2.0')
+		end
 
 		# TODO: how to configure the mices?
 		@pointers = [PointerMouse.new.set_background_image($engine.load_image('images/pointer.png'))]
@@ -70,8 +78,10 @@ class ProjectEffectEditor < ProjectEffect
 	end
 
 	def render
-		with_multiplied_alpha(output_opacity) {
-			yield
+		@gui.render {
+			with_multiplied_alpha(output_opacity) {
+				yield
+			}
 		}
 
 		if show_amount > 0.0

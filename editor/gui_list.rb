@@ -2,10 +2,14 @@ class GuiList < GuiBox
 	easy_accessor :spacing_x, :spacing_y, :item_aspect_ratio, :scroll_wrap
 	easy_accessor :scroll, :scroll_velocity
 
-	def gui_render!
-		return if hidden?
-		#with_positioning { with_color([0.5,1.0,0.0,0.5]) { unit_square } }
-		each_with_positioning { |gui_object| gui_object.gui_render! }
+	callback :scroll_change
+
+	def initialize(*args)
+		super
+		@scroll = 0.0
+		@scroll_velocity = 0.0
+		@one_fake_scroll_change_notify = true
+		@visible_slots = 0.0
 	end
 
 	VELOCITY_PER_SCROLL = 2.0
@@ -19,6 +23,7 @@ class GuiList < GuiBox
 
 	def hit_test_render!
 		return if hidden?
+		with_positioning { render_hit_test_unit_square }										# list blank space is clickable
 		each_with_positioning { |gui_object| gui_object.hit_test_render! }
 	end
 
@@ -26,13 +31,74 @@ class GuiList < GuiBox
 		0.94
 	end
 
+	def child_click(pointer)
+		@scroll_velocity = 0.0
+	end
+
+	def move_child_up(child)
+		if (index = @contents.index(child)) > 0
+			@contents[index], @contents[index-1] = @contents[index-1], @contents[index]
+		end
+	end
+
+	def move_child_down(child)
+		if (index = @contents.index(child)) < (@contents.size - 1)
+			@contents[index], @contents[index+1] = @contents[index+1], @contents[index]
+		end
+	end
+
 	def gui_tick!
 		super
-		@scroll ||= 0.0
-		@scroll_velocity ||= 0.0
-		@scroll += @scroll_velocity * $env[:frame_time_delta]
-		@scroll_velocity *= velocity_damper
-		@scroll_velocity = 0.0 if @scroll_velocity.abs < 0.001		# floating points...
+		if allow_scrolling?
+			starting_scroll = @scroll
+
+			@scroll += @scroll_velocity * $env[:frame_time_delta]
+			@scroll = 0.0 if @scroll.abs < 0.001
+			@scroll = @scroll.clamp(0.0, @scroll_max) if @scroll_max
+
+			@scroll_velocity *= velocity_damper
+			@scroll_velocity = 0.0 if @scroll_velocity.abs < 0.001		# floating points...
+
+			scroll_change_notify if @scroll != starting_scroll
+		end
+	end
+
+	BACKGROUND_COLOR = [0,0,0,0.8]
+	def gui_render!
+		return if hidden?
+		with_positioning { with_color(BACKGROUND_COLOR) { unit_square } }
+		each_with_positioning { |gui_object| gui_object.gui_render! }
+
+		# this allows those that respond to our scroll changes to init themselves
+		scroll_change_notify if @one_fake_scroll_change_notify
+		@one_fake_scroll_change_notify = false
+	end
+
+	def scrolled_to_start?
+		@scroll == 0.0
+	end
+
+	def scrolled_to_end?
+		@scroll == @scroll_max
+	end
+
+	def allow_scrolling?
+		@contents.size > @visible_slots
+	end
+
+	def distance_between_items
+		(spacing_y || 1.0) / (item_aspect_ratio || 1.0)
+	end
+
+	def index_of(value)
+		@contents.index(value)
+	end
+
+	def scroll_to(value)
+		if(index = index_of(value))
+			@scroll = (index * -distance_between_items) # NOTE: this puts selected at the top.  putting it under the pointer that invoked us might be nice.
+		end
+		self
 	end
 
 	def each_with_positioning
@@ -40,21 +106,22 @@ class GuiList < GuiBox
 			if spacing_y && spacing_y != 0.0
 				with_horizontal_clip_plane_above(0.5) {
 					with_horizontal_clip_plane_below(-0.5) {
-						final_spacing_y = (spacing_y || 1.0) / (item_aspect_ratio || 1.0)
+						final_spacing_y = distance_between_items
 
 						with_translation(0.0, 0.5) {
 							with_aspect_ratio_fix_y { |fix_y|
-								visible_slots = ((1.0 / fix_y) / (final_spacing_y.abs))
+								@visible_slots = ((1.0 / fix_y) / (final_spacing_y.abs))
 
 								# Enable scrolling?
-								if @contents.size > visible_slots
+								if allow_scrolling?
 									unless scroll_wrap
-										@scroll = @scroll.clamp(0.0, (@contents.size - visible_slots) * final_spacing_y.abs)
+										@scroll_max = (@contents.size - @visible_slots) * final_spacing_y.abs
+										@scroll = @scroll.clamp(0.0, @scroll_max)
 									end
 
 									first_index, remainder_scroll = @scroll.divmod(final_spacing_y.abs)
 									total_shown = @contents.size
-									last_index = first_index + (visible_slots) + 1
+									last_index = first_index + (@visible_slots) + 1
 
 									for fake_index in first_index..last_index
 										index = fake_index % @contents.size		# this achieves endless looping!
@@ -110,21 +177,56 @@ class GuiList < GuiBox
 end
 
 class GuiListWithControls < GuiBox
-	def scroll_wrap=(v) ; @list.scroll_wrap = v ; end
-	def spacing_y=(v) ; @list.spacing_y = v ; end
+	# List configuration goes to list
+	pipe :scroll_wrap=, :list
+	pipe :spacing_y=, :list
+	pipe :item_aspect_ratio=, :list
+	pipe :set_selection, :list
+	pipe :add_to_selection, :list
 
 	def initialize(contents)
 		super()
 		self << @list=GuiList.new(contents)
 
 		# up
-		self << @up_button=GuiButton.new.set(:scale_x => 1.0, :scale_y => 0.08, :offset_y => 0.5 - 0.04, :opacity => 0.5)
+		self << @up_button=GuiButton.new.set(:scale_x => 1.0, :scale_y => 0.16, :offset_y => 0.5 - 0.08, :opacity => 0.75, :background_image => $engine.load_image('images/buttons/scroll-up.png'))
 		@up_button.on_clicked { @list.scroll_velocity -= 0.4 }
 		@up_button.on_holding { @list.scroll_velocity -= 0.2 }
 
 		# down
-		self << @down_button=GuiButton.new.set(:scale_x => 1.0, :scale_y => 0.09, :offset_y => -0.5 + 0.04, :opacity => 0.5)
+		self << @down_button=GuiButton.new.set(:scale_x => 1.0, :scale_y => -0.16, :offset_y => -0.5 + 0.08, :opacity => 0.75, :background_image => $engine.load_image('images/buttons/scroll-up.png'))
 		@down_button.on_clicked { @list.scroll_velocity += 0.4 }
 		@down_button.on_holding { @list.scroll_velocity += 0.2 }
+
+		@list.on_scroll_change { update_scroll_buttons }
+	end
+
+	def update_scroll_buttons
+		if @list.scroll_wrap
+			@up_button.set_hidden(!@list.allow_scrolling?)		# endlessly scrolling list...without enough elements to bother?   TODO: this gets the wrong value...
+			@down_button.set_hidden(!@list.allow_scrolling?)
+		elsif @list.allow_scrolling?												# scrolling without scroll_wrap uses smart buttons-- up disappears when arriving at top of list
+			@up_button.set_hidden(@list.scrolled_to_start?)
+			@down_button.set_hidden(@list.scrolled_to_end?)
+		else
+			@up_button.hidden!			# no scrolling allowed!
+			@down_button.hidden!
+		end
+	end
+
+	def includes_gui_object?(object)
+		(@up_button == object) || (@down_button == object)
+	end
+
+	def scroll_up!(pointer)
+		@list.scroll_up!(pointer)
+	end
+
+	def scroll_down!(pointer)
+		@list.scroll_down!(pointer)
+	end
+	
+	def scroll_to(value)
+		@list.scroll_to(value)
 	end
 end

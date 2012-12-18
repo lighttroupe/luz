@@ -2,11 +2,15 @@ require 'gui_pointer_behavior', 'gui_object', 'gui_box', 'gui_list', 'gui_grid',
 require 'editor/fonts/bitmap-font'
 require 'gui_addons'
 
-#load_directory(Dir.pwd + '/editor/widgets/', '**.rb')
+require 'gui_radio_buttons'
+
+load_directory(Dir.pwd + '/editor/addons/', '**.rb')
 
 class GuiDefault < GuiBox
 	pipe :positive_message, :message_bar
 	pipe :negative_message, :message_bar
+
+	ACTOR_MODE, DIRECTOR_MODE, OUTPUT_MODE = 1, 2, 3
 
 	def initialize
 		super
@@ -21,8 +25,16 @@ class GuiDefault < GuiBox
 	PREFERENCES_BUTTON    = 'Keyboard / F12'
 
 	def reload_notify
-#		clear!
-#		create_default_gui
+		clear!
+		create!
+	end
+
+	def render
+		if @mode == OUTPUT_MODE
+			yield
+		elsif @mode == ACTOR_MODE
+			@chosen_actor.render! if @chosen_actor
+		end
 	end
 
 	def create!
@@ -30,37 +42,54 @@ class GuiDefault < GuiBox
 		self << (@actors_button = GuiButton.new.set(:hotkey => ACTORS_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => -0.46, :offset_y => 0.5 - 0.14, :background_image => $engine.load_image('images/buttons/menu.png')))
 		@actors_button.on_clicked { toggle_actors_list! }
 
-		self << (@themes_list = GuiList.new($engine.project.themes).set(:scale_x => 0.08, :scale_y => 0.5, :offset_x => -0.11, :offset_y => 0.5, :item_aspect_ratio => 1.6, :hidden => true, :spacing_y => -1.0))
+		self << (@themes_list = GuiListWithControls.new($engine.project.themes).set(:scale_x => 0.08, :scale_y => 0.5, :offset_x => -0.11, :offset_y => 0.5, :item_aspect_ratio => 1.6, :hidden => true, :spacing_y => -1.0))
 		self << (@theme_button = GuiButton.new.set(:hotkey => THEMES_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => -0.11, :offset_y => 0.5 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
 		@theme_button.on_clicked { toggle_themes_list! }
 
-		self << (@curves_list = GuiList.new($engine.project.curves).set(:scale_x => 0.08, :scale_y => 0.5, :offset_x => 0.06, :offset_y => 0.5, :item_aspect_ratio => 1.6, :hidden => true, :spacing_y => -1.0))
+		self << (@curves_list = GuiListWithControls.new($engine.project.curves).set(:scale_x => 0.08, :scale_y => 0.5, :offset_x => 0.06, :offset_y => 0.5, :item_aspect_ratio => 1.6, :hidden => true, :spacing_y => -1.0))
 		self << (@curve_button = GuiButton.new.set(:hotkey => CURVES_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.06, :offset_y => 0.50 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
 		@curve_button.on_clicked { toggle_curves_list! }
 
-		self << (@variables_list = GuiList.new($engine.project.variables).set(:scale_x => 0.12, :scale_y => 0.5, :offset_x => 0.23, :offset_y => 0.5, :item_aspect_ratio => 2.5, :hidden => true, :spacing_y => -1.0))
+		self << (@variables_list = GuiListWithControls.new($engine.project.variables).set(:scale_x => 0.12, :scale_y => 0.5, :offset_x => 0.23, :offset_y => 0.5, :item_aspect_ratio => 2.5, :hidden => true, :spacing_y => -1.0))
 		self << (@variable_button = GuiButton.new.set(:hotkey => VARIABLES_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.23, :offset_y => 0.50 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
 		@variable_button.on_clicked { toggle_variables_list! }
 
-		self << (@events_list = GuiList.new($engine.project.events).set(:scale_x => 0.12, :scale_y => 0.5, :offset_x => 0.40, :offset_y => 0.5, :item_aspect_ratio => 2.5, :hidden => true, :spacing_y => -1.0))
+		self << (@events_list = GuiListWithControls.new($engine.project.events).set(:scale_x => 0.12, :scale_y => 0.5, :offset_x => 0.40, :offset_y => 0.5, :item_aspect_ratio => 2.5, :hidden => true, :spacing_y => -1.0))
 		self << (@event_button = GuiButton.new.set(:hotkey => EVENTS_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.40, :offset_y => 0.50 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
 		@event_button.on_clicked { toggle_events_list! }
 
 		self << (@message_bar = GuiMessageBar.new.set(:offset_x => -0.33, :offset_y => 0.5 - 0.04, :scale_x => 0.32, :scale_y => 0.05))
-		self << (@beat_monitor = GuiBeatMonitor.new(beats_per_measure=4).set(:offset_y => -0.45 - 0.03, :scale_x => 0.08, :scale_y => 0.02, :spacing_x => 1.0))
-
-		positive_message('Welcome to Luz 2.0')
+		self << (@beat_monitor = GuiBeatMonitor.new(beats_per_measure=4).set(:offset_y => -0.45 - 0.03, :scale_x => 0.12, :scale_y => 0.02, :spacing_x => 1.0))
 
 		self << (@preferences_box = GuiPreferencesBox.new.build.set(:scale_x => 0.22, :scale_y => 0.4, :offset_x => 0.4, :offset_y => -0.3, :opacity => 0.0, :hidden => true))
 		self << (@preferences_button = GuiButton.new.set(:hotkey => PREFERENCES_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.50, :offset_y => -0.50, :color => [0.5,1.0,0.5,1.0], :background_image => $engine.load_image('images/buttons/menu.png')))
 		@preferences_button.on_clicked { toggle_preferences_box! }
 
+		self << GuiRadioButtons.new(self, :mode, [ACTOR_MODE, OUTPUT_MODE]).set(:offset_x => -0.35, :offset_y => -0.45 - 0.03, :scale_x => 0.12, :scale_y => 0.02, :spacing_x => 1.0)
+
 		@user_object_editors = {}
+		@chosen_actor = nil
+
+		self.mode = OUTPUT_MODE
 	end
 
-	def gui_tick!
-		super
+	def mode=(mode)
+		return if mode == @mode
+		@mode = mode
+
+		case mode
+		when ACTOR_MODE
+			
+		when DIRECTOR_MODE
+			
+		when OUTPUT_MODE
+			
+		end
 	end
+
+#	def gui_tick!
+#		super
+#	end
 
 	def toggle_preferences_box!
 		if @preferences_box.hidden?		# TODO: this is not a good way to toggle
@@ -72,11 +101,13 @@ class GuiDefault < GuiBox
 
 	def toggle_actors_list!
 		if @actors_list.hidden?
-			@actors_list.set(:hidden => false, :opacity => 0.0).animate({:opacity => 1.0}, duration=0.2)
+			show_actors_list!
 		else
-			@actors_list.animate(:opacity, 0.0, duration=0.25) { @actors_list.set_hidden(true) }
+			close_actors_list!
 		end
 	end
+	def show_actors_list! ; @actors_list.set(:hidden => false, :opacity => 0.0).animate({:opacity => 1.0}, duration=0.2) ; end
+	def close_actors_list! ; @actors_list.animate(:opacity, 0.0, duration=0.25) { @actors_list.set_hidden(true) } ; end
 
 	def toggle_curves_list!
 		if @curves_list.hidden?
@@ -124,6 +155,12 @@ class GuiDefault < GuiBox
 			return
 		else
 			if user_object.is_a? ParentUserObject
+				if user_object.is_a? Actor
+					# @mode = ACTOR_MODE   TODO: perhaps some way to auto-switch to user view when selecting
+					@chosen_actor = user_object		# this way, if user then switches to the actor list, this actor will be showing
+					close_actors_list!
+				end
+
 				clear_editors!		# only support one for now
 
 				editor = GuiUserObjectEditor.new(user_object, {:scale_x => 0.3, :scale_y => 0.05}.merge(options))
@@ -198,7 +235,14 @@ class GuiUserObjectEditor < GuiBox
 		self << @user_object.gui_build_editor		# find gui_build_editor implementations for everything in gui_addons.rb
 
 		# label
-		self << (@title_text=BitmapFont.new.set_string(@user_object.title).set(:scale_x => 0.95, :scale_y => 0.08, :offset_x => 0.0, :offset_y => 0.5 - 0.04))		#.set(:background_image => $engine.load_image('images/buttons/menu.png'))
+		if @user_object.has_settings_list?
+			self << (@title_button=GuiButton.new.set(:scale_x => 0.5, :offset_x => -0.25, :scale_y => 0.10, :offset_y => 0.5 - 0.06, :color => [0,0,0,1]))		#.set(:background_image => $engine.load_image('images/buttons/menu.png'))
+
+			@title_button.on_clicked {
+				@user_object.gui_fill_settings_list(@user_object)
+			}
+		end
+		self << (@title_text=BitmapFont.new.set_string(@user_object.title).set(:scale_x => 0.5, :float => :left, :scale_y => 0.10, :offset_x => 0.0, :offset_y => 0.5 - 0.06))		#.set(:background_image => $engine.load_image('images/buttons/menu.png'))
 
 		self << (@close_button=GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.15, :offset_x => 0.5, :offset_y => 0.5, :background_image => $engine.load_image('images/buttons/close.png')))
 		@close_button.on_clicked {
@@ -213,7 +257,7 @@ class GuiPreferencesBox < GuiBox
 	end
 
 	def build
-		self << GuiObject.new.set(:color => [0.7, 1.0, 0.7, 0.4])
+		self << GuiObject.new.set(:color => [0.2, 0.5, 0.2, 0.9])
 		self << (@fps_label=BitmapFont.new.set_string("Frames Per Second").set(:scale_x => 0.05, :scale_y => 0.06, :offset_x => -0.42, :offset_y => 0.45))
 		self << GuiInteger.new($application, :frames_per_second, 20, 70).set(:offset_x => 0.4, :offset_y => 0.45, :scale_x => 0.2, :scale_y => 0.1)
 		self

@@ -189,13 +189,11 @@ class UserObject
 
 	# NOTE: also returns whether any cache-breaking-settings have changed
 	def resolve_settings
-		@settings ||= []
-
 		# a name => method name lookup, to avoid creating tons of useless Strings		TODO: better way??
 		@setting_name_to_resolve_method_hash ||= Hash.new { |hash, key| hash[key] = "#{key}_resolve" }
 
 		breaks_cache = false
-		@settings.each { |setting|
+		settings.each { |setting|
 			breaks_cache = true if ((setting.last_value != self.send(@setting_name_to_resolve_method_hash[setting.name])) and setting.breaks_cache?)
 		}
 		return breaks_cache

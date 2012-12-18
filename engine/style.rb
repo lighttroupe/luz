@@ -66,4 +66,8 @@ class Style < UserObject
 			yield
 		}
 	end
+
+	def set_pixels(pixels, width, height)
+		image_setting.set_pixels(pixels, width, height)
+	end
 end

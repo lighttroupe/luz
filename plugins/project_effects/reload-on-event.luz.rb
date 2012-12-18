@@ -17,6 +17,8 @@
  ###############################################################################
 
 class ProjectEffectReloadOnEvent < ProjectEffect
+	virtual		# deprecated
+
 	title				"Reload on Event"
 	description "Reloads the Luz project off disk."
 
