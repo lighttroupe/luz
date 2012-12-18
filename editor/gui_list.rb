@@ -69,7 +69,7 @@ class GuiList < GuiBox
 	end
 
 	#
-	# Reordering (one at a time)
+	# Reordering
 	#
 	def move_child_up(child)
 		if (index = @contents.index(child)) > 0
@@ -124,76 +124,86 @@ class GuiList < GuiBox
 	#
 	# Iteration
 	#
-	def each_with_positioning
+	def each_with_positioning(&proc)
 		with_positioning {
 			if spacing_y && spacing_y != 0.0
-				with_horizontal_clip_plane_above(0.5) {
-					with_horizontal_clip_plane_below(-0.5) {
-						final_spacing_y = distance_between_items
+				each_with_positioning_vertical(&proc)
+			else
+				each_with_positioning_horizontal(&proc)
+			end
+		}
+	end
 
-						with_translation(0.0, 0.5) {
-							with_aspect_ratio_fix_y { |fix_y|
-								@visible_slots = ((1.0 / fix_y) / (final_spacing_y.abs))
+private
 
-								if allow_scrolling?
-									unless scroll_wrap
-										@scroll_max = (@contents.size - @visible_slots) * final_spacing_y.abs
-										@scroll = @scroll.clamp(0.0, @scroll_max)
-									end
+	def each_with_positioning_vertical
+		with_horizontal_clip_plane_above(0.5) {
+			with_horizontal_clip_plane_below(-0.5) {
+				final_spacing_y = distance_between_items
 
-									first_index, remainder_scroll = @scroll.divmod(final_spacing_y.abs)
-									total_shown = @contents.size
-									last_index = first_index + (@visible_slots) + 1
+				with_translation(0.0, 0.5) {
+					with_aspect_ratio_fix_y { |fix_y|
+						@visible_slots = ((1.0 / fix_y) / (final_spacing_y.abs))
 
-									for fake_index in first_index..last_index
-										index = fake_index % @contents.size		# this achieves endless looping!
-										gui_object = @contents[index]
-										next unless gui_object		# support for nils-- potentially useful feature?
+						if allow_scrolling?
+							unless scroll_wrap
+								@scroll_max = (@contents.size - @visible_slots) * final_spacing_y.abs
+								@scroll = @scroll.clamp(0.0, @scroll_max)
+							end
 
-										with_translation(fake_index * (spacing_x || 0.0), @scroll + (fake_index * final_spacing_y) + (final_spacing_y / 2.0)) {
-											with_scale(1.0, final_spacing_y.abs) {
-												yield gui_object
-											}
+							first_index, remainder_scroll = @scroll.divmod(final_spacing_y.abs)
+							total_shown = @contents.size
+							last_index = first_index + (@visible_slots) + 1
+
+							for fake_index in first_index..last_index
+								index = fake_index % @contents.size		# this achieves endless looping!
+								gui_object = @contents[index]
+								next unless gui_object		# support for nils-- potentially useful feature?
+
+								with_translation(fake_index * (spacing_x || 0.0), @scroll + (fake_index * final_spacing_y) + (final_spacing_y / 2.0)) {
+									with_scale(1.0, final_spacing_y.abs) {
+										yield gui_object
+									}
+								}
+							end
+						else
+							with_translation(0.0, (final_spacing_y / 2.0)) {
+								for index in 0..(@contents.size-1)
+									gui_object = @contents[index]
+									with_translation(index * (spacing_x || 0.0), (index * final_spacing_y)) {
+										with_scale(1.0, final_spacing_y.abs) {
+											yield gui_object
 										}
-									end
-								else
-									with_translation(0.0, (final_spacing_y / 2.0)) {
-										for index in 0..(@contents.size-1)
-											gui_object = @contents[index]
-											with_translation(index * (spacing_x || 0.0), (index * final_spacing_y)) {
-												with_scale(1.0, final_spacing_y.abs) {
-													yield gui_object
-												}
-											}
-										end
 									}
 								end
 							}
-						}
+						end
 					}
 				}
-			else
-				# more primitive support for horizontal layout
-				with_vertical_clip_plane_right_of(1.5) {		# ...uhr?
-					with_vertical_clip_plane_left_of(-0.5) {
-						final_spacing_x = (spacing_x || 0.0) #/ (item_aspect_ratio || 1.0)
+			}
+		}
+	end
 
-						with_translation(-0.5, 0.0) {
-							with_aspect_ratio_fix {
-								with_translation(@scroll, 0.0) {
-									@contents.each_with_index { |gui_object, index|
-										with_translation((final_spacing_x / 2.0) + index * (final_spacing_x), 0.0) {
-											with_scale(final_spacing_x.abs, 1.0) {
-												yield gui_object
-											}
-										}
+	def each_with_positioning_horizontal
+		# more primitive support for horizontal layout
+		with_vertical_clip_plane_right_of(1.5) {		# ...uhr?
+			with_vertical_clip_plane_left_of(-0.5) {
+				final_spacing_x = (spacing_x || 0.0) #/ (item_aspect_ratio || 1.0)
+
+				with_translation(-0.5, 0.0) {
+					with_aspect_ratio_fix {
+						with_translation(@scroll, 0.0) {
+							@contents.each_with_index { |gui_object, index|
+								with_translation((final_spacing_x / 2.0) + index * (final_spacing_x), 0.0) {
+									with_scale(final_spacing_x.abs, 1.0) {
+										yield gui_object
 									}
 								}
 							}
 						}
 					}
 				}
-			end
+			}
 		}
 	end
 end
