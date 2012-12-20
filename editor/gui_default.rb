@@ -29,17 +29,6 @@ class GuiDefault < GuiBox
 		create!
 	end
 
-	def render
-		case @mode
-		when ACTOR_MODE
-			@chosen_actor.render! if @chosen_actor
-		when DIRECTOR_MODE
-			# none yet ...
-		when OUTPUT_MODE
-			yield
-		end
-	end
-
 	def create!
 		self << (@actors_list = GuiListWithControls.new($engine.project.actors).set(:scroll_wrap => true, :scale_x => 0.2, :scale_y => 0.75, :offset_x => -0.395, :offset_y => -0.08, :hidden => true, :spacing_y => -1.0))
 		self << (@actors_button = GuiButton.new.set(:hotkey => ACTORS_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => -0.46, :offset_y => 0.5 - 0.14, :background_image => $engine.load_image('images/buttons/menu.png')))
@@ -90,9 +79,16 @@ class GuiDefault < GuiBox
 		end
 	end
 
-#	def gui_tick!
-#		super
-#	end
+	def render
+		case @mode
+		when ACTOR_MODE
+			@chosen_actor.render! if @chosen_actor
+		when DIRECTOR_MODE
+			# none yet ...
+		when OUTPUT_MODE
+			yield
+		end
+	end
 
 	def toggle_preferences_box!
 		if @preferences_box.hidden?		# TODO: this is not a good way to toggle
