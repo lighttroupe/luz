@@ -8,8 +8,7 @@ require 'gui_preferences_box'
 require 'gui_user_object_editor'
 
 class GuiDefault < GuiBox
-	pipe :positive_message, :message_bar
-	pipe :negative_message, :message_bar
+	pipe [:positive_message, :negative_message], :message_bar
 
 	ACTOR_MODE, DIRECTOR_MODE, OUTPUT_MODE = 1, 2, 3
 
@@ -31,10 +30,13 @@ class GuiDefault < GuiBox
 	end
 
 	def render
-		if @mode == OUTPUT_MODE
-			yield
-		elsif @mode == ACTOR_MODE
+		case @mode
+		when ACTOR_MODE
 			@chosen_actor.render! if @chosen_actor
+		when DIRECTOR_MODE
+			# none yet ...
+		when OUTPUT_MODE
+			yield
 		end
 	end
 
