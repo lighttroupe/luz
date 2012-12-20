@@ -68,14 +68,14 @@ class GuiDefault < GuiBox
 	def mode=(mode)
 		return if mode == @mode
 		@mode = mode
+		after_mode_change
+	end
 
-		case mode
+	def after_mode_change
+		case @mode
 		when ACTOR_MODE
-			
 		when DIRECTOR_MODE
-			
 		when OUTPUT_MODE
-			
 		end
 	end
 
