@@ -57,6 +57,8 @@ class GuiDefault < GuiBox
 		self << (@preferences_button = GuiButton.new.set(:hotkey => PREFERENCES_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.50, :offset_y => -0.50, :color => [0.5,1.0,0.5,1.0], :background_image => $engine.load_image('images/buttons/menu.png')))
 		@preferences_button.on_clicked { toggle_preferences_box! }
 
+		# Radio buttons that control THIS OBJECT's @mode
+		# TODO: director view
 		self << GuiRadioButtons.new(self, :mode, [ACTOR_MODE, OUTPUT_MODE]).set(:offset_x => -0.35, :offset_y => -0.45 - 0.03, :scale_x => 0.12, :scale_y => 0.02, :spacing_x => 1.0)
 
 		@user_object_editors = {}
@@ -146,7 +148,7 @@ class GuiDefault < GuiBox
 
 		if editor && !editor.hidden?
 			# was already visible... ...hide self towards click spot
-			bring_to_top(editor)
+			self.bring_to_top(editor)
 			editor.animate({:offset_x => pointer.x, :offset_y => pointer.y, :scale_x => 0.0, :scale_y => 0.0, :opacity => 0.2}, duration=0.2) {
 				editor.remove_from_parent!		# trashed forever! (no cache)
 				@user_object_editors.delete(user_object)
