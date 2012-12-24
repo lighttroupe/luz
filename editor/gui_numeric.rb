@@ -5,7 +5,7 @@ class GuiNumeric < GuiObject
 		super()
 		@object, @method, @min, @max = object, '@'+method.to_s, min, max
 		@value_label = BitmapFont.new.set(:scale_x => 0.9, :scale_y => 0.65, :offset_y => -0.12)
-		@color = [0.1, 0.1, 1.0, 1.0]
+		@color = [0.6, 0.6, 1.0, 1.0]
 	end
 
 	def get_value

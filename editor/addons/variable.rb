@@ -5,10 +5,11 @@ class Variable
 	def gui_render!
 		gui_render_background
 
-		# Status Indicator
-		if (v=do_value) > 0.0
-			with_translation(-0.5 + v/2.0, 0.0) {
-				with_scale_unsafe(v, 1.0) {
+		# Value as Bar
+		value = do_value
+		if value > 0.0
+			with_translation(-0.5 + value/2.0, 0.0) {
+				with_scale_unsafe(value, 1.0) {
 					with_color(GUI_COLOR) {
 						unit_square
 					}
@@ -16,7 +17,7 @@ class Variable
 			}
 		end
 
-		# Value Display
+		# Value as Number
 		with_translation(0.45, 0.25) {
 			@value_label ||= BitmapFont.new.set(:scale_x => 0.35, :scale_y => 0.35)
 			@value_label.set_string((value * 100).to_i.to_s + '%')
