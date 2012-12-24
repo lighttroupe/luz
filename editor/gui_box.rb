@@ -1,7 +1,12 @@
+#
+# GuiBox is the base level container.
+#
+# It does no positioning of child objects, each is simply drawn on top of the previous.
+#
+
 require 'set'
 
 class GuiBox < GuiObject
-
 	def initialize(contents = [])
 		@contents = contents
 		@contents.each { |gui_object|
