@@ -23,7 +23,7 @@ class GladeWindow < DelegateClass(Gtk::Window)
 	MOUSE_BUTTON_1, MOUSE_BUTTON_2, MOUSE_BUTTON_3 = (1..3).to_a
 
 	def initialize(root_widget_name = nil, options = {})
-		file_name = sprintf("gui/%s.ui", root_widget_name) 
+		file_name = sprintf("gui-gtk/%s.ui", root_widget_name) 
 		instance_variable_names = options[:widgets] || []	
 
 		@builder = Gtk::Builder.new.add_from_file(file_name)
