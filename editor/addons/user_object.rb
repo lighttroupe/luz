@@ -1,10 +1,17 @@
+#
+# GUI addons for the base class for all objects the user makes (eg Actors, Actor Effects, Themes, Event Inputs)
+#
 class UserObject
 	include MethodsForGuiObject
 
-	def has_settings_list?
-		!@gui_settings_list.nil?
-	end
+	LABEL_COLOR_CRASHY = [1,0,0,0.5]
+	LABEL_COLOR_ENABLED = [1,1,1,1]
+	LABEL_COLOR_DISABLED = [1.0, 1.0, 1.0, 0.25]
+	USER_OBJECT_TITLE_HEIGHT = 0.65
 
+	#
+	# API
+	#
 	def gui_build_editor
 		if respond_to? :effects
 			box = GuiBox.new
@@ -24,52 +31,16 @@ class UserObject
 		end
 	end
 
-	def gui_fill_settings_list(user_object)
-		return unless @gui_settings_list
-
-		@gui_effects_list.clear_selection! if user_object == self
-
-		@gui_settings_list.clear!
-		user_object.settings.each { |setting|
-			@gui_settings_list << setting.gui_build_editor
-		}
-	end
-
-	def on_child_user_object_selected(user_object)
-		gui_fill_settings_list(user_object)
-		@gui_effects_list.set_selection(user_object) if @gui_effects_list
+	def has_settings_list?
+		!@gui_settings_list.nil?
 	end
 
 	#
-	#
+	# Rendering
 	#
 	def gui_render!
-		# Label
 		gui_render_background
 		gui_render_label
-	end
-
-	def hit_test_render!
-		with_unique_hit_test_color_for_object(self, 0) { unit_square }
-	end
-
-	def click(pointer)
-		$gui.build_editor_for(self, :pointer => pointer)
-		@parent.child_click(pointer)
-	end
-
-	LABEL_COLOR_CRASHY = [1,0,0,0.5]
-	LABEL_COLOR_ENABLED = [1,1,1,1]
-	LABEL_COLOR_DISABLED = [1.0, 1.0, 1.0, 0.25]
-	USER_OBJECT_TITLE_HEIGHT = 0.65
-	def label_color
-		if crashy?
-			LABEL_COLOR_CRASHY
-		elsif enabled?
-			LABEL_COLOR_ENABLED
-		else
-			LABEL_COLOR_DISABLED
-		end
 	end
 
 	def gui_render_label
@@ -83,5 +54,49 @@ class UserObject
 				}
 			end
 		}
+	end
+
+	def hit_test_render!
+		with_unique_hit_test_color_for_object(self, 0) { unit_square }
+	end
+
+	#
+	# Pointer
+	#
+	def click(pointer)
+		$gui.build_editor_for(self, :pointer => pointer)
+		@parent.child_click(pointer)
+	end
+
+	def on_child_user_object_selected(user_object)
+		gui_fill_settings_list(user_object)
+		@gui_effects_list.set_selection(user_object) if @gui_effects_list
+	end
+
+	#
+	# Helpers
+	#
+
+private
+
+	def gui_fill_settings_list(user_object)
+		return unless @gui_settings_list
+
+		@gui_effects_list.clear_selection! if user_object == self
+
+		@gui_settings_list.clear!
+		user_object.settings.each { |setting|
+			@gui_settings_list << setting.gui_build_editor
+		}
+	end
+
+	def label_color
+		if crashy?
+			LABEL_COLOR_CRASHY
+		elsif enabled?
+			LABEL_COLOR_ENABLED
+		else
+			LABEL_COLOR_DISABLED
+		end
 	end
 end
