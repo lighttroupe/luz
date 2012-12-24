@@ -1,4 +1,7 @@
 class Theme
+	#
+	# API
+	#
 	def gui_build_editor
 		box = GuiBox.new
 		box << GuiGrid.new(effects).set(:min_columns => 4)
@@ -10,6 +13,9 @@ class Theme
 		box
 	end
 
+	#
+	# Rendering
+	#
 	def gui_render!
 		gui_render_styles
 
@@ -19,6 +25,8 @@ class Theme
 			gui_render_label
 		end
 	end
+
+private
 
 	def gui_render_styles
 		@gui_render_styles_list = GL.RenderCached(@gui_render_styles_list) {
