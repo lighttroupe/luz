@@ -9,31 +9,45 @@ class GuiSelect < GuiListValue
 		@color = [0.6, 0.6, 1.0, 1.0]
 	end
 
-	def selected_label_text
-		value = get_value
-		@options.find { |o| o.first == value }.last
-	end
-
+	#
+	# API
+	#
 	def set_value(value)
 		super(value)
 		@selected_label.set_string(selected_label_text)
 	end
 
+	def list
+		@list
+	end
+
+	#
+	# Rendering
+	#
 	def gui_render!
 		with_gui_object_properties {
 			@selected_label.gui_render!
 		}
 	end
 
+	#
+	# Pointer
+	#
 	def click(pointer)
 		scroll_down!(pointer)
 	end
 
+	#
+	# Settings
+	#
 	def step_amount
 		1
 	end
 
-	def list
-		@list
+private
+
+	def selected_label_text
+		value = get_value
+		@options.find { |o| o.first == value }.last
 	end
 end
