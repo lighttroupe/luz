@@ -1,6 +1,6 @@
-require 'gui_list_value'
+require 'gui_list_select'
 
-class GuiActor < GuiListValue
+class GuiActor < GuiListSelect
 	def list
 		$engine.project.actors
 	end

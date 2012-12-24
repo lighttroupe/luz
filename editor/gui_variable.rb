@@ -1,6 +1,6 @@
-require 'gui_list_value'
+require 'gui_list_select'
 
-class GuiVariable < GuiListValue
+class GuiVariable < GuiListSelect
 	def list
 		$engine.project.variables
 	end

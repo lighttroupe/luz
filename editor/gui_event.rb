@@ -1,6 +1,6 @@
-require 'gui_list_value'
+require 'gui_list_select'
 
-class GuiEvent < GuiListValue
+class GuiEvent < GuiListSelect
 	def list
 		$engine.project.events
 	end

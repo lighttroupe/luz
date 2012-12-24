@@ -1,6 +1,6 @@
 # superclass for single-value setting widgets like GuiTheme
 
-class GuiListValue < GuiObject		# TODO: rename! GuiListSelect ?
+class GuiListSelect < GuiObject
 	easy_accessor :no_value_text
 
 	def initialize(object, method)

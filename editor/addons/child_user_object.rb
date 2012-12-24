@@ -1,3 +1,6 @@
+#
+# Addons for base class of all "effects" of UserObjects 
+#
 class ChildUserObject
 	#
 	# Rendering

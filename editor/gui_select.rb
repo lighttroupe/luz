@@ -1,6 +1,9 @@
-require 'gui_list_value'
+require 'gui_list_select'
 
-class GuiSelect < GuiListValue
+#
+# This is a non-popup list
+#
+class GuiSelect < GuiListSelect
 	def initialize(object, method, options)		# options is [[:one,'One'],[:two,'Two']]
 		super(object, method)
 		@options = options

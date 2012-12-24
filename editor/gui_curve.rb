@@ -1,6 +1,6 @@
-require 'gui_list_value'
+require 'gui_list_select'
 
-class GuiCurve < GuiListValue
+class GuiCurve < GuiListSelect
 	def list
 		$engine.project.curves
 	end

@@ -1,6 +1,6 @@
-require 'gui_list_value'
+require 'gui_list_select'
 
-class GuiTheme < GuiListValue
+class GuiTheme < GuiListSelect
 	def list
 		$engine.project.themes
 	end

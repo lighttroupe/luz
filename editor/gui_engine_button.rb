@@ -1,6 +1,6 @@
-require 'gui_list_value'
+require 'gui_list_select'
 
-class GuiEngineButton < GuiListValue
+class GuiEngineButton < GuiListSelect
 	def initialize(object, method)		# options is [[:one,'One'],[:two,'Two']]
 		super(object, method)
 		@selected_label = BitmapFont.new.set(:string => get_value, :scale_x => 0.9, :scale_y => 0.65)
