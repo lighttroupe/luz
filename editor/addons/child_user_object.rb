@@ -1,4 +1,15 @@
 class ChildUserObject
+	#
+	# Rendering
+	#
+	def gui_render!
+		gui_render_background
+		gui_render_label
+	end
+
+	#
+	# Pointer
+	#
 	def long_click(pointer)
 		toggle_enabled!
 	end
@@ -13,10 +24,5 @@ class ChildUserObject
 		else
 			parent.move_child_down(self)
 		end
-	end
-
-	def gui_render!
-		gui_render_background
-		gui_render_label
 	end
 end

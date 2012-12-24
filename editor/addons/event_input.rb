@@ -14,8 +14,8 @@ class EventInput
 			}
 		}
 
+		# Label
 		with_translation(0.17, 0.05) {
-			# Label
 			gui_render_label
 		}
 	end
