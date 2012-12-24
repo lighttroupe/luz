@@ -10,6 +10,9 @@ class GuiToggle < GuiObject
 		@object, @method = object, '@'+method.to_s
 	end
 
+	#
+	# API
+	#
 	def get_value
 		@object.instance_variable_get(@method) == true
 	end
@@ -22,11 +25,9 @@ class GuiToggle < GuiObject
 		get_value
 	end
 
-	def click(pointer)
-		set_value(!get_value)
-		clicked_notify
-	end
-
+	#
+	# Rendering
+	#
 	def gui_render!
 		with_gui_object_properties {
 			with_scale(0.6, 0.4) {
@@ -37,6 +38,14 @@ class GuiToggle < GuiObject
 				}
 			}
 		}
+	end
+
+	#
+	# Pointer
+	#
+	def click(pointer)
+		set_value(!get_value)
+		clicked_notify
 	end
 end
 
