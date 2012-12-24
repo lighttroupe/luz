@@ -19,7 +19,7 @@
 require 'easy_accessor', 'value_animation'
 require 'pointer', 'pointer_mouse'
 
-$LOAD_PATH << './editor'
+$LOAD_PATH << './gui-ruby'
 require 'gui_default'
 
 class ProjectEffectEditor < ProjectEffect
