@@ -23,17 +23,11 @@ class ActorEffectClipBox < ActorEffect
 	hint "Places four clip planes around the actor. Placement is affected by any translation or rotation done before Clip Box in the effects list."
 
 	setting 'radius', :float, :range => 0.0..1000.0, :default => 1.0..1000.0
+	setting 'angle', :float, :default => 0.0..1.0
 
 	def render
-		half_radius = radius / 2.0
-		with_vertical_clip_plane_left_of(-half_radius) {
-			with_vertical_clip_plane_right_of(half_radius) {
-				with_horizontal_clip_plane_below(-half_radius) {
-					with_horizontal_clip_plane_above(half_radius) {
-						yield
-					}
-				}
-			}
+		with_clip_box(radius / 2.0, angle) {
+			yield
 		}
 	end
 end

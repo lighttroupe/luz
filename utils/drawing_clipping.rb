@@ -58,12 +58,16 @@ module DrawingClipping
 		with_clip_plane([0.0, 1.0, 0.0, -y], &proc)
 	end
 
-	def with_clip_box(radius = 0.5)
-		with_vertical_clip_plane_left_of(-radius) {
-			with_vertical_clip_plane_right_of(radius) {
-				with_horizontal_clip_plane_below(-radius) {
-					with_horizontal_clip_plane_above(radius) {
-						yield
+	def with_clip_box(radius = 0.5, angle = 0.0)
+		with_roll(angle) {
+			with_vertical_clip_plane_left_of(-radius) {
+				with_vertical_clip_plane_right_of(radius) {
+					with_horizontal_clip_plane_below(-radius) {
+						with_horizontal_clip_plane_above(radius) {
+							with_roll(-angle) {
+								yield
+							}
+						}
 					}
 				}
 			}
