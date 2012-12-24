@@ -6,26 +6,18 @@ class Curve
 	MISC_COLOR = [0.5, 0.5, 0.8, 1.0]
 	FLOOR_COLOR = [0.0, 0.0, 0.0, 0.9]
 
+	POINTS_IN_ICON = 200
+
+	#
+	# API
+	#
 	def gui_build_editor
 		GuiObjectRenderer.new(self)
 	end
 
-	def gui_icon_color
-		if up?					# lower left to upper right (/)
-			UP_COLOR
-		elsif down?			# upper left to lower right (\)
-			DOWN_COLOR
-		elsif middle?		# starts and ends on 0.5 (~)
-			MIDDLE_COLOR
-		elsif looping?	# starts and ends on same value
-			LOOPING_COLOR
-		else						# anything else
-			MISC_COLOR
-		end
-	end
-
-	POINTS_IN_ICON = 200
-
+	#
+	# Rendering
+	#
 	def gui_render!
 		gui_render_background
 
@@ -60,6 +52,8 @@ class Curve
 		end
 	end
 
+private
+
 	def gui_render_curve
 		with_color(gui_icon_color) {
 			@gui_render_list = GL.RenderCached(@gui_render_list) {
@@ -77,5 +71,19 @@ class Curve
 				}
 			}
 		}
+	end
+
+	def gui_icon_color
+		if up?					# lower left to upper right (/)
+			UP_COLOR
+		elsif down?			# upper left to lower right (\)
+			DOWN_COLOR
+		elsif middle?		# starts and ends on 0.5 (~)
+			MIDDLE_COLOR
+		elsif looping?	# starts and ends on same value
+			LOOPING_COLOR
+		else						# anything else
+			MISC_COLOR
+		end
 	end
 end
