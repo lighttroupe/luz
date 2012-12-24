@@ -13,19 +13,24 @@ class GuiFloat < GuiNumeric
 		super.to_f
 	end
 
+	#
+	# Callbacks
+	#
 	def update_drag(pointer)
 		distance = pointer.drag_delta_x + pointer.drag_delta_y		# NOTE: cummulative, so up+right is fastest
 		change_per_second = change_per_second_for_distance(distance)
 		set_value(get_value + (change_per_second * $env[:frame_time_delta])) unless change_per_second == 0.0
 	end
 
-	def purify_value(value)
-		sprintf(@format_string, value).to_f
-	end
-
 	def end_drag(pointer)
 		set_value(purify_value(get_value))
 	end
+
+	#
+	# Helpers
+	#
+
+private
 
 	def change_per_second_for_distance(distance)		# distance is in screen space-- the mouse's playground!
 		distance_abs = distance.abs
@@ -35,8 +40,21 @@ class GuiFloat < GuiNumeric
 		scaled_progress.scale(min, max)
 	end
 
+	def purify_value(value)
+		sprintf(@format_string, value).to_f
+	end
+
+	def calculate_step_value(direction)		# :up or :down
+		# Feature: fixed step amount
+		if @step_amount
+			(get_value + ((direction==:up) ? @step_amount : -@step_amount))			# TODO: enough to step up to next value (get_value + @step_amount) - (get_value + @step_amount) % @step_amount
+		else
+			get_value + smart_step_value(get_value, direction)
+		end
+	end
+
 	# This chooses how much to "step" when using scroll wheel or buttons to go up/down in value
-	def self.calculate_step_value(value, direction)
+	def smart_step_value(value, direction)
 		swapped = false
 		swapped, value, direction = true, value.abs, ((direction == :up) ? :down : :up) if value < 0.0
 		# Now we can pretend we're in the positive range going up or down
@@ -51,13 +69,5 @@ class GuiFloat < GuiNumeric
 		# Finally, transform back
 		value, step = -value, -step if swapped
 		step
-	end
-
-	def calculate_step_value(direction)		# :up or :down
-		if @step_amount
-			(get_value + ((direction==:up) ? @step_amount : -@step_amount))			# TODO: enough to step up to next value (get_value + @step_amount) - (get_value + @step_amount) % @step_amount
-		else
-			get_value + GuiFloat.calculate_step_value(get_value, direction)
-		end
 	end
 end
