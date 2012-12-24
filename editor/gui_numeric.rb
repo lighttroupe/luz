@@ -8,6 +8,9 @@ class GuiNumeric < GuiObject
 		@color = [0.6, 0.6, 1.0, 1.0]
 	end
 
+	#
+	# API
+	#
 	def get_value
 		@object.instance_variable_get(@method)
 	end
@@ -19,19 +22,14 @@ class GuiNumeric < GuiObject
 		@object.instance_variable_set(@method, value)
 	end
 
+	#
+	# Rendering
+	#
 	def gui_render!
 		with_gui_object_properties {
 			@value_label.set_string(generate_string)
 			@value_label.gui_render!
 		}
-	end
-
-	def generate_string
-		sprintf(@format_string, get_value).sub('+',' ')
-	end
-
-	def purify_value(value)
-		value		# default implementation does nothing
 	end
 
 	#
@@ -43,5 +41,19 @@ class GuiNumeric < GuiObject
 
 	def scroll_down!(pointer)
 		set_value(purify_value(calculate_step_value(:down)))
+	end
+
+	#
+	# Helpers
+	#
+
+private
+
+	def generate_string
+		sprintf(@format_string, get_value).sub('+',' ')
+	end
+
+	def purify_value(value)
+		value		# default implementation does nothing
 	end
 end

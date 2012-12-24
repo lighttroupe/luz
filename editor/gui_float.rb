@@ -9,6 +9,9 @@ class GuiFloat < GuiNumeric
 		draggable!
 	end
 
+	#
+	# API
+	#
 	def get_value
 		super.to_f
 	end
