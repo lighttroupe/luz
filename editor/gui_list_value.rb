@@ -9,6 +9,9 @@ class GuiListValue < GuiObject		# TODO: rename! GuiListSelect ?
 		@no_value_text = 'none'
 	end
 
+	#
+	# API
+	#
 	def get_value
 		@object.instance_variable_get(@method)
 	end
@@ -17,6 +20,9 @@ class GuiListValue < GuiObject		# TODO: rename! GuiListSelect ?
 		@object.instance_variable_set(@method, value)
 	end
 
+	#
+	# Render
+	#
 	def gui_render!
 		with_gui_object_properties {
 			if (object = get_value)
@@ -32,9 +38,28 @@ class GuiListValue < GuiObject		# TODO: rename! GuiListSelect ?
 		@no_value_label.gui_render!
 	end
 
+	#
+	# Mouse interaction
+	#
 	def click(pointer)
 		create_popup_list(pointer)
 	end
+
+	def scroll_up!(pointer)
+		list_cached = list
+		current_index = list_cached.index(get_value)
+		next_index = current_index ? ((current_index - 1) % list_cached.size) : 0
+		set_value list_cached[next_index]
+	end
+
+	def scroll_down!(pointer)
+		list_cached = list
+		current_index = list_cached.index(get_value)
+		next_index = current_index ? ((current_index + 1) % list_cached.size) : 0
+		set_value list_cached[next_index]
+	end
+
+private
 
 	def create_popup_list(pointer)
 		box = GuiBox.new.set(:offset_x => pointer.x, :offset_y => pointer.y, :color => [1,1,0,1], :scale_x => 0.0, :scale_y => 0.0).animate({:scale_x => 0.1, :scale_y => 0.4}, duration=0.1)
@@ -62,20 +87,6 @@ class GuiListValue < GuiObject		# TODO: rename! GuiListSelect ?
 				false
 			end
 		}
-	end
-
-	def scroll_up!(pointer)
-		list_cached = list
-		current_index = list_cached.index(get_value)
-		next_index = current_index ? ((current_index - 1) % list_cached.size) : 0
-		set_value list_cached[next_index]
-	end
-
-	def scroll_down!(pointer)
-		list_cached = list
-		current_index = list_cached.index(get_value)
-		next_index = current_index ? ((current_index + 1) % list_cached.size) : 0
-		set_value list_cached[next_index]
 	end
 end
 
