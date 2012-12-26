@@ -31,6 +31,17 @@ class UserObject
 		end
 	end
 
+	def gui_fill_settings_list(user_object)
+		return unless @gui_settings_list
+
+		@gui_effects_list.clear_selection! if user_object == self
+
+		@gui_settings_list.clear!
+		user_object.settings.each { |setting|
+			@gui_settings_list << setting.gui_build_editor
+		}
+	end
+
 	def has_settings_list?
 		!@gui_settings_list.nil?
 	end
@@ -78,17 +89,6 @@ class UserObject
 	#
 
 private
-
-	def gui_fill_settings_list(user_object)
-		return unless @gui_settings_list
-
-		@gui_effects_list.clear_selection! if user_object == self
-
-		@gui_settings_list.clear!
-		user_object.settings.each { |setting|
-			@gui_settings_list << setting.gui_build_editor
-		}
-	end
 
 	def label_color
 		if crashy?
