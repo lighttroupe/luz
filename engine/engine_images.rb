@@ -2,10 +2,20 @@ module EngineImages
 	#
 	# Image loading, caching, and reloading upon changes (using inotify)
 	#
+	def image_directories
+		[
+			@project.file_path,
+			'gui-ruby'
+		]
+	end
+
 	def load_images(path)
-		# all images paths are relative and with/below project file
 		path = path.sub(@project.file_path, '') if path.index(@project.file_path) == 0
-		file_path = (File.exists?(path)) ? path : File.join(@project.file_path, path)
+
+		# supports absolute paths, or relative paths from one of the registered image directories
+		file_path = ([path] + image_directories.map { |dir| File.join(dir, path) }).find { |p|
+			File.exists?(p)
+		}
 
 		# Note: cache using the full path name, so that two projects with similar relative paths won't get confused
 		@images_cache ||= {}
