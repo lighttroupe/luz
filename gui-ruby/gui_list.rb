@@ -107,7 +107,7 @@ class GuiList < GuiBox
 	end
 
 	def velocity_damper
-		0.94
+		0.85
 	end
 
 	#
