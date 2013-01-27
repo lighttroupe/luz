@@ -1,16 +1,20 @@
 class GuiAddWindow < GuiBox
 	easy_accessor :pointer
 
+	callback :add
+
 	def initialize(user_object, options={})
 		@user_object, @options = user_object, options
-		super([])
+		super(contents=[])		# added in create!
 		create!
 		set(options)
 	end
 
+private
+
 	def create!
 		# background
-		self << (@background=GuiObject.new.set(:color => [0,0,0,1.0]))
+		self << (@background=GuiObject.new.set(:color => [0,0,0,0.9]))
 
 		valid_plugins = find_valid_effect_classes.map { |object|
 			renderer = GuiObjectRenderer.new(object)

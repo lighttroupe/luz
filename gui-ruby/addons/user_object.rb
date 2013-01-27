@@ -12,6 +12,7 @@ class UserObject
 	#
 	# API
 	#
+	attr_reader :gui_effects_list, :gui_settings_list
 	def gui_build_editor
 		if respond_to? :effects
 			box = GuiBox.new
