@@ -35,9 +35,14 @@ class Curve
 						with_translation(1.0, 0.0) {
 							gui_render_curve
 						}
-						with_translation(0.0, -1) {
-							with_scale(3.0, 1.0) {
-								with_color(FLOOR_COLOR) {
+						with_color(FLOOR_COLOR) {
+							with_translation(0.0, -1) {
+								with_scale(3.0, 1.0) {
+									unit_square
+								}
+							}
+							with_translation(0.0, 1) {
+								with_scale(3.0, 1.0) {
 									unit_square
 								}
 							}
