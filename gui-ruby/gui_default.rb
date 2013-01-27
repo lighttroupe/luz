@@ -191,6 +191,8 @@ class GuiDefault < GuiBox
 		window.set({:offset_x => pointer.x, :offset_y => pointer.y, :opacity => 0.0, :scale_x => 0.0, :scale_y => 0.0, :hidden => false})
 		window.animate({:offset_x => 0.0, :offset_y => -0.10, :scale_x => 0.5, :scale_y => 0.325, :opacity => 1.0}, duration=0.2)
 		self << window
+
+		window
 	end
 
 	def clear_editors!

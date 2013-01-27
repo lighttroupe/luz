@@ -51,6 +51,10 @@ class GuiBox < GuiObject
 		end
 	end
 
+	def include?(object)
+		@contents.include? object
+	end
+
 	#
 	# Selection
 	#

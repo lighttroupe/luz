@@ -10,6 +10,10 @@ class GuiListWithControls < GuiBox
 	pipe :add_to_selection, :list
 	pipe :selection, :list
 
+	def add(object)
+		@list << object
+	end
+
 	def initialize(contents)
 		super()
 		self << @list=GuiList.new(contents)

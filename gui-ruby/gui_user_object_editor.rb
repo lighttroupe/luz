@@ -32,7 +32,9 @@ class GuiUserObjectEditor < GuiBox
 
 		self << (@add_child_button=GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.15, :offset_x => -0.54, :offset_y => -0.5 + 0.15 + 0.18, :background_image => $engine.load_image('images/buttons/add.png')))
 		@add_child_button.on_clicked { |pointer|
-			parent.build_add_child_window_for(@user_object, :pointer => pointer)
+			parent.build_add_child_window_for(@user_object, :pointer => pointer).on_add { |new_object|
+				@user_object.gui_effects_list.add(new_object)
+			}
 		}
 
 		self << (@remove_child_button=GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.15, :offset_x => -0.54, :offset_y => -0.5 + 0.15, :background_image => $engine.load_image('images/buttons/remove.png')))
