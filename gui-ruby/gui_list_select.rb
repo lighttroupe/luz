@@ -25,7 +25,8 @@ class GuiListSelect < GuiObject
 	#
 	def gui_render!
 		with_gui_object_properties {
-			if (object = get_value)
+			set_value(list.first) unless (object = get_value)
+			if object
 				object.gui_render!
 			else
 				gui_render_no_value
