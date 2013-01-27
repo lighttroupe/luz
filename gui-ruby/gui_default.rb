@@ -193,7 +193,6 @@ class GuiDefault < GuiBox
 		self << window
 	end
 
-
 	def clear_editors!
 		@user_object_editors.each { |user_object, editor|
 			editor.animate({:offset_y => editor.offset_y - 0.25, :scale_x => 0.4, :scale_y => 0.1, :opacity => 0.2}, duration=0.3) {
