@@ -122,4 +122,9 @@ class Director < ParentUserObject
 			yield if block_given?
 		end
 	end
+
+	def valid_child_class?(klass)
+		klass.ancestors.include? DirectorEffect
+	end
+
 end

@@ -112,4 +112,8 @@ class Variable < ParentUserObject
 			proposed_value
 		end
 	end
+
+	def valid_child_class?(klass)
+		klass.ancestors.include? VariableInput
+	end
 end

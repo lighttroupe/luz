@@ -96,6 +96,10 @@ class Event < ParentUserObject
 		combine_inputs(collect_input_values)
 	end
 
+	def valid_child_class?(klass)
+		klass.ancestors.include? EventInput
+	end
+
 private
 
 	def collect_input_values
