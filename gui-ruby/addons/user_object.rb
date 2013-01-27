@@ -67,6 +67,13 @@ class UserObject
 		}
 	end
 
+	def self.gui_render_label
+		with_color([1,1,1,1]) {
+			@@class_title_label ||= Hash.new { |hash, key| hash[key] = BitmapFont.new.set(:string => key, :scale_x => 0.95, :scale_y => USER_OBJECT_TITLE_HEIGHT) }
+			@@class_title_label[title].gui_render!
+		}
+	end
+
 	def hit_test_render!
 		with_unique_hit_test_color_for_object(self, 0) { unit_square }
 	end
@@ -76,7 +83,7 @@ class UserObject
 	#
 	def click(pointer)
 		$gui.build_editor_for(self, :pointer => pointer)
-		@parent.child_click(pointer)
+		@parent.child_click(pointer) if @parent
 	end
 
 	def on_child_user_object_selected(user_object)

@@ -1,5 +1,5 @@
 class GuiUserObjectEditor < GuiBox
-	easy_accessor :pointer
+	attr_accessor :pointer
 
 	def initialize(user_object, options)
 		@user_object, @options = user_object, options
@@ -28,6 +28,11 @@ class GuiUserObjectEditor < GuiBox
 		self << (@close_button=GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.15, :offset_x => 0.5, :offset_y => 0.5, :background_image => $engine.load_image('images/buttons/close.png')))
 		@close_button.on_clicked {
 			animate({:opacity => 0.0, :offset_y => offset_y - 0.1, :scale_x => scale_x * 1.1}, duration=0.2) { set_hidden(true) }
+		}
+
+		self << (@add_child_button=GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.15, :offset_x => -0.54, :offset_y => -0.5 + 0.15, :background_image => $engine.load_image('images/buttons/add.png')))
+		@add_child_button.on_clicked { |pointer|
+			parent.build_add_child_window_for(@user_object, :pointer => pointer)
 		}
 	end
 end

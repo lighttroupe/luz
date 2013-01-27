@@ -5,6 +5,10 @@ class ChildUserObject
 	#
 	# Rendering
 	#
+	def self.gui_render!
+		gui_render_label
+	end
+
 	def gui_render!
 		gui_render_background
 		gui_render_label

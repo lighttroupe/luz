@@ -131,6 +131,14 @@ class Actor < ParentUserObject
 		end
 	end
 
+	def valid_child_class?(klass)
+		klass.ancestors.include? ActorEffect
+	end
+
+	def with_canvas
+		# stub
+	end
+
 private
 
 	def render_after_effects

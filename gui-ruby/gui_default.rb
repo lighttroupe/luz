@@ -6,6 +6,7 @@ load_directory(Dir.pwd + '/gui-ruby/addons/', '**.rb')
 
 require 'gui_preferences_box'
 require 'gui_user_object_editor'
+require 'gui_add_window'
 
 class GuiDefault < GuiBox
 	pipe [:positive_message, :negative_message], :message_bar
@@ -180,6 +181,18 @@ class GuiDefault < GuiBox
 			end
 		end
 	end
+
+	#
+	# 
+	#
+	def build_add_child_window_for(user_object, options={})
+		pointer = options[:pointer]
+		window = GuiAddWindow.new(user_object)
+		window.set({:offset_x => pointer.x, :offset_y => pointer.y, :opacity => 0.0, :scale_x => 0.0, :scale_y => 0.0, :hidden => false})
+		window.animate({:offset_x => 0.0, :offset_y => -0.10, :scale_x => 0.5, :scale_y => 0.325, :opacity => 1.0}, duration=0.2)
+		self << window
+	end
+
 
 	def clear_editors!
 		@user_object_editors.each { |user_object, editor|

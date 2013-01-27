@@ -213,4 +213,8 @@ class UserObject
 	def text_match?(search_string)
 		self.title.downcase.matches?(search_string)
 	end
+
+	def valid_child_class?(klass)
+		false
+	end
 end
