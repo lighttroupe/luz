@@ -30,9 +30,21 @@ class GuiUserObjectEditor < GuiBox
 			animate({:opacity => 0.0, :offset_y => offset_y - 0.1, :scale_x => scale_x * 1.1}, duration=0.2) { set_hidden(true) }
 		}
 
-		self << (@add_child_button=GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.15, :offset_x => -0.54, :offset_y => -0.5 + 0.15, :background_image => $engine.load_image('images/buttons/add.png')))
+		self << (@add_child_button=GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.15, :offset_x => -0.54, :offset_y => -0.5 + 0.15 + 0.18, :background_image => $engine.load_image('images/buttons/add.png')))
 		@add_child_button.on_clicked { |pointer|
 			parent.build_add_child_window_for(@user_object, :pointer => pointer)
+		}
+
+		self << (@remove_child_button=GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.15, :offset_x => -0.54, :offset_y => -0.5 + 0.15, :background_image => $engine.load_image('images/buttons/remove.png')))
+		@remove_child_button.on_clicked { |pointer|
+			remove_selected
+		}
+	end
+
+	def remove_selected
+		# TODO ugly implementation reaching into user_object :(
+		@user_object.gui_effects_list.selection.each { |object|
+			@user_object.effects.delete(object)
 		}
 	end
 end

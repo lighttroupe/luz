@@ -75,6 +75,8 @@ class GuiBox < GuiObject
 		@selection.clear
 	end
 
+	attr_reader :selection
+
 	#
 	# Extend GuiObject methods to pass them along to contents
 	#

@@ -8,6 +8,7 @@ class GuiListWithControls < GuiBox
 	pipe :item_aspect_ratio=, :list
 	pipe :set_selection, :list
 	pipe :add_to_selection, :list
+	pipe :selection, :list
 
 	def initialize(contents)
 		super()
@@ -50,7 +51,7 @@ class GuiListWithControls < GuiBox
 	def scroll_down!(pointer)
 		@list.scroll_down!(pointer)
 	end
-	
+
 	def scroll_to(value)
 		@list.scroll_to(value)
 	end
