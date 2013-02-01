@@ -137,7 +137,9 @@ class LuzPerformer
 				#toggle_fullscreen!
 				finished!
 			else
-				$engine.on_button_down(sdl_to_luz_button_name(SDL::Key.get_key_name(event.sym)), frame_offset=1)
+				$engine.on_button_down(sdl_to_luz_button_name((key_name=SDL::Key.get_key_name(event.sym))), frame_offset=1)
+				key_name = key_name.upcase if (event.mod & SDL::Key::MOD_SHIFT) > 0
+				$gui.raw_keyboard_input(key_name)
 			end
 
 		when SDL::Event2::KeyUp

@@ -13,6 +13,8 @@ class GuiDefault < GuiBox
 
 	ACTOR_MODE, DIRECTOR_MODE, OUTPUT_MODE = 1, 2, 3
 
+	callback :keypress
+
 	def initialize
 		super
 		create!
@@ -99,6 +101,25 @@ class GuiDefault < GuiBox
 				super
 			}
 		}
+	end
+
+	def raw_keyboard_input(value)
+		handle_keypress(value) if process_keypress?(value)
+	end
+
+	def process_keypress?(value)
+		true		# TODO: whitelist
+	end
+
+	#
+	# Keyboard grabbing
+	#
+	def grab_keyboard(&proc)
+		@keyboard_grab_proc = proc
+	end
+
+	def handle_keypress(value)
+		@keyboard_grab_proc = nil if @keyboard_grab_proc && @keyboard_grab_proc.call(value) == false
 	end
 
 	def toggle_preferences_box!
