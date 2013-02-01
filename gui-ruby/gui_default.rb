@@ -93,6 +93,14 @@ class GuiDefault < GuiBox
 		end
 	end
 
+	def gui_render!
+		with_scale(($env[:enter] + $env[:exit]).scale(1.5, 1.0)) {
+			with_alpha(($env[:enter] + $env[:exit]).scale(0.0, 1.0)) {
+				super
+			}
+		}
+	end
+
 	def toggle_preferences_box!
 		if @preferences_box.hidden?		# TODO: this is not a good way to toggle
 			@preferences_box.set(:hidden => false, :opacity => 0.0).animate({:opacity => 1.0, :offset_x => 0.38, :offset_y => -0.3}, duration=0.2)
