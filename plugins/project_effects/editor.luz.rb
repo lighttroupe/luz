@@ -25,7 +25,7 @@ class ProjectEffectEditor < ProjectEffect
 	title				"Editor"
 	description ""
 
-	setting 'show_amount', :float, :range => 0.0..1.0
+	setting 'show_amount', :float, :range => 0.0..1.0, :default => 1.0..1.0
 	setting 'output_opacity', :float, :range => 0.0..1.0, :default => 1.0..1.0
 	setting 'debug', :event
 	setting 'gui_color', :color
