@@ -6,11 +6,11 @@ module EngineImages
 		[
 			@project.file_path,
 			'gui-ruby'
-		]
+		].compact
 	end
 
 	def load_images(path)
-		path = path.sub(@project.file_path, '') if path.index(@project.file_path) == 0
+		path = path.sub(@project.file_path, '') if @project.file_path && path.index(@project.file_path) == 0
 
 		# supports absolute paths, or relative paths from one of the registered image directories
 		file_path = ([path] + image_directories.map { |dir| File.join(dir, path) }).find { |p|
