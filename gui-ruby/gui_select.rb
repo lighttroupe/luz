@@ -49,8 +49,12 @@ class GuiSelect < GuiListSelect
 
 private
 
+	def find_option_string_by_value(value)
+		v = @options.find { |o| o.first == value }
+		v.last if v		# otherwise nil (last is the string part)
+	end
+
 	def selected_label_text
-		value = get_value
-		@options.find { |o| o.first == value }.last
+		find_option_string_by_value(get_value) || ''
 	end
 end
