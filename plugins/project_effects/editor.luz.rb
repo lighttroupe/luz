@@ -47,10 +47,8 @@ class ProjectEffectEditor < ProjectEffect
 		@gui = GuiDefault.new
 
 		if luz_2?
-			unless $gui
-				$gui = @gui																		# HACK: allows GuiObject and others to send events to the gui, but not in Luz 1.0, while we transition
-				$gui.positive_message('Welcome to Luz 2.0')		# and for happy welcome :)
-			end
+			$gui = @gui																		# HACK: allows GuiObject and others to send events to the gui, but not in Luz 1.0, while we transition
+			$gui.positive_message('Welcome to Luz 2.0')		# and for happy welcome :)
 		end
 
 		# TODO: how to configure the mices?
