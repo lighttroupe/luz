@@ -6,7 +6,7 @@ class Pointer
 	DEFAULT_COLOR = [1,1,1,0.7]
 	HOLD_COLOR = [1,1,1,0.4]
 
-	LONG_CLICK_HOLD_TIME = 1.0
+	LONG_CLICK_HOLD_TIME = 0.6
 	SMALL_DISTANCE = 0.02
 
 	boolean_accessor :click

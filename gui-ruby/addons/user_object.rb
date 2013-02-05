@@ -9,6 +9,8 @@ class UserObject
 	LABEL_COLOR_DISABLED = [1.0, 1.0, 1.0, 0.25]
 	USER_OBJECT_TITLE_HEIGHT = 0.65
 
+	SHAKE_DISTANCE = 0.010
+
 	#
 	# API
 	#
@@ -56,6 +58,16 @@ class UserObject
 	end
 
 	def gui_render_label
+		if pointer_dragging?
+			with_translation(SHAKE_DISTANCE * rand, SHAKE_DISTANCE * rand) {
+				gui_render_label_internal
+			}
+		else
+			gui_render_label_internal
+		end
+	end
+
+	def gui_render_label_internal
 		with_color(label_color) {
 			@title_label ||= BitmapFont.new.set(:string => title, :scale_x => 0.95, :scale_y => USER_OBJECT_TITLE_HEIGHT)
 			if pointer_hovering?

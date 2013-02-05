@@ -2,6 +2,9 @@
 # This is a list with up and down arrows for easy scrolling.
 #
 class GuiListWithControls < GuiBox
+	CLICK_VELOCITY = 3.8
+	HOLD_VELOCITY = 1.2
+
 	# List configuration goes to list
 	pipe :scroll_wrap=, :list
 	pipe :spacing_y=, :list
@@ -20,13 +23,13 @@ class GuiListWithControls < GuiBox
 
 		# up
 		self << @up_button=GuiButton.new.set(:scale_x => 1.0, :scale_y => 0.16, :offset_y => 0.5 - 0.08, :opacity => 0.75, :background_image => $engine.load_image('images/buttons/scroll-up.png'))
-		@up_button.on_clicked { @list.scroll_velocity -= 0.4 }
-		@up_button.on_holding { @list.scroll_velocity -= 0.2 }
+		@up_button.on_clicked { @list.scroll_velocity -= CLICK_VELOCITY }
+		@up_button.on_holding { @list.scroll_velocity -= HOLD_VELOCITY }
 
 		# down
 		self << @down_button=GuiButton.new.set(:scale_x => 1.0, :scale_y => -0.16, :offset_y => -0.5 + 0.08, :opacity => 0.75, :background_image => $engine.load_image('images/buttons/scroll-up.png'))
-		@down_button.on_clicked { @list.scroll_velocity += 0.4 }
-		@down_button.on_holding { @list.scroll_velocity += 0.2 }
+		@down_button.on_clicked { @list.scroll_velocity += CLICK_VELOCITY }
+		@down_button.on_holding { @list.scroll_velocity += HOLD_VELOCITY }
 
 		@list.on_scroll_change { update_scroll_buttons }
 	end

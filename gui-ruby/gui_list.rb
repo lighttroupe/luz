@@ -1,8 +1,9 @@
 require 'gui_box'
 
 class GuiList < GuiBox
-	VELOCITY_PER_SCROLL = 2.0
+	VELOCITY_PER_SCROLL = 3.0
 	MAX_SCROLL_VELOCITY = 16.0
+	VELOCITY_DAMPER = 0.7
 
 	easy_accessor :spacing_x, :spacing_y, :item_aspect_ratio, :scroll_wrap, :scroll, :scroll_velocity
 
@@ -107,7 +108,7 @@ class GuiList < GuiBox
 	end
 
 	def velocity_damper
-		0.85
+		VELOCITY_DAMPER
 	end
 
 	#

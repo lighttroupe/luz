@@ -16,6 +16,10 @@ module GuiPointerBehavior
 		pointers_hovering.find { |pointer| pointer.click? }
 	end
 
+	def pointer_dragging?
+		pointers_hovering.find { |pointer| pointer.dragging? }
+	end
+
 	def pointer_enter(pointer)
 		unless pointers_hovering.include?(pointer)
 			pointers_hovering << pointer
