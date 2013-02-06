@@ -10,7 +10,7 @@ class GuiUserObjectEditor < GuiBox
 
 	def create!
 		# background
-		self << (@background=GuiObject.new.set(:color => [0,0,0,0.9]))
+		self << (@background=GuiObject.new.set(:color => [0,0,0,1.0]))
 
 		# content
 		self << @user_object.gui_build_editor		# find gui_build_editor implementations for everything in gui_addons.rb
@@ -32,15 +32,28 @@ class GuiUserObjectEditor < GuiBox
 
 		self << (@add_child_button=GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.15, :offset_x => -0.54, :offset_y => -0.5 + 0.15 + 0.18, :background_image => $engine.load_image('images/buttons/add.png')))
 		@add_child_button.on_clicked { |pointer|
-			parent.build_add_child_window_for(@user_object, :pointer => pointer).on_add { |new_object|
-				@user_object.gui_effects_list.add(new_object)
+			window = build_add_child_window_for(@user_object, pointer)
+			window.on_add { |new_object|
+				@user_object.gui_effects_list.add_after_selection(new_object)
+				@user_object.gui_effects_list.set_selection(new_object)
+				@user_object.gui_effects_list.scroll_to_selection!
+
+				@user_object.gui_fill_settings_list(new_object)
 			}
+			self << window
 		}
 
 		self << (@remove_child_button=GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.15, :offset_x => -0.54, :offset_y => -0.5 + 0.15, :background_image => $engine.load_image('images/buttons/remove.png')))
 		@remove_child_button.on_clicked { |pointer|
 			remove_selected
 		}
+	end
+
+	def build_add_child_window_for(user_object, pointer)
+		window = GuiAddWindow.new(user_object)
+		window.set({:offset_x => 0.0, :offset_y => 0.5, :opacity => 0.0, :scale_x => 0.8, :scale_y => 0.0, :hidden => false})
+		window.animate({:offset_x => 0.0, :offset_y => 0.2, :scale_x => 0.8, :scale_y => 1.0, :opacity => 1.0}, duration=0.2)
+		window
 	end
 
 	def remove_selected

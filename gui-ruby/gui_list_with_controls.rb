@@ -12,10 +12,7 @@ class GuiListWithControls < GuiBox
 	pipe :set_selection, :list
 	pipe :add_to_selection, :list
 	pipe :selection, :list
-
-	def add(object)
-		@list << object
-	end
+	pipe :scroll_to_selection!, :list
 
 	def initialize(contents)
 		super()

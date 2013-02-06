@@ -13,19 +13,19 @@ class GuiDefault < GuiBox
 
 	ACTOR_MODE, DIRECTOR_MODE, OUTPUT_MODE = 1, 2, 3
 
+	ACTORS_BUTTON					= 'Keyboard / F1'
+	THEMES_BUTTON					= 'Keyboard / F5'
+	CURVES_BUTTON					= 'Keyboard / F6'
+	VARIABLES_BUTTON			= 'Keyboard / F7'
+	EVENTS_BUTTON					= 'Keyboard / F8'
+	PREFERENCES_BUTTON		= 'Keyboard / F12'
+
 	callback :keypress
 
 	def initialize
 		super
 		create!
 	end
-
-	ACTORS_BUTTON    = 'Keyboard / F1'
-	THEMES_BUTTON    = 'Keyboard / F5'
-	CURVES_BUTTON    = 'Keyboard / F6'
-	VARIABLES_BUTTON = 'Keyboard / F7'
-	EVENTS_BUTTON    = 'Keyboard / F8'
-	PREFERENCES_BUTTON    = 'Keyboard / F12'
 
 	def reload_notify
 		clear!
@@ -209,19 +209,6 @@ class GuiDefault < GuiBox
 				return
 			end
 		end
-	end
-
-	#
-	# 
-	#
-	def build_add_child_window_for(user_object, options={})
-		pointer = options[:pointer]
-		window = GuiAddWindow.new(user_object)
-		window.set({:offset_x => pointer.x, :offset_y => pointer.y, :opacity => 0.0, :scale_x => 0.0, :scale_y => 0.0, :hidden => false})
-		window.animate({:offset_x => 0.0, :offset_y => -0.10, :scale_x => 0.5, :scale_y => 0.325, :opacity => 1.0}, duration=0.2)
-		self << window
-
-		window
 	end
 
 	def clear_editors!

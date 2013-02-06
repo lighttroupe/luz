@@ -11,7 +11,7 @@ class GuiList < GuiBox
 
 	def initialize(*args)
 		super
-		@scroll = 0.0
+		@scroll = 0.0										# in local units
 		@scroll_velocity = 0.0
 		@one_fake_scroll_change_notify = true
 		@visible_slots = 0.0
@@ -93,6 +93,10 @@ class GuiList < GuiBox
 
 	def scrolled_to_end?
 		@scroll == @scroll_max
+	end
+
+	def scroll_to_selection!(&proc)
+		scroll_to(selection.first)
 	end
 
 	def allow_scrolling?

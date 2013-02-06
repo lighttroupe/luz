@@ -31,6 +31,19 @@ class GuiBox < GuiObject
 		end
 	end
 
+	def add_after_selection(object)
+		if (obj = selection.first) && (index = @list.index(obj))
+			@list.insert(index+1, object)
+		else
+			@list << object
+		end
+	end
+
+	def insert(index, gui_object)
+		@contents.insert(index, gui_object)
+		gui_object.parent = self
+	end
+
 	def remove(gui_object)
 		@contents.delete(gui_object)
 	end
@@ -53,6 +66,10 @@ class GuiBox < GuiObject
 
 	def include?(object)
 		@contents.include? object
+	end
+
+	def index(object)
+		@contents.index(object)
 	end
 
 	#
