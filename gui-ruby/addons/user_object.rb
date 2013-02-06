@@ -99,6 +99,7 @@ class UserObject
 		@parent.child_click(pointer) if @parent
 	end
 
+	# TODO: called by the $gui... @gui_effects_list.on_selection_change { ... }
 	def on_child_user_object_selected(user_object)
 		gui_fill_settings_list(user_object)
 		@gui_effects_list.set_selection(user_object) if @gui_effects_list
