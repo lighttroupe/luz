@@ -58,6 +58,8 @@ class GuiList < GuiBox
 	#
 	def child_click(pointer)
 		@scroll_velocity = 0.0
+
+		# TODO: select? notify?
 	end
 
 	# NOTE: these are mousewheel-like activity
