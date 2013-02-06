@@ -6,7 +6,7 @@ class Event
 		gui_render_background
 
 		# Status Indicator
-		with_translation(-0.5 + 0.1, 0.0) {
+		with_translation(-0.5 + 0.08, 0.0) {
 			with_scale(0.1, 0.35) {
 				with_color(now? ? GUI_COLOR_ON : GUI_COLOR_OFF) {
 					unit_square
@@ -15,7 +15,7 @@ class Event
 		}
 
 		# Label
-		with_translation(0.23, 0.05) {
+		with_translation(0.15, 0.05) {
 			gui_render_label
 		}
 	end
