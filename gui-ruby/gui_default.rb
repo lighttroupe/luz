@@ -36,6 +36,23 @@ class GuiDefault < GuiBox
 	end
 
 	def create!
+		# Main Menu
+		self << (@project_menu_button = GuiButton.new.set(:hotkey => MENU_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => -0.5, :offset_y => 0.50, :background_image => $engine.load_image('images/buttons/menu.png')))
+		@project_menu_button.on_clicked { show_project_menu }
+
+		# Director Menu
+		self << (@directors_button = GuiButton.new.set(:hotkey => MENU_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.5, :offset_y => 0.50, :background_image => $engine.load_image('images/buttons/menu.png')))
+
+		# Events & Variables
+		self << (@variables_list = GuiListWithControls.new($engine.project.variables).set(:scale_x => 0.12, :scale_y => 0.65, :offset_x => -0.32, :offset_y => 0.5, :item_aspect_ratio => 3.2, :hidden => true, :spacing_y => -1.0))
+		self << (@events_list = GuiListWithControls.new($engine.project.events).set(:scale_x => 0.12, :scale_y => 0.65, :offset_x => -0.44, :offset_y => -0.5, :item_aspect_ratio => 3.2, :hidden => true, :spacing_y => -1.0))
+
+		self << (@variable_button = GuiButton.new.set(:hotkey => VARIABLES_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => -0.42, :offset_y => -0.50, :background_image => $engine.load_image('images/buttons/menu.png')))
+		@variable_button.on_clicked { toggle_variables_list! }
+		self << (@event_button = GuiButton.new.set(:hotkey => EVENTS_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => -0.5, :offset_y => -0.5, :background_image => $engine.load_image('images/buttons/menu.png')))
+		@event_button.on_clicked { toggle_events_list! }
+
+		# Actors
 		self << (@actors_list = GuiListWithControls.new($engine.project.actors).set(:scroll_wrap => true, :scale_x => 0.2, :scale_y => 0.75, :offset_x => 0.395, :offset_y => -0.08, :hidden => true, :spacing_y => -1.0))
 		self << (@actors_button = GuiButton.new.set(:hotkey => ACTORS_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.5, :offset_y => -0.5, :background_image => $engine.load_image('images/buttons/menu.png')))
 		@actors_button.on_clicked { toggle_actors_list! }
@@ -48,31 +65,23 @@ class GuiDefault < GuiBox
 #		self << (@curve_button = GuiButton.new.set(:hotkey => CURVES_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.06, :offset_y => 0.50 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
 #		@curve_button.on_clicked { toggle_curves_list! }
 
-		self << (@variables_list = GuiListWithControls.new($engine.project.variables).set(:scale_x => 0.12, :scale_y => 0.65, :offset_x => -0.32, :offset_y => 0.5, :item_aspect_ratio => 3.2, :hidden => true, :spacing_y => -1.0))
-		self << (@events_list = GuiListWithControls.new($engine.project.events).set(:scale_x => 0.12, :scale_y => 0.65, :offset_x => -0.44, :offset_y => -0.5, :item_aspect_ratio => 3.2, :hidden => true, :spacing_y => -1.0))
+		# Message Bar
+		self << (@message_bar = GuiMessageBar.new.set(:offset_x => 0.02, :offset_y => 0.5 - 0.05, :scale_x => 0.32, :scale_y => 0.05))
 
-		self << (@variable_button = GuiButton.new.set(:hotkey => VARIABLES_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => -0.42, :offset_y => -0.50, :background_image => $engine.load_image('images/buttons/menu.png')))
-		@variable_button.on_clicked { toggle_variables_list! }
-		self << (@event_button = GuiButton.new.set(:hotkey => EVENTS_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => -0.5, :offset_y => -0.5, :background_image => $engine.load_image('images/buttons/menu.png')))
-		@event_button.on_clicked { toggle_events_list! }
-
-		self << (@message_bar = GuiMessageBar.new.set(:offset_x => -0.33, :offset_y => 0.5 - 0.04, :scale_x => 0.32, :scale_y => 0.05))
+		# Beat Monitor
 		self << (@beat_monitor = GuiBeatMonitor.new(beats_per_measure=4).set(:offset_y => 0.49, :scale_x => 0.12, :scale_y => 0.02, :spacing_x => 1.0))
 
-		self << (@project_menu_button = GuiButton.new.set(:hotkey => MENU_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => -0.5, :offset_y => 0.50, :background_image => $engine.load_image('images/buttons/menu.png')))
-		@project_menu_button.on_clicked { show_project_menu }
+		# Preferences Box
+		#self << (@preferences_box = GuiPreferencesBox.new.build.set(:scale_x => 0.22, :scale_y => 0.4, :offset_x => 0.4, :offset_y => -0.3, :opacity => 0.0, :hidden => true))
+		#self << (@preferences_button = GuiButton.new.set(:hotkey => PREFERENCES_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.50, :offset_y => -0.50, :color => [0.5,1.0,0.5,1.0], :background_image => $engine.load_image('images/buttons/menu.png')))
+		#@preferences_button.on_clicked { toggle_preferences_box! }
 
-#		self << (@preferences_box = GuiPreferencesBox.new.build.set(:scale_x => 0.22, :scale_y => 0.4, :offset_x => 0.4, :offset_y => -0.3, :opacity => 0.0, :hidden => true))
-#		self << (@preferences_button = GuiButton.new.set(:hotkey => PREFERENCES_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.50, :offset_y => -0.50, :color => [0.5,1.0,0.5,1.0], :background_image => $engine.load_image('images/buttons/menu.png')))
-#		@preferences_button.on_clicked { toggle_preferences_box! }
-
-		# Radio buttons that control THIS OBJECT's @mode
-		# TODO: director view
+		# Radio buttons for @mode		TODO: add director view
 		self << GuiRadioButtons.new(self, :mode, [ACTOR_MODE, OUTPUT_MODE]).set(:offset_x => 0.35, :offset_y => 0.485, :scale_x => 0.06, :scale_y => 0.03, :spacing_x => 1.0)
 
+		# Defaults
 		@user_object_editors = {}
 		@chosen_actor = nil
-
 		self.mode = OUTPUT_MODE
 	end
 
@@ -225,7 +234,7 @@ class GuiDefault < GuiBox
 	def create_user_object_editor_for_pointer(user_object, pointer, options)
 		GuiUserObjectEditor.new(user_object, {:scale_x => 0.3, :scale_y => 0.05}.merge(options))
 			.set({:offset_x => pointer.x, :offset_y => pointer.y, :opacity => 0.0, :scale_x => 0.0, :scale_y => 0.0, :hidden => false})
-			.animate({:offset_x => 0.0, :offset_y => -0.3375, :scale_x => 0.5, :scale_y => 0.325, :opacity => 1.0}, duration=0.2)
+			.animate({:offset_x => 0.0, :offset_y => -0.25, :scale_x => 0.5, :scale_y => 0.5, :opacity => 1.0}, duration=0.2)
 	end
 
 	def clear_editors!

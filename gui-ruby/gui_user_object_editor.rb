@@ -1,6 +1,8 @@
 class GuiUserObjectEditor < GuiBox
 	attr_accessor :pointer
 
+	BACKGROUND_COLOR = [0,0,0,0.8]
+
 	def initialize(user_object, options)
 		@user_object, @options = user_object, options
 		super([])
@@ -12,7 +14,7 @@ class GuiUserObjectEditor < GuiBox
 		#
 		# Background
 		#
-		self << (@background=GuiObject.new.set(:color => [0,0,0,1.0]))
+		self << (@background=GuiObject.new.set(:color => BACKGROUND_COLOR))
 
 		#
 		# Let object build its own content (eg. lists)
@@ -39,7 +41,7 @@ class GuiUserObjectEditor < GuiBox
 		#
 		# Add button
 		#
-		self << (@add_child_button=GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.15, :offset_x => -0.54, :offset_y => -0.5 + 0.15 + 0.18, :background_image => $engine.load_image('images/buttons/add.png')))
+		self << (@add_child_button=GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.15, :offset_x => -0.54, :offset_y => -0.5 + 0.15 + 0.15 + 0.18, :background_image => $engine.load_image('images/buttons/add.png')))
 		@add_child_button.on_clicked { |pointer|
 			window = build_add_child_window_for(@user_object, pointer)
 			window.on_add { |new_object|
@@ -50,6 +52,14 @@ class GuiUserObjectEditor < GuiBox
 				@user_object.gui_fill_settings_list(new_object)
 			}
 			self << window
+		}
+
+		#
+		# Clone button
+		#
+		self << (@clone_button=GuiButton.new.set(:opacity => 0.5, :scale_x => 0.08, :scale_y => 0.15, :offset_x => -0.54, :offset_y => -0.5 + 0.15 + 0.15, :background_image => $engine.load_image('images/buttons/clone.png')))
+		@clone_button.on_clicked { |pointer|
+			clone_selected
 		}
 
 		#
@@ -73,5 +83,9 @@ class GuiUserObjectEditor < GuiBox
 		@user_object.gui_effects_list.selection.each { |object|
 			@user_object.effects.delete(object)
 		}
+	end
+
+	def clone_selected
+		$gui.positive_message 'Clone...not implemented.'
 	end
 end
