@@ -6,7 +6,7 @@ class UserObjectSetting
 	BACKGROUND_COLOR = [1,1,0,0.5]
 
 	def gui_build_editor
-		GuiObject.new.set(:color => [0,1,1,1])		# default render, just as an "not implemented yet" debugging aid
+		GuiObject.new.set(:color => [0,1,1,1])		# default render, just a "not implemented yet" debugging aid
 	end
 
 	def create_user_object_setting_name_label
