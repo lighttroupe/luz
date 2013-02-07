@@ -232,9 +232,9 @@ class GuiDefault < GuiBox
 	end
 
 	def create_user_object_editor_for_pointer(user_object, pointer, options)
-		GuiUserObjectEditor.new(user_object, {:scale_x => 0.3, :scale_y => 0.05}.merge(options))
-			.set({:offset_x => pointer.x, :offset_y => pointer.y, :opacity => 0.0, :scale_x => 0.0, :scale_y => 0.0, :hidden => false})
-			.animate({:offset_x => 0.0, :offset_y => -0.25, :scale_x => 0.5, :scale_y => 0.5, :opacity => 1.0}, duration=0.2)
+		GuiUserObjectEditor.new(user_object, {:scale_x => 0.3, :scale_y => 0.05}.merge(options)).
+			set({:offset_x => pointer.x, :offset_y => pointer.y, :opacity => 0.0, :scale_x => 0.0, :scale_y => 0.0, :hidden => false}).
+			animate({:offset_x => 0.0, :offset_y => -0.25, :scale_x => 0.5, :scale_y => 0.5, :opacity => 1.0}, duration=0.2)
 	end
 
 	def clear_editors!
