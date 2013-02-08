@@ -44,16 +44,16 @@ class GuiDefault < GuiBox
 		self << (@directors_button = GuiButton.new.set(:hotkey => MENU_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.5, :offset_y => 0.50, :background_image => $engine.load_image('images/buttons/menu.png')))
 
 		# Events & Variables
-		self << (@variables_list = GuiListWithControls.new($engine.project.variables).set(:scale_x => 0.12, :scale_y => 0.65, :offset_x => -0.32, :offset_y => 0.5, :item_aspect_ratio => 3.2, :hidden => true, :spacing_y => -1.0))
-		self << (@events_list = GuiListWithControls.new($engine.project.events).set(:scale_x => 0.12, :scale_y => 0.65, :offset_x => -0.44, :offset_y => -0.5, :item_aspect_ratio => 3.2, :hidden => true, :spacing_y => -1.0))
+		self << (@variables_list = GuiListWithControls.new($engine.project.variables).set(:scale_x => 0.12, :scale_y => 0.45, :offset_y => -0.22, :item_aspect_ratio => 3.2, :hidden => true, :spacing_y => -1.0))
+		self << (@events_list = GuiListWithControls.new($engine.project.events).set(:scale_x => 0.12, :scale_y => 0.45, :offset_y => 0.23, :item_aspect_ratio => 3.2, :hidden => true, :spacing_y => -1.0))
 
-		self << (@variable_button = GuiButton.new.set(:hotkey => VARIABLES_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => -0.42, :offset_y => -0.50, :background_image => $engine.load_image('images/buttons/menu.png')))
-		@variable_button.on_clicked { toggle_variables_list! }
+#		self << (@variable_button = GuiButton.new.set(:hotkey => VARIABLES_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => -0.42, :offset_y => -0.50, :background_image => $engine.load_image('images/buttons/menu.png')))
+#		@variable_button.on_clicked { toggle_variables_list! }
 		self << (@event_button = GuiButton.new.set(:hotkey => EVENTS_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => -0.5, :offset_y => -0.5, :background_image => $engine.load_image('images/buttons/menu.png')))
-		@event_button.on_clicked { toggle_events_list! }
+		@event_button.on_clicked { toggle_events_list! ; toggle_variables_list! }
 
 		# Actors
-		self << (@actors_list = GuiListWithControls.new($engine.project.actors).set(:scroll_wrap => true, :scale_x => 0.2, :scale_y => 0.75, :offset_x => 0.395, :offset_y => -0.08, :hidden => true, :spacing_y => -1.0))
+		self << (@actors_list = GuiListWithControls.new($engine.project.actors).set(:scroll_wrap => true, :scale_x => 0.12, :scale_y => 0.8, :offset_x => 0.44, :offset_y => 0.0, :hidden => true, :spacing_y => -1.0))
 		self << (@actors_button = GuiButton.new.set(:hotkey => ACTORS_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.5, :offset_y => -0.5, :background_image => $engine.load_image('images/buttons/menu.png')))
 		@actors_button.on_clicked { toggle_actors_list! }
 
@@ -181,17 +181,17 @@ class GuiDefault < GuiBox
 
 	def toggle_variables_list!
 		if @variables_list.hidden?
-			@variables_list.set(:hidden => false, :offset_y => -0.5, :opacity => 0.0).animate({:offset_y => -0.15, :opacity => 1.0}, duration=0.2)
+			@variables_list.set(:hidden => false, :offset_x => -0.6, :opacity => 0.0).animate({:offset_x => -0.44, :opacity => 1.0}, duration=0.2)
 		else
-			@variables_list.animate(:offset_y, -0.5, duration=0.25) { @variables_list.set_hidden(true) }.animate(:opacity, 0.0, duration=0.2)
+			@variables_list.animate(:offset_x, -0.6, duration=0.25) { @variables_list.set_hidden(true) }
 		end
 	end
 
 	def toggle_events_list!
 		if @events_list.hidden?
-			@events_list.set(:hidden => false, :offset_y => -0.5, :opacity => 0.0).animate({:offset_y => -0.15, :opacity => 1.0}, duration=0.2)
+			@events_list.set(:hidden => false, :offset_x => -0.6, :opacity => 0.0).animate({:offset_x => -0.44, :opacity => 1.0}, duration=0.2)
 		else
-			@events_list.animate({:offset_y => -0.5, :opacity => 0.0}, duration=0.25) { @events_list.set_hidden(true) }
+			@events_list.animate({:offset_x => -0.6, :opacity => 0.0}, duration=0.25) { @events_list.set_hidden(true) }
 		end
 	end
 
