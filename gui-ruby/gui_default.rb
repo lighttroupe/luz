@@ -209,10 +209,13 @@ class GuiDefault < GuiBox
 			return
 		else
 			if user_object.is_a? ParentUserObject
+				# Auto-switch to actor view
 				if user_object.is_a? Actor
 					@mode = ACTOR_MODE		# TODO: make this an option?
-					@chosen_actor = user_object		# this way, if user then switches to the actor list, this actor will be showing
-					close_actors_list!
+					@chosen_actor = user_object
+					close_actors_list!		# TODO: make this an option?
+				elsif user_object.is_a? Director
+					# TODO
 				end
 
 				clear_editors!		# only support one for now
