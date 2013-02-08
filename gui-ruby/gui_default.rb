@@ -41,7 +41,7 @@ class GuiDefault < GuiBox
 	#
 	# Minimal start for a new object: self << GuiObject.new.set(:scale_x => 0.1, :scale_y => 0.1)
 	def create!
-		@project_drawer = GuiObject.new.set(:scale_x => 0.1, :scale_y => 0.08, :offset_x => -0.5, :offset_y => 0.5-0.04)
+		@project_drawer = GuiObject.new.set(:scale_x => 0.1, :scale_y => 0.08, :offset_x => -0.5, :offset_y => 0.5-0.04, :color => [1.0,1.0,1.0,0.5])
 #		@project_drawer << (@save_button = GuiButton.new.set(:hotkey => SAVE_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => -0.5, :offset_y => 0.50, :background_image => $engine.load_image('images/buttons/menu.png')))
 
 		# Actors
@@ -148,7 +148,9 @@ class GuiDefault < GuiBox
 	end
 
 	def handle_keypress(value)
-		@keyboard_grab_proc = nil if @keyboard_grab_proc && @keyboard_grab_proc.call(value) == false
+		if @keyboard_grab_proc && @keyboard_grab_proc.call(value) == false
+			@keyboard_grab_proc = nil
+		end
 	end
 
 	def toggle_preferences_box!
@@ -166,8 +168,8 @@ class GuiDefault < GuiBox
 			close_actors_list!
 		end
 	end
-	def show_actors_list! ; @actors_list.set(:hidden => false, :opacity => 0.0).animate({:opacity => 1.0}, duration=0.2) ; end
-	def close_actors_list! ; @actors_list.animate(:opacity, 0.0, duration=0.25) { @actors_list.set_hidden(true) } ; end
+	def show_actors_list! ; @actors_list.set(:hidden => false, :offset_x => 0.56).animate({:offset_x => 0.44}, duration=0.2) ; end
+	def close_actors_list! ; @actors_list.animate(:offset_x, 0.56, duration=0.25) { @actors_list.set_hidden(true) } ; end
 
 =begin
 	def toggle_curves_list!
@@ -210,18 +212,24 @@ class GuiDefault < GuiBox
 		if editor && !editor.hidden?
 			# was already visible... ...hide self towards click spot
 			self.bring_to_top(editor)
-			editor.animate({:offset_x => pointer.x, :offset_y => pointer.y, :scale_x => 0.0, :scale_y => 0.0, :opacity => 0.2}, duration=0.2) {
-				editor.remove_from_parent!		# trashed forever! (no cache)
-				@user_object_editors.delete(user_object)
-			}
+
+				if user_object.is_a? Actor
+					@mode = ACTOR_MODE		# TODO: make this an option?
+					@chosen_actor = user_object
+				end
+
+#			editor.animate({:offset_x => pointer.x, :offset_y => pointer.y, :scale_x => 0.0, :scale_y => 0.0, :opacity => 0.2}, duration=0.2) {
+#				editor.remove_from_parent!		# trashed forever! (no cache)
+#				@user_object_editors.delete(user_object)
+#			}
 			return
 		else
 			if user_object.is_a? ParentUserObject
 				# Auto-switch to actor view
 				if user_object.is_a? Actor
-					@mode = ACTOR_MODE		# TODO: make this an option?
-					@chosen_actor = user_object
-					close_actors_list!		# TODO: make this an option?
+#					@mode = ACTOR_MODE		# TODO: make this an option?
+#					@chosen_actor = user_object
+#					close_actors_list!		# TODO: make this an option?
 				elsif user_object.is_a? Director
 					# TODO
 				end
