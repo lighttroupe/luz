@@ -20,6 +20,8 @@ class ActorEffectContrast < ActorEffect
 	title				"Contrast"
 	description "Increase or decrease the contrast of the image. Amounts over 1.0 make colors more extreme, while amounts under 1.0 move colors towards gray."
 
+	categories :color
+
 	setting 'amount', :float, :range => 0.0..2.0, :default => 1.0..2.0, :shader => true
 
 	def render

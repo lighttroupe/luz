@@ -20,6 +20,8 @@ class ActorEffectActorAttach < ActorEffect
 	title				'Actor Attach'
 	description "Attach another actor above or below this one, at a chosen offset, angle, and distance."
 
+	categories :special
+
 	hint "This can be used to build robots, attaching arm to torso, etc."
 
 	setting 'actor', :actor, :summary => true

@@ -20,6 +20,8 @@ class ActorEffectThemeScrubChildren < ActorEffect
 	title				"Theme Scrub Children"
 	description "Smoothly blends chosen theme onto children with chosen offset."
 
+	categories :color, :child_consumer
+
 	setting 'theme', :theme
 	setting 'amount', :float, :range => 0.0..1.0, :default => 1.0..1.0
 	setting 'offset', :float, :range => -1000..1000, :default => 0..1

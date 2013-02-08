@@ -19,6 +19,8 @@
 class ActorEffectActorBrush < ActorEffect
 	title				'Actor Brush'
 
+	categories :special
+
 	setting 'actor', :actor, :summary => true
 
 	setting 'offset_x', :float, :default => 0.0..1.0

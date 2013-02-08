@@ -20,6 +20,8 @@ class ActorEffectColorFromImage < ActorEffect
 	title				"Color from Image"
 	description "Colors actor with a color picked from a chosen X,Y position within a chosen image."
 
+	categories :color
+
 	setting 'image', :image
 	setting 'x', :float, :range => -100.0..100.0, :default => 0.0..1.0
 	setting 'y', :float, :range => -100.0..100.0, :default => 0.0..1.0

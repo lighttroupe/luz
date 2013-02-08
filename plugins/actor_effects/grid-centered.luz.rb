@@ -20,6 +20,8 @@ class ActorEffectGridCentered < ActorEffect
 	title       "Grid Centered"
 	description "Draws actor many times in a grid pattern, out from the center."
 
+	category :child_producer
+
 	setting 'offset', :float, :range => -100.0..100.0, :default => 1.0..2.0
 	setting 'number_x', :integer, :range => 0..100, :default => 0..2
 	setting 'number_y', :integer, :range => 0..100, :default => 0..2

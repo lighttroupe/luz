@@ -20,8 +20,9 @@ class ActorEffectInspect < ActorEffect
 	title				'Inspect'
 	description "Zoom in and pan on an actor while keeping it entirely on screen."
 
-	setting 'zoom', :float, :default => 1.0..2.0
+	category :transform
 
+	setting 'zoom', :float, :default => 1.0..2.0
 	setting 'x', :float, :range => -0.5..0.5, :default => 0.0..0.5
 	setting 'y', :float, :range => -0.5..0.5, :default => 0.0..0.5
 

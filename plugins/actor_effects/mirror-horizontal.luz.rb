@@ -20,6 +20,8 @@ class ActorEffectMirrorHorizontal < ActorEffect
 	title				'Mirror Horizontal'
 	description "The left half of the actor is mirrored on the right side."
 
+	categories :transform, :child_producer
+
 	hint "The mirror is fixed, so future movement of the actor will have interesting effects!"
 
 	def render

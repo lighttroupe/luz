@@ -20,6 +20,8 @@ class ActorEffectImageSpriteSelect < ActorEffect
 	title				"Image Sprite Select"
 	description "Apply one frame of animation from a 'sprite', selected by forwards and backwards events."
 
+	categories :color
+
 	hint "Supports images containing multiple frames, spaced equally, either horizontally or vertically."
 
 	setting 'image', :image, :summary => true

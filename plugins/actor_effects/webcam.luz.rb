@@ -6,6 +6,8 @@ class ActorEffectWebcam < ActorEffect
 	title				"Webcam"
 	description ""
 
+	categories :color
+
 	setting 'number', :integer, :range => 1..10, :summary => 'camera %'
 
 	def after_load

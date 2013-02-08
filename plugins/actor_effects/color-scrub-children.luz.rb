@@ -20,6 +20,8 @@ class ActorEffectColorScrubChildren < ActorEffect
 	title				"Color Scrub Children"
 	description ""
 
+	categories :color, :child_consumer
+
 	setting 'color', :color
 	setting 'progress', :float, :range => -1.0..2.0, :default => 0.0..1.0
 	setting 'amount', :float,  :range => 0.0..1.0, :default => 1.0..1.0

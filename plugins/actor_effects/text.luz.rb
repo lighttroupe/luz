@@ -4,6 +4,8 @@ class ActorEffectText < ActorEffect
 	title				"Text"
 	description "Apply text to actor."
 
+	categories :color
+
 	setting 'font', :font, :on_change => :not_drawn!
 	setting 'text', :string, :multiline => true, :on_change => :not_drawn!
 

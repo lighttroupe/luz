@@ -20,6 +20,8 @@ class ActorEffectKScope2 < ActorEffect
 	title				"KScope2"
 	description "Kaleidescope effect."
 
+	categories :transform, :child_producer
+
 	setting 'folds', :float, :range => 1.0..100.0, :default => 1.0..2.0
 
 	def render

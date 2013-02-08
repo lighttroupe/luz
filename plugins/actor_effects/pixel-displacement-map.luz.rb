@@ -20,6 +20,8 @@ class ActorEffectPixelDisplacementMap < ActorEffect
 	title				"Pixel Displacement Map"
 	description "Uses chosen image to offset actor's pixels."
 
+	categories :color
+
 	setting 'displacement_map', :image, :shader => true
 	setting 'amount', :float, :range => -10.0..10.0, :default => 0.0..2.0, :shader => true
 

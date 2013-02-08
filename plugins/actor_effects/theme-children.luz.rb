@@ -20,6 +20,8 @@ class ActorEffectThemeChildren < ActorEffect
 	title				"Theme Children"
 	description "Uses chosen theme to style each successive child differently."
 
+	categories :color, :child_consumer
+
 	setting 'theme', :theme
 	setting 'amount', :float, :range => 0.0..1.0, :default => 1.0..1.0
 	setting 'offset', :integer, :range => -1000..1000, :default => 0..1

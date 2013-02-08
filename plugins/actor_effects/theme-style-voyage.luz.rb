@@ -20,6 +20,8 @@ class ActorEffectThemeStyleVoyage < ActorEffect
 	title				"Theme Voyage"
 	description "Fades gradually between the styles of chosen theme."
 
+	categories :color
+
 	setting 'theme', :theme
 	setting 'progress', :float, :default => 0.0..1.0
 

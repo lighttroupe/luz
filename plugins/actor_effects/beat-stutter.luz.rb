@@ -20,6 +20,8 @@ class ActorEffectBeatStutter < ActorEffect
 	title				'Beat Stutter'
 	description "Causes future effects that animate on the beat to appear to stutter."
 
+	categories :special
+
 	setting 'steps', :integer, :range => 0..64, :default => 1..2
 
 	def render

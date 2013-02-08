@@ -20,6 +20,8 @@ class ActorEffectPixelBlur < ActorEffect
 	title				"Pixel Blur"
 	description "Averages several nearby pixels."
 
+	categories :color
+
 	setting 'amount', :float, :range => 0.0..1.0, :default => 0.0..1.0, :shader => true
 	setting 'samples', :integer, :range => 1..8, :default => 1..4, :shader => true
 	setting 'sample_distance', :float, :range => 0.0..1.0, :default => 0.004..1.0, :shader => true

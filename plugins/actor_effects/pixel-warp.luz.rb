@@ -6,6 +6,8 @@ class ActorEffectPixelWarp < ActorEffect
 	title				"Pixel Warp"
 	description "Squishes, warps, bends pixels in a variety of algorithmic ways."
 
+	categories :color
+
 	hint 'Multiple Pixel Warp plugins can be used simultaneously.'
 
 	setting 'amount', :float, :default => 0.0..1.0, :shader => true

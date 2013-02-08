@@ -22,6 +22,8 @@ class ActorEffectRGBSplit < ActorEffect
 
 	hint "Can be effective with Draw Method Brighten."
 
+	categories :color, :child_producer
+
 	setting 'distance', :float, :default => 0.0..1.0
 	setting 'angle', :float, :default => 0.0..1.0
 

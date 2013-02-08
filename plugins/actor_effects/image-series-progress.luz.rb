@@ -20,6 +20,8 @@ class ActorEffectImageSeriesProgress < ActorEffect
 	title				"Image Series Progress"
 	description "Apply one of a series of images to actor, selected by percentage."
 
+	categories :color
+
 	hint "Supports animated GIFs, and will some day also support video files."
 
 	setting 'image', :image, :summary => true

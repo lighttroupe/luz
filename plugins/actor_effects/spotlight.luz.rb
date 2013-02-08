@@ -20,6 +20,8 @@ class ActorEffectSpotlight < ActorEffect
 	title				'Spotlight'
 	description 'A spotlight is a combination of the brightening draw mode, alpha control, a stack, and scaling.'
 
+	categories :child_producer
+
 	setting 'number', :integer, :range => 1..1000, :default => 1..2
 	setting 'roll', :float, :range => -1000.0..1000.0, :default => 0.0..1.0
 	setting 'smallest', :float, :range => 0.0..1000.0, :default => 1.0..1.0

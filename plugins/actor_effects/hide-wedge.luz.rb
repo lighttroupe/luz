@@ -20,6 +20,8 @@ class ActorEffectHideWedge < ActorEffect
 	title				"Hide Wedge"
 	description "Hides a wedge of the actor."
 
+	categories :transform
+
 	setting 'start_angle', :float, :default => 0.0..1.0
 	setting 'wedge_size', :float, :range => 0.0..1.0, :default => 0.0..1.0
 

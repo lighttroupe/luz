@@ -20,6 +20,8 @@ class ActorEffectImageOfDirector < ActorEffect
 	title				"Image of Director"
 	description "Renders chosen director to an offscreen image, then applies that image to this actor."
 
+	categories :color
+
 	setting 'director', :director, :summary => true
 
 	def render

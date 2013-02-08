@@ -36,6 +36,7 @@ class GuiRadioButtons < GuiList
 
 	def set_value(value)
 		@object.instance_variable_set(@method, value)
+		selection_change_notify
 	end
 
 	def selected_index

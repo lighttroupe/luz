@@ -23,6 +23,8 @@ class ActorEffectActorEffectsCycle < ActorEffect
 	title				'Actor Effects Cycle'
 	description ""
 
+	categories :special
+
 	setting 'actors', :actors, :summary => 'tagged %'
 
 	setting 'forwards', :event, :summary => '% forward'

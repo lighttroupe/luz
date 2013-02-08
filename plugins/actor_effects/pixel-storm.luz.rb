@@ -20,6 +20,8 @@ class ActorEffectPixelStorm < ActorEffect
 	title				"Pixel Storm"
 	description "Displace pixels in random directions."
 
+	categories :color
+
 	setting 'amount', :float, :default => 0.0..1.0, :shader => true
 
 	CODE = "

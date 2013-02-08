@@ -20,6 +20,8 @@ class ActorEffectGridOffset < ActorEffect
 	title				"Grid Offset"
 	description "Draws actor many times in a grid pattern, out from the center, with odd columns offset by 0.5."
 
+	category :child_producer
+
 	setting 'offset_x', :float, :range => -100.0..100.0, :default => 1.0..2.0
 	setting 'offset_y', :float, :range => -100.0..100.0, :default => 1.0..2.0
 	setting 'number_x', :integer, :range => 0..100, :default => 0..2

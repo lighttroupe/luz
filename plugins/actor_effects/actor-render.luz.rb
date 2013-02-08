@@ -20,6 +20,8 @@ class ActorEffectActorRender < ActorEffect
 	title				'Actor Render'
 	description "Renders chosen actor once, immediate, live."
 
+	categories :special
+
 	hint "Useful for rendering on Canvas actors."
 
 	setting 'actor', :actor, :summary => true

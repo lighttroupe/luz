@@ -20,6 +20,8 @@ class ActorEffectScale2D < ActorEffect
 	title				'Scale 2D'
 	description 'Scales actor in its X and Y dimensions.'
 
+	category :transform
+
 	setting 'amount_x', :float, :default => 1.0..2.0
 	setting 'amount_y', :float, :default => 1.0..2.0
 

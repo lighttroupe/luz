@@ -20,6 +20,8 @@ class ActorEffectSprinkle < ActorEffect
 	title				"Sprinkle"
 	description "Draws actor many times in random positions within a given radius."
 
+	categories :child_producer
+
 	setting 'number', :integer, :range => 1..1000, :default => 1..2
 	setting 'radius', :float, :range => 0.0..100.0, :default => 1.0..2.0
 

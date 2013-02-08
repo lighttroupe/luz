@@ -20,6 +20,8 @@ class ActorEffectThemeStyleSelect < ActorEffect
 	title				"Theme Style Select"
 	description ""
 
+	categories :color
+
 	setting 'theme', :theme
 
 	setting 'forwards', :event, :summary => '% forward'

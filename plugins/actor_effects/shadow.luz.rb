@@ -20,6 +20,8 @@ class ActorEffectShadow < ActorEffect
 	title				"Shadow"
 	description "Draws a shadow below the actor."
 
+	categories :child_producer
+
 	setting 'alpha', :float, :range => 0.0..1.0, :default => 0.5..1.0
 	setting 'size', :float, :range => 0.0..100.0, :default => 1.0..2.0
 	setting 'angle', :float, :range => -1.0..1.0, :default => 0.0..1.0

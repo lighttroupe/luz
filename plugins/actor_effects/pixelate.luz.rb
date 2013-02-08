@@ -20,6 +20,8 @@ class ActorEffectPixelate < ActorEffect
 	title				"Pixelate"
 	description "Draws image at a lower resolution."
 
+	categories :color
+
 	setting 'segments_x', :integer, :range => 1..1000, :default => 100..1000, :shader => true
 	setting 'segments_y', :integer, :range => 1..1000, :default => 100..1000, :shader => true
 

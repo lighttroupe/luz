@@ -20,6 +20,8 @@ class ActorEffectPixelColorReduce < ActorEffect
 	title				"Pixel Color Reduce"
 	description ""
 
+	categories :color
+
 	setting 'segments', :integer, :range => 1..1000, :default => 100..1000, :shader => true
 
 	def render

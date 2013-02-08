@@ -16,7 +16,40 @@ private
 		# background
 		self << (@background=GuiObject.new.set(:color => [0,0,0,0.9]))
 
-		valid_plugins = find_valid_effect_classes.map { |object|
+		@category = :transform
+		@categories = [:transform,:color,:child_producer,:child_consumer,:canvas,:special]
+
+		#
+		# Category selector
+		#
+		self << (@category_selector = GuiRadioButtons.new(self, :category, @categories).set(:offset_x => 0.0, :offset_y => 0.485, :scale_x => 1.0, :scale_y => 0.12, :spacing_x => 1.0))
+		@category_selector.on_selection_change {
+			fill_from_category!
+		}
+
+		#
+		# Effects list
+		#
+		self << (@list = GuiListWithControls.new.set({:spacing_y => -0.8, :offset_x => -0.35, :offset_y => -0.05, :scale_x => 0.29, :scale_y => 0.85, :item_aspect_ratio => 3.0}))
+
+		#
+		# Close
+		#
+		self << (@close_button=GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.15, :offset_x => 0.5, :offset_y => 0.5, :background_image => $engine.load_image('images/buttons/close.png')))
+		@close_button.on_clicked { hide! }
+
+		fill_from_category!
+	end
+
+	def fill_from_category!
+		puts "fill_from_category! #{@category}"
+
+		@list.clear!
+
+		find_valid_effect_classes.each { |object|
+
+			next unless object.in_category?(@category)
+
 			# wrap in a renderer
 			renderer = GuiObjectRenderer.new(object)
 
@@ -27,13 +60,9 @@ private
 				add_notify(new_object)
 				hide!
 			}
-			renderer
+
+			@list << renderer
 		}
-
-		self << (@list = GuiListWithControls.new(valid_plugins).set({:spacing_y => -0.8, :scale_x => 0.29, :offset_x => -0.35, :scale_y => 0.87, :offset_y => -0.06, :item_aspect_ratio => 3.0}))
-
-		self << (@close_button=GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.15, :offset_x => 0.5, :offset_y => 0.5, :background_image => $engine.load_image('images/buttons/close.png')))
-		@close_button.on_clicked { hide! }
 	end
 
 	def hide!

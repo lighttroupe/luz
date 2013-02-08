@@ -20,6 +20,8 @@ class ActorEffectPixelMask < ActorEffect
 	title				"Pixel Mask"
 	description ""
 
+	categories :color
+
 	setting 'red_cutoff', :float, :range => 0.0..1.0, :default => 0.0..1.0, :shader => true
 	setting 'green_cutoff', :float, :range => 0.0..1.0, :default => 0.0..1.0, :shader => true
 	setting 'blue_cutoff', :float, :range => 0.0..1.0, :default => 0.0..1.0, :shader => true

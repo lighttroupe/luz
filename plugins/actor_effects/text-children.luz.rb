@@ -83,6 +83,8 @@ class ActorEffectTextChildren < ActorEffect
 	title				"Text Children"
 	description "Apply text to children, one letter per child."
 
+	categories :color, :child_consumer
+
 	setting :font, :font
 	setting :text, :string
 

@@ -20,6 +20,8 @@ class ActorEffectHideBottom < ActorEffect
 	title				"Hide from Bottom"
 	description "Hides actor starting from the bottom."
 
+	categories :transform
+
 	setting 'amount', :float, :range => 0.0..1.0, :default => 0.0..1.0
 
 	def render

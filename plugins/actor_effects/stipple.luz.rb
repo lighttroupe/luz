@@ -20,6 +20,8 @@ class ActorEffectStipple < ActorEffect
 	title				"Stipple"
 	description "Represent image using a grid of dots."
 
+	categories :color
+
 	setting 'segments', :integer, :range => 1..1000, :default => 100..10000, :shader => true
 	setting 'size', :float, :range => 0.0..1.0, :default => 1.0..1.0, :shader => true
 

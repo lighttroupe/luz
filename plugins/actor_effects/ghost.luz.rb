@@ -22,6 +22,8 @@ class ActorEffectGhost < ActorEffect
 
 	hint "The original actor is child 1 and the ghost is child 2."
 
+	categories :child_producer
+
 	setting 'size', :float, :default => 1.0..2.0
 	setting 'distance', :float, :default => 0.0..1.0
 	setting 'angle', :float, :default => 0.0..1.0

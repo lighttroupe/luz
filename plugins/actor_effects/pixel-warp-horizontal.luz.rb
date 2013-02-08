@@ -20,6 +20,8 @@ class ActorEffectPixelWarpHorizontal < ActorEffect
 	title				"Pixel Warp Horizontal"
 	description "Offsets pixels in a wavy way."
 
+	categories :color
+
 	setting 'amount', :float, :default => 0.0..1.0, :shader => true
 	setting 'frequency', :float, :default => 0.1..1.0, :shader => true
 

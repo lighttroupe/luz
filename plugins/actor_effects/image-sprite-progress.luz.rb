@@ -20,6 +20,8 @@ class ActorEffectImageSpriteProgress < ActorEffect
 	title				"Image Sprite Progress"
 	description "Apply one frame of animation from a 'sprite', selected by percentage."
 
+	categories :color
+
 	hint "Supports images containing multiple frames, spaced equally, either horizontally or vertically."
 
 	setting 'image', :image, :summary => true

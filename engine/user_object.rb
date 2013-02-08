@@ -47,6 +47,7 @@ class UserObject
 	end
 
 	dsl_string :title, :description, :hint
+	dsl_set :category, :categories
 
 	def self.setting(name, klass, options={})
 		@settings ||= []

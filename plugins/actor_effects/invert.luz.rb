@@ -20,6 +20,8 @@ class ActorEffectInvert < ActorEffect
 	title				"Invert"
 	description "Inverts pixel color components."
 
+	category :color
+
 	setting 'amount', :float, :range => 0.0..1.0, :default => 0.0..1.0, :shader => true
 
 	def render

@@ -20,6 +20,8 @@ class ActorEffectColorHueRotate < ActorEffect
 	title				"Color Hue Rotate"
 	description ""
 
+	categories :color
+
 	setting 'amount', :float, :default => 0.0..1.0
 
 	def render

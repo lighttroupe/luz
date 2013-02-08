@@ -32,10 +32,10 @@ class GuiBox < GuiObject
 	end
 
 	def add_after_selection(object)
-		if (obj = selection.first) && (index = @list.index(obj))
-			@list.insert(index+1, object)
+		if (obj = selection.first) && (index = @contents.index(obj))
+			@contents.insert(index+1, object)		# HACK: whoops shouldn't use @list here!!
 		else
-			@list << object
+			@contents << object
 		end
 	end
 
@@ -75,25 +75,31 @@ class GuiBox < GuiObject
 	#
 	# Selection
 	#
+	callback :selection_change
+
 	def child_is_selected?(object)
 		@selection.include?(object)
 	end
 
 	def add_to_selection(object)
 		@selection << object
+		selection_change_notify
 	end
 
 	def remove_from_selection(object)
 		@selection.delete(object)
+		selection_change_notify
 	end
 
 	def set_selection(object)
 		clear_selection!
 		add_to_selection(object)
+		selection_change_notify
 	end
 
 	def clear_selection!
 		@selection.clear
+		selection_change_notify
 	end
 
 	attr_reader :selection

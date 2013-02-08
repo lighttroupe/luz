@@ -20,6 +20,8 @@ class ActorEffectChildSelector < ActorEffect
 	title				"Child Selector"
 	description "Forcibly sets the internal 'child number' based on the activation count of a chosen event."
 
+	categories :child_consumer
+
 	hint "Future effects can be filtered based on the child number."
 
 	setting 'event', :event

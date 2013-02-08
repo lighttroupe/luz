@@ -20,6 +20,8 @@ class ActorEffectRadialBlurRepeater < ActorEffect
 	title				"Radial Blur Repeater"
 	description "A blur effect created by repeating the actor multiple times, each larger than the last."
 
+	categories :color
+
 	setting 'amount', :float, :range => 0.0..100.0, :default => 0.0..0.5
 	setting 'number', :integer, :range => 1..1000, :default => 0..2
 

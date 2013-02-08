@@ -22,6 +22,8 @@ class ActorEffectActorPen < ActorEffect
 
 	hint 'This effect is primarily intended for use with the Canvas actor.'
 
+	categories :canvas
+
 	setting 'actor', :actor
 
 	setting 'offset_x', :float, :default => 0.0..1.0

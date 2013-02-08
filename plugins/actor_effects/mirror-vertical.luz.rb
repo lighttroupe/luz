@@ -18,8 +18,9 @@
 
 class ActorEffectMirrorVertical < ActorEffect
 	title				"Mirror Vertical"
-	description "Draws actor twice, once normally and once mirrored vertically."
 	description "The top half of the actor is mirrored on the bottom side."
+
+	categories :transform, :child_producer
 
 	def render
 		# Top

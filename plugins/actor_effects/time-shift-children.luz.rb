@@ -22,6 +22,8 @@ class ActorEffectTimeShiftChildren < ActorEffect
 
 	hint "Place this after an effect that creates children, and before one or more effects that animate on time."
 
+	categories :special, :child_consumer
+
 	setting 'time_per_child', :timespan
 	setting 'amount', :float, :default => 0.0..1.0
 

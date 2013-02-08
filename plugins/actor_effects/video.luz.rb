@@ -6,6 +6,8 @@ class ActorEffectVideoFile < ActorEffect
 	title				"Video File"
 	description ""
 
+	categories :color
+
 	setting 'file_name', :string
 	setting 'speed', :float, :range => 0.0..1.0, :default => 1.0..1.0
 

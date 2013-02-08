@@ -20,6 +20,8 @@ class ActorEffectPixelGlowMap < ActorEffect
 	title				"Pixel Glow Map"
 	description "Uses chosen image to add to (or subtact from) actor's pixel values."
 
+	categories :color
+
 	setting 'glow_map', :image, :shader => true
 	setting 'amount', :float, :range => -10.0..10.0, :default => 0.0..2.0, :shader => true
 	setting 'offset_x', :float, :range => -1.0..1.0, :default => 0.0..1.0, :shader => true

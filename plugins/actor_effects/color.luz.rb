@@ -20,6 +20,8 @@ class ActorEffectColor < ActorEffect
 	title				"Color"
 	description "Colors actor."
 
+	category :color
+
 	setting 'color', :color, :default => [1.0, 1.0, 1.0, 1.0]
 	setting 'amount', :float, :range => 0.0..1.0, :default => 1.0..1.0
 

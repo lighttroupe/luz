@@ -20,6 +20,8 @@ class ActorEffectSlice < ActorEffect
 	title				"Slice"
 	description "Creates a chosen number of 'slices' of actor, each controllable separately as children."
 
+	categories :transform, :child_producer
+
 	setting 'number', :integer, :range => 1..100, :default => 1..2
 	setting 'angle', :float, :default => 0.0..1.0
 	setting 'distribution', :curve

@@ -20,6 +20,8 @@ class ActorEffectSaturate < ActorEffect
 	title				"Saturate"
 	description "Over-saturate or under-saturate image. Amounts above 1.0 multiply color channels, while amounts below 1.0 move colors towards an average of the RGB components."
 
+	categories :color
+
 	setting 'amount', :float, :range => 0.0..100.0, :default => 1.0..2.0, :shader => true
 
 	def render

@@ -20,6 +20,8 @@ class ActorEffectScanLinesVertical < ActorEffect
 	title				"Scan Lines Vertical"
 	description "Creates vertical scanlines in images, with optional fading and vertical translation."
 
+	categories :color
+
 	setting 'size', :float, :range => 0.0..1.0, :default => 0.05..1.0, :shader => true
 	setting 'fade_one', :float, :range => 0.0..1.0, :default => 0.0..1.0, :shader => true
 	setting 'offset_one', :float, :range => -1.0..1.0, :default => 0.0..1.0, :shader => true
