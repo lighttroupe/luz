@@ -25,7 +25,7 @@ class GuiUserObjectEditor < GuiBox
 		# Title
 		#
 		if @user_object.has_settings_list?
-			self << (@title_button=GuiButton.new.set(:scale_x => 0.5, :offset_x => -0.25, :scale_y => 0.10, :offset_y => 0.5 - 0.06, :color => [0,0,0,1]))		#.set(:background_image => $engine.load_image('images/buttons/menu.png'))
+			self << (@title_button=GuiButton.new.set(:scale_x => 0.5, :offset_x => -0.25, :scale_y => 0.10, :offset_y => 0.5 - 0.06, :color => [0,0,0,0.1]))		#.set(:background_image => $engine.load_image('images/buttons/menu.png'))
 
 			@title_button.on_clicked {
 				@user_object.gui_fill_settings_list(@user_object)
