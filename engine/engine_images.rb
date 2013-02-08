@@ -21,7 +21,7 @@ module EngineImages
 		@images_cache ||= {}
 		return @images_cache[file_path] if @images_cache[file_path]
 
-		unless File.exists? file_path
+		unless file_path && File.exists?(file_path)
 			puts "Engine#load_images: file doesn't exist \"#{file_path}\"" 
 			return (@images_cache[file_path] ||= [Image.new])
 		end
