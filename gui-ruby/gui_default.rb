@@ -94,9 +94,13 @@ class GuiDefault < GuiBox
 	end
 
 	def show_project_menu
+		# dark overlay
 		self << bg=GuiObject.new.set(:color => [0,0,0], :opacity => 0.0).animate({:opacity => 0.8}, duration=0.2)
+
+		# menu
 		self << menu=GuiObject.new.set(:scale_x => 0.0, :scale_y => 0.6).animate({:scale_x => 0.3, :scale_y => 0.65}, duration=0.1)
-		#bg.on_clicked { bg.remove_from_parent! }
+
+		#bg.on_clicked { bg.remove_from_parent! }		# TODO: no on_clicked for non-buttons?
 	end
 
 	def mode=(mode)
