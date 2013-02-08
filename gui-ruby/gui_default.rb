@@ -210,7 +210,7 @@ class GuiDefault < GuiBox
 		else
 			if user_object.is_a? ParentUserObject
 				if user_object.is_a? Actor
-					# @mode = ACTOR_MODE   TODO: perhaps some way to auto-switch to user view when selecting
+					@mode = ACTOR_MODE		# TODO: make this an option?
 					@chosen_actor = user_object		# this way, if user then switches to the actor list, this actor will be showing
 					close_actors_list!
 				end
@@ -234,7 +234,7 @@ class GuiDefault < GuiBox
 	def create_user_object_editor_for_pointer(user_object, pointer, options)
 		GuiUserObjectEditor.new(user_object, {:scale_x => 0.3, :scale_y => 0.05}.merge(options))
 			.set({:offset_x => pointer.x, :offset_y => pointer.y, :opacity => 0.0, :scale_x => 0.0, :scale_y => 0.0, :hidden => false})
-			.animate({:offset_x => 0.0, :offset_y => -0.25, :scale_x => 0.5, :scale_y => 0.5, :opacity => 1.0}, duration=0.2)
+			.animate({:offset_x => 0.0, :offset_y => -0.25, :scale_x => 0.65, :scale_y => 0.5, :opacity => 1.0}, duration=0.2)
 	end
 
 	def clear_editors!
