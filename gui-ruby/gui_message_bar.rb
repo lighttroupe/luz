@@ -1,6 +1,6 @@
 class GuiMessageBar < GuiBox
-	MESSAGE_DURATION = 4.0
-	MESSAGE_DURATION_FAST = 1.5
+	MESSAGE_DURATION = 2.0
+	MESSAGE_DURATION_FAST = 1.0
 
 	def initialize
 		super
