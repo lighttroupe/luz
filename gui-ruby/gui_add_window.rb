@@ -47,8 +47,7 @@ private
 		@list.clear!
 
 		find_valid_effect_classes.each { |object|
-
-			next unless object.in_category?(@category)
+			next unless (@category.nil? || object.in_category?(@category))
 
 			# wrap in a renderer
 			renderer = GuiObjectRenderer.new(object)
