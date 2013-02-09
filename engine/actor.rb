@@ -32,6 +32,10 @@ class Actor < ParentUserObject
 	###################################################################
 	dsl_flag :cache_rendering
 
+	def self.available_categories
+		[:transform,:color,:child_producer,:child_consumer,:canvas,:special]
+	end
+
 	###################################################################
 	# Object-level functions
 	###################################################################

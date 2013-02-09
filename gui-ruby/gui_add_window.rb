@@ -5,6 +5,7 @@ class GuiAddWindow < GuiBox
 
 	def initialize(user_object, options={})
 		@user_object, @options = user_object, options
+		@categories = @user_object.class.respond_to?(:available_categories) ? @user_object.class.available_categories : []
 		super(contents=[])		# added in create!
 		create!
 		set(options)
@@ -16,8 +17,7 @@ private
 		# background
 		self << (@background=GuiObject.new.set(:color => [0,0,0,0.9]))
 
-		@category = :transform
-		@categories = [:transform,:color,:child_producer,:child_consumer,:canvas,:special]
+		@category = @categories.first
 
 		#
 		# Category selector
