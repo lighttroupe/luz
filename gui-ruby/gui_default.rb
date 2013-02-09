@@ -7,12 +7,31 @@ load_directory(Dir.pwd + '/gui-ruby/addons/', '**.rb')
 require 'gui_preferences_box'
 require 'gui_user_object_editor'
 require 'gui_add_window'
+require 'gui_interface'
 
-class GuiDefault < GuiBox
+class MainMenu < GuiBox
+	def initialize
+		super
+		create!
+	end
+
+	def create!
+		self << GuiObject.new.set(:color => [0.5,0.5,0.5,0.5])
+
+		self << GuiButton.new.set(:scale_x => 0.2, :scale_y => 0.1, :offset_x => -0.48, :offset_y => -0.47, :background_image => $engine.load_image('images/buttons/menu.png'))
+		self << GuiButton.new.set(:scale_x => 0.2, :scale_y => 0.1, :offset_x => 0.48, :offset_y => -0.47, :background_image => $engine.load_image('images/buttons/play.png'))
+	end
+end
+
+class GuiDefault < GuiInterface
 	pipe [:positive_message, :negative_message], :message_bar
 
 	ACTOR_MODE, DIRECTOR_MODE, OUTPUT_MODE = 1, 2, 3
 
+	# hardcoded SDL keys
+	ESCAPE_KEY						= 'escape'
+
+	# hardcoded Luz keys
 	MENU_BUTTON						= ''
 	SAVE_BUTTON						= ''
 
@@ -66,12 +85,22 @@ class GuiDefault < GuiBox
 #		self << (@curve_button = GuiButton.new.set(:hotkey => CURVES_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.06, :offset_y => 0.50 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
 #		@curve_button.on_clicked { toggle_curves_list! }
 
-		# Main Menu button
+		# Project Menu button
 		self << (@project_menu_button = GuiButton.new.set(:hotkey => MENU_BUTTON, :scale_x => 0.04, :scale_y => 0.06, :offset_x => -0.48, :offset_y => 0.47, :background_image => $engine.load_image('images/corner.png')))
-		@project_menu_button.on_clicked { show_project_menu }
+		@project_menu_button.on_clicked { show_main_menu }		# for now
 
 		# Director Button
 		self << (@directors_button = GuiButton.new.set(:hotkey => MENU_BUTTON, :scale_x => -0.04, :scale_y => 0.06, :offset_x => 0.48, :offset_y => 0.47, :background_image => $engine.load_image('images/corner.png')))
+
+		# Radio buttons for @mode		TODO: add director view
+		self << GuiRadioButtons.new(self, :mode, [ACTOR_MODE, OUTPUT_MODE]).set(:offset_x => 0.35, :offset_y => 0.485, :scale_x => 0.06, :scale_y => 0.03, :spacing_x => 1.0)
+
+		# OVERLAY LEVEL (things above are hidden, below are visible, while overlay is showing)
+		self << (@overlay = GuiObject.new.set(:color => [0,0,0], :opacity => 0.0, :hidden => true))
+
+		# Main menu
+		@main_menu = MainMenu.new.set(:hidden => true, :scale_x => 0.0, :scale_y => 0.6).animate({:scale_x => 0.3, :scale_y => 0.65}, duration=0.1)
+		self << @main_menu
 
 		# Message Bar
 		self << (@message_bar = GuiMessageBar.new.set(:offset_x => 0.02, :offset_y => 0.5 - 0.05, :scale_x => 0.32, :scale_y => 0.05))
@@ -84,25 +113,46 @@ class GuiDefault < GuiBox
 		#self << (@preferences_button = GuiButton.new.set(:hotkey => PREFERENCES_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.50, :offset_y => -0.50, :color => [0.5,1.0,0.5,1.0], :background_image => $engine.load_image('images/buttons/menu.png')))
 		#@preferences_button.on_clicked { toggle_preferences_box! }
 
-		# Radio buttons for @mode		TODO: add director view
-		self << GuiRadioButtons.new(self, :mode, [ACTOR_MODE, OUTPUT_MODE]).set(:offset_x => 0.35, :offset_y => 0.485, :scale_x => 0.06, :scale_y => 0.03, :spacing_x => 1.0)
-
 		# Defaults
 		@user_object_editors = {}
 		@chosen_actor = nil
 		self.mode = OUTPUT_MODE
 	end
 
-	def show_project_menu
-		# dark overlay
-		self << bg=GuiObject.new.set(:color => [0,0,0], :opacity => 0.0).animate({:opacity => 0.8}, duration=0.2)
-
-		# menu
-		self << menu=GuiObject.new.set(:scale_x => 0.0, :scale_y => 0.6).animate({:scale_x => 0.3, :scale_y => 0.65}, duration=0.1)
-
-		#bg.on_clicked { bg.remove_from_parent! }		# TODO: no on_clicked for non-buttons?
+	def hide_main_menu
+		return false if @main_menu.hidden?
+		hide_overlay!
+		@main_menu.animate({:scale_x => 0.0, :scale_y => 0.0}, duration=0.1) { @main_menu.set(:hidden => true) }
+		true
 	end
 
+	def show_main_menu
+		show_overlay!
+		@main_menu.set({:scale_x => 0.0, :scale_y => 0.0, :hidden => false}).animate({:scale_x => 0.3, :scale_y => 0.65}, duration=0.1)
+	end
+
+	def toggle_main_menu!
+		if @overlay
+			hide_main_menu
+		else
+			show_main_menu
+		end
+	end
+
+	#
+	# Overlay
+	#
+	def show_overlay!
+		@overlay.set(:hidden => false).animate({:opacity => 0.8}, duration=0.5)
+	end
+
+	def hide_overlay!
+		@overlay.animate({:opacity => 0.0}, duration=0.25) { @overlay.set(:hidden => true) }
+	end
+
+	#
+	# Mode switching
+	#
 	def mode=(mode)
 		return if mode == @mode
 		@mode = mode
@@ -136,78 +186,18 @@ class GuiDefault < GuiBox
 		}
 	end
 
-	def raw_keyboard_input(value)
-		handle_keypress(value) if process_keypress?(value)
-	end
-
-	def process_keypress?(value)
-		true		# TODO: whitelist
+	def on_key_press(value)
+		case value
+		when ESCAPE_KEY
+			hide_something!
+		else
+			#debug positive_message(value)
+		end
 	end
 
 	#
 	# Keyboard grabbing
 	#
-	def grab_keyboard(&proc)
-		@keyboard_grab_proc = proc
-	end
-
-	def handle_keypress(value)
-		if @keyboard_grab_proc && @keyboard_grab_proc.call(value) == false
-			@keyboard_grab_proc = nil
-		end
-	end
-
-	def toggle_preferences_box!
-		if @preferences_box.hidden?		# TODO: this is not a good way to toggle
-			@preferences_box.set(:hidden => false, :opacity => 0.0).animate({:opacity => 1.0, :offset_x => 0.38, :offset_y => -0.3}, duration=0.2)
-		else
-			@preferences_box.animate({:opacity => 0.0, :offset_x => 0.6, :offset_y => -0.6}, duration=0.25) { @preferences_box.set_hidden(true) }
-		end
-	end
-
-	def toggle_actors_list!
-		if @actors_list.hidden?
-			show_actors_list!
-		else
-			close_actors_list!
-		end
-	end
-	def show_actors_list! ; @actors_list.set(:hidden => false, :offset_x => 0.56).animate({:offset_x => 0.44}, duration=0.2) ; end
-	def close_actors_list! ; @actors_list.animate(:offset_x, 0.56, duration=0.25) { @actors_list.set_hidden(true) } ; end
-
-=begin
-	def toggle_curves_list!
-		if @curves_list.hidden?
-			@curves_list.set(:hidden => false, :opacity => 0.0).animate({:offset_y => 0.15, :opacity => 1.0}, duration=0.2)
-		else
-			@curves_list.animate(:offset_y, 0.5, duration=0.25) { @curves_list.set_hidden(true) }.animate(:opacity, 0.0, duration=0.2)
-		end
-	end
-
-	def toggle_themes_list!
-		if @themes_list.hidden?
-			@themes_list.set(:hidden => false, :opacity => 0.0).animate({:offset_y => 0.15, :opacity => 1.0}, duration=0.2)
-		else
-			@themes_list.animate(:offset_y, 0.5, duration=0.25) { @themes_list.set_hidden(true) }.animate(:opacity, 0.0, duration=0.2)
-		end
-	end
-=end
-
-	def toggle_variables_list!
-		if @variables_list.hidden?
-			@variables_list.set(:hidden => false, :offset_x => -0.6, :opacity => 0.0).animate({:offset_x => -0.44, :opacity => 1.0}, duration=0.2)
-		else
-			@variables_list.animate(:offset_x, -0.6, duration=0.25) { @variables_list.set_hidden(true) }
-		end
-	end
-
-	def toggle_events_list!
-		if @events_list.hidden?
-			@events_list.set(:hidden => false, :offset_x => -0.6, :opacity => 0.0).animate({:offset_x => -0.44, :opacity => 1.0}, duration=0.2)
-		else
-			@events_list.animate({:offset_x => -0.6, :opacity => 0.0}, duration=0.25) { @events_list.set_hidden(true) }
-		end
-	end
 
 	def build_editor_for(user_object, options)
 		pointer = options[:pointer]
@@ -254,10 +244,77 @@ class GuiDefault < GuiBox
 		end
 	end
 
+	def pointer_click_on_nothing(pointer)
+		hide_something!
+	end
+
+	#
+	# Utility methods
+	#
 	def create_user_object_editor_for_pointer(user_object, pointer, options)
 		GuiUserObjectEditor.new(user_object, {:scale_x => 0.3, :scale_y => 0.05}.merge(options))
 			.set({:offset_x => pointer.x, :offset_y => pointer.y, :opacity => 0.0, :scale_x => 0.0, :scale_y => 0.0, :hidden => false})
 			.animate({:offset_x => 0.0, :offset_y => -0.25, :scale_x => 0.65, :scale_y => 0.5, :opacity => 1.0}, duration=0.2)
+	end
+
+	#
+	# Preferences Box
+	#
+	def show_preferences_box! ; @preferences_box.set(:hidden => false, :opacity => 0.0).animate({:opacity => 1.0, :offset_x => 0.38, :offset_y => -0.3}, duration=0.2) ; end
+	def hide_preferences_box! ; @preferences_box.animate({:opacity => 0.0, :offset_x => 0.6, :offset_y => -0.6}, duration=0.25) { @preferences_box.set_hidden(true) } ; end
+	def toggle_preferences_box!
+		if @preferences_box.hidden?		# TODO: this is not a good way to toggle
+			show_preferences_box!
+		else
+			hide_preferences_box!
+		end
+	end
+
+	#
+	# Actor list
+	#
+	def toggle_actors_list!
+		if @actors_list.hidden?
+			show_actors_list!
+		else
+			close_actors_list!
+		end
+	end
+	def show_actors_list! ; @actors_list.set(:hidden => false, :offset_x => 0.56).animate({:offset_x => 0.44}, duration=0.2) ; end
+	def close_actors_list! ; @actors_list.animate(:offset_x, 0.56, duration=0.25) { @actors_list.set_hidden(true) } ; end
+
+=begin
+	def toggle_curves_list!
+		if @curves_list.hidden?
+			@curves_list.set(:hidden => false, :opacity => 0.0).animate({:offset_y => 0.15, :opacity => 1.0}, duration=0.2)
+		else
+			@curves_list.animate(:offset_y, 0.5, duration=0.25) { @curves_list.set_hidden(true) }.animate(:opacity, 0.0, duration=0.2)
+		end
+	end
+
+	def toggle_themes_list!
+		if @themes_list.hidden?
+			@themes_list.set(:hidden => false, :opacity => 0.0).animate({:offset_y => 0.15, :opacity => 1.0}, duration=0.2)
+		else
+			@themes_list.animate(:offset_y, 0.5, duration=0.25) { @themes_list.set_hidden(true) }.animate(:opacity, 0.0, duration=0.2)
+		end
+	end
+=end
+
+	def toggle_variables_list!
+		if @variables_list.hidden?
+			@variables_list.set(:hidden => false, :offset_x => -0.6, :opacity => 0.0).animate({:offset_x => -0.44, :opacity => 1.0}, duration=0.2)
+		else
+			@variables_list.animate(:offset_x, -0.6, duration=0.25) { @variables_list.set_hidden(true) }
+		end
+	end
+
+	def toggle_events_list!
+		if @events_list.hidden?
+			@events_list.set(:hidden => false, :offset_x => -0.6, :opacity => 0.0).animate({:offset_x => -0.44, :opacity => 1.0}, duration=0.2)
+		else
+			@events_list.animate({:offset_x => -0.6, :opacity => 0.0}, duration=0.25) { @events_list.set_hidden(true) }
+		end
 	end
 
 	def clear_editors!
@@ -269,12 +326,15 @@ class GuiDefault < GuiBox
 		@user_object_editors.clear
 	end
 
-	def pointer_click_on_nothing(pointer)
-		if @preferences_box && !@preferences_box.hidden?
+	def hide_something!
+		if @main_menu && !@main_menu.hidden?
+			hide_main_menu
+
+		elsif @preferences_box && !@preferences_box.hidden?
 			toggle_preferences_box!
 
 		#elsif !@user_object_editors.empty?
-		#	clear_editors!
+		# clear_editors!
 
 		elsif @actors_list && !@actors_list.hidden?
 			toggle_actors_list!
@@ -287,12 +347,12 @@ class GuiDefault < GuiBox
 
 		elsif @variables_list && !@variables_list.hidden?
 			toggle_variables_list!
-
-		elsif @events_list && !@events_list.hidden?
+			#elsif @events_list && !@events_list.hidden?
 			toggle_events_list!
-
 		else
+			return false
 			# TODO: close editor interface?
 		end
+		return true
 	end
 end
