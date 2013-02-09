@@ -14,6 +14,7 @@ class GuiDefault < GuiBox
 	ACTOR_MODE, DIRECTOR_MODE, OUTPUT_MODE = 1, 2, 3
 
 	MENU_BUTTON						= ''
+	SAVE_BUTTON						= ''
 
 	EVENTS_BUTTON					= 'Keyboard / F1'
 	VARIABLES_BUTTON			= 'Keyboard / F2'
@@ -35,35 +36,42 @@ class GuiDefault < GuiBox
 		create!
 	end
 
+	#
+	# Building the GUI
+	#
+	# Minimal start for a new object: self << GuiObject.new.set(:scale_x => 0.1, :scale_y => 0.1)
 	def create!
-		# Main Menu
-		self << (@project_menu_button = GuiButton.new.set(:hotkey => MENU_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => -0.5, :offset_y => 0.50, :background_image => $engine.load_image('images/buttons/menu.png')))
-		@project_menu_button.on_clicked { show_project_menu }
-
-		# Director Menu
-		self << (@directors_button = GuiButton.new.set(:hotkey => MENU_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.5, :offset_y => 0.50, :background_image => $engine.load_image('images/buttons/menu.png')))
-
-		# Events & Variables
-		self << (@variables_list = GuiListWithControls.new($engine.project.variables).set(:scale_x => 0.12, :scale_y => 0.65, :offset_x => -0.32, :offset_y => 0.5, :item_aspect_ratio => 3.2, :hidden => true, :spacing_y => -1.0))
-		self << (@events_list = GuiListWithControls.new($engine.project.events).set(:scale_x => 0.12, :scale_y => 0.65, :offset_x => -0.44, :offset_y => -0.5, :item_aspect_ratio => 3.2, :hidden => true, :spacing_y => -1.0))
-
-		self << (@variable_button = GuiButton.new.set(:hotkey => VARIABLES_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => -0.42, :offset_y => -0.50, :background_image => $engine.load_image('images/buttons/menu.png')))
-		@variable_button.on_clicked { toggle_variables_list! }
-		self << (@event_button = GuiButton.new.set(:hotkey => EVENTS_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => -0.5, :offset_y => -0.5, :background_image => $engine.load_image('images/buttons/menu.png')))
-		@event_button.on_clicked { toggle_events_list! }
+		@project_drawer = GuiObject.new.set(:scale_x => 0.1, :scale_y => 0.08, :offset_x => -0.5, :offset_y => 0.5-0.04, :color => [1.0,1.0,1.0,0.5])
+#		@project_drawer << (@save_button = GuiButton.new.set(:hotkey => SAVE_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => -0.5, :offset_y => 0.50, :background_image => $engine.load_image('images/buttons/menu.png')))
 
 		# Actors
-		self << (@actors_list = GuiListWithControls.new($engine.project.actors).set(:scroll_wrap => true, :scale_x => 0.2, :scale_y => 0.75, :offset_x => 0.395, :offset_y => -0.08, :hidden => true, :spacing_y => -1.0))
-		self << (@actors_button = GuiButton.new.set(:hotkey => ACTORS_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.5, :offset_y => -0.5, :background_image => $engine.load_image('images/buttons/menu.png')))
+		self << (@actors_list = GuiListWithControls.new($engine.project.actors).set(:scroll_wrap => true, :scale_x => 0.12, :scale_y => 0.8, :offset_x => 0.44, :offset_y => 0.0, :hidden => true, :spacing_y => -1.0))
+		self << (@actors_button = GuiButton.new.set(:hotkey => ACTORS_BUTTON, :scale_x => -0.04, :scale_y => -0.06, :offset_x => 0.48, :offset_y => -0.47, :background_image => $engine.load_image('images/corner.png')))
 		@actors_button.on_clicked { toggle_actors_list! }
+
+		# Variables
+		self << (@variables_list = GuiListWithControls.new($engine.project.variables).set(:scale_x => 0.12, :scale_y => 0.45, :offset_y => -0.22, :item_aspect_ratio => 3.2, :hidden => true, :spacing_y => -1.0))
+#		self << (@variable_button = GuiButton.new.set(:hotkey => VARIABLES_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => -0.42, :offset_y => -0.50, :background_image => $engine.load_image('images/buttons/menu.png')))
+#		@variable_button.on_clicked { toggle_variables_list! }
+
+		# Events
+		self << (@events_list = GuiListWithControls.new($engine.project.events).set(:scale_x => 0.12, :scale_y => 0.45, :offset_y => 0.23, :item_aspect_ratio => 3.2, :hidden => true, :spacing_y => -1.0))
+		self << (@event_button = GuiButton.new.set(:hotkey => EVENTS_BUTTON, :scale_x => 0.04, :scale_y => -0.06, :offset_x => -0.48, :offset_y => -0.47, :background_image => $engine.load_image('images/corner.png')))
+		@event_button.on_clicked { toggle_events_list! ; toggle_variables_list! }
 
 #		self << (@themes_list = GuiListWithControls.new($engine.project.themes).set(:scale_x => 0.08, :scale_y => 0.5, :offset_x => -0.11, :offset_y => 0.5, :item_aspect_ratio => 1.6, :hidden => true, :spacing_y => -1.0))
 #		self << (@theme_button = GuiButton.new.set(:hotkey => THEMES_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => -0.11, :offset_y => 0.5 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
 #		@theme_button.on_clicked { toggle_themes_list! }
-
 #		self << (@curves_list = GuiListWithControls.new($engine.project.curves).set(:scale_x => 0.08, :scale_y => 0.5, :offset_x => 0.06, :offset_y => 0.5, :item_aspect_ratio => 1.6, :hidden => true, :spacing_y => -1.0))
 #		self << (@curve_button = GuiButton.new.set(:hotkey => CURVES_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.06, :offset_y => 0.50 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
 #		@curve_button.on_clicked { toggle_curves_list! }
+
+		# Main Menu button
+		self << (@project_menu_button = GuiButton.new.set(:hotkey => MENU_BUTTON, :scale_x => 0.04, :scale_y => 0.06, :offset_x => -0.48, :offset_y => 0.47, :background_image => $engine.load_image('images/corner.png')))
+		@project_menu_button.on_clicked { show_project_menu }
+
+		# Director Button
+		self << (@directors_button = GuiButton.new.set(:hotkey => MENU_BUTTON, :scale_x => -0.04, :scale_y => 0.06, :offset_x => 0.48, :offset_y => 0.47, :background_image => $engine.load_image('images/corner.png')))
 
 		# Message Bar
 		self << (@message_bar = GuiMessageBar.new.set(:offset_x => 0.02, :offset_y => 0.5 - 0.05, :scale_x => 0.32, :scale_y => 0.05))
@@ -86,9 +94,13 @@ class GuiDefault < GuiBox
 	end
 
 	def show_project_menu
+		# dark overlay
 		self << bg=GuiObject.new.set(:color => [0,0,0], :opacity => 0.0).animate({:opacity => 0.8}, duration=0.2)
+
+		# menu
 		self << menu=GuiObject.new.set(:scale_x => 0.0, :scale_y => 0.6).animate({:scale_x => 0.3, :scale_y => 0.65}, duration=0.1)
-		#bg.on_clicked { bg.remove_from_parent! }
+
+		#bg.on_clicked { bg.remove_from_parent! }		# TODO: no on_clicked for non-buttons?
 	end
 
 	def mode=(mode)
@@ -140,7 +152,9 @@ class GuiDefault < GuiBox
 	end
 
 	def handle_keypress(value)
-		@keyboard_grab_proc = nil if @keyboard_grab_proc && @keyboard_grab_proc.call(value) == false
+		if @keyboard_grab_proc && @keyboard_grab_proc.call(value) == false
+			@keyboard_grab_proc = nil
+		end
 	end
 
 	def toggle_preferences_box!
@@ -158,8 +172,8 @@ class GuiDefault < GuiBox
 			close_actors_list!
 		end
 	end
-	def show_actors_list! ; @actors_list.set(:hidden => false, :opacity => 0.0).animate({:opacity => 1.0}, duration=0.2) ; end
-	def close_actors_list! ; @actors_list.animate(:opacity, 0.0, duration=0.25) { @actors_list.set_hidden(true) } ; end
+	def show_actors_list! ; @actors_list.set(:hidden => false, :offset_x => 0.56).animate({:offset_x => 0.44}, duration=0.2) ; end
+	def close_actors_list! ; @actors_list.animate(:offset_x, 0.56, duration=0.25) { @actors_list.set_hidden(true) } ; end
 
 =begin
 	def toggle_curves_list!
@@ -181,17 +195,17 @@ class GuiDefault < GuiBox
 
 	def toggle_variables_list!
 		if @variables_list.hidden?
-			@variables_list.set(:hidden => false, :offset_y => -0.5, :opacity => 0.0).animate({:offset_y => -0.15, :opacity => 1.0}, duration=0.2)
+			@variables_list.set(:hidden => false, :offset_x => -0.6, :opacity => 0.0).animate({:offset_x => -0.44, :opacity => 1.0}, duration=0.2)
 		else
-			@variables_list.animate(:offset_y, -0.5, duration=0.25) { @variables_list.set_hidden(true) }.animate(:opacity, 0.0, duration=0.2)
+			@variables_list.animate(:offset_x, -0.6, duration=0.25) { @variables_list.set_hidden(true) }
 		end
 	end
 
 	def toggle_events_list!
 		if @events_list.hidden?
-			@events_list.set(:hidden => false, :offset_y => -0.5, :opacity => 0.0).animate({:offset_y => -0.15, :opacity => 1.0}, duration=0.2)
+			@events_list.set(:hidden => false, :offset_x => -0.6, :opacity => 0.0).animate({:offset_x => -0.44, :opacity => 1.0}, duration=0.2)
 		else
-			@events_list.animate({:offset_y => -0.5, :opacity => 0.0}, duration=0.25) { @events_list.set_hidden(true) }
+			@events_list.animate({:offset_x => -0.6, :opacity => 0.0}, duration=0.25) { @events_list.set_hidden(true) }
 		end
 	end
 
@@ -202,17 +216,26 @@ class GuiDefault < GuiBox
 		if editor && !editor.hidden?
 			# was already visible... ...hide self towards click spot
 			self.bring_to_top(editor)
-			editor.animate({:offset_x => pointer.x, :offset_y => pointer.y, :scale_x => 0.0, :scale_y => 0.0, :opacity => 0.2}, duration=0.2) {
-				editor.remove_from_parent!		# trashed forever! (no cache)
-				@user_object_editors.delete(user_object)
-			}
+
+				if user_object.is_a? Actor
+					@mode = ACTOR_MODE		# TODO: make this an option?
+					@chosen_actor = user_object
+				end
+
+#			editor.animate({:offset_x => pointer.x, :offset_y => pointer.y, :scale_x => 0.0, :scale_y => 0.0, :opacity => 0.2}, duration=0.2) {
+#				editor.remove_from_parent!		# trashed forever! (no cache)
+#				@user_object_editors.delete(user_object)
+#			}
 			return
 		else
 			if user_object.is_a? ParentUserObject
+				# Auto-switch to actor view
 				if user_object.is_a? Actor
-					# @mode = ACTOR_MODE   TODO: perhaps some way to auto-switch to user view when selecting
-					@chosen_actor = user_object		# this way, if user then switches to the actor list, this actor will be showing
-					close_actors_list!
+#					@mode = ACTOR_MODE		# TODO: make this an option?
+#					@chosen_actor = user_object
+#					close_actors_list!		# TODO: make this an option?
+				elsif user_object.is_a? Director
+					# TODO
 				end
 
 				clear_editors!		# only support one for now
@@ -232,9 +255,9 @@ class GuiDefault < GuiBox
 	end
 
 	def create_user_object_editor_for_pointer(user_object, pointer, options)
-		GuiUserObjectEditor.new(user_object, {:scale_x => 0.3, :scale_y => 0.05}.merge(options)).
-			set({:offset_x => pointer.x, :offset_y => pointer.y, :opacity => 0.0, :scale_x => 0.0, :scale_y => 0.0, :hidden => false}).
-			animate({:offset_x => 0.0, :offset_y => -0.25, :scale_x => 0.5, :scale_y => 0.5, :opacity => 1.0}, duration=0.2)
+		GuiUserObjectEditor.new(user_object, {:scale_x => 0.3, :scale_y => 0.05}.merge(options))
+			.set({:offset_x => pointer.x, :offset_y => pointer.y, :opacity => 0.0, :scale_x => 0.0, :scale_y => 0.0, :hidden => false})
+			.animate({:offset_x => 0.0, :offset_y => -0.25, :scale_x => 0.65, :scale_y => 0.5, :opacity => 1.0}, duration=0.2)
 	end
 
 	def clear_editors!
