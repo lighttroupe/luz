@@ -31,7 +31,7 @@ end
 
 require 'callbacks'
 
-class Project
+class Project < UserObject
 	include Callbacks
 
 	callback :changed
@@ -58,7 +58,7 @@ class Project
 		}
 	}
 
-	attr_reader :path, :change_count, :missing_plugin_names
+	attr_reader :path, :change_count, :missing_plugin_names, :effects
 
 	def initialize
 		@last_save_time = Time.now
@@ -66,6 +66,11 @@ class Project
 		@missing_plugin_names = []
 
 		$engine.on_clear_objects { clear }
+	end
+
+	# For use by editor
+	def title
+		'Project Plugins'
 	end
 
 	def changed?
@@ -124,6 +129,10 @@ class Project
 		append_from_file(data)
 	end
 
+	def save
+		save_copy_to_path(@path)
+	end
+
 	def save_to_path(path)
 		if save_copy_to_path(path)
 			@path = path
@@ -140,7 +149,7 @@ class Project
 		tmp_path = path + '.tmp'
 		File.open(tmp_path, 'w+') { |tmp_file|
 			save_to_file(tmp_file)
-			File.mv(tmp_path, path)
+			File.rename(tmp_path, path)
 			return true
 		}
 		return false
