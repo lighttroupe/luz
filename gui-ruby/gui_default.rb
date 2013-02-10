@@ -65,6 +65,18 @@ class GuiDefault < GuiInterface
 		@project_drawer = GuiObject.new.set(:scale_x => 0.1, :scale_y => 0.08, :offset_x => -0.5, :offset_y => 0.5-0.04, :color => [1.0,1.0,1.0,0.5])
 #		@project_drawer << (@save_button = GuiButton.new.set(:hotkey => SAVE_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => -0.5, :offset_y => 0.50, :background_image => $engine.load_image('images/buttons/menu.png')))
 
+			# Save Button
+			self << (@save_button = GuiButton.new.set(:scale_x => 0.04, :scale_y => 0.06, :offset_x => -0.28, :offset_y => 0.47, :background_image => $engine.load_image('images/buttons/save.png')))
+			@save_button.on_clicked { $engine.save }
+
+			# Quit Button
+			self << (@quit_button = GuiButton.new.set(:scale_x => 0.04, :scale_y => 0.06, :offset_x => -0.32, :offset_y => 0.47, :background_image => $engine.load_image('images/buttons/exit.png')))
+			@quit_button.on_clicked { $application.finished! }
+
+			# Project Effects Button
+			self << (@project_effects_button = GuiButton.new.set(:scale_x => 0.04, :scale_y => 0.06, :offset_x => -0.24, :offset_y => 0.47, :background_image => $engine.load_image('images/buttons/down.png')))
+			@project_effects_button.on_clicked { |pointer| build_editor_for($engine.project, :pointer => pointer) }
+
 		# Actors
 		self << (@actors_list = GuiListWithControls.new($engine.project.actors).set(:scroll_wrap => true, :scale_x => 0.12, :scale_y => 0.8, :offset_x => 0.44, :offset_y => 0.0, :hidden => true, :spacing_y => -1.0))
 		self << (@actors_button = GuiButton.new.set(:hotkey => ACTORS_BUTTON, :scale_x => -0.04, :scale_y => -0.06, :offset_x => 0.48, :offset_y => -0.47, :background_image => $engine.load_image('images/corner.png')))
@@ -220,7 +232,7 @@ class GuiDefault < GuiInterface
 #			}
 			return
 		else
-			if user_object.is_a? ParentUserObject
+			if user_object.is_a?(ParentUserObject) || user_object.is_a?(Project)
 				# Auto-switch to actor view
 				if user_object.is_a? Actor
 #					@mode = ACTOR_MODE		# TODO: make this an option?
@@ -254,9 +266,9 @@ class GuiDefault < GuiInterface
 	# Utility methods
 	#
 	def create_user_object_editor_for_pointer(user_object, pointer, options)
-		GuiUserObjectEditor.new(user_object, {:scale_x => 0.3, :scale_y => 0.05}.merge(options))
-			.set({:offset_x => pointer.x, :offset_y => pointer.y, :opacity => 0.0, :scale_x => 0.0, :scale_y => 0.0, :hidden => false})
-			.animate({:offset_x => 0.0, :offset_y => -0.25, :scale_x => 0.65, :scale_y => 0.5, :opacity => 1.0}, duration=0.2)
+		GuiUserObjectEditor.new(user_object, {:scale_x => 0.3, :scale_y => 0.05}.merge(options)).
+			set({:offset_x => pointer.x, :offset_y => pointer.y, :opacity => 0.0, :scale_x => 0.0, :scale_y => 0.0, :hidden => false}).
+			animate({:offset_x => 0.0, :offset_y => -0.25, :scale_x => 0.65, :scale_y => 0.5, :opacity => 1.0}, duration=0.2)
 	end
 
 	#

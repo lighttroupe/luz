@@ -297,6 +297,7 @@ class Engine
 		new_project_notify
 	end
 
+	pipe :save, :project
 	pipe :save_to_path, :project
 	pipe :project_changed!, :project, :method => :changed!
 	pipe :project_changed?, :project, :method => :changed?
