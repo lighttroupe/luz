@@ -60,6 +60,8 @@ class GuiDefault < GuiInterface
 	#
 	# Minimal start for a new object: self << GuiObject.new.set(:scale_x => 0.1, :scale_y => 0.1)
 	def create!
+		self << (@user_object_editor_container = GuiBox.new)
+
 		@project_drawer = GuiObject.new.set(:scale_x => 0.1, :scale_y => 0.08, :offset_x => -0.5, :offset_y => 0.5-0.04, :color => [1.0,1.0,1.0,0.5])
 #		@project_drawer << (@save_button = GuiButton.new.set(:hotkey => SAVE_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => -0.5, :offset_y => 0.50, :background_image => $engine.load_image('images/buttons/menu.png')))
 
@@ -205,12 +207,12 @@ class GuiDefault < GuiInterface
 
 		if editor && !editor.hidden?
 			# was already visible... ...hide self towards click spot
-			self.bring_to_top(editor)
+			@user_object_editor_container.bring_to_top(editor)
 
-				if user_object.is_a? Actor
-					@mode = ACTOR_MODE		# TODO: make this an option?
-					@chosen_actor = user_object
-				end
+			if user_object.is_a? Actor
+				@mode = ACTOR_MODE		# TODO: make this an option?
+				@chosen_actor = user_object
+			end
 
 #			editor.animate({:offset_x => pointer.x, :offset_y => pointer.y, :scale_x => 0.0, :scale_y => 0.0, :opacity => 0.2}, duration=0.2) {
 #				editor.remove_from_parent!		# trashed forever! (no cache)
@@ -232,7 +234,7 @@ class GuiDefault < GuiInterface
 
 				editor = create_user_object_editor_for_pointer(user_object, pointer, options)
 				@user_object_editors[user_object] = editor
-				self << editor
+				@user_object_editor_container << editor
 
 				return editor
 			else

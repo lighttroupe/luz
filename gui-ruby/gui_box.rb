@@ -34,8 +34,9 @@ class GuiBox < GuiObject
 	def add_after_selection(object)
 		if (obj = selection.first) && (index = @contents.index(obj))
 			@contents.insert(index+1, object)		# HACK: whoops shouldn't use @list here!!
+			object.parent = self
 		else
-			@contents << object
+			self << object
 		end
 	end
 
