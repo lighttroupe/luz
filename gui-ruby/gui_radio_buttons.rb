@@ -24,18 +24,18 @@ end
 class GuiRadioButtons < GuiList
 	def initialize(object, method, options)
 		super()
-		@object, @method, @options = object, '@'+method.to_s, options
+		@object, @method, @options = object, method.to_s, options
 		@options.each { |value|
 			self << GuiRadioButton.new.set_value(value).set_parent(self)
 		}
 	end
 
 	def get_value
-		@object.instance_variable_get(@method)
+		@object.send(@method)
 	end
 
 	def set_value(value)
-		@object.instance_variable_set(@method, value)
+		@object.send("#{@method}=", value)
 		selection_change_notify
 	end
 
