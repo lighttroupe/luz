@@ -1,4 +1,4 @@
-require 'gui_pointer_behavior', 'gui_object', 'gui_box', 'gui_list', 'gui_list_with_controls', 'gui_grid', 'gui_message_bar', 'gui_beat_monitor', 'gui_button', 'gui_float', 'gui_toggle', 'gui_curve', 'gui_curve_increasing', 'gui_theme', 'gui_integer', 'gui_select', 'gui_actor', 'gui_event', 'gui_variable', 'gui_engine_button', 'gui_engine_slider', 'gui_radio_buttons', 'gui_object_renderer'
+require 'gui_pointer_behavior', 'gui_object', 'gui_box', 'gui_hbox', 'gui_list', 'gui_list_with_controls', 'gui_grid', 'gui_message_bar', 'gui_beat_monitor', 'gui_button', 'gui_float', 'gui_toggle', 'gui_curve', 'gui_curve_increasing', 'gui_theme', 'gui_integer', 'gui_select', 'gui_actor', 'gui_event', 'gui_variable', 'gui_engine_button', 'gui_engine_slider', 'gui_radio_buttons', 'gui_object_renderer'
 require 'gui-ruby/fonts/bitmap-font'
 
 # Addons to existing objects
@@ -62,20 +62,25 @@ class GuiDefault < GuiInterface
 	def create!
 		self << (@user_object_editor_container = GuiBox.new)
 
-		@project_drawer = GuiObject.new.set(:scale_x => 0.1, :scale_y => 0.08, :offset_x => -0.5, :offset_y => 0.5-0.04, :color => [1.0,1.0,1.0,0.5])
+		#@project_drawer = GuiObject.new.set(:scale_x => 0.1, :scale_y => 0.08, :offset_x => -0.5, :offset_y => 0.5-0.04, :color => [1.0,1.0,1.0,0.5])
 #		@project_drawer << (@save_button = GuiButton.new.set(:hotkey => SAVE_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => -0.5, :offset_y => 0.50, :background_image => $engine.load_image('images/buttons/menu.png')))
+		self << (@project_drawer = GuiHBox.new.set(:hidden => true, :offset_x => -0.48, :offset_y => 0.475, :scale_x => 0.15, :scale_y => 0.05))
 
 			# Save Button
-			self << (@save_button = GuiButton.new.set(:scale_x => 0.04, :scale_y => 0.06, :offset_x => -0.28, :offset_y => 0.47, :background_image => $engine.load_image('images/buttons/save.png')))
+			@project_drawer << (@save_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/save.png')))
 			@save_button.on_clicked { $engine.save }
 
 			# Quit Button
-			self << (@quit_button = GuiButton.new.set(:scale_x => 0.04, :scale_y => 0.06, :offset_x => -0.32, :offset_y => 0.47, :background_image => $engine.load_image('images/buttons/exit.png')))
+			@project_drawer << (@quit_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/exit.png')))
 			@quit_button.on_clicked { $application.finished! }
 
 			# Project Effects Button
-			self << (@project_effects_button = GuiButton.new.set(:scale_x => 0.04, :scale_y => 0.06, :offset_x => -0.24, :offset_y => 0.47, :background_image => $engine.load_image('images/buttons/down.png')))
+			@project_drawer << (@project_effects_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/down.png')))
 			@project_effects_button.on_clicked { |pointer| build_editor_for($engine.project, :pointer => pointer) }
+
+		# Project Menu button
+		self << (@project_menu_button = GuiButton.new.set(:hotkey => MENU_BUTTON, :scale_x => 0.04, :scale_y => 0.06, :offset_x => -0.48, :offset_y => 0.47, :background_image => $engine.load_image('images/corner.png')))
+		@project_menu_button.on_clicked { toggle_project_drawer! }
 
 		# Actors
 		self << (@actors_list = GuiListWithControls.new($engine.project.actors).set(:scroll_wrap => true, :scale_x => 0.12, :scale_y => 0.8, :offset_x => 0.44, :offset_y => 0.0, :hidden => true, :spacing_y => -1.0))
@@ -98,10 +103,6 @@ class GuiDefault < GuiInterface
 #		self << (@curves_list = GuiListWithControls.new($engine.project.curves).set(:scale_x => 0.08, :scale_y => 0.5, :offset_x => 0.06, :offset_y => 0.5, :item_aspect_ratio => 1.6, :hidden => true, :spacing_y => -1.0))
 #		self << (@curve_button = GuiButton.new.set(:hotkey => CURVES_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.06, :offset_y => 0.50 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
 #		@curve_button.on_clicked { toggle_curves_list! }
-
-		# Project Menu button
-		self << (@project_menu_button = GuiButton.new.set(:hotkey => MENU_BUTTON, :scale_x => 0.04, :scale_y => 0.06, :offset_x => -0.48, :offset_y => 0.47, :background_image => $engine.load_image('images/corner.png')))
-		@project_menu_button.on_clicked { show_main_menu }		# for now
 
 		# Director Button
 		self << (@directors_button = GuiButton.new.set(:hotkey => MENU_BUTTON, :scale_x => -0.04, :scale_y => 0.06, :offset_x => 0.48, :offset_y => 0.47, :background_image => $engine.load_image('images/corner.png')))
@@ -285,6 +286,16 @@ class GuiDefault < GuiInterface
 			show_preferences_box!
 		else
 			hide_preferences_box!
+		end
+	end
+
+	def show_project_drawer! ; @project_drawer.set(:hidden => false, :offset_x => -0.6).animate({:offset_x => -0.49}, duration=0.15) ; end
+	def hide_project_drawer! ; @project_drawer.animate({:offset_x => -0.6}, duration=0.15) { @project_drawer.set_hidden(true) } ; end
+	def toggle_project_drawer!
+		if @project_drawer.hidden?		# TODO: this is not a good way to toggle
+			show_project_drawer!
+		else
+			hide_project_drawer!
 		end
 	end
 
