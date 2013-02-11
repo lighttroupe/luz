@@ -112,10 +112,9 @@ class GuiBox < GuiObject
 	#
 	# Extend GuiObject methods to pass them along to contents
 	#
-	def gui_render!
-		return if hidden?
+	def each_with_positioning
 		with_positioning {
-			@contents.each { |gui_object| gui_object.gui_render! }
+			@contents.each { |gui_object| yield gui_object }
 		}
 	end
 
@@ -125,12 +124,13 @@ class GuiBox < GuiObject
 		super
 	end
 
+	def gui_render!
+		return if hidden?
+		each_with_positioning { |gui_object| gui_object.gui_render! }
+	end
+
 	def hit_test_render!
 		return if hidden?
-		with_positioning {
-			@contents.each { |gui_object|
-				gui_object.hit_test_render!
-			}
-		}
+		each_with_positioning { |gui_object| gui_object.hit_test_render! }
 	end
 end
