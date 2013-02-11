@@ -235,6 +235,10 @@ class GuiDefault < GuiInterface
 			if user_object.is_a?(ParentUserObject) || user_object.is_a?(Project)
 				# Auto-switch to actor view
 				if user_object.is_a? Actor
+					# Rule: cannot view one actor (in actor-mode) while editing another
+					if @mode == ACTOR_MODE
+						@chosen_actor = user_object
+					end
 #					@mode = ACTOR_MODE		# TODO: make this an option?
 #					@chosen_actor = user_object
 #					close_actors_list!		# TODO: make this an option?
