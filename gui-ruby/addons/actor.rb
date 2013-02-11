@@ -3,7 +3,10 @@ class Actor
 		gui_render_background
 
 		# Actor, render thyself!
-		render!
+		with_image {
+			unit_square
+		}
+#		render!
 
 		if pointer_hovering?
 			with_translation(-0.35, -0.35) {
