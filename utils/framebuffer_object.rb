@@ -1,6 +1,6 @@
 require 'drawing'
 
-class FramebufferObject
+class FramebufferObject		# TODO: capitalize Buffer... FBO
 	include Drawing
 
 	attr_reader :image, :height, :width
