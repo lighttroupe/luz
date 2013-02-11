@@ -100,6 +100,47 @@ class Actor < ParentUserObject
 		$actor_render_stack.pop
 	end
 
+	def update_offscreen_buffer!
+		@offscreen_buffer.using {
+			render!
+		}
+	end
+
+	#
+	# Render groups
+	#
+	NUMBER_OF_RENDER_GROUPS = 6
+	def render_group_number
+		@render_group_number ||= rand(NUMBER_OF_RENDER_GROUPS)+1
+	end
+
+	def update_offscreen_buffer?
+		(($env[:frame_number] % NUMBER_OF_RENDER_GROUPS)+1) == render_group_number		# staggered
+	end
+
+	#
+	# ...
+	#
+	def init_offscreen_buffer
+		return if @offscreen_buffer
+		@offscreen_buffer = get_offscreen_buffer(framebuffer_image_size)
+		update_offscreen_buffer!
+	end
+
+	def framebuffer_image_size
+		:medium		# see drawing_framebuffer_objects.rb
+	end
+
+	def with_image
+		init_offscreen_buffer
+		if @offscreen_buffer
+			update_offscreen_buffer! if update_offscreen_buffer?
+			@offscreen_buffer.with_image {
+				yield
+			}
+		end
+	end
+
 	# Calls render() on effect at 'effect_index', continuing effects
 	# chain once for each time it yields
 
