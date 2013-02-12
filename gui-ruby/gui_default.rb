@@ -317,6 +317,15 @@ class GuiDefault < GuiInterface
 			animate({:offset_x => 0.0, :offset_y => -0.25, :scale_x => 0.65, :scale_y => 0.5, :opacity => 1.0}, duration=0.2)
 	end
 
+	def clear_editors!
+		@user_object_editors.each { |user_object, editor|
+			editor.animate({:offset_y => editor.offset_y - 0.5}, duration=0.2) {
+				editor.remove_from_parent!		# trashed forever! (no cache)
+			}
+		}
+		@user_object_editors.clear
+	end
+
 	#
 	# Preferences Box
 	#
@@ -395,15 +404,6 @@ class GuiDefault < GuiInterface
 		else
 			@events_list.animate({:offset_x => -0.6, :opacity => 0.0}, duration=0.25) { @events_list.set_hidden(true) }
 		end
-	end
-
-	def clear_editors!
-		@user_object_editors.each { |user_object, editor|
-			editor.animate({:offset_y => editor.offset_y - 0.5}, duration=0.3) {
-				editor.remove_from_parent!		# trashed forever! (no cache)
-			}
-		}
-		@user_object_editors.clear
 	end
 
 	def hide_something!
