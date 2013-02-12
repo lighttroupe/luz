@@ -45,6 +45,8 @@ class GuiDefault < GuiInterface
 
 	callback :keypress
 
+	easy_accessor :camera_x
+
 	def initialize
 		super
 		create!
@@ -60,6 +62,8 @@ class GuiDefault < GuiInterface
 	#
 	# Minimal start for a new object: self << GuiObject.new.set(:scale_x => 0.1, :scale_y => 0.1)
 	def create!
+		set(:camera_x => 0.0)
+
 		self << (@user_object_editor_container = GuiBox.new)
 
 		#@project_drawer = GuiObject.new.set(:scale_x => 0.1, :scale_y => 0.08, :offset_x => -0.5, :offset_y => 0.5-0.04, :color => [1.0,1.0,1.0,0.5])
@@ -68,7 +72,7 @@ class GuiDefault < GuiInterface
 
 			# Save Button
 			@project_drawer << (@save_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/save.png')))
-			@save_button.on_clicked { $engine.save }
+			@save_button.on_clicked { $engine.save ; positive_message 'Saved successfully.' }
 
 			# Quit Button
 			@project_drawer << (@quit_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/exit.png')))
@@ -168,8 +172,10 @@ class GuiDefault < GuiInterface
 	#
 	# Mode switching
 	#
+	attr_reader :mode
 	def mode=(mode)
 		return if mode == @mode
+
 		@mode = mode
 		after_mode_change
 	end
@@ -177,20 +183,26 @@ class GuiDefault < GuiInterface
 	def after_mode_change
 		case @mode
 		when ACTOR_MODE
-		when DIRECTOR_MODE
+			animate(:camera_x, 0.0, 0.2)
+#		when DIRECTOR_MODE
+#			animate(:camera_x, 1.0, 0.2)
 		when OUTPUT_MODE
+			animate(:camera_x, 1.0, 0.2)
 		end
 	end
 
 	def render
-		case @mode
-		when ACTOR_MODE
-			@chosen_actor.render! if @chosen_actor
-		when DIRECTOR_MODE
-			# none yet ...
-		when OUTPUT_MODE
-			yield
-		end
+		with_translation(-camera_x, 0.0) {
+			if camera_x < 1.0
+				@chosen_actor.render! if @chosen_actor
+			end
+
+			if camera_x > 0.0 && camera_x < 2.0
+				with_translation(1.0, 0.0) {
+					yield
+				}
+			end
+		}
 	end
 
 	def gui_render!
@@ -206,7 +218,7 @@ class GuiDefault < GuiInterface
 		when ESCAPE_KEY
 			hide_something!
 		else
-			#debug positive_message(value)
+			#positive_message(value)
 		end
 	end
 
@@ -223,7 +235,7 @@ class GuiDefault < GuiInterface
 			@user_object_editor_container.bring_to_top(editor)
 
 			if user_object.is_a? Actor
-				@mode = ACTOR_MODE		# TODO: make this an option?
+				self.mode = ACTOR_MODE		# TODO: make this an option?
 				@chosen_actor = user_object
 			end
 
