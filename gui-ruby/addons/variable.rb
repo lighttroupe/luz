@@ -7,8 +7,10 @@ class Variable
 
 		value = do_value
 
-		render_bar_value_with_cache(value)
-		render_text_value_with_cache(value)
+		if enabled?
+			render_bar_value_with_cache(value)
+			render_text_value_with_cache(value)
+		end
 
 		# Label
 		gui_render_label
