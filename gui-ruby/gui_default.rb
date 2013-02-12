@@ -76,8 +76,6 @@ class GuiDefault < GuiInterface
 	def create!
 		set(:camera_x => 0.0)
 
-		self << (@user_object_editor_container = GuiBox.new)
-
 		# Remember: this is drawn first-to-last
 
 		#
@@ -142,6 +140,8 @@ class GuiDefault < GuiInterface
 
 		# Radio buttons for @mode		TODO: add director view
 		self << GuiRadioButtons.new(self, :mode, [ACTOR_MODE, OUTPUT_MODE]).set(:offset_x => 0.35, :offset_y => 0.485, :scale_x => 0.06, :scale_y => 0.03, :spacing_x => 1.0)
+
+		self << (@user_object_editor_container = GuiBox.new)
 
 		# OVERLAY LEVEL (things above this line are obscured while overlay is showing)
 		self << (@overlay = GuiObject.new.set(:color => [0,0,0], :opacity => 0.0, :hidden => true))
@@ -313,7 +313,7 @@ class GuiDefault < GuiInterface
 	#
 	def create_user_object_editor_for_pointer(user_object, pointer, options)
 		GuiUserObjectEditor.new(user_object, {:scale_x => 0.3, :scale_y => 0.05}.merge(options)).
-			set({:offset_x => pointer.x, :offset_y => pointer.y, :opacity => 0.0, :scale_x => 0.0, :scale_y => 0.0, :hidden => false}).
+			set({:offset_x => pointer.x, :offset_y => pointer.y, :opacity => 1.0, :scale_x => 0.0, :scale_y => 0.0, :hidden => false}).
 			animate({:offset_x => 0.0, :offset_y => -0.25, :scale_x => 0.65, :scale_y => 0.5, :opacity => 1.0}, duration=0.2)
 	end
 
@@ -399,7 +399,7 @@ class GuiDefault < GuiInterface
 
 	def clear_editors!
 		@user_object_editors.each { |user_object, editor|
-			editor.animate({:offset_y => editor.offset_y - 0.25, :scale_x => 0.4, :scale_y => 0.1, :opacity => 0.2}, duration=0.3) {
+			editor.animate({:offset_y => editor.offset_y - 0.5}, duration=0.3) {
 				editor.remove_from_parent!		# trashed forever! (no cache)
 			}
 		}
