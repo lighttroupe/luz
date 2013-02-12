@@ -3,6 +3,8 @@ class GuiAddWindow < GuiBox
 
 	callback :add
 
+	attr_accessor :category
+
 	def initialize(user_object, options={})
 		@user_object, @options = user_object, options
 		@categories = @user_object.class.respond_to?(:available_categories) ? @user_object.class.available_categories : []
