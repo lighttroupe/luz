@@ -22,8 +22,8 @@ class ActorEffectHideWedge < ActorEffect
 
 	categories :transform
 
-	setting 'start_angle', :float, :default => 0.0..1.0
 	setting 'wedge_size', :float, :range => 0.0..1.0, :default => 0.0..1.0
+	setting 'start_angle', :float, :default => 0.0..1.0
 
 	def render
 		# Draw "left" half
