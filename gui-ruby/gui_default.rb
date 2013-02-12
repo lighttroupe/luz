@@ -23,6 +23,18 @@ class MainMenu < GuiBox
 	end
 end
 
+class ActorClassRenderer < GuiObject
+	def initialize(klass)
+		@object = klass.new
+	end
+
+	def gui_render!
+		with_positioning {
+			@object.render!
+		}
+	end
+end
+
 class GuiDefault < GuiInterface
 	pipe [:positive_message, :negative_message], :message_bar
 
@@ -66,8 +78,11 @@ class GuiDefault < GuiInterface
 
 		self << (@user_object_editor_container = GuiBox.new)
 
-		#@project_drawer = GuiObject.new.set(:scale_x => 0.1, :scale_y => 0.08, :offset_x => -0.5, :offset_y => 0.5-0.04, :color => [1.0,1.0,1.0,0.5])
-#		@project_drawer << (@save_button = GuiButton.new.set(:hotkey => SAVE_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => -0.5, :offset_y => 0.50, :background_image => $engine.load_image('images/buttons/menu.png')))
+		# Remember: this is drawn first-to-last
+
+		#
+		# Project Drawer
+		#
 		self << (@project_drawer = GuiHBox.new.set(:hidden => true, :offset_x => -0.48, :offset_y => 0.475, :scale_x => 0.15, :scale_y => 0.05))
 
 			# Save Button
@@ -82,24 +97,36 @@ class GuiDefault < GuiInterface
 			@project_drawer << (@project_effects_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/down.png')))
 			@project_effects_button.on_clicked { |pointer| build_editor_for($engine.project, :pointer => pointer) }
 
-		# Project Menu button
+		# Project button to show project drawer
 		self << (@project_menu_button = GuiButton.new.set(:hotkey => MENU_BUTTON, :scale_x => 0.04, :scale_y => 0.06, :offset_x => -0.48, :offset_y => 0.47, :background_image => $engine.load_image('images/corner.png')))
 		@project_menu_button.on_clicked { toggle_project_drawer! }
+
+		#
+		# Actor Drawer
+		#
+		self << (@actor_drawer = GuiHBox.new.set(:hidden => true, :color => [0.1,0.1,0.1,0.5], :offset_x => 0.48, :offset_y => -0.475, :scale_x => 0.15, :scale_y => 0.05))
+			@actor_drawer << (@new_actor_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/new.png')))
+			@new_actor_button.on_clicked { @actors_list.add_after_selection(ActorStar.new) }
+
+			# New Actor
+			@actor_drawer << (@new_actor_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/new.png')))
+			@new_actor_button.on_clicked { }
 
 		# Actors
 		self << (@actors_list = GuiListWithControls.new($engine.project.actors).set(:scroll_wrap => true, :scale_x => 0.12, :scale_y => 0.8, :offset_x => 0.44, :offset_y => 0.0, :hidden => true, :spacing_y => -1.0))
 		self << (@actors_button = GuiButton.new.set(:hotkey => ACTORS_BUTTON, :scale_x => -0.04, :scale_y => -0.06, :offset_x => 0.48, :offset_y => -0.47, :background_image => $engine.load_image('images/corner.png')))
-		@actors_button.on_clicked { toggle_actors_list! }
+		@actors_button.on_clicked { toggle_actors_list! ; toggle_actor_drawer! }
 
-		# Variables
+		#
+		# Events/Variables Drawer
+		#
 		self << (@variables_list = GuiListWithControls.new($engine.project.variables).set(:scale_x => 0.12, :scale_y => 0.45, :offset_y => -0.23, :item_aspect_ratio => 3.2, :hidden => true, :spacing_y => -1.0))
-#		self << (@variable_button = GuiButton.new.set(:hotkey => VARIABLES_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => -0.42, :offset_y => -0.50, :background_image => $engine.load_image('images/buttons/menu.png')))
-#		@variable_button.on_clicked { toggle_variables_list! }
-
-		# Events
 		self << (@events_list = GuiListWithControls.new($engine.project.events).set(:scale_x => 0.12, :scale_y => 0.45, :offset_y => 0.22, :item_aspect_ratio => 3.2, :hidden => true, :spacing_y => -1.0))
+
 		self << (@event_button = GuiButton.new.set(:hotkey => EVENTS_BUTTON, :scale_x => 0.04, :scale_y => -0.06, :offset_x => -0.48, :offset_y => -0.47, :background_image => $engine.load_image('images/corner.png')))
 		@event_button.on_clicked { toggle_events_list! ; toggle_variables_list! }
+		#self << (@variable_button = GuiButton.new.set(:hotkey => VARIABLES_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => -0.42, :offset_y => -0.50, :background_image => $engine.load_image('images/buttons/menu.png')))
+		#@variable_button.on_clicked { toggle_variables_list! }
 
 #		self << (@themes_list = GuiListWithControls.new($engine.project.themes).set(:scale_x => 0.08, :scale_y => 0.5, :offset_x => -0.11, :offset_y => 0.5, :item_aspect_ratio => 1.6, :hidden => true, :spacing_y => -1.0))
 #		self << (@theme_button = GuiButton.new.set(:hotkey => THEMES_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => -0.11, :offset_y => 0.5 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
@@ -108,13 +135,15 @@ class GuiDefault < GuiInterface
 #		self << (@curve_button = GuiButton.new.set(:hotkey => CURVES_BUTTON, :scale_x => 0.08, :scale_y => 0.08, :offset_x => 0.06, :offset_y => 0.50 - 0.04, :background_image => $engine.load_image('images/buttons/menu.png')))
 #		@curve_button.on_clicked { toggle_curves_list! }
 
-		# Director Button
+		#
+		# Director Drawer
+		#
 		self << (@directors_button = GuiButton.new.set(:hotkey => MENU_BUTTON, :scale_x => -0.04, :scale_y => 0.06, :offset_x => 0.48, :offset_y => 0.47, :background_image => $engine.load_image('images/corner.png')))
 
 		# Radio buttons for @mode		TODO: add director view
 		self << GuiRadioButtons.new(self, :mode, [ACTOR_MODE, OUTPUT_MODE]).set(:offset_x => 0.35, :offset_y => 0.485, :scale_x => 0.06, :scale_y => 0.03, :spacing_x => 1.0)
 
-		# OVERLAY LEVEL (things above are hidden, below are visible, while overlay is showing)
+		# OVERLAY LEVEL (things above this line are obscured while overlay is showing)
 		self << (@overlay = GuiObject.new.set(:color => [0,0,0], :opacity => 0.0, :hidden => true))
 
 		# Main menu
@@ -308,6 +337,16 @@ class GuiDefault < GuiInterface
 			show_project_drawer!
 		else
 			hide_project_drawer!
+		end
+	end
+
+	def show_actor_drawer! ; @actor_drawer.set(:hidden => false, :offset_x => 0.6).animate({:offset_x => 0.4}, duration=0.15) ; end
+	def hide_actor_drawer! ; @actor_drawer.animate({:offset_x => 0.6}, duration=0.15) { @actor_drawer.set_hidden(true) } ; end
+	def toggle_actor_drawer!
+		if @actor_drawer.hidden?		# TODO: this is not a good way to toggle
+			show_actor_drawer!
+		else
+			hide_actor_drawer!
 		end
 	end
 
