@@ -10,6 +10,6 @@ class UserObjectSetting
 	end
 
 	def create_user_object_setting_name_label
-		@name_label ||= BitmapFont.new.set(:color => [1.0,1.0,1.0,0.9], :string => name.gsub('_',' '), :scale_x => 1.0, :scale_y => 0.35, :offset_x => -0.02, :offset_y => 0.44, :color => [0.5,0.5,0])
+		@name_label ||= BitmapFont.new.set(:string => name.gsub('_',' '), :color => [1.0,1.0,1.0,1.0], :scale_x => 1.0, :scale_y => 0.35, :offset_x => -0.02, :offset_y => 0.44)
 	end
 end
