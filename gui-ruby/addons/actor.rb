@@ -16,4 +16,8 @@ class Actor
 			}
 		end
 	end
+
+	def update_offscreen_buffer?
+		pointer_hovering?
+	end
 end
