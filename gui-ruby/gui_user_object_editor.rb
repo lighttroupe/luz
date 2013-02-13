@@ -17,7 +17,7 @@ class GuiUserObjectEditor < GuiBox
 		self << (@background=GuiObject.new.set(:color => BACKGROUND_COLOR))
 
 		#
-		# Let object build its own content (eg. lists)
+		# Let object build its own content (eg. lists of effects and settings)
 		#
 		self << @user_object.gui_build_editor		# find gui_build_editor implementations in gui-ruby/addons
 
