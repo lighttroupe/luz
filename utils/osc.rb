@@ -14,6 +14,7 @@ module OSC
 	# OSC type tags
 	#
 	INT32_TAG = 'i'
+	COLOR_TAG = 'iii'		# specific to Duration app
 	FLOAT32_TAG = 'f'
 	STRING_TAG = 's'
 	BLOB_TAG = 'b'
@@ -185,9 +186,19 @@ module OSC
 					proc.call(address, decode_float32(io))
 				elsif tags == INT32_TAG
 					proc.call(address, decode_int32(io))
-				elsif tags == EMPTY_TAG		# consider this a "bang" ... a button press
+				elsif tags == EMPTY_TAG
+					# Special-case for a "bang" sent by Duration app, received as a very fast button press
 					proc.call(address, 1)
 					proc.call(address, 0)
+				elsif tags === COLOR_TAG
+					# Very special-case for three integers meaning a color (sent by Duration app)
+					r = decode_int32(io)
+					g = decode_int32(io)
+					b = decode_int32(io)
+
+					proc.call(address+'/red', r/255.0)
+					proc.call(address+'/green', g/255.0)
+					proc.call(address+'/blue', b/255.0)
 				end
 
 				#
