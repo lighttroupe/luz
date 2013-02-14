@@ -9,7 +9,8 @@ class Variable
 
 		if enabled?
 			render_bar_value_with_cache(value)
-			render_text_value_with_cache(value)
+			#render_text_value_with_cache(value)
+			render_text((100 * value).to_i)
 		end
 
 		# Label
