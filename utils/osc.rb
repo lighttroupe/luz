@@ -157,7 +157,6 @@ module OSC
 		@@po = PO.new('')		# a single reusable PO object
 
 		def self.decode(data, &proc)
-			# Accepts either a string or a PO object
 			io = @@po.use(data)
 			decode_io(io, &proc)
 		end
