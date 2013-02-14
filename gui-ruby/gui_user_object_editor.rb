@@ -36,7 +36,7 @@ class GuiUserObjectEditor < GuiBox
 		#
 		# Close button
 		#
-		self << (@close_button=GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.15, :offset_x => 0.5, :offset_y => 0.5, :opacity => 0.5, :background_image => $engine.load_image('images/buttons/down.png')))
+		self << (@close_button=GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.15, :offset_x => 0.0, :offset_y => -0.43, :opacity => 0.5, :background_image => $engine.load_image('images/buttons/down.png')))
 		@close_button.on_clicked {
 			animate({:opacity => 0.0, :offset_y => offset_y - 0.2, :scale_x => scale_x * 1.1}, duration=0.2) { set_hidden(true) }
 		}
