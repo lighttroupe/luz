@@ -17,7 +17,6 @@ class MainMenu < GuiBox
 
 	def create!
 		self << GuiObject.new.set(:color => [0.5,0.5,0.5,0.5])
-
 		self << GuiButton.new.set(:scale_x => 0.2, :scale_y => 0.1, :offset_x => -0.48, :offset_y => -0.47, :background_image => $engine.load_image('images/buttons/menu.png'))
 		self << GuiButton.new.set(:scale_x => 0.2, :scale_y => 0.1, :offset_x => 0.48, :offset_y => -0.47, :background_image => $engine.load_image('images/buttons/play.png'))
 	end
@@ -165,6 +164,7 @@ class GuiDefault < GuiInterface
 		@user_object_editors = {}
 		@chosen_actor = nil
 		self.mode = OUTPUT_MODE
+		self.camera_x = 1.0
 	end
 
 	def hide_main_menu
@@ -226,6 +226,7 @@ class GuiDefault < GuiInterface
 				@chosen_actor.render! if @chosen_actor
 			end
 
+			# Render output view
 			if camera_x > 0.0 && camera_x < 2.0
 				with_translation(1.0, 0.0) {
 					yield
