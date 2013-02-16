@@ -16,7 +16,7 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-require 'easy_accessor', 'value_animation'
+require 'easy_accessor', 'value_animation', 'value_animation_states'
 
 $LOAD_PATH << './gui-ruby'
 require 'pointer', 'pointer_mouse', 'gui_default'

@@ -9,6 +9,11 @@ require 'gui_user_object_editor'
 require 'gui_add_window'
 require 'gui_interface'
 
+class String
+	boolean_accessor :shift
+	boolean_accessor :control
+end
+
 class MainMenu < GuiBox
 	def initialize
 		super
@@ -80,7 +85,9 @@ class GuiDefault < GuiInterface
 		#
 		# Project Drawer
 		#
-		self << (@project_drawer = GuiHBox.new.set(:hidden => true, :offset_x => -0.48, :offset_y => 0.475, :scale_x => 0.15, :scale_y => 0.05))
+		self << @project_drawer = GuiHBox.new.set(:scale_x => 0.15, :scale_y => 0.05).
+			add_state(:open, {:hidden => false, :offset_x => -0.40, :offset_y => 0.475}).
+			set_state(:closed, {:hidden => true, :offset_x => -0.60, :offset_y => 0.475})
 
 			# Save Button
 			@project_drawer << (@save_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/save.png')))
@@ -96,23 +103,29 @@ class GuiDefault < GuiInterface
 
 		# Project button to show project drawer
 		self << (@project_menu_button = GuiButton.new.set(:hotkey => MENU_BUTTON, :scale_x => 0.04, :scale_y => 0.06, :offset_x => -0.48, :offset_y => 0.47, :background_image => $engine.load_image('images/corner.png')))
-		@project_menu_button.on_clicked { toggle_project_drawer! }
+		@project_menu_button.on_clicked { @project_drawer.switch_state({:open => :closed, :closed => :open}, duration=0.2) }
 
 		#
 		# Actor Drawer
 		#
-		self << (@actor_drawer = GuiHBox.new.set(:hidden => true, :color => [0.1,0.1,0.1,0.5], :offset_x => 0.48, :offset_y => -0.475, :scale_x => 0.15, :scale_y => 0.05))
+		self << @actor_drawer = GuiHBox.new.set(:color => [0.1,0.1,0.1,0.5], :scale_x => 0.15, :scale_y => 0.05).
+			add_state(:open, {:hidden => false, :offset_x => 0.40, :offset_y => -0.475}).
+			set_state(:closed, {:hidden => true, :offset_x => 0.60, :offset_y => -0.475})
+
+			# New Actor Button(s)
 			@actor_drawer << (@new_actor_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/new.png')))
 			@new_actor_button.on_clicked { @actors_list.add_after_selection(ActorStar.new) }
 
-			# New Actor
-			@actor_drawer << (@new_actor_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/new.png')))
-			@new_actor_button.on_clicked { }
-
 		# Actors
-		self << (@actors_list = GuiListWithControls.new($engine.project.actors).set(:scroll_wrap => true, :scale_x => 0.12, :scale_y => 0.8, :offset_x => 0.44, :offset_y => 0.0, :hidden => true, :spacing_y => -1.0))
+		self << @actors_list = GuiListWithControls.new($engine.project.actors).set(:scroll_wrap => true, :scale_x => 0.12, :scale_y => 0.8, :spacing_y => -1.0).
+			add_state(:open, {:offset_x => 0.44, :offset_y => 0.0, :hidden => false}).
+			set_state(:closed, {:offset_x => 0.56, :offset_y => 0.0, :hidden => true})
+
 		self << (@actors_button = GuiButton.new.set(:hotkey => ACTORS_BUTTON, :scale_x => -0.04, :scale_y => -0.06, :offset_x => 0.48, :offset_y => -0.47, :background_image => $engine.load_image('images/corner.png')))
-		@actors_button.on_clicked { toggle_actors_list! ; toggle_actor_drawer! }
+		@actors_button.on_clicked {
+			@actors_list.switch_state({:open => :closed, :closed => :open}, duration=0.2)
+			@actor_drawer.switch_state({:open => :closed, :closed => :open}, duration=0.2)
+		}
 
 		#
 		# Events/Variables Drawer
@@ -243,19 +256,33 @@ class GuiDefault < GuiInterface
 		}
 	end
 
+	TOGGLE_BEAT_MONITOR_KEY = 'b'
+	NEW_KEY = 'n'
 	def on_key_press(value)
-		case value
-		when ESCAPE_KEY
-			hide_something!
+		if value.control?
+			case value
+			when TOGGLE_BEAT_MONITOR_KEY
+				# TODO
+				positive_message 'toggle beat monitor'
+			when NEW_KEY
+				case mode
+				when ACTOR_MODE
+					# TODO not working @chosen_actor.build_add_child_window_for_pointer(nil) if @chosen_actor
+				when DIRECTOR_MODE
+					# TODO
+				end
+			end
 		else
-			#positive_message(value)
+			case value
+			when ESCAPE_KEY
+				hide_something!
+			end
 		end
 	end
 
 	#
 	# Keyboard grabbing
 	#
-
 	def build_editor_for(user_object, options)
 		pointer = options[:pointer]
 		editor = @user_object_editors[user_object]
@@ -339,39 +366,6 @@ class GuiDefault < GuiInterface
 			hide_preferences_box!
 		end
 	end
-
-	def show_project_drawer! ; @project_drawer.set(:hidden => false, :offset_x => -0.6).animate({:offset_x => -0.40}, duration=0.15) ; end
-	def hide_project_drawer! ; @project_drawer.animate({:offset_x => -0.6}, duration=0.15) { @project_drawer.set_hidden(true) } ; end
-	def toggle_project_drawer!
-		if @project_drawer.hidden?		# TODO: this is not a good way to toggle
-			show_project_drawer!
-		else
-			hide_project_drawer!
-		end
-	end
-
-	def show_actor_drawer! ; @actor_drawer.set(:hidden => false, :offset_x => 0.6).animate({:offset_x => 0.4}, duration=0.15) ; end
-	def hide_actor_drawer! ; @actor_drawer.animate({:offset_x => 0.6}, duration=0.15) { @actor_drawer.set_hidden(true) } ; end
-	def toggle_actor_drawer!
-		if @actor_drawer.hidden?		# TODO: this is not a good way to toggle
-			show_actor_drawer!
-		else
-			hide_actor_drawer!
-		end
-	end
-
-	#
-	# Actor list
-	#
-	def toggle_actors_list!
-		if @actors_list.hidden?
-			show_actors_list!
-		else
-			close_actors_list!
-		end
-	end
-	def show_actors_list! ; @actors_list.set(:hidden => false, :offset_x => 0.56).animate({:offset_x => 0.44}, duration=0.2) ; end
-	def close_actors_list! ; @actors_list.animate(:offset_x, 0.56, duration=0.25) { @actors_list.set_hidden(true) } ; end
 
 =begin
 	def toggle_curves_list!

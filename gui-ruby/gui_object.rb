@@ -5,6 +5,7 @@ module MethodsForGuiObject
 	include GuiPointerBehavior
 	include GuiSelectedBehavior
 	include ValueAnimation
+	include ValueAnimationStates
 
 	BACKGROUND_COLOR = [0.0,0.0,0.0,0.0]
 	BACKGROUND_COLOR_HOVERING = [1.0,1.0,1.0,0.25]
