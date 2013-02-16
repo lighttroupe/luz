@@ -60,6 +60,7 @@ class GuiDefault < GuiInterface
 
 	def initialize
 		super
+		@gui_zoom_out = 1.0		# zoom out for debugging
 		create!
 	end
 
@@ -150,10 +151,17 @@ class GuiDefault < GuiInterface
 		#
 		# Director Drawer
 		#
-		self << (@directors_button = GuiButton.new.set(:hotkey => MENU_BUTTON, :scale_x => -0.04, :scale_y => 0.06, :offset_x => 0.48, :offset_y => 0.47, :background_image => $engine.load_image('images/corner.png')))
+		self << @directors_drawer = GuiHBox.new.set(:color => [0.1,0.1,0.1,0.5], :scale_x => 0.15, :scale_y => 0.05).
+			add_state(:open, {:hidden => false, :offset_x => 0.40, :offset_y => 0.475}).
+			set_state(:closed, {:hidden => true, :offset_x => 0.60, :offset_y => 0.475})
 
-		# Radio buttons for @mode		TODO: add director view
-		self << GuiRadioButtons.new(self, :mode, [ACTOR_MODE, OUTPUT_MODE]).set(:offset_x => 0.35, :offset_y => 0.485, :scale_x => 0.06, :scale_y => 0.03, :spacing_x => 1.0)
+			# Radio buttons for @mode		TODO: add director view
+			@directors_drawer << GuiRadioButtons.new(self, :mode, [ACTOR_MODE, OUTPUT_MODE]).set(:spacing_x => 1.0)
+
+		self << (@directors_button = GuiButton.new.set(:hotkey => MENU_BUTTON, :scale_x => -0.04, :scale_y => 0.06, :offset_x => 0.48, :offset_y => 0.47, :background_image => $engine.load_image('images/corner.png')))
+		@directors_button.on_clicked {
+			@directors_drawer.switch_state({:open => :closed, :closed => :open}, duration=0.2)
+		}
 
 		self << (@user_object_editor_container = GuiBox.new)
 
@@ -226,7 +234,7 @@ class GuiDefault < GuiInterface
 	end
 
 	def gui_render!
-		with_scale(($env[:enter] + $env[:exit]).scale(1.5, 1.0)) {
+		with_scale(@gui_zoom_out * ($env[:enter] + $env[:exit]).scale(1.5, 1.0)) {
 			with_alpha(($env[:enter] + $env[:exit]).scale(0.0, 1.0)) {
 				super
 			}
