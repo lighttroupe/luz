@@ -30,6 +30,9 @@ module ValueAnimation
 		set_method = (field.to_s+'=').to_sym
 		current_value = send(field)
 
+		# HACK: coerce start value (until we have default values for all settings)
+		current_value ||= 0.0 if target_value.is_a? Float
+
 		# HACK: until we have some other way to do it, we'll need to turn hidden=false before anything else, otherwise the animation is invisible
 		# of course this level shouldn't know what :hidden means...
 		send(set_method, target_value) if field == :hidden && target_value == false
