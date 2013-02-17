@@ -192,7 +192,9 @@ class GuiDefault < GuiInterface
 		#
 		# OVERLAY LEVEL (things above this line are obscured while overlay is showing)
 		#
-		self << (@overlay = GuiObject.new.set(:color => [0,0,0], :opacity => 0.0, :hidden => true))
+		self << @overlay = GuiObject.new.set(:color => [0,0,0]).
+			add_state(:open, {:opacity => 1.0, :hidden => false}).
+			set_state(:closed, {:opacity => 0.0, :hidden => true})
 
 		# Main menu
 		@main_menu = MainMenu.new.set(:hidden => true)
@@ -211,17 +213,6 @@ class GuiDefault < GuiInterface
 		@chosen_actor = nil
 		self.mode = OUTPUT_MODE
 		self.camera_x = 1.0
-	end
-
-	#
-	# Overlay
-	#
-	def show_overlay!
-		@overlay.set(:hidden => false).animate({:opacity => 0.8}, duration=0.5)
-	end
-
-	def hide_overlay!
-		@overlay.animate({:opacity => 0.0}, duration=0.25) { @overlay.set(:hidden => true) }
 	end
 
 	#
@@ -275,8 +266,8 @@ class GuiDefault < GuiInterface
 		if value.control?
 			case value
 			when TOGGLE_BEAT_MONITOR_KEY
-				# TODO
 				@beat_monitor.switch_state({:open => :closed, :closed => :open}, duration=0.2)
+
 			when NEW_KEY
 				case mode
 				when ACTOR_MODE
