@@ -126,6 +126,7 @@ class GuiBox < GuiObject
 
 	def gui_render!
 		return if hidden?
+		with_positioning { gui_render_background }
 		each_with_positioning { |gui_object| gui_object.gui_render! }
 	end
 
