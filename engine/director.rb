@@ -39,9 +39,8 @@ class Director < ParentUserObject
 	###################################################################
 	# Object-level functions
 	###################################################################
-	attr_accessor :effects
+	attr_accessor :x, :y, :effects
 	empty_method :render
-	attr_accessor :x, :y
 
 	def z
 		0.0
