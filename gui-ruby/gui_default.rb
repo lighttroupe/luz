@@ -163,9 +163,14 @@ class GuiDefault < GuiInterface
 			@directors_drawer.switch_state({:open => :closed, :closed => :open}, duration=0.2)
 		}
 
+		#
+		# User Object Editor
+		#
 		self << (@user_object_editor_container = GuiBox.new)
 
+		#
 		# OVERLAY LEVEL (things above this line are obscured while overlay is showing)
+		#
 		self << (@overlay = GuiObject.new.set(:color => [0,0,0], :opacity => 0.0, :hidden => true))
 
 		# Main menu
