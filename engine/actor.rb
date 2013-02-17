@@ -79,8 +79,10 @@ class Actor < ParentUserObject
 	###################################################################
 
 	empty_method :tick
+
 	$actor_render_stack ||= []
 	ACTOR_RENDER_STACK_LIMIT = 20
+
 	def render!
 		return if $actor_render_stack.size > ACTOR_RENDER_STACK_LIMIT
 		$actor_render_stack.push(self)
