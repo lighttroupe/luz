@@ -25,9 +25,9 @@ module ValueAnimationStates
 	end
 
 	# transitions like {:old => :new, :other => :fourth}
-	def switch_state(transitions, duration=0.5)
+	def switch_state(transitions, duration=0.5, &proc)
 		if (new_state = transitions[@value_animation_state])
-			animate_to_state(new_state, duration)
+			animate_to_state(new_state, duration, &proc)
 			true
 		else
 			false
