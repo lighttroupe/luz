@@ -84,15 +84,15 @@ class GuiDefault < GuiInterface
 			add_state(:open, {:hidden => false, :offset_x => -0.40, :offset_y => 0.475}).
 			set_state(:closed, {:hidden => true, :offset_x => -0.60, :offset_y => 0.475})
 
-			# Save Button
+			# Save button
 			@project_drawer << @save_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/save.png'))
 				@save_button.on_clicked { $engine.save ; positive_message 'Saved successfully.' }
 
-			# Quit Button
+			# Quit button
 			@project_drawer << (@quit_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/exit.png')))
 				@quit_button.on_clicked { $application.finished! }
 
-			# Project Effects Button
+			# Project Effects button
 			@project_drawer << (@project_effects_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/down.png')))
 				@project_effects_button.on_clicked { |pointer| build_editor_for($engine.project, :pointer => pointer) }
 
@@ -101,55 +101,7 @@ class GuiDefault < GuiInterface
 		@project_menu_button.on_clicked { @project_drawer.switch_state({:open => :closed, :closed => :open}, duration=0.2) }
 
 		#
-		# Actor Drawer
-		#
-		self << @actor_drawer = GuiHBox.new.set(:color => [0.1,0.1,0.1,0.5], :scale_x => 0.15, :scale_y => 0.05).
-			add_state(:open, {:hidden => false, :offset_x => 0.40, :offset_y => -0.475}).
-			set_state(:closed, {:hidden => true, :offset_x => 0.60, :offset_y => -0.475})
-
-			# New Actor Button(s)
-			@actor_drawer << (@new_actor_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/new.png')))
-			@new_actor_button.on_clicked { @actors_list.add_after_selection(ActorStar.new) }
-
-		# Actor list
-		self << @actors_list = GuiListWithControls.new($engine.project.actors).set(:scroll_wrap => true, :scale_x => 0.12, :scale_y => 0.8, :spacing_y => -1.0).
-			add_state(:open, {:offset_x => 0.44, :offset_y => 0.0, :hidden => false}).
-			set_state(:closed, {:offset_x => 0.56, :offset_y => 0.0, :hidden => true})
-
-		self << (@actors_button = GuiButton.new.set(:hotkey => ACTORS_BUTTON, :scale_x => -0.04, :scale_y => -0.06, :offset_x => 0.48, :offset_y => -0.47, :background_image => $engine.load_image('images/corner.png')))
-		@actors_button.on_clicked {
-			@actors_list.switch_state({:open => :closed, :closed => :open}, duration=0.2)
-			@actor_drawer.switch_state({:open => :closed, :closed => :open}, duration=0.2)
-		}
-
-		#
-		# Events/Variables Drawer
-		#
-		self << @events_drawer = GuiHBox.new.set(:color => [0.1,0.1,0.1,0.5], :scale_x => 0.15, :scale_y => 0.05).
-			add_state(:open, {:hidden => false, :offset_x => -0.40, :offset_y => -0.475}).
-			set_state(:closed, {:hidden => true, :offset_x => -0.60, :offset_y => -0.475})
-
-			# New Event Button
-			@events_drawer << (@new_event_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/new.png')))
-			@new_event_button.on_clicked { @events_list.add_after_selection(Event.new) }
-
-		self << @events_list = GuiListWithControls.new($engine.project.events).set(:scale_x => 0.12, :scale_y => 0.45, :offset_y => 0.22, :item_aspect_ratio => 3.2, :hidden => true, :spacing_y => -1.0).
-			add_state(:open, {:hidden => false, :offset_x => -0.44, :opacity => 1.0}).
-			set_state(:closed, {:offset_x => -0.6, :opacity => 0.0, :hidden => true})
-
-		self << @variables_list = GuiListWithControls.new($engine.project.variables).set(:scale_x => 0.12, :scale_y => 0.45, :offset_y => -0.23, :item_aspect_ratio => 3.2, :hidden => true, :spacing_y => -1.0).
-			add_state(:open, {:hidden => false, :offset_x => -0.44, :opacity => 1.0}).
-			set_state(:closed, {:offset_x => -0.6, :opacity => 0.0, :hidden => true})
-
-		self << (@events_button = GuiButton.new.set(:hotkey => EVENTS_BUTTON, :scale_x => 0.04, :scale_y => -0.06, :offset_x => -0.48, :offset_y => -0.47, :background_image => $engine.load_image('images/corner.png')))
-		@events_button.on_clicked {
-			@events_drawer.switch_state({:open => :closed, :closed => :open}, duration=0.2)
-			@variables_list.switch_state({:open => :closed, :closed => :open}, duration=0.2)
-			@events_list.switch_state({:open => :closed, :closed => :open}, duration=0.2)
-		}
-
-		#
-		# Director Drawer
+		# Director drawer
 		#
 		self << @directors_drawer = GuiHBox.new.set(:color => [0.1,0.1,0.1,0.5], :scale_x => 0.15, :scale_y => 0.05).
 			add_state(:open, {:hidden => false, :offset_x => 0.40, :offset_y => 0.475}).
@@ -161,6 +113,58 @@ class GuiDefault < GuiInterface
 		self << (@directors_button = GuiButton.new.set(:hotkey => MENU_BUTTON, :scale_x => -0.04, :scale_y => 0.06, :offset_x => 0.48, :offset_y => 0.47, :background_image => $engine.load_image('images/corner.png')))
 		@directors_button.on_clicked {
 			@directors_drawer.switch_state({:open => :closed, :closed => :open}, duration=0.2)
+		}
+
+		#
+		# Actor drawer
+		#
+		self << @actor_drawer = GuiHBox.new.set(:color => [0.1,0.1,0.1,0.5], :scale_x => 0.15, :scale_y => 0.05).
+			add_state(:open, {:hidden => false, :offset_x => 0.40, :offset_y => -0.475}).
+			set_state(:closed, {:hidden => true, :offset_x => 0.60, :offset_y => -0.475})
+
+			# New Actor button(s)
+			@actor_drawer << (@new_actor_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/new.png')))
+			@new_actor_button.on_clicked { @actors_list.add_after_selection(ActorStar.new) }
+
+		# Actor list
+		self << @actors_list = GuiListWithControls.new($engine.project.actors).set(:scroll_wrap => true, :scale_x => 0.12, :scale_y => 0.8, :spacing_y => -1.0).
+			add_state(:open, {:offset_x => 0.44, :offset_y => 0.0, :hidden => false}).
+			set_state(:closed, {:offset_x => 0.56, :offset_y => 0.0, :hidden => true})
+
+		# Actors corner button
+		self << (@actors_button = GuiButton.new.set(:hotkey => ACTORS_BUTTON, :scale_x => -0.04, :scale_y => -0.06, :offset_x => 0.48, :offset_y => -0.47, :background_image => $engine.load_image('images/corner.png')))
+		@actors_button.on_clicked {
+			@actors_list.switch_state({:open => :closed, :closed => :open}, duration=0.2)
+			@actor_drawer.switch_state({:open => :closed, :closed => :open}, duration=0.2)
+		}
+
+		#
+		# Events/Variables drawer
+		#
+		self << @events_drawer = GuiHBox.new.set(:color => [0.1,0.1,0.1,0.5], :scale_x => 0.15, :scale_y => 0.05).
+			add_state(:open, {:hidden => false, :offset_x => -0.40, :offset_y => -0.475}).
+			set_state(:closed, {:hidden => true, :offset_x => -0.60, :offset_y => -0.475})
+
+			# New Event button
+			@events_drawer << (@new_event_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/new.png')))
+			@new_event_button.on_clicked { @events_list.add_after_selection(Event.new) }
+
+		# Events list
+		self << @events_list = GuiListWithControls.new($engine.project.events).set(:scale_x => 0.12, :scale_y => 0.45, :offset_y => 0.22, :item_aspect_ratio => 3.2, :hidden => true, :spacing_y => -1.0).
+			add_state(:open, {:hidden => false, :offset_x => -0.44, :opacity => 1.0}).
+			set_state(:closed, {:offset_x => -0.6, :opacity => 0.0, :hidden => true})
+
+		# Variables list
+		self << @variables_list = GuiListWithControls.new($engine.project.variables).set(:scale_x => 0.12, :scale_y => 0.45, :offset_y => -0.23, :item_aspect_ratio => 3.2, :hidden => true, :spacing_y => -1.0).
+			add_state(:open, {:hidden => false, :offset_x => -0.44, :opacity => 1.0}).
+			set_state(:closed, {:offset_x => -0.6, :opacity => 0.0, :hidden => true})
+
+		# Events/Variables corner button
+		self << (@events_button = GuiButton.new.set(:hotkey => EVENTS_BUTTON, :scale_x => 0.04, :scale_y => -0.06, :offset_x => -0.48, :offset_y => -0.47, :background_image => $engine.load_image('images/corner.png')))
+		@events_button.on_clicked {
+			@events_drawer.switch_state({:open => :closed, :closed => :open}, duration=0.2)
+			@variables_list.switch_state({:open => :closed, :closed => :open}, duration=0.2)
+			@events_list.switch_state({:open => :closed, :closed => :open}, duration=0.2)
 		}
 
 		#
