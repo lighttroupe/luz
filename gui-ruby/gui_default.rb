@@ -76,7 +76,11 @@ class GuiDefault < GuiInterface
 	def create!
 		# Remember: this is drawn first-to-last
 
-		set(:camera_x => 1.0, :output_opacity => 1.0)
+		set(:mode => OUTPUT_MODE, :camera_x => 1.0, :output_opacity => 1.0)
+
+		# Defaults
+		@user_object_editors = {}
+		@chosen_actor = nil
 
 		#
 		# Project Drawer
@@ -209,11 +213,6 @@ class GuiDefault < GuiInterface
 		self << @beat_monitor = GuiBeatMonitor.new(beats_per_measure=4).set(:scale_x => 0.12, :scale_y => 0.02).
 			add_state(:closed, {:offset_x => 0.0, :offset_y => 0.55, :hidden => true}).
 			set_state(:open, {:offset_x => 0.0, :offset_y => 0.49, :hidden => false})
-
-		# Defaults
-		@user_object_editors = {}
-		@chosen_actor = nil
-		self.mode = OUTPUT_MODE
 	end
 
 	#
