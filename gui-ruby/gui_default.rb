@@ -99,7 +99,9 @@ class GuiDefault < GuiInterface
 
 		# Project button to show project drawer
 		self << (@project_menu_button = GuiButton.new.set(:hotkey => MENU_BUTTON, :scale_x => 0.04, :scale_y => 0.06, :offset_x => -0.48, :offset_y => 0.47, :background_image => $engine.load_image('images/corner.png')))
-		@project_menu_button.on_clicked { @project_drawer.switch_state({:open => :closed, :closed => :open}, duration=0.2) }
+		@project_menu_button.on_clicked {
+			@project_drawer.switch_state({:open => :closed, :closed => :open}, duration=0.2)
+		}
 
 		#
 		# Director drawer
