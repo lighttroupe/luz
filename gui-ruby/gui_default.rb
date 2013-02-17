@@ -86,9 +86,17 @@ class GuiDefault < GuiInterface
 		#
 		# Project Drawer
 		#
-		self << @project_drawer = GuiHBox.new.set(:scale_x => 0.15, :scale_y => 0.05).
+		self << @project_drawer = GuiHBox.new.set(:scale_x => 0.20, :scale_y => 0.05, :background_image => $engine.load_image('images/drawer.png')).
 			add_state(:open, {:hidden => false, :offset_x => -0.40, :offset_y => 0.475}).
 			set_state(:closed, {:hidden => true, :offset_x => -0.60, :offset_y => 0.475})
+
+			# Close button
+			@project_drawer << (@close_project_drawer_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/arrow-left.png')))
+			@close_project_drawer_button.on_clicked {
+				@project_drawer.switch_state({:open => :closed}, duration=0.1) {
+					@project_menu_button.switch_state({:closed => :open}, duration=0.1)
+				}
+			}
 
 			# Quit button
 			@project_drawer << (@quit_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/exit.png')))
@@ -99,13 +107,17 @@ class GuiDefault < GuiInterface
 				@save_button.on_clicked { $engine.save ; positive_message 'Saved successfully.' }
 
 			# Project Effects button
-			@project_drawer << (@project_effects_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/down.png')))
+			@project_drawer << (@project_effects_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/arrow-down.png')))
 				@project_effects_button.on_clicked { |pointer| build_editor_for($engine.project, :pointer => pointer) }
 
-		# Project button to show project drawer
-		self << (@project_menu_button = GuiButton.new.set(:hotkey => MENU_BUTTON, :scale_x => 0.04, :scale_y => 0.06, :offset_x => -0.48, :offset_y => 0.47, :background_image => $engine.load_image('images/corner.png')))
+		# Poject corner button
+		self << @project_menu_button = GuiButton.new.set(:hotkey => MENU_BUTTON, :scale_x => 0.04, :scale_y => 0.06, :offset_x => -0.48, :offset_y => 0.47, :background_image => $engine.load_image('images/corner.png')).
+			add_state(:closed, {:hidden => true, :offset_x => -0.49, :offset_y => 0.48}).
+			set_state(:open, {:hidden => false, :offset_x => -0.48, :offset_y => 0.47})
+
 		@project_menu_button.on_clicked {
 			@project_drawer.switch_state({:open => :closed, :closed => :open}, duration=0.2)
+			@project_menu_button.switch_state({:open => :closed, :closed => :open}, duration=0.2)
 		}
 
 		#
@@ -118,6 +130,7 @@ class GuiDefault < GuiInterface
 			# Radio buttons for @mode		TODO: add director view
 			@directors_drawer << GuiRadioButtons.new(self, :mode, [ACTOR_MODE, OUTPUT_MODE]).set(:spacing_x => 1.0)
 
+		# Directors corner button
 		self << (@directors_button = GuiButton.new.set(:hotkey => MENU_BUTTON, :scale_x => -0.04, :scale_y => 0.06, :offset_x => 0.48, :offset_y => 0.47, :background_image => $engine.load_image('images/corner.png')))
 		@directors_button.on_clicked {
 			@directors_drawer.switch_state({:open => :closed, :closed => :open}, duration=0.2)
@@ -149,17 +162,17 @@ class GuiDefault < GuiInterface
 		#
 		# Events/Variables drawer
 		#
-		self << @events_drawer = GuiHBox.new.set(:color => [0.1,0.1,0.1,0.5], :scale_x => 0.15, :scale_y => 0.05).
+		self << @events_drawer = GuiHBox.new.set(:color => [0.1,0.1,0.1,0.5], :scale_x => 0.15, :scale_y => 0.05, :background_image => $engine.load_image('images/drawer.png')).
 			add_state(:open, {:hidden => false, :offset_x => -0.425, :offset_y => -0.475}).
 			set_state(:closed, {:hidden => true, :offset_x => -0.60, :offset_y => -0.475})
 
 			# Close button
 			@events_drawer << (@close_events_drawer_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/arrow-left.png')))
 			@close_events_drawer_button.on_clicked {
-				@events_list.switch_state(:open => :closed)
-				@variables_list.switch_state(:open => :closed)
-				@events_button.switch_state(:closed => :open)
-				@events_drawer.switch_state(:open => :closed)
+				@events_list.switch_state({:open => :closed}, duration=0.2)
+				@variables_list.switch_state({:open => :closed}, duration=0.2)
+				@events_button.switch_state({:closed => :open}, duration=0.2)
+				@events_drawer.switch_state({:open => :closed}, duration=0.2)
 			}
 
 			# New Event button
@@ -182,7 +195,7 @@ class GuiDefault < GuiInterface
 
 		# Events/Variables corner button
 		self << @events_button = GuiButton.new.set(:hotkey => EVENTS_BUTTON, :scale_x => 0.04, :scale_y => -0.06, :background_image => $engine.load_image('images/corner.png')).
-			add_state(:closed, {:hidden => true, :offset_x => -0.55, :offset_y => -0.47}).
+			add_state(:closed, {:hidden => true, :offset_x => -0.55, :offset_y => -0.53}).
 			set_state(:open, {:hidden => false, :offset_x => -0.48, :offset_y => -0.47})
 
 		@events_button.on_clicked {
