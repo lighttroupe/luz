@@ -75,8 +75,8 @@ class GuiDefault < GuiInterface
 	# Minimal start for a new object: self << GuiObject.new.set(:scale_x => 0.1, :scale_y => 0.1)
 	def create!
 		# Remember: this is drawn first-to-last
-		set(:camera_x => 0.0)
-		animate({:output_opacity => 1.0}, duration=2.0)
+
+		set(:camera_x => 1.0, :output_opacity => 1.0)
 
 		#
 		# Project Drawer
@@ -213,7 +213,6 @@ class GuiDefault < GuiInterface
 		@user_object_editors = {}
 		@chosen_actor = nil
 		self.mode = OUTPUT_MODE
-		self.camera_x = 1.0
 	end
 
 	#
