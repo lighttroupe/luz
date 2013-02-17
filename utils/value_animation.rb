@@ -30,8 +30,12 @@ module ValueAnimation
 		set_method = (field.to_s+'=').to_sym
 		current_value = send(field)
 
+		# TODO: if current_value == target_value ... call proc and return?
+
 		# HACK: coerce start value (until we have default values for all settings)
 		current_value ||= 0.0 if target_value.is_a? Float
+
+		finalize_animations_for_field!(field)
 
 		# HACK: until we have some other way to do it, we'll need to turn hidden=false before anything else, otherwise the animation is invisible
 		# of course this level shouldn't know what :hidden means...
@@ -40,14 +44,18 @@ module ValueAnimation
 		active_animations << animation_struct_stack.pop(field, set_method, current_value, target_value, $env[:frame_time], $env[:frame_time] + duration, proc)
 	end
 
+	def finalize_animation!(animation)
+		send(animation.set_method, animation.end_value)
+		animation.proc.call(self) if animation.proc		# callback
+		animation_struct_stack.push(animation)				# recycle
+	end
+
 	def tick_animations!
 		active_animations.delete_if { |animation|
 			progress = ($env[:frame_time] - animation.begin_time) / (animation.end_time - animation.begin_time)
 			if progress >= 1.0
-				send(animation.set_method, animation.end_value)
-				animation.proc.call(self) if animation.proc		# callback
-				animation_struct_stack.push(animation)				# recycle
-				true																					# remove from array
+				finalize_animation!(animation)
+				true		# delete
 			else
 				if animation.end_value.is_a? Float
 					current_value = progress.scale(animation.begin_value, animation.end_value)
@@ -55,7 +63,18 @@ module ValueAnimation
 				else
 					# no animation for boolean, or others (just set their final value above)
 				end
-				false
+				false		# keep
+			end
+		}
+	end
+
+	def finalize_animations_for_field!(field)
+		active_animations.delete_if { |animation|
+			if animation.get_method == field
+				finalize_animation!(animation)
+				true		# delete
+			else
+				false		# keep
 			end
 		}
 	end

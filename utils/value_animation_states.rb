@@ -17,8 +17,8 @@ module ValueAnimationStates
 	def animate_to_state(name, duration=0.5, &proc)
 		options = animation_states[name]
 		raise ArgumentError unless options
+		@value_animation_state = name		# BEFORE animation makes it official
 		animate(options, duration) {
-			@value_animation_state = name
 			proc.call if proc
 		}
 		self
