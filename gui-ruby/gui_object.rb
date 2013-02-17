@@ -64,11 +64,15 @@ module MethodsForGuiObject
 	end
 
 	def gui_render_background
-		with_color(background_color) {
+		if background_image
 			background_image.using {
 				unit_square
 			}
-		}
+		else
+			with_color(background_color) {
+				unit_square
+			}
+		end
 	end
 
 	boolean_accessor :exiting
