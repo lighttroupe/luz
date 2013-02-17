@@ -156,7 +156,7 @@ class GuiDefault < GuiInterface
 
 			# New Event button
 			@events_drawer << (@new_event_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/new.png')))
-			@new_event_button.on_clicked { @events_list.add_after_selection(event = Event.new) ; build_editor_for(event, :pointer => pointer) }
+			@new_event_button.on_clicked { |pointer| @events_list.add_after_selection(event = Event.new) ; build_editor_for(event, :pointer => pointer) }
 
 			# New Variable button
 			@events_drawer << (@new_variable_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/new.png')))
