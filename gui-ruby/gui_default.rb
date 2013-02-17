@@ -56,7 +56,7 @@ class GuiDefault < GuiInterface
 
 	callback :keypress
 
-	easy_accessor :camera_x
+	easy_accessor :camera_x, :output_opacity
 
 	def initialize
 		super
@@ -76,6 +76,7 @@ class GuiDefault < GuiInterface
 	def create!
 		# Remember: this is drawn first-to-last
 		set(:camera_x => 0.0)
+		animate({:output_opacity => 1.0}, duration=2.0)
 
 		#
 		# Project Drawer
@@ -245,8 +246,10 @@ class GuiDefault < GuiInterface
 
 			# Render output view
 			if camera_x > 0.0 && camera_x < 2.0
-				with_translation(1.0, 0.0) {
-					yield
+				with_multiplied_alpha(output_opacity) {
+					with_translation(1.0, 0.0) {
+						yield
+					}
 				}
 			end
 		}

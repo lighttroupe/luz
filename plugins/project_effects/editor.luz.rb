@@ -26,7 +26,6 @@ class ProjectEffectEditor < ProjectEffect
 	description ""
 
 	setting 'show_amount', :float, :range => 0.0..1.0, :default => 1.0..1.0
-	setting 'output_opacity', :float, :range => 0.0..1.0, :default => 1.0..1.0
 	setting 'debug', :event
 	setting 'gui_color', :color
 
@@ -79,9 +78,7 @@ class ProjectEffectEditor < ProjectEffect
 
 	def render
 		@gui.render {
-			with_multiplied_alpha(output_opacity) {
-				yield
-			}
+			yield
 		}
 
 		if show_amount > 0.0
