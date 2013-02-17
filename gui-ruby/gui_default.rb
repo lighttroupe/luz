@@ -41,6 +41,7 @@ class GuiDefault < GuiInterface
 
 	# hardcoded SDL keys
 	ESCAPE_KEY						= 'escape'
+	RELOAD_KEY						= 'r'
 
 	# hardcoded Luz keys
 	MENU_BUTTON						= ''
@@ -277,6 +278,8 @@ class GuiDefault < GuiInterface
 				when DIRECTOR_MODE
 					# TODO
 				end
+			when RELOAD_KEY
+				$engine.reload
 			end
 		else
 			case value
