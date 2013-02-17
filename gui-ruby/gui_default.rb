@@ -90,13 +90,13 @@ class GuiDefault < GuiInterface
 			add_state(:open, {:hidden => false, :offset_x => -0.40, :offset_y => 0.475}).
 			set_state(:closed, {:hidden => true, :offset_x => -0.60, :offset_y => 0.475})
 
-			# Save button
-			@project_drawer << @save_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/save.png'))
-				@save_button.on_clicked { $engine.save ; positive_message 'Saved successfully.' }
-
 			# Quit button
 			@project_drawer << (@quit_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/exit.png')))
 				@quit_button.on_clicked { $application.finished! }
+
+			# Save button
+			@project_drawer << @save_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/save.png'))
+				@save_button.on_clicked { $engine.save ; positive_message 'Saved successfully.' }
 
 			# Project Effects button
 			@project_drawer << (@project_effects_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/down.png')))
