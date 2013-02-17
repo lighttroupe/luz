@@ -198,8 +198,7 @@ class GuiDefault < GuiInterface
 			set_state(:closed, {:opacity => 0.0, :hidden => true})
 
 		# Main menu
-		@main_menu = MainMenu.new.set(:hidden => true)
-		self << @main_menu
+		self << @main_menu = MainMenu.new.set(:hidden => true)
 
 		# Message Bar
 		self << (@message_bar = GuiMessageBar.new.set(:offset_x => 0.02, :offset_y => 0.5 - 0.05, :scale_x => 0.32, :scale_y => 0.05))
