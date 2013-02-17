@@ -142,12 +142,25 @@ class GuiDefault < GuiInterface
 		# Events/Variables drawer
 		#
 		self << @events_drawer = GuiHBox.new.set(:color => [0.1,0.1,0.1,0.5], :scale_x => 0.15, :scale_y => 0.05).
-			add_state(:open, {:hidden => false, :offset_x => -0.40, :offset_y => -0.475}).
+			add_state(:open, {:hidden => false, :offset_x => -0.425, :offset_y => -0.475}).
 			set_state(:closed, {:hidden => true, :offset_x => -0.60, :offset_y => -0.475})
+
+			# Close button
+			@events_drawer << (@close_events_drawer_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/arrow-left.png')))
+			@close_events_drawer_button.on_clicked {
+				@events_list.switch_state(:open => :closed)
+				@variables_list.switch_state(:open => :closed)
+				@events_button.switch_state(:closed => :open)
+				@events_drawer.switch_state(:open => :closed)
+			}
 
 			# New Event button
 			@events_drawer << (@new_event_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/new.png')))
-			@new_event_button.on_clicked { @events_list.add_after_selection(Event.new) }
+			@new_event_button.on_clicked { @events_list.add_after_selection(event = Event.new) ; build_editor_for(event, :pointer => pointer) }
+
+			# New Variable button
+			@events_drawer << (@new_variable_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/new.png')))
+			@new_variable_button.on_clicked { |pointer| @variables_list.add_after_selection(variable = Variable.new) ; build_editor_for(variable, :pointer => pointer) }
 
 		# Events list
 		self << @events_list = GuiListWithControls.new($engine.project.events).set(:scale_x => 0.12, :scale_y => 0.45, :offset_y => 0.22, :item_aspect_ratio => 3.2, :hidden => true, :spacing_y => -1.0).
@@ -160,8 +173,12 @@ class GuiDefault < GuiInterface
 			set_state(:closed, {:offset_x => -0.6, :opacity => 0.0, :hidden => true})
 
 		# Events/Variables corner button
-		self << (@events_button = GuiButton.new.set(:hotkey => EVENTS_BUTTON, :scale_x => 0.04, :scale_y => -0.06, :offset_x => -0.48, :offset_y => -0.47, :background_image => $engine.load_image('images/corner.png')))
+		self << @events_button = GuiButton.new.set(:hotkey => EVENTS_BUTTON, :scale_x => 0.04, :scale_y => -0.06, :background_image => $engine.load_image('images/corner.png')).
+			add_state(:closed, {:hidden => true, :offset_x => -0.55, :offset_y => -0.47}).
+			set_state(:open, {:hidden => false, :offset_x => -0.48, :offset_y => -0.47})
+
 		@events_button.on_clicked {
+			@events_button.switch_state({:open => :closed}, duration=0.2)
 			@events_drawer.switch_state({:open => :closed, :closed => :open}, duration=0.2)
 			@variables_list.switch_state({:open => :closed, :closed => :open}, duration=0.2)
 			@events_list.switch_state({:open => :closed, :closed => :open}, duration=0.2)
@@ -185,7 +202,9 @@ class GuiDefault < GuiInterface
 		self << (@message_bar = GuiMessageBar.new.set(:offset_x => 0.02, :offset_y => 0.5 - 0.05, :scale_x => 0.32, :scale_y => 0.05))
 
 		# Beat Monitor
-		self << (@beat_monitor = GuiBeatMonitor.new(beats_per_measure=4).set(:offset_y => 0.49, :scale_x => 0.12, :scale_y => 0.02, :spacing_x => 1.0))
+		self << @beat_monitor = GuiBeatMonitor.new(beats_per_measure=4).set(:scale_x => 0.12, :scale_y => 0.02, :spacing_x => 1.0).
+			add_state(:closed, {:offset_x => 0.0, :offset_y => 0.55, :hidden => true}).
+			set_state(:open, {:offset_x => 0.0, :offset_y => 0.49, :hidden => false})
 
 		# Defaults
 		@user_object_editors = {}
@@ -257,7 +276,7 @@ class GuiDefault < GuiInterface
 			case value
 			when TOGGLE_BEAT_MONITOR_KEY
 				# TODO
-				positive_message 'toggle beat monitor'
+				@beat_monitor.switch_state({:open => :closed, :closed => :open}, duration=0.2)
 			when NEW_KEY
 				case mode
 				when ACTOR_MODE
