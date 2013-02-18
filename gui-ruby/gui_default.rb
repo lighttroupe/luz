@@ -39,10 +39,6 @@ class GuiDefault < GuiInterface
 
 	ACTOR_MODE, DIRECTOR_MODE, OUTPUT_MODE = 1, 2, 3
 
-	# hardcoded SDL keys
-	ESCAPE_KEY						= 'escape'
-	RELOAD_KEY						= 'r'
-
 	# hardcoded Luz keys
 	MENU_BUTTON						= ''
 	SAVE_BUTTON						= ''
@@ -94,7 +90,7 @@ class GuiDefault < GuiInterface
 			@project_drawer << (@close_project_drawer_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/arrow-left.png')))
 			@close_project_drawer_button.on_clicked {
 				@project_drawer.switch_state({:open => :closed}, duration=0.1) {
-					@project_menu_button.switch_state({:closed => :open}, duration=0.1)
+					#@project_menu_button.switch_state({:closed => :open}, duration=0.1)
 				}
 			}
 
@@ -111,13 +107,13 @@ class GuiDefault < GuiInterface
 				@project_effects_button.on_clicked { |pointer| build_editor_for($engine.project, :pointer => pointer) }
 
 		# Project corner button
-		self << @project_menu_button = GuiButton.new.set(:hotkey => MENU_BUTTON, :scale_x => 0.04, :scale_y => 0.06, :offset_x => -0.48, :offset_y => 0.47, :background_image => $engine.load_image('images/corner.png')).
-			add_state(:closed, {:hidden => true, :offset_x => -0.49, :offset_y => 0.48}).
-			set_state(:open, {:hidden => false, :offset_x => -0.48, :offset_y => 0.47})
+		self << @project_menu_button = GuiButton.new.set(:hotkey => MENU_BUTTON, :scale_x => 0.04, :scale_y => 0.06, :offset_x => -0.48, :offset_y => 0.47, :background_image => $engine.load_image('images/corner.png'))
+			#.add_state(:closed, {:hidden => true, :offset_x => -0.49, :offset_y => 0.48}).
+			#set_state(:open, {:hidden => false, :offset_x => -0.48, :offset_y => 0.47})
 
 		@project_menu_button.on_clicked {
 			@project_drawer.switch_state({:open => :closed, :closed => :open}, duration=0.2)
-			@project_menu_button.switch_state({:open => :closed, :closed => :open}, duration=0.2)
+			#@project_menu_button.switch_state({:open => :closed, :closed => :open}, duration=0.2)
 		}
 
 		#
@@ -171,7 +167,7 @@ class GuiDefault < GuiInterface
 			@close_events_drawer_button.on_clicked {
 				@events_list.switch_state({:open => :closed}, duration=0.2)
 				@variables_list.switch_state({:open => :closed}, duration=0.2)
-				@events_button.switch_state({:closed => :open}, duration=0.2)
+				#@events_button.switch_state({:closed => :open}, duration=0.2)
 				@events_drawer.switch_state({:open => :closed}, duration=0.2)
 			}
 
@@ -199,7 +195,7 @@ class GuiDefault < GuiInterface
 			set_state(:open, {:hidden => false, :offset_x => -0.48, :offset_y => -0.47})
 
 		@events_button.on_clicked {
-			@events_button.switch_state({:open => :closed}, duration=0.2)
+			#@events_button.switch_state({:open => :closed}, duration=0.2)
 			@events_drawer.switch_state({:open => :closed, :closed => :open}, duration=0.2)
 			@variables_list.switch_state({:open => :closed, :closed => :open}, duration=0.2)
 			@events_list.switch_state({:open => :closed, :closed => :open}, duration=0.2)
@@ -276,27 +272,25 @@ class GuiDefault < GuiInterface
 		}
 	end
 
-	TOGGLE_BEAT_MONITOR_KEY = 'b'
-	NEW_KEY = 'n'
 	def on_key_press(value)
 		if value.control?
 			case value
-			when TOGGLE_BEAT_MONITOR_KEY
+			when 'b'
 				@beat_monitor.switch_state({:open => :closed, :closed => :open}, duration=0.2)
 
-			when NEW_KEY
+			when 'n'
 				case mode
 				when ACTOR_MODE
 					# TODO not working @chosen_actor.build_add_child_window_for_pointer(nil) if @chosen_actor
 				when DIRECTOR_MODE
 					# TODO
 				end
-			when RELOAD_KEY
+			when 'r'
 				$engine.reload
 			end
 		else
 			case value
-			when ESCAPE_KEY
+			when 'escape'
 				hide_something!
 			end
 		end
@@ -365,6 +359,5 @@ class GuiDefault < GuiInterface
 	end
 
 	def hide_something!
-		return false
 	end
 end
