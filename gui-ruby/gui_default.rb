@@ -135,8 +135,8 @@ class GuiDefault < GuiInterface
 		#
 		# Actor drawer
 		#
-		self << @actor_drawer = GuiHBox.new.set(:color => [0.1,0.1,0.1,0.5], :scale_x => 0.20, :scale_y => 0.045, :background_image => $engine.load_image('images/drawer-se.png')).
-			add_state(:open, {:hidden => false, :offset_x => 0.40, :offset_y => -0.4775}).
+		self << @actor_drawer = GuiHBox.new.set(:color => [0.1,0.1,0.1,0.5], :scale_x => 0.16, :scale_y => 0.045, :background_image => $engine.load_image('images/drawer-se.png')).
+			add_state(:open, {:hidden => false, :offset_x => 0.42, :offset_y => -0.4775}).
 			set_state(:closed, {:hidden => true, :offset_x => 0.60, :offset_y => -0.4775})
 
 			# New Actor button(s)
@@ -144,7 +144,7 @@ class GuiDefault < GuiInterface
 			@new_actor_button.on_clicked { @actors_list.add_after_selection(ActorStar.new) }
 
 		# Actor list
-		self << @actors_list = GuiListWithControls.new($engine.project.actors).set(:scroll_wrap => true, :scale_x => 0.12, :scale_y => 0.8, :spacing_y => -1.0).
+		self << @actors_list = GuiListWithControls.new($engine.project.actors).set(:scroll_wrap => true, :scale_x => 0.12, :scale_y => 0.9, :offset_y => -0.05, :spacing_y => -1.0).
 			add_state(:open, {:offset_x => 0.44, :offset_y => 0.0, :hidden => false}).
 			set_state(:closed, {:offset_x => 0.56, :offset_y => 0.0, :hidden => true})
 
@@ -158,8 +158,8 @@ class GuiDefault < GuiInterface
 		#
 		# Events/Variables drawer
 		#
-		self << @events_drawer = GuiHBox.new.set(:color => [0.1,0.1,0.1,0.5], :scale_x => 0.20, :scale_y => 0.045, :background_image => $engine.load_image('images/drawer-sw.png')).
-			add_state(:open, {:hidden => false, :offset_x => -0.40, :offset_y => -0.4775}).
+		self << @events_drawer = GuiHBox.new.set(:color => [0.1,0.1,0.1,0.5], :scale_x => 0.16, :scale_y => 0.045, :background_image => $engine.load_image('images/drawer-sw.png')).
+			add_state(:open, {:hidden => false, :offset_x => -0.42, :offset_y => -0.4775}).
 			set_state(:closed, {:hidden => true, :offset_x => -0.60, :offset_y => -0.4775})
 
 			# Close button
