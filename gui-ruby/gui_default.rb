@@ -204,7 +204,11 @@ class GuiDefault < GuiInterface
 		#
 		# User Object Editor
 		#
-		self << (@user_object_editor_container = GuiBox.new)
+		self << @recall_user_object_editor_button = GuiButton.new.set(:offset_y => -0.495, :scale_x => 0.09, :scale_y => 0.02, :background_scale_y => -1.0, :background_image => $engine.load_image('images/drawer-n.png'))
+		@recall_user_object_editor_button.on_clicked { |pointer|
+			build_editor_for(@chosen_actor, :pointer => pointer)
+		}
+		self << @user_object_editor_container = GuiBox.new
 
 		#
 		# OVERLAY LEVEL (things above this line are obscured while overlay is showing)
