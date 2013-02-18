@@ -224,7 +224,7 @@ class GuiDefault < GuiInterface
 		self << (@message_bar = GuiMessageBar.new.set(:offset_x => 0.02, :offset_y => 0.5 - 0.05, :scale_x => 0.32, :scale_y => 0.05))
 
 		# Beat Monitor
-		self << @beat_monitor = GuiBeatMonitor.new(beats_per_measure=4).set(:scale_x => 0.12, :scale_y => 0.02).
+		self << @beat_monitor = GuiBeatMonitor.new(beats_per_measure=4).set(:scale_x => 0.10, :scale_y => 0.02, :background_scale_x => 1.2, :background_scale_y => 1.2, :background_image => $engine.load_image('images/drawer-n.png')).
 			add_state(:closed, {:offset_x => 0.0, :offset_y => 0.55, :hidden => true}).
 			set_state(:open, {:offset_x => 0.0, :offset_y => 0.49, :hidden => false})
 	end
