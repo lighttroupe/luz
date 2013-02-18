@@ -86,7 +86,7 @@ class GuiDefault < GuiInterface
 		#
 		# Project Drawer
 		#
-		self << @project_drawer = GuiHBox.new.set(:scale_x => 0.20, :scale_y => 0.045, :background_image => $engine.load_image('images/drawer.png')).
+		self << @project_drawer = GuiHBox.new.set(:scale_x => 0.20, :scale_y => 0.045, :background_image => $engine.load_image('images/drawer-nw.png')).
 			add_state(:open, {:hidden => false, :offset_x => -0.40, :offset_y => 0.4775}).
 			set_state(:closed, {:hidden => true, :offset_x => -0.60, :offset_y => 0.4775})
 
@@ -123,9 +123,9 @@ class GuiDefault < GuiInterface
 		#
 		# Director drawer
 		#
-		self << @directors_drawer = GuiHBox.new.set(:color => [0.1,0.1,0.1,0.5], :scale_x => 0.15, :scale_y => 0.05).
-			add_state(:open, {:hidden => false, :offset_x => 0.40, :offset_y => 0.475}).
-			set_state(:closed, {:hidden => true, :offset_x => 0.60, :offset_y => 0.475})
+		self << @directors_drawer = GuiHBox.new.set(:color => [0.1,0.1,0.1,0.5], :scale_x => 0.20, :scale_y => 0.045, :background_image => $engine.load_image('images/drawer-ne.png')).
+			add_state(:open, {:hidden => false, :offset_x => 0.40, :offset_y => 0.4775}).
+			set_state(:closed, {:hidden => true, :offset_x => 0.60, :offset_y => 0.4775})
 
 			# Radio buttons for @mode		TODO: add director view
 			@directors_drawer << GuiRadioButtons.new(self, :mode, [ACTOR_MODE, OUTPUT_MODE]).set(:spacing_x => 1.0)
@@ -139,9 +139,9 @@ class GuiDefault < GuiInterface
 		#
 		# Actor drawer
 		#
-		self << @actor_drawer = GuiHBox.new.set(:color => [0.1,0.1,0.1,0.5], :scale_x => 0.15, :scale_y => 0.05).
-			add_state(:open, {:hidden => false, :offset_x => 0.40, :offset_y => -0.475}).
-			set_state(:closed, {:hidden => true, :offset_x => 0.60, :offset_y => -0.475})
+		self << @actor_drawer = GuiHBox.new.set(:color => [0.1,0.1,0.1,0.5], :scale_x => 0.20, :scale_y => 0.045, :background_image => $engine.load_image('images/drawer-se.png')).
+			add_state(:open, {:hidden => false, :offset_x => 0.40, :offset_y => -0.4775}).
+			set_state(:closed, {:hidden => true, :offset_x => 0.60, :offset_y => -0.4775})
 
 			# New Actor button(s)
 			@actor_drawer << (@new_actor_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/new.png')))
@@ -162,9 +162,9 @@ class GuiDefault < GuiInterface
 		#
 		# Events/Variables drawer
 		#
-		self << @events_drawer = GuiHBox.new.set(:color => [0.1,0.1,0.1,0.5], :scale_x => 0.15, :scale_y => 0.05, :background_image => $engine.load_image('images/drawer.png')).
-			add_state(:open, {:hidden => false, :offset_x => -0.425, :offset_y => -0.475}).
-			set_state(:closed, {:hidden => true, :offset_x => -0.60, :offset_y => -0.475})
+		self << @events_drawer = GuiHBox.new.set(:color => [0.1,0.1,0.1,0.5], :scale_x => 0.20, :scale_y => 0.045, :background_image => $engine.load_image('images/drawer-sw.png')).
+			add_state(:open, {:hidden => false, :offset_x => -0.40, :offset_y => -0.4775}).
+			set_state(:closed, {:hidden => true, :offset_x => -0.60, :offset_y => -0.4775})
 
 			# Close button
 			@events_drawer << (@close_events_drawer_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/arrow-left.png')))
