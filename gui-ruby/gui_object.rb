@@ -11,7 +11,7 @@ module MethodsForGuiObject
 	BACKGROUND_COLOR_HOVERING = [1.0,1.0,1.0,0.25]
 	BACKGROUND_COLOR_SELECTED = [1.0,1.0,1.0,0.15]
 
-	easy_accessor :parent, :offset_x, :offset_y, :scale_x, :scale_y, :opacity, :color, :background_image, :float
+	easy_accessor :parent, :offset_x, :offset_y, :scale_x, :scale_y, :opacity, :color, :background_image, :background_scale_x, :background_scale_y, :float
 	boolean_accessor :hidden
 	boolean_accessor :draggable
 
@@ -65,8 +65,10 @@ module MethodsForGuiObject
 
 	def gui_render_background
 		if background_image
-			background_image.using {
-				unit_square
+			with_scale(background_scale_x || 1.0, background_scale_y || 1.0) {
+				background_image.using {
+					unit_square
+				}
 			}
 		else
 			with_color(background_color) {
