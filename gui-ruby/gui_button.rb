@@ -24,13 +24,7 @@ class GuiButton < GuiObject
 		return if hidden?
 		with_positioning {
 			with_color(gui_color) {
-				if background_image
-					background_image.using {
-						unit_square
-					}
-				else
-					unit_square
-				end
+				gui_render_background
 			}
 		}
 	end
