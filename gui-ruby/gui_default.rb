@@ -86,9 +86,9 @@ class GuiDefault < GuiInterface
 		#
 		# Project Drawer
 		#
-		self << @project_drawer = GuiHBox.new.set(:scale_x => 0.20, :scale_y => 0.05, :background_image => $engine.load_image('images/drawer.png')).
-			add_state(:open, {:hidden => false, :offset_x => -0.40, :offset_y => 0.475}).
-			set_state(:closed, {:hidden => true, :offset_x => -0.60, :offset_y => 0.475})
+		self << @project_drawer = GuiHBox.new.set(:scale_x => 0.20, :scale_y => 0.045, :background_image => $engine.load_image('images/drawer.png')).
+			add_state(:open, {:hidden => false, :offset_x => -0.40, :offset_y => 0.4775}).
+			set_state(:closed, {:hidden => true, :offset_x => -0.60, :offset_y => 0.4775})
 
 			# Close button
 			@project_drawer << (@close_project_drawer_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/arrow-left.png')))
