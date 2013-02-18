@@ -110,7 +110,7 @@ class GuiDefault < GuiInterface
 			@project_drawer << (@project_effects_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/arrow-down.png')))
 				@project_effects_button.on_clicked { |pointer| build_editor_for($engine.project, :pointer => pointer) }
 
-		# Poject corner button
+		# Project corner button
 		self << @project_menu_button = GuiButton.new.set(:hotkey => MENU_BUTTON, :scale_x => 0.04, :scale_y => 0.06, :offset_x => -0.48, :offset_y => 0.47, :background_image => $engine.load_image('images/corner.png')).
 			add_state(:closed, {:hidden => true, :offset_x => -0.49, :offset_y => 0.48}).
 			set_state(:open, {:hidden => false, :offset_x => -0.48, :offset_y => 0.47})
