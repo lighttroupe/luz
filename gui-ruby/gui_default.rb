@@ -140,8 +140,10 @@ class GuiDefault < GuiInterface
 			set_state(:closed, {:hidden => true, :offset_x => 0.60, :offset_y => -0.4775})
 
 			# New Actor button(s)
-			@actor_drawer << (@new_actor_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/new.png')))
-			@new_actor_button.on_clicked { @actors_list.add_after_selection(ActorStar.new) }
+			[ActorStarFlower, ActorStar].each { |klass|
+				@actor_drawer << (new_actor_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/new.png')))
+				new_actor_button.on_clicked { |pointer| @actors_list.add_after_selection(actor=klass.new) ; build_editor_for(actor, :pointer => pointer) }
+			}
 
 		# Actor list
 		self << @actors_list = GuiListWithControls.new($engine.project.actors).set(:scroll_wrap => true, :scale_x => 0.12, :scale_y => 0.9, :offset_y => -0.05, :spacing_y => -1.0).
@@ -163,13 +165,13 @@ class GuiDefault < GuiInterface
 			set_state(:closed, {:hidden => true, :offset_x => -0.60, :offset_y => -0.4775})
 
 			# Close button
-			@events_drawer << (@close_events_drawer_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/arrow-left.png')))
-			@close_events_drawer_button.on_clicked {
-				@events_list.switch_state({:open => :closed}, duration=0.2)
-				@variables_list.switch_state({:open => :closed}, duration=0.2)
+#			@events_drawer << (@close_events_drawer_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/arrow-left.png')))
+#			@close_events_drawer_button.on_clicked {
+#				@events_list.switch_state({:open => :closed}, duration=0.2)
+#				@variables_list.switch_state({:open => :closed}, duration=0.2)
 				#@events_button.switch_state({:closed => :open}, duration=0.2)
-				@events_drawer.switch_state({:open => :closed}, duration=0.2)
-			}
+#				@events_drawer.switch_state({:open => :closed}, duration=0.2)
+#			}
 
 			# New Event button
 			@events_drawer << (@new_event_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/new.png')))
@@ -368,5 +370,6 @@ class GuiDefault < GuiInterface
 	end
 
 	def hide_something!
+		
 	end
 end
