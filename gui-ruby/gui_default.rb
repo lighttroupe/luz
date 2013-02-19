@@ -208,7 +208,11 @@ class GuiDefault < GuiInterface
 
 		self << @toggle_user_object_editor_button = GuiButton.new.set(:offset_y => -0.495, :scale_x => 0.09, :scale_y => 0.02, :background_scale_y => -1.0, :background_image => $engine.load_image('images/drawer-n.png'))
 		@toggle_user_object_editor_button.on_clicked { |pointer|
-			build_editor_for(@chosen_actor, :pointer => pointer)
+			if @user_object_editor_container.empty?
+				build_editor_for(@chosen_actor, :pointer => pointer)
+			else
+				clear_editors!
+			end
 		}
 
 		#

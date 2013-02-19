@@ -77,6 +77,10 @@ class GuiBox < GuiObject
 		@contents.index(object)
 	end
 
+	def empty?
+		@contents.empty?
+	end
+
 	#
 	# Selection
 	#
