@@ -28,8 +28,8 @@ class ActorEffectPixelDisplacementMap < ActorEffect
 	CODE = "
 		vec4 displacement_rgba = texture2D(displacement_map, texture_st);
 
-		texture_st.s += (displacement_rgba.r + displacement_rgba.g - 1.0) * amount;
-		texture_st.t += (displacement_rgba.b + displacement_rgba.a - 1.0) * amount;
+		texture_st.s += (displacement_rgba.r + displacement_rgba.g - 1.0) * (amount / 10.0);
+		texture_st.t += (displacement_rgba.b + displacement_rgba.a - 1.0) * (amount / 10.0);
 	"
 
 	def render
