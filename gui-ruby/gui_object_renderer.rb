@@ -10,8 +10,8 @@ class GuiObjectRenderer < GuiObject
 		@object = object
 	end
 
-	def ==(o)		# usefor for being found in lists, etc.
-		super || (@object == o)
+	def ==(object)		# useful for being found in lists, etc.
+		super || (@object == object)
 	end
 
 	def gui_render!
