@@ -176,14 +176,7 @@ class GuiDefault < GuiInterface
 			add_state(:open, {:hidden => false, :offset_x => -0.42, :offset_y => -0.4775}).
 			set_state(:closed, {:hidden => true, :offset_x => -0.60, :offset_y => -0.4775})
 
-			# Close button
-#			@events_drawer << (@close_events_drawer_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/arrow-left.png')))
-#			@close_events_drawer_button.on_clicked {
-#				@events_list.switch_state({:open => :closed}, duration=0.2)
-#				@variables_list.switch_state({:open => :closed}, duration=0.2)
-				#@events_button.switch_state({:closed => :open}, duration=0.2)
-#				@events_drawer.switch_state({:open => :closed}, duration=0.2)
-#			}
+			@events_drawer << (GuiObject.new.set(:color => [0,0,0,0]))
 
 			# New Event button
 			@events_drawer << (@new_event_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/new.png')))
