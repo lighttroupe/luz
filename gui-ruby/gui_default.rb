@@ -22,14 +22,22 @@ class MainMenu < GuiBox
 	end
 end
 
-class ActorClassRenderer < GuiObject
+class GuiActorClassButton < GuiButton
 	def initialize(klass)
+		super()
 		@object = klass.new
 	end
 
 	def gui_render!
+		super
 		with_positioning {
-			@object.render!
+			if pointer_hovering?
+				with_roll(-0.01 + fuzzy_sine($env[:beat]) * 0.02) {
+					@object.render!
+				}
+			else
+				@object.render!
+			end
 		}
 	end
 end
@@ -135,14 +143,18 @@ class GuiDefault < GuiInterface
 		#
 		# Actor drawer
 		#
-		self << @actor_drawer = GuiHBox.new.set(:color => [0.1,0.1,0.1,0.5], :scale_x => 0.16, :scale_y => 0.045, :background_image => $engine.load_image('images/drawer-se.png')).
+		self << @actor_drawer = GuiHBox.new.set(:scale_x => 0.16, :scale_y => 0.045, :background_image => $engine.load_image('images/drawer-se.png')).
 			add_state(:open, {:hidden => false, :offset_x => 0.42, :offset_y => -0.4775}).
 			set_state(:closed, {:hidden => true, :offset_x => 0.60, :offset_y => -0.4775})
 
 			# New Actor button(s)
-			[ActorStarFlower, ActorStar].each { |klass|
-				@actor_drawer << (new_actor_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/new.png')))
-				new_actor_button.on_clicked { |pointer| @actors_list.add_after_selection(actor=klass.new) ; build_editor_for(actor, :pointer => pointer) }
+			[ActorStarFlower, ActorStar, ActorRectangle].each { |klass|
+				@actor_drawer << (new_actor_button = GuiActorClassButton.new(klass))
+				new_actor_button.on_clicked { |pointer|
+					@actors_list.add_after_selection(actor = klass.new)
+					index = @actors_list.index(actor)
+					build_editor_for(actor, :pointer => pointer)
+				}
 			}
 
 		# Actor list
@@ -160,7 +172,7 @@ class GuiDefault < GuiInterface
 		#
 		# Events/Variables drawer
 		#
-		self << @events_drawer = GuiHBox.new.set(:color => [0.1,0.1,0.1,0.5], :scale_x => 0.16, :scale_y => 0.045, :background_image => $engine.load_image('images/drawer-sw.png')).
+		self << @events_drawer = GuiHBox.new.set(:scale_x => 0.16, :scale_y => 0.045, :background_image => $engine.load_image('images/drawer-sw.png')).
 			add_state(:open, {:hidden => false, :offset_x => -0.42, :offset_y => -0.4775}).
 			set_state(:closed, {:hidden => true, :offset_x => -0.60, :offset_y => -0.4775})
 
