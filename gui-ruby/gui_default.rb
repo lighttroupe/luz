@@ -6,7 +6,7 @@ load_directory(Dir.pwd + '/gui-ruby/addons/', '**.rb')
 require 'gui_preferences_box', 'gui_user_object_editor', 'gui_add_window', 'gui_interface'
 
 class String
-	boolean_accessor :shift, :control
+	boolean_accessor :shift, :control, :alt
 end
 
 class MainMenu < GuiBox
@@ -94,13 +94,7 @@ class GuiDefault < GuiInterface
 			add_state(:open, {:hidden => false, :offset_x => -0.40, :offset_y => 0.4775}).
 			set_state(:closed, {:hidden => true, :offset_x => -0.60, :offset_y => 0.4775})
 
-			# Close button
-			@project_drawer << (@close_project_drawer_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/arrow-left.png')))
-			@close_project_drawer_button.on_clicked {
-				@project_drawer.switch_state({:open => :closed}, duration=0.1) {
-					#@project_menu_button.switch_state({:closed => :open}, duration=0.1)
-				}
-			}
+			@project_drawer << (GuiObject.new.set(:color => [0,0,0,0]))
 
 			# Quit button
 			@project_drawer << (@quit_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/exit.png')))
@@ -244,6 +238,9 @@ class GuiDefault < GuiInterface
 	def trash!(user_object)
 		@actors_list.remove(user_object)
 		@chosen_actor = nil if @chosen_actor == user_object
+
+		@events_list.remove(user_object)
+		@variables_list.remove(user_object)
 
 		clear_editors! if @user_object_editors[user_object]
 	end
