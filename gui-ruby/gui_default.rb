@@ -149,7 +149,7 @@ class GuiDefault < GuiInterface
 
 			# New Actor button(s)
 			[ActorStarFlower, ActorStar, ActorRectangle].each { |klass|
-				@actor_drawer << (new_actor_button = GuiActorClassButton.new(klass))
+				@actor_drawer << (new_actor_button = GuiActorClassButton.new(klass).set(:scale => 0.75))
 				new_actor_button.on_clicked { |pointer|
 					@actors_list.add_after_selection(actor = klass.new)
 					index = @actors_list.index(actor)
@@ -239,6 +239,13 @@ class GuiDefault < GuiInterface
 		self << @beat_monitor = GuiBeatMonitor.new(beats_per_measure=4).set(:scale_x => 0.10, :scale_y => 0.02, :background_scale_x => 1.2, :background_scale_y => 1.2, :background_image => $engine.load_image('images/drawer-n.png')).
 			add_state(:closed, {:offset_x => 0.0, :offset_y => 0.55, :hidden => true}).
 			set_state(:open, {:offset_x => 0.0, :offset_y => 0.49, :hidden => false})
+	end
+
+	def trash!(user_object)
+		@actors_list.remove(user_object)
+		@chosen_actor = nil if @chosen_actor == user_object
+
+		clear_editors! if @user_object_editors[user_object]
 	end
 
 	#
