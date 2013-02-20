@@ -1,4 +1,4 @@
-require 'gui_pointer_behavior', 'gui_object', 'gui_box', 'gui_hbox', 'gui_vbox', 'gui_list', 'gui_list_with_controls', 'gui_grid', 'gui_message_bar', 'gui_beat_monitor', 'gui_button', 'gui_float', 'gui_toggle', 'gui_curve', 'gui_curve_increasing', 'gui_theme', 'gui_integer', 'gui_select', 'gui_actor', 'gui_event', 'gui_variable', 'gui_engine_button', 'gui_engine_slider', 'gui_radio_buttons', 'gui_object_renderer', 'gui-ruby/fonts/bitmap-font'
+require 'gui_pointer_behavior', 'gui_object', 'gui_box', 'gui_hbox', 'gui_vbox', 'gui_list', 'gui_list_with_controls', 'gui_grid', 'gui_message_bar', 'gui_beat_monitor', 'gui_button', 'gui_float', 'gui_toggle', 'gui_curve', 'gui_curve_increasing', 'gui_theme', 'gui_integer', 'gui_select', 'gui_actor', 'gui_event', 'gui_variable', 'gui_engine_button', 'gui_engine_slider', 'gui_radio_buttons', 'gui_object_renderer', 'gui-ruby/fonts/bitmap-font', 'history'
 
 # Addons to existing objects
 load_directory(Dir.pwd + '/gui-ruby/addons/', '**.rb')
@@ -19,6 +19,24 @@ class MainMenu < GuiBox
 		self << GuiObject.new.set(:color => [0.5,0.5,0.5,0.5])
 		self << GuiButton.new.set(:scale_x => 0.2, :scale_y => 0.1, :offset_x => -0.48, :offset_y => -0.47, :background_image => $engine.load_image('images/buttons/menu.png'))
 		self << GuiButton.new.set(:scale_x => 0.2, :scale_y => 0.1, :offset_x => 0.48, :offset_y => -0.47, :background_image => $engine.load_image('images/buttons/play.png'))
+	end
+end
+
+class GuiHistoryButton < GuiButton
+	def initialize(history)
+		@history = history
+	end
+end
+
+class GuiBackButton < GuiHistoryButton
+	def click(pointer)
+		@history.back! if @history.can_go_back?
+	end
+end
+
+class GuiForwardButton < GuiHistoryButton
+	def click(pointer)
+		@history.forward! if @history.can_go_forward?
 	end
 end
 
@@ -66,6 +84,10 @@ class GuiDefault < GuiInterface
 	def initialize
 		super
 		@gui_zoom_out = 1.0		# zoom out for debugging
+		@history = History.new
+		@history.on_navigation { |user_object|
+			build_editor_for(user_object, :history => false)
+		}
 		create!
 	end
 
@@ -216,6 +238,9 @@ class GuiDefault < GuiInterface
 			end
 		}
 
+		self << @back_button = GuiBackButton.new(@history).set(:offset_x => -0.04, :offset_y => -0.495, :scale_x => 0.03, :scale_y => 0.02, :background_scale_y => -1.0, :background_image => $engine.load_image('images/buttons/arrow-left.png'))
+		self << @forward_button = GuiForwardButton.new(@history).set(:offset_x => 0.04, :offset_y => -0.495, :scale_x => -0.03, :scale_y => 0.02, :background_scale_y => -1.0, :background_image => $engine.load_image('images/buttons/arrow-left.png'))
+
 		#
 		# OVERLAY LEVEL (things above this line are obscured while overlay is showing)
 		#
@@ -308,6 +333,17 @@ class GuiDefault < GuiInterface
 			when 'r'
 				$engine.reload
 			end
+		elsif value.alt?
+			case value
+			when 'right'
+				@forward_button.click(nil)
+			when 'left'
+				@back_button.click(nil)
+			when 'down'
+				clear_editors!
+			when 'up'
+				build_editor_for(@history.current, :history => false)
+			end
 		else
 			case value
 			when 'escape'
@@ -319,7 +355,9 @@ class GuiDefault < GuiInterface
 	#
 	#
 	#
-	def build_editor_for(user_object, options)
+	def build_editor_for(user_object, options={})
+		return unless user_object
+
 		pointer = options[:pointer]
 		editor = @user_object_editors[user_object]
 
@@ -331,9 +369,20 @@ class GuiDefault < GuiInterface
 			return nil
 		else
 			if user_object.is_a?(ParentUserObject) || user_object.is_a?(Project)		# TODO: responds_to? :effects ?
+				#
+				# Browser-like history of edited objects
+				#
+				unless options.delete(:history) == false
+					#@history.remove(user_object)		# is this correct?  browsers don't do this.
+					@history.add(user_object)
+				end
+
+				#
+				# Select / show object
+				#
 				if user_object.is_a? Actor
-					# Rule: cannot view one actor (in actor-mode) while editing another
 					if @mode == ACTOR_MODE
+						# Rule: cannot view one actor (in actor-mode) while editing another
 						@chosen_actor = user_object
 					end
 				elsif user_object.is_a? Director
@@ -342,7 +391,7 @@ class GuiDefault < GuiInterface
 
 				clear_editors!		# only support one for now
 
-				editor = create_user_object_editor_for_pointer(user_object, pointer, options)
+				editor = create_user_object_editor_for_pointer(user_object, pointer || Vector3.new(0.0,-0.5), options)
 				@user_object_editors[user_object] = editor
 				@user_object_editor_container << editor
 
