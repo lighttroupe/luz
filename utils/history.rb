@@ -51,7 +51,6 @@ class History
 	def back!
 		if can_go_back?
 			@index -= 1
-			$gui.positive_message 'going back'
 			navigation_notify(current)
 			true
 		end
