@@ -10,6 +10,8 @@ class String
 end
 
 class MainMenu < GuiBox
+	callback :close
+
 	def initialize
 		super
 		create!
@@ -17,8 +19,12 @@ class MainMenu < GuiBox
 
 	def create!
 		self << GuiObject.new.set(:color => [0.5,0.5,0.5,0.5])
-		self << GuiButton.new.set(:scale_x => 0.2, :scale_y => 0.1, :offset_x => -0.48, :offset_y => -0.47, :background_image => $engine.load_image('images/buttons/menu.png'))
-		self << GuiButton.new.set(:scale_x => 0.2, :scale_y => 0.1, :offset_x => 0.48, :offset_y => -0.47, :background_image => $engine.load_image('images/buttons/play.png'))
+		self << @vbox = GuiVBox.new
+		@vbox << @quit_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/menu.png'))
+		@quit_button.on_clicked { $application.finished! }
+
+		@vbox << @continue_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/play.png'))
+		@continue_button.on_clicked { close_notify }
 	end
 end
 
@@ -132,7 +138,10 @@ class GuiDefault < GuiInterface
 
 			# Quit button
 			@project_drawer << (@quit_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/exit.png')))
-				@quit_button.on_clicked { $application.finished! }
+				@quit_button.on_clicked {
+					@overlay.switch_state({:closed => :open}, duration=0.4)
+					@main_menu.switch_state({:closed => :open}, duration=0.2)
+				}
 
 			# Save button
 			@project_drawer << @save_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/save.png'))
@@ -257,11 +266,18 @@ class GuiDefault < GuiInterface
 		# OVERLAY LEVEL (things above this line are obscured while overlay is showing)
 		#
 		self << @overlay = GuiObject.new.set(:color => [0,0,0]).
-			add_state(:open, {:opacity => 1.0, :hidden => false}).
+			add_state(:open, {:opacity => 0.95, :hidden => false}).
 			set_state(:closed, {:opacity => 0.0, :hidden => true})
 
 		# Main menu
-		self << @main_menu = MainMenu.new.set(:hidden => true)
+		self << @main_menu = MainMenu.new.set(:hidden => true, :scale_y => 0.7).
+			add_state(:open, {:scale_x => 0.35, :hidden => false}).
+			set_state(:closed, {:scale_x => 0.0, :hidden => true})
+
+		@main_menu.on_close {
+			@main_menu.switch_state({:open => :closed}, duration=0.1)
+			@overlay.switch_state({:open => :closed}, duration=0.2)
+		}
 
 		# Message Bar
 		self << (@message_bar = GuiMessageBar.new.set(:offset_x => 0.02, :offset_y => 0.5 - 0.05, :scale_x => 0.32, :scale_y => 0.05))
