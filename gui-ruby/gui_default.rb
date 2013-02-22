@@ -295,6 +295,8 @@ class GuiDefault < GuiInterface
 		@events_list.remove(user_object)
 		@variables_list.remove(user_object)
 
+		@history.remove(user_object)
+
 		clear_editors! if @user_object_editors[user_object]
 	end
 
