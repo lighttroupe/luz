@@ -1,4 +1,4 @@
-require 'gui_pointer_behavior', 'gui_object', 'gui_box', 'gui_hbox', 'gui_vbox', 'gui_list', 'gui_list_with_controls', 'gui_grid', 'gui_message_bar', 'gui_beat_monitor', 'gui_button', 'gui_float', 'gui_toggle', 'gui_curve', 'gui_curve_increasing', 'gui_theme', 'gui_integer', 'gui_select', 'gui_actor', 'gui_event', 'gui_variable', 'gui_engine_button', 'gui_engine_slider', 'gui_radio_buttons', 'gui_object_renderer', 'gui-ruby/fonts/bitmap-font', 'history'
+require 'gui_pointer_behavior', 'gui_object', 'gui_box', 'gui_hbox', 'gui_vbox', 'gui_list', 'gui_list_with_controls', 'gui_grid', 'gui_message_bar', 'gui_beat_monitor', 'gui_button', 'gui_float', 'gui_toggle', 'gui_curve', 'gui_curve_increasing', 'gui_theme', 'gui_integer', 'gui_select', 'gui_actor', 'gui_event', 'gui_variable', 'gui_engine_button', 'gui_engine_slider', 'gui_radio_buttons', 'gui_object_renderer', 'gui-ruby/fonts/bitmap-font', 'history', 'gui_history_buttons'
 
 # Addons to existing objects
 load_directory(Dir.pwd + '/gui-ruby/addons/', '**.rb')
@@ -28,36 +28,6 @@ class MainMenu < GuiBox
 	end
 end
 
-class GuiHistoryButton < GuiButton
-	def initialize(history)
-		@history = history
-	end
-end
-
-class GuiBackButton < GuiHistoryButton
-	def click(pointer)
-		@history.back!
-	end
-
-	def gui_render!
-		with_alpha(@history.can_go_back? ? 1.0 : 0.2) {
-			super
-		}
-	end
-end
-
-class GuiForwardButton < GuiHistoryButton
-	def click(pointer)
-		@history.forward!
-	end
-
-	def gui_render!
-		with_alpha(@history.can_go_forward? ? 1.0 : 0.2) {
-			super
-		}
-	end
-end
-
 class GuiActorClassButton < GuiButton
 	def initialize(klass)
 		super()
@@ -82,6 +52,7 @@ class GuiDefault < GuiInterface
 	pipe [:positive_message, :negative_message], :message_bar
 
 	ACTOR_MODE, DIRECTOR_MODE, OUTPUT_MODE = 1, 2, 3
+	ACTOR_CAMERA_X, DIRECTOR_CAMERA_X, OUTPUT_CAMERA_X = 0.0, 1.0, 2.0
 
 	# hardcoded Luz keys
 	MENU_BUTTON						= ''
@@ -121,17 +92,18 @@ class GuiDefault < GuiInterface
 	def create!
 		# Remember: this is drawn first-to-last
 
-		set(:mode => OUTPUT_MODE, :camera_x => 1.0, :output_opacity => 1.0)
+		set(:mode => OUTPUT_MODE, :camera_x => OUTPUT_CAMERA_X, :output_opacity => 1.0)
 
 		# Defaults
 		@user_object_editors = {}
 		@chosen_actor = nil
+		@chosen_director = $engine.project.directors.first
 
 		#
 		# Project Drawer
 		#
 		self << @project_drawer = GuiHBox.new.set(:scale_x => 0.20, :scale_y => 0.045, :background_image => $engine.load_image('images/drawer-nw.png')).
-			add_state(:open, {:hidden => false, :offset_x => -0.40, :offset_y => 0.4775}).
+			add_state(:open, {:hidden => false, :offset_x => -0.41, :offset_y => 0.4775}).
 			set_state(:closed, {:hidden => true, :offset_x => -0.60, :offset_y => 0.4775})
 
 			@project_drawer << (GuiObject.new.set(:color => [0,0,0,0]))
@@ -165,11 +137,11 @@ class GuiDefault < GuiInterface
 		# Director drawer
 		#
 		self << @directors_drawer = GuiHBox.new.set(:color => [0.1,0.1,0.1,0.5], :scale_x => 0.20, :scale_y => 0.045, :background_image => $engine.load_image('images/drawer-ne.png')).
-			add_state(:open, {:hidden => false, :offset_x => 0.40, :offset_y => 0.4775}).
+			add_state(:open, {:hidden => false, :offset_x => 0.43, :offset_y => 0.4775}).
 			set_state(:closed, {:hidden => true, :offset_x => 0.60, :offset_y => 0.4775})
 
-			# Radio buttons for @mode		TODO: add director view
-			@directors_drawer << GuiRadioButtons.new(self, :mode, [ACTOR_MODE, OUTPUT_MODE]).set(:spacing_x => 1.0)
+			# Radio buttons for @mode
+			@directors_drawer << GuiRadioButtons.new(self, :mode, [ACTOR_MODE, DIRECTOR_MODE, OUTPUT_MODE]).set(:spacing_x => 1.0)
 
 		# Directors corner button
 		self << (@directors_button = GuiButton.new.set(:hotkey => MENU_BUTTON, :scale_x => -0.04, :scale_y => 0.06, :offset_x => 0.48, :offset_y => 0.47, :background_image => $engine.load_image('images/corner.png')))
@@ -292,6 +264,9 @@ class GuiDefault < GuiInterface
 		@actors_list.remove(user_object)
 		@chosen_actor = nil if @chosen_actor == user_object
 
+		@directors_list.remove(user_object)
+		@chosen_director = nil if @chosen_director == user_object
+
 		@events_list.remove(user_object)
 		@variables_list.remove(user_object)
 
@@ -314,24 +289,30 @@ class GuiDefault < GuiInterface
 	def after_mode_change
 		case @mode
 		when ACTOR_MODE
-			animate(:camera_x, 0.0, 0.2)
-#		when DIRECTOR_MODE
-#			animate(:camera_x, 1.0, 0.2)
+			animate(:camera_x, ACTOR_CAMERA_X, 0.2)
+		when DIRECTOR_MODE
+			animate(:camera_x, DIRECTOR_CAMERA_X, 0.2)
 		when OUTPUT_MODE
-			animate(:camera_x, 1.0, 0.2)
+			animate(:camera_x, OUTPUT_CAMERA_X, 0.2)
 		end
 	end
 
 	def render
 		with_translation(-camera_x, 0.0) {
-			if camera_x < 1.0
+			if camera_x < DIRECTOR_CAMERA_X
 				@chosen_actor.render! if @chosen_actor
 			end
 
 			# Render output view
-			if camera_x > 0.0 && camera_x < 2.0
+			if camera_x > ACTOR_CAMERA_X && camera_x < OUTPUT_CAMERA_X
+				with_translation(DIRECTOR_CAMERA_X, 0.0) {
+					@chosen_director.render if @chosen_director
+				}
+			end
+
+			if camera_x > DIRECTOR_CAMERA_X
 				with_multiplied_alpha(output_opacity) {
-					with_translation(1.0, 0.0) {
+					with_translation(OUTPUT_CAMERA_X, 0.0) {
 						yield
 					}
 				}

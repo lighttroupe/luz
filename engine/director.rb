@@ -78,10 +78,10 @@ class Director < ParentUserObject
 						if aspect_scale
 							# make sure our 1x1 shape fills screen by rendering smaller... 
 							with_scale(1.0/aspect_scale, 1.0/aspect_scale) {
-								render_scene_recursive
+								render
 							}
 						else
-							render_scene_recursive
+							render
 						end
 					}
 
@@ -98,9 +98,13 @@ class Director < ParentUserObject
 					}
 				}
 			else
-				render_scene_recursive
+				render
 			end
 		}
+	end
+
+	def render
+		render_scene_recursive
 	end
 
 	def render_scene_recursive(effect_index = 0, options = {}, &proc)
