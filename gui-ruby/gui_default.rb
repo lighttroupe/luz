@@ -255,13 +255,15 @@ class GuiDefault < GuiInterface
 			add_state(:closed, {:offset_x => 0.0, :offset_y => 0.55, :hidden => true}).
 			set_state(:open, {:offset_x => 0.0, :offset_y => 0.49, :hidden => false})
 
+		self << @directors_list = GuiListWithControls.new([]).set(:hidden => true)
+
 		#
 		# 
 		#
-		init_after_create
+		set_initial_state
 	end
 
-	def init_after_create
+	def set_initial_state
 		@user_object_editors = {}
 		@chosen_actor = nil
 		director = $engine.project.directors.first
@@ -307,27 +309,36 @@ class GuiDefault < GuiInterface
 	def after_mode_change
 		case @mode
 		when ACTOR_MODE
-			animate(:camera_x, ACTOR_CAMERA_X, 0.2)
+			animate(:camera_x, ACTOR_CAMERA_X, camera_switch_time)
 		when DIRECTOR_MODE
-			animate(:camera_x, DIRECTOR_CAMERA_X, 0.2)
+			animate(:camera_x, DIRECTOR_CAMERA_X, camera_switch_time)
 		when OUTPUT_MODE
-			animate(:camera_x, OUTPUT_CAMERA_X, 0.2)
+			animate(:camera_x, OUTPUT_CAMERA_X, camera_switch_time)
 		end
+	end
+
+	def camera_switch_time
+		0.4
 	end
 
 	def render
 		with_translation(-camera_x, 0.0) {
+			# Render actor view
 			if camera_x < DIRECTOR_CAMERA_X
 				@chosen_actor.render! if @chosen_actor
 			end
 
-			# Render output view
+			# Render director view
 			if camera_x > ACTOR_CAMERA_X && camera_x < OUTPUT_CAMERA_X
 				with_translation(DIRECTOR_CAMERA_X, 0.0) {
+					with_color([0.5,0.5,0.5,1.0]) {
+						unit_square
+					}
 					@chosen_director.render if @chosen_director
 				}
 			end
 
+			# Render output view
 			if camera_x > DIRECTOR_CAMERA_X
 				with_multiplied_alpha(output_opacity) {
 					with_translation(OUTPUT_CAMERA_X, 0.0) {
@@ -391,9 +402,15 @@ class GuiDefault < GuiInterface
 		editor = @user_object_editors[user_object]
 
 		if editor && !editor.hidden?
+			# This is the second click on something
 			if user_object.is_a? Actor
-				self.mode = ACTOR_MODE		# TODO: make this an option?
-				@chosen_actor = user_object
+				if (self.mode == ACTOR_MODE && @chosen_actor == user_object)
+					@actors_list.animate_to_state(:closed, duration=0.1)
+					@actor_drawer.animate_to_state(:closed, duration=0.1)
+				else
+					@chosen_actor = user_object
+					self.mode = ACTOR_MODE		# TODO: make this an option?
+				end
 			end
 			return nil
 		else
