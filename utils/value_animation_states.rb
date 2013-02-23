@@ -14,6 +14,10 @@ module ValueAnimationStates
 		self
 	end
 
+	def has_state?(name)
+		!animation_states[name].nil?
+	end
+
 	def animate_to_state(name, duration=0.5, &proc)
 		options = animation_states[name]
 		raise ArgumentError unless options
