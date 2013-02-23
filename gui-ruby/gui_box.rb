@@ -8,10 +8,7 @@ require 'set'
 
 class GuiBox < GuiObject
 	def initialize(contents = [])
-		@contents = contents
-		@contents.each { |gui_object|
-			gui_object.parent = self
-		}
+		self.contents = contents
 		@selection = Set.new
 		@float_left = -0.5
 		super()
@@ -61,6 +58,12 @@ class GuiBox < GuiObject
 	def clear!
 		@contents.each { |gui_object| gui_object.parent = nil }
 		@contents.clear
+	end
+
+	def contents=(contents)
+		clear! if @contents
+		@contents = contents		# NOTE: points at list, doesn't copy it (list operations happen on the array we're showing)
+		@contents.each { |gui_object| gui_object.parent = self }
 	end
 
 	def bring_to_top(object)
