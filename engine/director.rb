@@ -39,7 +39,7 @@ class Director < ParentUserObject
 	###################################################################
 	# Object-level functions
 	###################################################################
-	attr_accessor :x, :y, :effects
+	attr_accessor :x, :y, :actors, :effects
 	empty_method :render
 
 	def z
@@ -47,7 +47,7 @@ class Director < ParentUserObject
 	end
 
 	def to_yaml_properties
-		tag_instance_variables + super
+		['@actors'] + tag_instance_variables + super
 	end
 
 	def default_title
@@ -55,7 +55,7 @@ class Director < ParentUserObject
 	end
 
 	def after_load
-		set_default_instance_variables(:x => 0.0, :y => 0.0)
+		set_default_instance_variables(:actors => [], :x => 0.0, :y => 0.0)
 		super
 		after_load_tag_class_registration
 	end
@@ -104,7 +104,9 @@ class Director < ParentUserObject
 	end
 
 	def render
-		render_scene_recursive
+		render_scene_recursive {
+			@actors.each { |actor| actor.render! }
+		}
 	end
 
 	def render_scene_recursive(effect_index = 0, options = {}, &proc)

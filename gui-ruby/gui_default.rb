@@ -92,12 +92,8 @@ class GuiDefault < GuiInterface
 	def create!
 		# Remember: this is drawn first-to-last
 
-		set(:mode => OUTPUT_MODE, :camera_x => OUTPUT_CAMERA_X, :output_opacity => 1.0)
-
 		# Defaults
-		@user_object_editors = {}
-		@chosen_actor = nil
-		@chosen_director = $engine.project.directors.first
+		set(:mode => OUTPUT_MODE, :camera_x => OUTPUT_CAMERA_X, :output_opacity => 1.0)
 
 		#
 		# Project Drawer
@@ -167,7 +163,7 @@ class GuiDefault < GuiInterface
 			}
 
 		# Actor list
-		self << @actors_list = GuiListWithControls.new($engine.project.actors).set(:scroll_wrap => true, :scale_x => 0.12, :scale_y => 0.9, :offset_y => -0.05, :spacing_y => -1.0).
+		self << @actors_list = GuiListWithControls.new([]).set(:scroll_wrap => true, :scale_x => 0.12, :scale_y => 0.9, :offset_y => -0.05, :spacing_y => -1.0).
 			add_state(:open, {:offset_x => 0.44, :offset_y => 0.0, :hidden => false}).
 			set_state(:closed, {:offset_x => 0.56, :offset_y => 0.0, :hidden => true})
 
@@ -225,7 +221,7 @@ class GuiDefault < GuiInterface
 		self << @toggle_user_object_editor_button = GuiButton.new.set(:offset_y => -0.495, :scale_x => 0.09, :scale_y => 0.02, :background_scale_y => -1.0, :background_image => $engine.load_image('images/drawer-n.png'))
 		@toggle_user_object_editor_button.on_clicked { |pointer|
 			if @user_object_editor_container.empty?
-				build_editor_for(@chosen_actor, :pointer => pointer)
+				build_editor_for(@history.current, :pointer => pointer)
 			else
 				clear_editors!
 			end
@@ -258,6 +254,22 @@ class GuiDefault < GuiInterface
 		self << @beat_monitor = GuiBeatMonitor.new(beats_per_measure=4).set(:scale_x => 0.10, :scale_y => 0.02, :background_scale_x => 1.2, :background_scale_y => 1.2, :background_image => $engine.load_image('images/drawer-n.png')).
 			add_state(:closed, {:offset_x => 0.0, :offset_y => 0.55, :hidden => true}).
 			set_state(:open, {:offset_x => 0.0, :offset_y => 0.49, :hidden => false})
+
+		#
+		# 
+		#
+		init_after_create
+	end
+
+	def init_after_create
+		@user_object_editors = {}
+		@chosen_actor = nil
+		director = $engine.project.directors.first
+
+		# Hack to load project file format 1
+		director.actors = $engine.project.actors if director.actors.empty? and not $engine.project.actors.empty?
+
+		self.chosen_director = director
 	end
 
 	def trash!(user_object)
@@ -273,6 +285,12 @@ class GuiDefault < GuiInterface
 		@history.remove(user_object)
 
 		clear_editors! if @user_object_editors[user_object]
+	end
+
+	attr_reader :chosen_director
+	def chosen_director=(director)
+		@chosen_director = director
+		@actors_list.contents = director.actors
 	end
 
 	#
