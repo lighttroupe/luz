@@ -419,8 +419,8 @@ class GuiDefault < GuiInterface
 				# Browser-like history of edited objects
 				#
 				unless options.delete(:history) == false
-					#@history.remove(user_object)		# is this correct?  browsers don't do this.
-					@history.add(user_object)
+					@history.remove(user_object)		# is this correct?  browsers don't do this.
+					@history.add(user_object) if suitable_for_history?(user_object)
 				end
 
 				#
@@ -475,5 +475,9 @@ class GuiDefault < GuiInterface
 
 	def hide_something!
 		
+	end
+
+	def suitable_for_history?(object)
+		[Actor, Variable, Event].any? { |klass| object.is_a? klass }
 	end
 end
