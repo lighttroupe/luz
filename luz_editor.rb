@@ -21,7 +21,7 @@
 Dir.chdir(File.dirname(__FILE__))	# So that this file can be run from anywhere
 $LOAD_PATH << './utils'
 $LOAD_PATH << './user-object-settings'
-$LOAD_PATH << './gui'
+$LOAD_PATH << './gui-gtk'
 $LOAD_PATH << './engine'
 
 ###################################################################

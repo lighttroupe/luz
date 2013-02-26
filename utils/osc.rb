@@ -14,10 +14,12 @@ module OSC
 	# OSC type tags
 	#
 	INT32_TAG = 'i'
+	COLOR_TAG = 'iii'		# specific to Duration app
 	FLOAT32_TAG = 'f'
 	STRING_TAG = 's'
 	BLOB_TAG = 'b'
 	CAPITAL_S = 'S'		# TODO: what is this?
+	EMPTY_TAG = ''
 
 	#
 	# pack() method format options
@@ -153,22 +155,29 @@ module OSC
 			return [t1, t2]
 		end
 
-		# TEMP: use one PO instead of recreating them (less garbage production)
-		@@po = PO.new('')
+		@@po = PO.new('')		# a single reusable PO object
 
-		def self.decode(packet, &proc)
-			io = @@po.use(packet)		# <-- reused here
+		def self.decode(data, &proc)
+			io = @@po.use(data)
+			decode_io(io, &proc)
+		end
+
+		def self.decode_io(io, &proc)
+			# Packets start with OSC address
 			address = decode_string(io)
 
-			# A comma begins list of "tags" (parameter types)
+			# Special BUNDLE address
 			if address == HASH_BUNDLE
-				b = Bundle.new(decode_timetag(io))
+				decode_timetag(io)		# bundle start with a timestamp; eat it
+
+				# Now a list of [4 byte length][length-byte data] until the end
 				until io.eof?
-					l = io.getn(4).unpack(INT32_PACK_FORMAT)[0]
-					s = io.getn(l)
-					decode(s, &proc)
+					length = io.getn(4).unpack(INT32_PACK_FORMAT)[0]		# length
+					string = io.getn(length)														# data
+					decode_io(PO.new(string), &proc)
 				end
 
+			# A comma begins list of "tags" (parameter types)
 			elsif io.getc == ?,
 				tags = decode_string(io)
 
@@ -177,6 +186,19 @@ module OSC
 					proc.call(address, decode_float32(io))
 				elsif tags == INT32_TAG
 					proc.call(address, decode_int32(io))
+				elsif tags == EMPTY_TAG
+					# Special-case for a "bang" sent by Duration app, received as a very fast button press
+					proc.call(address, 1)
+					proc.call(address, 0)
+				elsif tags === COLOR_TAG
+					# Very special-case for three integers meaning a color (sent by Duration app)
+					r = decode_int32(io)
+					g = decode_int32(io)
+					b = decode_int32(io)
+
+					proc.call(address+'/red', r/255.0)
+					proc.call(address+'/green', g/255.0)
+					proc.call(address+'/blue', b/255.0)
 				end
 
 				#

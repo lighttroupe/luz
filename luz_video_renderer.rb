@@ -19,7 +19,7 @@
  ###############################################################################
 
 Dir.chdir(File.dirname(__FILE__))	# So that this file can be run from anywhere
-$LOAD_PATH.unshift('./utils').unshift('./gui').unshift('.')
+$LOAD_PATH.unshift('./utils').unshift('./gui-gtk').unshift('.')
 
 DEFAULT_GTK_RC_FILE = 'luz.rc'
 

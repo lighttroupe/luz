@@ -18,11 +18,11 @@
 
 require 'user_object_liststore'
 
-$uses_enter_pixbuf_on ||= Gdk::Pixbuf.new("gui/icons/uses-enter-on.png")
-$uses_enter_pixbuf_off ||= Gdk::Pixbuf.new("gui/icons/uses-enter-off.png")
+$uses_enter_pixbuf_on ||= Gdk::Pixbuf.new("gui-gtk/icons/uses-enter-on.png")
+$uses_enter_pixbuf_off ||= Gdk::Pixbuf.new("gui-gtk/icons/uses-enter-off.png")
 
-$uses_exit_pixbuf_on ||= Gdk::Pixbuf.new("gui/icons/uses-exit-on.png")
-$uses_exit_pixbuf_off ||= Gdk::Pixbuf.new("gui/icons/uses-exit-off.png")
+$uses_exit_pixbuf_on ||= Gdk::Pixbuf.new("gui-gtk/icons/uses-exit-on.png")
+$uses_exit_pixbuf_off ||= Gdk::Pixbuf.new("gui-gtk/icons/uses-exit-off.png")
 
 class ChildUserObjectListStore < UserObjectListStore
 	column :title, :type => :text, :from_object => Proc.new { |object|
