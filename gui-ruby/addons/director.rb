@@ -8,18 +8,10 @@ class Director
 				unit_square
 			}
 		}
-#		render!
-
-		#if pointer_hovering?
-			#with_translation(-0.35, -0.35) {
-				#with_scale(0.25, 0.25) {
-					#gui_render_label
-				#}
-			#}
-		#end
 	end
 
 	def update_offscreen_buffer?
+		return (@update_offscreen_buffer_once = true) if @update_offscreen_buffer_once.nil?
 		pointer_hovering?
 	end
 
