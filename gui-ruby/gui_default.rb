@@ -286,7 +286,7 @@ class GuiDefault < GuiInterface
 
 		# Director Grid popup
 		self << @director_menu = DirectorMenu.new($engine.project.directors).
-			add_state(:open, {:scale_x => 0.9, :scale_y => 0.9, :offset_y => 0.0, :hidden => false}).
+			add_state(:open, {:scale_x => 1.0, :scale_y => 1.0, :offset_y => 0.0, :hidden => false}).
 			set_state(:closed, {:scale_x => 0.9, :scale_y => 0.8, :offset_y => 0.5,:hidden => true})
 
 		# Message Bar
