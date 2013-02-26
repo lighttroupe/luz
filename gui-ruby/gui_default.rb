@@ -28,6 +28,23 @@ class MainMenu < GuiBox
 	end
 end
 
+class DirectorMenu < GuiBox
+	def initialize(contents)
+		super()
+		create!
+
+		@grid.contents = contents
+	end
+
+	def create!
+		self << @background = GuiObject.new.set(:color => [0,0,0,1], :opacity => 0.99)
+
+		self << @grid = GuiGrid.new.set(:scale => 0.95, :spacing_x => 0.1, :spacing_y => 0.1)
+		@grid << GuiObject.new.set(:scale => 0.95)
+		@grid << GuiObject.new.set(:scale => 0.95)
+	end
+end
+
 class GuiActorClassButton < GuiButton
 	def initialize(klass)
 		super()
@@ -133,11 +150,31 @@ class GuiDefault < GuiInterface
 		# Director drawer
 		#
 		self << @directors_drawer = GuiHBox.new.set(:color => [0.1,0.1,0.1,0.5], :scale_x => 0.20, :scale_y => 0.045, :background_image => $engine.load_image('images/drawer-ne.png')).
-			add_state(:open, {:hidden => false, :offset_x => 0.43, :offset_y => 0.4775}).
+			add_state(:open, {:hidden => false, :offset_x => 0.41, :offset_y => 0.4775}).
 			set_state(:closed, {:hidden => true, :offset_x => 0.60, :offset_y => 0.4775})
 
-			# Radio buttons for @mode
-			@directors_drawer << GuiRadioButtons.new(self, :mode, [ACTOR_MODE, DIRECTOR_MODE, OUTPUT_MODE]).set(:spacing_x => 1.0)
+			#
+			# Radio buttons for view mode
+			#
+			# view actors
+			@directors_drawer << @actor_view_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/menu.png'))
+			@actor_view_button.on_clicked { self.mode = ACTOR_MODE }
+
+			# view directors
+			@directors_drawer << @director_view_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/menu.png'))
+			@director_view_button.on_clicked { self.mode = DIRECTOR_MODE }
+
+			# --> open directors menu
+			@directors_drawer << @director_menu_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/menu.png'))
+			@director_menu_button.on_clicked {
+				@director_menu.switch_state({:closed => :open, :open => :closed},durection=0.1)
+			}
+
+			# view output preview
+			@directors_drawer << @output_view_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/menu.png'))
+			@output_view_button.on_clicked { self.mode = OUTPUT_MODE }
+
+			@directors_drawer << GuiObject.new
 
 		# Directors corner button
 		self << (@directors_button = GuiButton.new.set(:hotkey => MENU_BUTTON, :scale_x => -0.04, :scale_y => 0.06, :offset_x => 0.48, :offset_y => 0.47, :background_image => $engine.load_image('images/corner.png')))
@@ -247,6 +284,11 @@ class GuiDefault < GuiInterface
 			@overlay.switch_state({:open => :closed}, duration=0.2)
 		}
 
+		# Director Grid popup
+		self << @director_menu = DirectorMenu.new($engine.project.directors).
+			add_state(:open, {:scale_x => 0.9, :scale_y => 0.9, :offset_y => 0.0, :hidden => false}).
+			set_state(:closed, {:scale_x => 0.9, :scale_y => 0.8, :offset_y => 0.5,:hidden => true})
+
 		# Message Bar
 		self << (@message_bar = GuiMessageBar.new.set(:offset_x => 0.02, :offset_y => 0.5 - 0.05, :scale_x => 0.32, :scale_y => 0.05))
 
@@ -266,6 +308,8 @@ class GuiDefault < GuiInterface
 	def set_initial_state
 		@user_object_editors = {}
 		@chosen_actor = nil
+
+		# Auto-select first director
 		director = $engine.project.directors.first
 
 		# Hack to load project file format 1
@@ -293,6 +337,11 @@ class GuiDefault < GuiInterface
 	def chosen_director=(director)
 		@chosen_director = director
 		@actors_list.contents = director.actors
+
+		self.mode = DIRECTOR_MODE
+
+		@chosen_actor = director.actors.first
+		build_editor_for(@chosen_actor) if self.mode == ACTOR_MODE
 	end
 
 	#
@@ -400,7 +449,6 @@ class GuiDefault < GuiInterface
 
 		pointer = options[:pointer]
 		editor = @user_object_editors[user_object]
-
 		if editor && !editor.hidden?
 			# This is the second click on something
 			if user_object.is_a? Actor
@@ -426,22 +474,26 @@ class GuiDefault < GuiInterface
 				#
 				# Select / show object
 				#
-				if user_object.is_a? Actor
-					if @mode == ACTOR_MODE
-						# Rule: cannot view one actor (in actor-mode) while editing another
-						@chosen_actor = user_object
-					end
-				elsif user_object.is_a? Director
-					# TODO
-				end
-
 				clear_editors!		# only support one for now
 
-				editor = create_user_object_editor_for_pointer(user_object, pointer || Vector3.new(0.0,-0.5), options)
-				@user_object_editors[user_object] = editor
-				@user_object_editor_container << editor
+				if user_object.is_a? Director
+					# selecting a director
+					self.chosen_director = user_object
+					@director_menu.switch_state({:open => :closed}, duration=0.1)
+				else
+					if user_object.is_a? Actor
+						if @mode == ACTOR_MODE
+							# Rule: cannot view one actor (in actor-mode) while editing another
+							@chosen_actor = user_object
+						end
+					end
 
-				return editor
+					editor = create_user_object_editor_for_pointer(user_object, pointer || Vector3.new(0.0,-0.5), options)
+					@user_object_editors[user_object] = editor
+					@user_object_editor_container << editor
+
+					return	editor
+				end
 			else
 				# tell editor its child was clicked (this is needed due to non-propagation of click messages: the user object gets notified, it tells us)
 				parent = @user_object_editors.keys.find { |uo| uo.effects.include? user_object }		# TODO: hacking around children not knowing their parents for easier puppetry
