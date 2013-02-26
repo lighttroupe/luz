@@ -102,12 +102,6 @@ class Actor < ParentUserObject
 		$actor_render_stack.pop
 	end
 
-	def update_offscreen_buffer!
-		@offscreen_buffer.using {
-			render!
-		}
-	end
-
 	#
 	# Render groups
 	#
@@ -141,6 +135,12 @@ class Actor < ParentUserObject
 				yield
 			}
 		end
+	end
+
+	def update_offscreen_buffer!
+		@offscreen_buffer.using {
+			render!
+		}
 	end
 
 	# Calls render() on effect at 'effect_index', continuing effects
