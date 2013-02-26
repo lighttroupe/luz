@@ -32,7 +32,6 @@ class DirectorMenu < GuiBox
 	def initialize(contents)
 		super()
 		create!
-
 		@grid.contents = contents
 	end
 
@@ -40,8 +39,13 @@ class DirectorMenu < GuiBox
 		self << @background = GuiObject.new.set(:color => [0,0,0,1], :opacity => 0.99)
 
 		self << @grid = GuiGrid.new.set(:scale => 0.95, :spacing_x => 0.1, :spacing_y => 0.1)
-		@grid << GuiObject.new.set(:scale => 0.95)
-		@grid << GuiObject.new.set(:scale => 0.95)
+
+		self << @add_button = GuiButton.new.set(:scale => 0.10, :offset_x => 0.45, :offset_y => -0.45, :background_image => $engine.load_image('images/buttons/add.png'))
+		@add_button.on_clicked {
+			director = Director.new
+			@grid << director
+			$gui.build_editor_for(director)
+		}
 	end
 end
 
@@ -167,7 +171,7 @@ class GuiDefault < GuiInterface
 			# --> open directors menu
 			@directors_drawer << @director_menu_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/menu.png'))
 			@director_menu_button.on_clicked {
-				@director_menu.switch_state({:closed => :open, :open => :closed},durection=0.1)
+				@director_menu.switch_state({:closed => :open},durection=0.4)
 			}
 
 			# view output preview
@@ -286,8 +290,8 @@ class GuiDefault < GuiInterface
 
 		# Director Grid popup
 		self << @director_menu = DirectorMenu.new($engine.project.directors).
-			add_state(:open, {:scale_x => 1.0, :scale_y => 1.0, :offset_y => 0.0, :hidden => false}).
-			set_state(:closed, {:scale_x => 0.9, :scale_y => 0.8, :offset_y => 0.5,:hidden => true})
+			add_state(:open, {:scale_x => 1.0, :scale_y => 1.0, :opacity => 1.0, :hidden => false}).
+			set_state(:closed, {:scale_x => 1.1, :scale_y => 1.1, :offset_y => 0.0,:hidden => true})
 
 		# Message Bar
 		self << (@message_bar = GuiMessageBar.new.set(:offset_x => 0.02, :offset_y => 0.5 - 0.05, :scale_x => 0.32, :scale_y => 0.05))
@@ -526,7 +530,6 @@ class GuiDefault < GuiInterface
 	end
 
 	def hide_something!
-		
 	end
 
 	def suitable_for_history?(object)
