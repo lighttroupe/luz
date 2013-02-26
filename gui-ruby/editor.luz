@@ -1,8 +1,7 @@
 --- 
   :version: 1
-  :actors: &id029
-    
-    - &id030 !ruby/object:ActorRectangle
+  :actors: 
+    - &id029 !ruby/object:ActorRectangle
       x: 0.0
       y: 0.0
       tags: 
@@ -103,7 +102,7 @@
                     enable_event: false
                     event: 
                     event_invert: false
-                  title: &id045 Button Toggle
+                  title: &id049 Button Toggle
                   enabled: true
                   button_setting: !ruby/object:UserObjectSettingButton
                     button: Keyboard / Escape
@@ -471,7 +470,7 @@
             activation_direction: :to
             activation_curve: *id001
             activation_value: 0.9
-            activation_variable: &id042 !ruby/object:Variable
+            activation_variable: &id046 !ruby/object:Variable
               effects: 
                 - !ruby/object:VariableInputSlider
                   conditions: !ruby/object:ChildConditions
@@ -755,7 +754,7 @@
         activation_curve: *id001
         activation_value: 1.0
         activation_variable: *id003
-    - !ruby/object:ActorStar
+    - &id030 !ruby/object:ActorStar
       x: 0.0
       y: 0.0
       tags: 
@@ -926,7 +925,7 @@
           title: Theme Children
           enabled: true
           theme_setting: !ruby/object:UserObjectSettingTheme
-            theme: &id040 !ruby/object:Theme
+            theme: &id044 !ruby/object:Theme
               tags: 
               effects: 
                 - !ruby/object:Style
@@ -1013,8 +1012,8 @@
                   blue: 0.0
                   green: 0.0
                   red: 0.0
-                name: &id039 background_color
-                options: &id037
+                name: &id043 background_color
+                options: &id041
                   
                   :default: 
                     - 0.0
@@ -1044,9 +1043,9 @@
             exit_value: 0.0
             enable_enter_animation: false
             enter_curve: 
-            enable_animation: true
+            enable_animation: false
             animation_curve: *id001
-            animation_min: 0.0
+            animation_min: 1.0
             animation_max: 1.0
             animation_repeat_number: 0.25
             animation_repeat_unit: :beats
@@ -1553,7 +1552,7 @@
                 - 0.978655099868774
                 - 0.989327073097229
                 - 1.0
-              effects: &id041
+              effects: &id045
                 []
               title: Slow
               enabled: true
@@ -1641,7 +1640,8 @@
       enabled: true
       arms_setting: !ruby/object:UserObjectSettingInteger
         name: arms
-        options: 
+        options: &id034
+          
           :range: !ruby/range
             begin: 2
             end: 100
@@ -1655,7 +1655,8 @@
         animation_min: 4
       radius_setting: !ruby/object:UserObjectSettingFloat
         name: radius
-        options: 
+        options: &id035
+          
           :range: !ruby/range
             begin: 0.0
             end: 1.0
@@ -1687,7 +1688,8 @@
         activation_variable: *id020
       cutout_size_setting: !ruby/object:UserObjectSettingFloat
         name: cutout_size
-        options: 
+        options: &id036
+          
           :range: !ruby/range
             begin: 0.0
             end: 1.0
@@ -1718,8 +1720,10 @@
         activation_value: 0.31
         activation_variable: *id020
   :directors: 
-    - &id058 !ruby/object:Director
-      actors: *id029
+    - &id062 !ruby/object:Director
+      actors: 
+        - *id029
+        - *id030
       tags: 
       effects: 
         - !ruby/object:DirectorEffectActor
@@ -1743,7 +1747,7 @@
             options: 
               :summary: true
             breaks_cache: 
-            actor: *id030
+            actor: *id029
             x: 0.0
             y: 0.0
             z: 0.0
@@ -1770,7 +1774,7 @@
             breaks_cache: 
             tag: all
           forwards_setting: !ruby/object:UserObjectSettingEvent
-            event: &id055 !ruby/object:Event
+            event: &id059 !ruby/object:Event
               effects: 
                 - !ruby/object:EventInputButtonPress
                   conditions: !ruby/object:ChildConditions
@@ -1802,7 +1806,7 @@
               :summary: % forward
             breaks_cache: 
           backwards_setting: !ruby/object:UserObjectSettingEvent
-            event: &id056 !ruby/object:Event
+            event: &id060 !ruby/object:Event
               effects: 
                 - !ruby/object:EventInputButtonPress
                   conditions: !ruby/object:ChildConditions
@@ -1842,8 +1846,81 @@
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
-        options: 
+        options: &id037
+          
           :summary: renders on %
+        breaks_cache: 
+        actor: 
+        x: 0.0
+        y: 0.0
+        z: 0.0
+    - !ruby/object:Director
+      actors: 
+        - !ruby/object:ActorStar
+          x: 0.0
+          y: 0.0
+          tags: 
+          effects: []
+          title: Star
+          enabled: true
+          arms_setting: !ruby/object:UserObjectSettingInteger
+            name: arms
+            options: *id034
+            breaks_cache: 
+            animation_min: 5
+          radius_setting: !ruby/object:UserObjectSettingFloat
+            name: radius
+            options: *id035
+            breaks_cache: 
+            min: 0.0
+            max: 1.0
+            enter_value: 0.0
+            exit_value: 0.0
+            enable_enter_animation: false
+            enter_curve: 
+            enable_animation: false
+            animation_curve: *id001
+            animation_min: 0.25
+            animation_max: 1.0
+            animation_repeat_number: 4
+            animation_repeat_unit: :beats
+            enable_exit_animation: false
+            exit_curve: 
+            enable_activation: false
+            activation_direction: :to
+            activation_curve: *id001
+            activation_value: 1.0
+            activation_variable: *id003
+          cutout_size_setting: !ruby/object:UserObjectSettingFloat
+            name: cutout_size
+            options: *id036
+            breaks_cache: 
+            min: 0.0
+            max: 1.0
+            enter_value: 0.0
+            exit_value: 0.0
+            enable_enter_animation: false
+            enter_curve: 
+            enable_animation: false
+            animation_curve: *id001
+            animation_min: 0.0
+            animation_max: 1.0
+            animation_repeat_number: 4
+            animation_repeat_unit: :beats
+            enable_exit_animation: false
+            exit_curve: 
+            enable_activation: false
+            activation_direction: :to
+            activation_curve: *id001
+            activation_value: 1.0
+            activation_variable: *id003
+      tags: 
+      effects: []
+      title: New Director
+      enabled: true
+      offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
+        name: offscreen_render_actor
+        options: *id037
         breaks_cache: 
         actor: 
         x: 0.0
@@ -1854,7 +1931,7 @@
       tags: 
       effects: 
         - !ruby/object:Style
-          title: &id034 ""
+          title: &id038 ""
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -1862,16 +1939,16 @@
               blue: 0.0
               green: 0.474509803921569
               red: 0.96078431372549
-            name: &id035 color
+            name: &id039 color
             options: *id017
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: &id036 image
+            name: &id040 image
             options: *id019
             breaks_cache: 
         - !ruby/object:Style
-          title: *id034
+          title: *id038
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -1879,16 +1956,16 @@
               blue: 0.0
               green: 0.831372549019608
               red: 0.929411764705882
-            name: *id035
+            name: *id039
             options: *id017
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id036
+            name: *id040
             options: *id019
             breaks_cache: 
         - !ruby/object:Style
-          title: *id034
+          title: *id038
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -1896,16 +1973,16 @@
               blue: 0.0862745098039216
               green: 0.823529411764706
               red: 0.450980392156863
-            name: *id035
+            name: *id039
             options: *id017
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id036
+            name: *id040
             options: *id019
             breaks_cache: 
         - !ruby/object:Style
-          title: *id034
+          title: *id038
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -1913,16 +1990,16 @@
               blue: 0.811764705882353
               green: 0.623529411764706
               red: 0.447058823529412
-            name: *id035
+            name: *id039
             options: *id017
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id036
+            name: *id040
             options: *id019
             breaks_cache: 
         - !ruby/object:Style
-          title: *id034
+          title: *id038
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -1930,16 +2007,16 @@
               blue: 0.643137254901961
               green: 0.396078431372549
               red: 0.203921568627451
-            name: *id035
+            name: *id039
             options: *id017
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id036
+            name: *id040
             options: *id019
             breaks_cache: 
         - !ruby/object:Style
-          title: *id034
+          title: *id038
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -1947,16 +2024,16 @@
               blue: 0.630212863355459
               green: 0.149553673609522
               red: 0.563134203097581
-            name: *id035
+            name: *id039
             options: *id017
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id036
+            name: *id040
             options: *id019
             breaks_cache: 
         - !ruby/object:Style
-          title: *id034
+          title: *id038
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -1964,16 +2041,16 @@
               blue: 0.0392156862745098
               green: 0.0392156862745098
               red: 0.866666666666667
-            name: *id035
+            name: *id039
             options: *id017
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id036
+            name: *id040
             options: *id019
             breaks_cache: 
         - !ruby/object:Style
-          title: *id034
+          title: *id038
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -1981,16 +2058,16 @@
               blue: 0.353490501258869
               green: 0.353490501258869
               red: 0.936827649347677
-            name: *id035
+            name: *id039
             options: *id017
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id036
+            name: *id040
             options: *id019
             breaks_cache: 
         - !ruby/object:Style
-          title: *id034
+          title: *id038
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -1998,12 +2075,12 @@
               blue: 0.079819943541619
               green: 1.0
               red: 0.924208438239109
-            name: *id035
+            name: *id039
             options: *id017
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id036
+            name: *id040
             options: *id019
             breaks_cache: 
       title: Tango
@@ -2015,13 +2092,13 @@
           green: 0.0
           red: 0.0
         name: background_color
-        options: *id037
+        options: *id041
         breaks_cache: 
     - !ruby/object:Theme
       tags: 
       effects: 
         - !ruby/object:Style
-          title: *id034
+          title: *id038
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -2029,16 +2106,16 @@
               blue: 0.0
               green: 0.269413290608072
               red: 1.0
-            name: *id035
+            name: *id039
             options: *id017
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id036
+            name: *id040
             options: *id019
             breaks_cache: 
         - !ruby/object:Style
-          title: *id034
+          title: *id038
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -2046,16 +2123,16 @@
               blue: 0.0
               green: 0.894560158693828
               red: 1.0
-            name: *id035
+            name: *id039
             options: *id017
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id036
+            name: *id040
             options: *id019
             breaks_cache: 
         - !ruby/object:Style
-          title: *id034
+          title: *id038
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -2063,16 +2140,16 @@
               blue: 0.135072861829557
               green: 0.838284885938811
               red: 0.513176165407797
-            name: *id035
+            name: *id039
             options: *id017
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id036
+            name: *id040
             options: *id019
             breaks_cache: 
         - !ruby/object:Style
-          title: *id034
+          title: *id038
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -2080,12 +2157,12 @@
               blue: 0.0376897840848402
               green: 0.0470283054856184
               red: 0.780117494468605
-            name: *id035
+            name: *id039
             options: *id017
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id036
+            name: *id040
             options: *id019
             breaks_cache: 
       title: Autumn
@@ -2096,14 +2173,14 @@
           blue: 0.0
           green: 0.0
           red: 0.0
-        name: &id038 background_color
-        options: *id037
+        name: &id042 background_color
+        options: *id041
         breaks_cache: 
     - !ruby/object:Theme
       tags: 
       effects: 
         - !ruby/object:Style
-          title: *id034
+          title: *id038
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -2111,16 +2188,16 @@
               blue: 1.0
               green: 1.0
               red: 1.0
-            name: *id035
+            name: *id039
             options: *id017
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id036
+            name: *id040
             options: *id019
             breaks_cache: 
         - !ruby/object:Style
-          title: *id034
+          title: *id038
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -2128,16 +2205,16 @@
               blue: 0.0
               green: 0.0
               red: 0.0
-            name: *id035
+            name: *id039
             options: *id017
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id036
+            name: *id040
             options: *id019
             breaks_cache: 
         - !ruby/object:Style
-          title: *id034
+          title: *id038
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -2145,16 +2222,16 @@
               blue: 1.0
               green: 1.0
               red: 1.0
-            name: *id035
+            name: *id039
             options: *id017
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id036
+            name: *id040
             options: *id019
             breaks_cache: 
         - !ruby/object:Style
-          title: *id034
+          title: *id038
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -2162,16 +2239,16 @@
               blue: 0.0
               green: 1.0
               red: 1.0
-            name: *id035
+            name: *id039
             options: *id017
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id036
+            name: *id040
             options: *id019
             breaks_cache: 
         - !ruby/object:Style
-          title: *id034
+          title: *id038
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -2179,16 +2256,16 @@
               blue: 1.0
               green: 1.0
               red: 1.0
-            name: *id035
+            name: *id039
             options: *id017
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id036
+            name: *id040
             options: *id019
             breaks_cache: 
         - !ruby/object:Style
-          title: *id034
+          title: *id038
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -2196,16 +2273,16 @@
               blue: 0.0
               green: 1.0
               red: 1.0
-            name: *id035
+            name: *id039
             options: *id017
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id036
+            name: *id040
             options: *id019
             breaks_cache: 
         - !ruby/object:Style
-          title: *id034
+          title: *id038
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -2213,16 +2290,16 @@
               blue: 1.0
               green: 1.0
               red: 1.0
-            name: *id035
+            name: *id039
             options: *id017
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id036
+            name: *id040
             options: *id019
             breaks_cache: 
         - !ruby/object:Style
-          title: *id034
+          title: *id038
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -2230,12 +2307,12 @@
               blue: 0.0
               green: 0.0
               red: 0.0
-            name: *id035
+            name: *id039
             options: *id017
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id036
+            name: *id040
             options: *id019
             breaks_cache: 
       title: Buzz
@@ -2246,8 +2323,8 @@
           blue: 0.0
           green: 0.0
           red: 0.0
-        name: *id038
-        options: *id037
+        name: *id042
+        options: *id041
         breaks_cache: 
     - !ruby/object:Theme
       tags: 
@@ -2328,10 +2405,10 @@
           blue: 0.0
           green: 0.0
           red: 0.0
-        name: *id039
-        options: *id037
+        name: *id043
+        options: *id041
         breaks_cache: 
-    - *id040
+    - *id044
   :curves: 
     - *id001
     - !ruby/object:Curve
@@ -2546,7 +2623,7 @@
         - 0.998661935329437
         - 0.999331414699554
         - 1.0
-      effects: *id041
+      effects: *id045
       title: Fast
       enabled: true
     - *id024
@@ -2762,7 +2839,7 @@
         - 0.999280989170074
         - 0.999642431735992
         - 1.0
-      effects: *id041
+      effects: *id045
       title: Easy
       enabled: true
     - !ruby/object:Curve
@@ -2977,7 +3054,7 @@
         - 0.959363162517548
         - 0.979675114154816
         - 1.0
-      effects: *id041
+      effects: *id045
       title: Psych
       enabled: true
     - !ruby/object:Curve
@@ -3192,7 +3269,7 @@
         - 0.97583019733429
         - 0.987901508808136
         - 1.0
-      effects: *id041
+      effects: *id045
       title: Wobble
       enabled: true
     - *id013
@@ -3838,7 +3915,7 @@
         - 0.0304495617747307
         - 0.0152266481891274
         - 0.0
-      effects: *id041
+      effects: *id045
       title: Wide
       enabled: true
     - *id028
@@ -4054,7 +4131,7 @@
         - 0.00325438962318003
         - 0.00159761554095894
         - 0.0
-      effects: *id041
+      effects: *id045
       title: Plateau
       enabled: true
     - !ruby/object:Curve
@@ -4484,7 +4561,7 @@
         - 0.0
         - 0.0
         - 0.0
-      effects: *id041
+      effects: *id045
       title: Ramp
       enabled: true
     - !ruby/object:Curve
@@ -4699,7 +4776,7 @@
         - 0.0592498257756233
         - 0.0315002426505089
         - 0.0
-      effects: *id041
+      effects: *id045
       title: Climb
       enabled: true
     - !ruby/object:Curve
@@ -4914,12 +4991,12 @@
         - 0.517381072044373
         - 0.508691847324371
         - 0.5
-      effects: *id041
+      effects: *id045
       title: Lob
       enabled: true
   :variables: 
     - *id003
-    - *id042
+    - *id046
     - *id020
     - !ruby/object:Variable
       effects: 
@@ -4979,7 +5056,7 @@
             enable_event: false
             event: 
             event_invert: false
-          title: &id043 Slider
+          title: &id047 Slider
           enabled: true
           slider_setting: !ruby/object:UserObjectSettingSlider
             slider: /curves
@@ -4990,7 +5067,7 @@
             output_min: 0.0
             output_max: 1.0
             output_curve: *id001
-            name: &id044 slider
+            name: &id048 slider
             options: *id012
             breaks_cache: 
       title: curves
@@ -5021,7 +5098,7 @@
             enable_event: false
             event: 
             event_invert: false
-          title: *id043
+          title: *id047
           enabled: true
           slider_setting: !ruby/object:UserObjectSettingSlider
             slider: /progress
@@ -5032,7 +5109,7 @@
             output_min: 0.0
             output_max: 1.0
             output_curve: *id001
-            name: *id044
+            name: *id048
             options: *id012
             breaks_cache: 
       title: progress
@@ -5216,7 +5293,7 @@
         options: *id008
         breaks_cache: 
   :events: 
-    - &id057 !ruby/object:Event
+    - &id061 !ruby/object:Event
       effects: 
         - !ruby/object:EventInputButtonPress
           conditions: !ruby/object:ChildConditions
@@ -5277,19 +5354,19 @@
             enable_event: false
             event: 
             event_invert: false
-          title: *id045
+          title: *id049
           enabled: true
           button_setting: !ruby/object:UserObjectSettingButton
             button: Keyboard / Grave
             name: *id031
-            options: &id052
+            options: &id056
               
               :summary: true
             breaks_cache: 
           clear_setting: !ruby/object:UserObjectSettingButton
             button: Keyboard / Escape
-            name: &id053 clear
-            options: &id054
+            name: &id057 clear
+            options: &id058
               
               :summary: true
             breaks_cache: 
@@ -5311,19 +5388,19 @@
             enable_event: false
             event: 
             event_invert: false
-          title: &id046 Button Combo Down
+          title: &id050 Button Combo Down
           enabled: true
           button_one_setting: !ruby/object:UserObjectSettingButton
             button: Keyboard / Right Control
-            name: &id047 button_one
-            options: &id048
+            name: &id051 button_one
+            options: &id052
               
               :summary: true
             breaks_cache: 
           button_two_setting: !ruby/object:UserObjectSettingButton
-            button: &id049 Keyboard / R
-            name: &id050 button_two
-            options: &id051
+            button: &id053 Keyboard / R
+            name: &id054 button_two
+            options: &id055
               
               :summary: true
             breaks_cache: 
@@ -5341,17 +5418,17 @@
             enable_event: false
             event: 
             event_invert: false
-          title: *id046
+          title: *id050
           enabled: true
           button_one_setting: !ruby/object:UserObjectSettingButton
             button: Keyboard / Left Control
-            name: *id047
-            options: *id048
+            name: *id051
+            options: *id052
             breaks_cache: 
           button_two_setting: !ruby/object:UserObjectSettingButton
-            button: *id049
-            name: *id050
-            options: *id051
+            button: *id053
+            name: *id054
+            options: *id055
             breaks_cache: 
       title: reload set!
       enabled: true
@@ -5371,17 +5448,17 @@
             enable_event: false
             event: 
             event_invert: false
-          title: *id045
+          title: *id049
           enabled: true
           button_setting: !ruby/object:UserObjectSettingButton
             button: Keyboard / 1
             name: *id031
-            options: *id052
+            options: *id056
             breaks_cache: 
           clear_setting: !ruby/object:UserObjectSettingButton
             button: 
-            name: *id053
-            options: *id054
+            name: *id057
+            options: *id058
             breaks_cache: 
       title: toggle test 1
       enabled: true
@@ -5401,17 +5478,17 @@
             enable_event: false
             event: 
             event_invert: false
-          title: *id045
+          title: *id049
           enabled: true
           button_setting: !ruby/object:UserObjectSettingButton
             button: Keyboard / 2
             name: *id031
-            options: *id052
+            options: *id056
             breaks_cache: 
           clear_setting: !ruby/object:UserObjectSettingButton
             button: 
-            name: *id053
-            options: *id054
+            name: *id057
+            options: *id058
             breaks_cache: 
         - !ruby/object:EventInputButtonRepeater
           conditions: !ruby/object:ChildConditions
@@ -5444,8 +5521,8 @@
             breaks_cache: 
       title: toggle test 2
       enabled: true
-    - *id055
-    - *id056
+    - *id059
+    - *id060
   :effects: 
     - !ruby/object:ProjectEffectBeatTapping
       conditions: !ruby/object:ChildConditions
@@ -5464,7 +5541,7 @@
       title: Beat Tapping
       enabled: true
       event_setting: !ruby/object:UserObjectSettingEvent
-        event: *id057
+        event: *id061
         name: event
         options: 
           :summary: true
@@ -5526,9 +5603,9 @@
         exit_curve: *id001
         enable_activation: true
         activation_direction: :to
-        activation_curve: *id001
-        activation_value: 0.4
-        activation_variable: *id042
+        activation_curve: *id024
+        activation_value: 0.9
+        activation_variable: *id046
     - !ruby/object:ProjectEffectEditor
       conditions: !ruby/object:ChildConditions
         enable_child_index: false
@@ -5606,7 +5683,7 @@
         options: 
           :summary: true
         breaks_cache: 
-        director: *id058
+        director: *id062
       progress_setting: !ruby/object:UserObjectSettingFloat
         name: progress
         options: 
