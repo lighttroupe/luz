@@ -55,13 +55,17 @@ class GuiBox < GuiObject
 		gui_object.parent = self
 	end
 
-	def clear!
+	def unlink!
 		@contents.each { |gui_object| gui_object.parent = nil }
+	end
+
+	def clear!
+		unlink!
 		@contents.clear
 	end
 
 	def contents=(contents)
-		clear! if @contents
+		unlink! if @contents
 		@contents = contents		# NOTE: points at list, doesn't copy it (list operations happen on the array we're showing)
 		@contents.each { |gui_object| gui_object.parent = self }
 	end
@@ -117,7 +121,7 @@ class GuiBox < GuiObject
 	attr_reader :selection
 
 	#
-	# Extend GuiObject methods to pass them along to contents
+	# Positioning
 	#
 	def each_with_positioning
 		with_positioning {
@@ -125,6 +129,9 @@ class GuiBox < GuiObject
 		}
 	end
 
+	#
+	# Extend GuiObject methods to pass them along to contents
+	#
 	def gui_tick!
 		return if hidden?
 		@contents.each { |gui_object| gui_object.gui_tick! }
