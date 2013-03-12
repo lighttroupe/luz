@@ -211,8 +211,7 @@ class GuiDefault < GuiInterface
 		# Actors corner button
 		self << (@actors_button = GuiButton.new.set(:hotkey => ACTORS_BUTTON, :scale_x => -0.04, :scale_y => -0.06, :offset_x => 0.48, :offset_y => -0.47, :background_image => $engine.load_image('images/corner.png')))
 		@actors_button.on_clicked {
-			@actors_list.switch_state({:open => :closed, :closed => :open}, duration=0.2)
-			@actor_drawer.switch_state({:open => :closed, :closed => :open}, duration=0.2)
+			close_actor_drawer!
 		}
 
 		#
@@ -304,6 +303,11 @@ class GuiDefault < GuiInterface
 		# 
 		#
 		set_initial_state
+	end
+
+	def close_actor_drawer!
+		@actors_list.switch_state({:open => :closed, :closed => :open}, duration=0.2)
+		@actor_drawer.switch_state({:open => :closed, :closed => :open}, duration=0.2)
 	end
 
 	def close_inputs_drawer!
@@ -540,6 +544,17 @@ class GuiDefault < GuiInterface
 	end
 
 	def hide_something!
+		if @project_drawer.visible? or @directors_drawer.visible?
+			@project_drawer.switch_state({:open => :closed}, duration=0.2)
+			@directors_drawer.switch_state({:open => :closed}, duration=0.2)
+
+		elsif @events_drawer.visible? or @actor_drawer.visible?
+			close_inputs_drawer!
+			close_actor_drawer!
+
+		else
+			# ?
+		end
 	end
 
 	def suitable_for_history?(object)

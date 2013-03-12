@@ -6,6 +6,7 @@ module MethodsForGuiObject
 	include GuiSelectedBehavior
 	include ValueAnimation
 	include ValueAnimationStates
+	include Drawing
 
 	BACKGROUND_COLOR = [0.0,0.0,0.0,0.0]
 	BACKGROUND_COLOR_HOVERING = [1.0,1.0,1.0,0.25]
@@ -30,6 +31,10 @@ module MethodsForGuiObject
 
 	def show!
 		self.hidden = false
+	end
+
+	def visible?
+		!hidden?
 	end
 
 	# 
@@ -160,7 +165,6 @@ end
 # Gui base class
 #
 class GuiObject
-	include Drawing
 	include Engine::MethodsForUserObject
 	include MethodsForGuiObject
 end
