@@ -211,7 +211,7 @@ class GuiDefault < GuiInterface
 		# Actors corner button
 		self << (@actors_button = GuiButton.new.set(:hotkey => ACTORS_BUTTON, :scale_x => -0.04, :scale_y => -0.06, :offset_x => 0.48, :offset_y => -0.47, :background_image => $engine.load_image('images/corner.png')))
 		@actors_button.on_clicked {
-			close_actor_drawer!
+			toggle_actor_drawer!
 		}
 
 		#
@@ -247,7 +247,7 @@ class GuiDefault < GuiInterface
 			set_state(:open, {:hidden => false, :offset_x => -0.48, :offset_y => -0.47})
 
 		@events_button.on_clicked {
-			close_inputs_drawer!
+			toggle_inputs_drawer!
 		}
 
 		#
@@ -306,11 +306,23 @@ class GuiDefault < GuiInterface
 	end
 
 	def close_actor_drawer!
+		@actors_list.switch_state({:open => :closed}, duration=0.2)
+		@actor_drawer.switch_state({:open => :closed}, duration=0.2)
+	end
+
+	def toggle_actor_drawer!
 		@actors_list.switch_state({:open => :closed, :closed => :open}, duration=0.2)
 		@actor_drawer.switch_state({:open => :closed, :closed => :open}, duration=0.2)
 	end
 
 	def close_inputs_drawer!
+		#@events_button.switch_state({:open => :closed}, duration=0.2)
+		@events_drawer.switch_state({:open => :closed}, duration=0.2)
+		@variables_list.switch_state({:open => :closed}, duration=0.2)
+		@events_list.switch_state({:open => :closed}, duration=0.2)
+	end
+
+	def toggle_inputs_drawer!
 		#@events_button.switch_state({:open => :closed}, duration=0.2)
 		@events_drawer.switch_state({:open => :closed, :closed => :open}, duration=0.2)
 		@variables_list.switch_state({:open => :closed, :closed => :open}, duration=0.2)
@@ -473,9 +485,7 @@ class GuiDefault < GuiInterface
 				end
 			elsif user_object.is_a? Project
 				clear_editors!
-			elsif user_object.is_a? Variable
-				close_inputs_drawer!
-			elsif user_object.is_a? Event
+			elsif user_object.is_a?(Variable) or user_object.is_a?(Event)
 				close_inputs_drawer!
 			end
 			return nil
