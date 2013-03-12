@@ -75,7 +75,7 @@ class History
 
 	def remove(item)
 		return unless (index = @list.index(item))
-		@index -= 1 if index < @index
+		@index -= 1 if index <= @index
 		@list.delete(item)
 	end
 end
