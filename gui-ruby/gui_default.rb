@@ -153,7 +153,7 @@ class GuiDefault < GuiInterface
 		#
 		# Director drawer
 		#
-		self << @directors_drawer = GuiHBox.new.set(:color => [0.1,0.1,0.1,0.5], :scale_x => 0.20, :scale_y => 0.045, :background_image => $engine.load_image('images/drawer-ne.png')).
+		self << @directors_drawer = GuiHBox.new.set(:color => [1,1,1,1.0], :scale_x => 0.20, :scale_y => 0.045, :background_image => $engine.load_image('images/drawer-ne.png')).
 			add_state(:open, {:hidden => false, :offset_x => 0.41, :offset_y => 0.4775}).
 			set_state(:closed, {:hidden => true, :offset_x => 0.60, :offset_y => 0.4775})
 
@@ -161,21 +161,21 @@ class GuiDefault < GuiInterface
 			# Radio buttons for view mode
 			#
 			# view actors
-			@directors_drawer << @actor_view_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/menu.png'))
+			@directors_drawer << @actor_view_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/actor-view.png'))
 			@actor_view_button.on_clicked { self.mode = ACTOR_MODE }
 
 			# view directors
-			@directors_drawer << @director_view_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/menu.png'))
+			@directors_drawer << @director_view_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/director-view.png'))
 			@director_view_button.on_clicked { self.mode = DIRECTOR_MODE }
 
 			# --> open directors menu
-			@directors_drawer << @director_menu_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/menu.png'))
+			@directors_drawer << @director_menu_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/director-grid-view.png'))
 			@director_menu_button.on_clicked {
 				@director_menu.switch_state({:closed => :open},durection=0.4)
 			}
 
 			# view output preview
-			@directors_drawer << @output_view_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/menu.png'))
+			@directors_drawer << @output_view_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/output-view.png'))
 			@output_view_button.on_clicked { self.mode = OUTPUT_MODE }
 
 			@directors_drawer << GuiObject.new
