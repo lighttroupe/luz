@@ -47,18 +47,24 @@ class GuiString < GuiObject
 
 		# initiate keyboard grab
 		$gui.grab_keyboard { |key|
-			if key == 'enter'
-				false			# cancel grab
-			elsif key == 'escape'
+			next unless @keyboard_focus
+
+			if key == 'return' or key == 'escape'
 				@keyboard_focus = false
-			elsif key == 'backspace'
-				set_value(get_value[0, get_value.length-1])
-			elsif key == 'space'
-				set_value(get_value + ' ')
-			elsif BitmapFont.renderable?(key)
-				set_value(get_value + key)
+				false			# cancel grab
+			elsif 
+				@keyboard_focus = false
+				false			# cancel grab
+			else
+				if key == 'backspace'
+					set_value(get_value[0, get_value.length-1])
+				elsif key == 'space'
+					set_value(get_value + ' ')
+				elsif BitmapFont.renderable?(key)
+					set_value(get_value + key)
+				end
+				true			# keep grab
 			end
-			true			# keep grab
 		}
 	end
 end
