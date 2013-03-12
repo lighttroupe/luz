@@ -248,10 +248,7 @@ class GuiDefault < GuiInterface
 			set_state(:open, {:hidden => false, :offset_x => -0.48, :offset_y => -0.47})
 
 		@events_button.on_clicked {
-			#@events_button.switch_state({:open => :closed}, duration=0.2)
-			@events_drawer.switch_state({:open => :closed, :closed => :open}, duration=0.2)
-			@variables_list.switch_state({:open => :closed, :closed => :open}, duration=0.2)
-			@events_list.switch_state({:open => :closed, :closed => :open}, duration=0.2)
+			close_inputs_drawer!
 		}
 
 		#
@@ -307,6 +304,13 @@ class GuiDefault < GuiInterface
 		# 
 		#
 		set_initial_state
+	end
+
+	def close_inputs_drawer!
+		#@events_button.switch_state({:open => :closed}, duration=0.2)
+		@events_drawer.switch_state({:open => :closed, :closed => :open}, duration=0.2)
+		@variables_list.switch_state({:open => :closed, :closed => :open}, duration=0.2)
+		@events_list.switch_state({:open => :closed, :closed => :open}, duration=0.2)
 	end
 
 	def set_initial_state
@@ -384,9 +388,9 @@ class GuiDefault < GuiInterface
 			# Render director view
 			if camera_x > ACTOR_CAMERA_X && camera_x < OUTPUT_CAMERA_X
 				with_translation(DIRECTOR_CAMERA_X, 0.0) {
-					with_color([0.5,0.5,0.5,1.0]) {
-						unit_square
-					}
+#					with_color([0.5,0.5,0.5,1.0]) {
+#						unit_square
+#					}
 					@chosen_director.render if @chosen_director
 				}
 			end
@@ -463,6 +467,12 @@ class GuiDefault < GuiInterface
 					@chosen_actor = user_object
 					self.mode = ACTOR_MODE		# TODO: make this an option?
 				end
+			elsif user_object.is_a? Project
+				clear_editors!
+			elsif user_object.is_a? Variable
+				close_inputs_drawer!
+			elsif user_object.is_a? Event
+				close_inputs_drawer!
 			end
 			return nil
 		else
