@@ -16,7 +16,7 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-require 'user_object_liststore', 'curve_icon'
+multi_require 'user_object_liststore', 'curve_icon'
 
 class CurveListStore < UserObjectListStore
 	ICON_WIDTH, ICON_HEIGHT = 48, 24

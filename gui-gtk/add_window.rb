@@ -16,7 +16,7 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-require 'glade_window', 'user_object_class_treeview'
+multi_require 'glade_window', 'user_object_class_treeview'
 
 class AddWindow < GladeWindow
 	TITLE_MARKUP_FORMAT = "<big><big><b>%s</b></big></big>"

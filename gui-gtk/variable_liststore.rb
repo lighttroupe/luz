@@ -16,7 +16,7 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-require 'parent_user_object_liststore'
+multi_require 'parent_user_object_liststore'
 
 class VariableListStore < ParentUserObjectListStore
 	column :progress, :type => :integer, :from_object => Proc.new { |object| display_value_for(object.do_value) }		# NOTE: using ceil prevents non-0.0 from showing as 0%

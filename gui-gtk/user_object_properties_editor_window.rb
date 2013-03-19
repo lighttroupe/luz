@@ -16,7 +16,7 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-require 'glade_window', 'event_combobox', 'tag_treeview'
+multi_require 'glade_window', 'event_combobox', 'tag_treeview'
 
 class UserObjectPropertiesEditorWindow < GladeWindow
 	callback :objects_changed

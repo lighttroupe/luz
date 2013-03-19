@@ -16,8 +16,7 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-require 'user_object_editor_window', 'user_object_properties_editor_window', 'parent_user_object_treeview_menu', 'child_user_object_treeview_menu'
-require 'glade_window'
+multi_require 'user_object_editor_window', 'user_object_properties_editor_window', 'parent_user_object_treeview_menu', 'child_user_object_treeview_menu'
 
 class ParentUserObjectEditorWindow < UserObjectEditorWindow
 	pipe :add_and_select_only, :parent_treeview

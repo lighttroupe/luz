@@ -23,10 +23,10 @@ module Kernel
 	@@loading_file_path = nil
 
 	# a new 'require' supporting multiple files
-	alias_method :single_require, :require
-	def require(*list)
+	#alias_method :single_require, :require
+	def multi_require(*list)
 		[*list].each { |file|
-			if single_require(file)
+			if require(file)
 				# Grab latest file name (which now includes the .rb) from $LOADED_FEATURES (list of all require'd files)
 				ext = File.extname($LOADED_FEATURES.last)
 

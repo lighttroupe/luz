@@ -16,7 +16,7 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-require 'user_object', 'actor_effect', 'color', 'taggable', 'drawing'
+multi_require 'user_object', 'actor_effect', 'color', 'taggable', 'drawing'
 
 class Actor < ParentUserObject
 	include Taggable

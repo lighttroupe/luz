@@ -16,7 +16,7 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-require 'parent_user_object_editor_window', 'variable', 'variable_treeview', 'variable_input', 'variable_input_treeview', 'add_variable_input_window'
+multi_require 'parent_user_object_editor_window', 'variable', 'variable_treeview', 'variable_input', 'variable_input_treeview', 'add_variable_input_window'
 
 class VariableEditorWindow < ParentUserObjectEditorWindowWithDialogs
 	alias :add_input_class :add_child_class

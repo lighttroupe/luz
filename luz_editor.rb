@@ -34,13 +34,13 @@ APP_VERSION		= 0.91
 DEFAULT_GTK_RC_FILE = 'luz.rc'
 
 require 'reloadable_require'		# NOTE: also adds the ability to require multiple files at once
-require 'addons_ruby', 'method_piping', 'boolean_accessor'
+multi_require 'addons_ruby', 'method_piping', 'boolean_accessor'
 
 # Application basics
-require 'constants', 'application', 'settings'
+multi_require 'constants', 'application', 'settings'
 
 # Extensions to GUI related objects
-require 'gtk2', 'gtkglext'
+multi_require 'gtk2', 'gtkglext'
 
 load_directory(Dir.pwd + '/utils/addons/', '**.rb')
 

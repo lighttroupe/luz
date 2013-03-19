@@ -16,9 +16,7 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-require 'yaml', 'project_effect'
-
-require 'zaml'
+multi_require 'callbacks', 'project_effect', 'yaml', 'zaml'
 
 # For File.mv
 begin
@@ -28,8 +26,6 @@ rescue LoadError
 
 	YAML::ENGINE.yamler = 'syck' if defined?(YAML::ENGINE) && YAML::ENGINE.respond_to?(:yamler)
 end
-
-require 'callbacks'
 
 class Project
 	include Callbacks

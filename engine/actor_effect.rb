@@ -16,7 +16,7 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-require 'child_user_object', 'drawing'
+multi_require 'child_user_object', 'drawing'
 
 class ActorEffect < ChildUserObject
 	include Drawing

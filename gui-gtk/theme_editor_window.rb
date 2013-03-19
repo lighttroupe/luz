@@ -16,7 +16,7 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-require 'parent_user_object_editor_window', 'theme', 'theme_treeview', 'style', 'style_treeview'
+multi_require 'parent_user_object_editor_window', 'theme', 'theme_treeview', 'style', 'style_treeview'
 
 class ThemeEditorWindow < ParentUserObjectEditorWindow
 	def initialize

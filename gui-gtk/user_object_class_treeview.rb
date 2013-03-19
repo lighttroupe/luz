@@ -16,7 +16,7 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-require 'object_treeview', 'user_object_class_liststore'
+multi_require 'object_treeview', 'user_object_class_liststore'
 
 class UserObjectClassTreeView < ObjectTreeView
 	column :title, :renderers => [{:type => :markup, :model_column => :title}]

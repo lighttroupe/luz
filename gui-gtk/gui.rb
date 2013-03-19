@@ -19,9 +19,8 @@
 # The GUI object holds shared objects for GUIs, such as GTK liststores
 
 # Stuff required for the GUI (TODO: move liststores to control window?)
-require 'actor_liststore', 'actor_tag_liststore', 'director_liststore', 'director_tag_liststore', 'project_effect_liststore', 'theme_liststore', 'theme_tag_liststore', 'curve_liststore', 'curve_liststore_increasing', 'slider_name_liststore', 'button_name_liststore', 'variable_liststore', 'event_liststore'
-
-require 'editor_window', 'callbacks'
+multi_require 'actor_liststore', 'actor_tag_liststore', 'director_liststore', 'director_tag_liststore', 'project_effect_liststore', 'theme_liststore', 'theme_tag_liststore', 'curve_liststore', 'curve_liststore_increasing', 'slider_name_liststore', 'button_name_liststore', 'variable_liststore', 'event_liststore'
+multi_require 'editor_window', 'callbacks'
 
 class GUI
 	include Callbacks

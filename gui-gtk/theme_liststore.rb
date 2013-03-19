@@ -16,7 +16,7 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-require 'parent_user_object_liststore', 'theme_icon'
+multi_require 'parent_user_object_liststore', 'theme_icon'
 
 class ThemeListStore < ParentUserObjectListStore
 	ICON_WIDTH, ICON_HEIGHT = (64), (32)

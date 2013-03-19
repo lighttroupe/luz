@@ -16,7 +16,7 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-require 'project_effect', 'project_effect_treeview', 'parent_user_object_editor_window_with_dialogs', 'add_project_effect_window'
+multi_require 'project_effect', 'project_effect_treeview', 'parent_user_object_editor_window_with_dialogs', 'add_project_effect_window'
 
 class ProjectEffectEditorWindow < ParentUserObjectEditorWindowWithDialogs
 	pipe :set_parent_objects, :parent_treeview, :method => :set_objects

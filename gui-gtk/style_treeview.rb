@@ -16,7 +16,7 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-require 'child_treeview', 'style_liststore'
+multi_require 'child_treeview', 'style_liststore'
 
 class StyleTreeView < ChildTreeView
 	options :model_class => StyleListStore

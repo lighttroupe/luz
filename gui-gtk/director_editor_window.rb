@@ -16,9 +16,7 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-require 'parent_user_object_editor_window'
-require 'director_treeview', 'effect_treeview', 'user_object_settings_editor'
-require 'add_director_effect_window'
+multi_require 'parent_user_object_editor_window', 'director_treeview', 'effect_treeview', 'user_object_settings_editor', 'add_director_effect_window'
 
 class DirectorEditorWindow < ParentUserObjectEditorWindowWithDialogs
 	alias :selected_directors :selected_parents

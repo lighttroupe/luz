@@ -16,7 +16,7 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-require 'user_object_setting', 'drawing'
+multi_require 'user_object_setting', 'drawing'
 
 #ControlPoint = Struct.new(:x, :y, :type, :ax, :ay, :bx, :by)
 

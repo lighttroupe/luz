@@ -16,8 +16,8 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-require 'glade_window', 'actor_editor_window', 'director_editor_window', 'project_effect_editor_window', 'theme_editor_window', 'curve_editor_window', 'variable_editor_window', 'event_editor_window', 'beat_monitor', 'gtk_gl_drawing_area', 'stage_2d', 'stage_3d', 'easy_dialog', 'tempfile', 'unique_timeout_callback', 'output_window'
-require 'preferences_window', 'about_window'
+multi_require 'glade_window', 'actor_editor_window', 'director_editor_window', 'project_effect_editor_window', 'theme_editor_window', 'curve_editor_window', 'variable_editor_window', 'event_editor_window', 'beat_monitor', 'gtk_gl_drawing_area', 'stage_2d', 'stage_3d', 'easy_dialog', 'tempfile', 'unique_timeout_callback', 'output_window'
+multi_require 'preferences_window', 'about_window'
 
 class EditorWindow < GladeWindow
 	PREVIEW_PERSPECTIVE = [-0.5, 0.5, -0.5, 0.5]

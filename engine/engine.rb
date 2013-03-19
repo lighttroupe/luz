@@ -16,8 +16,8 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-require 'director', 'actor', 'curve', 'theme', 'variable', 'event', 'user_object', 'user_object_setting', 'project', 'image'
-require 'actor_shape', 'actor_canvas'
+multi_require 'director', 'actor', 'curve', 'theme', 'variable', 'event', 'user_object', 'user_object_setting', 'project', 'image'
+multi_require 'actor_shape', 'actor_canvas'
 
 optional_require 'beat_detector'
 optional_require 'message_bus'

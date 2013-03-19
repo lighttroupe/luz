@@ -16,7 +16,7 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-require 'user_object_liststore', 'color_pixbuf'
+multi_require 'user_object_liststore', 'color_pixbuf'
 
 class StyleListStore < UserObjectListStore
 	column :pixbuf, :type => :pixbuf, :from_object => Proc.new { |object| ColorPixbuf.pixbuf($gui.window, 24, 24, object.color) }

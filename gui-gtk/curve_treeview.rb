@@ -16,7 +16,7 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-require 'user_object_treeview', 'curve_liststore'
+multi_require 'user_object_treeview', 'curve_liststore'
 
 class CurveTreeView < UserObjectTreeView
 	column :pixbuf, :renderers => [{:type => :pixbuf, :model_column => :pixbuf}], :expand => false, :position => :start

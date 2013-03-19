@@ -16,9 +16,7 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-require 'parent_user_object_editor_window_with_dialogs'
-require 'add_actor_window', 'add_actor_effect_window'
-require 'actor_treeview', 'effect_treeview', 'user_object_settings_editor'
+multi_require 'parent_user_object_editor_window_with_dialogs', 'add_actor_window', 'add_actor_effect_window', 'actor_treeview', 'effect_treeview', 'user_object_settings_editor'
 
 class ActorEditorWindow < ParentUserObjectEditorWindowWithDialogs
 	alias :selected_actors :selected_parents

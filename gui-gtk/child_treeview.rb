@@ -16,7 +16,7 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-require 'user_object_treeview', 'child_user_object_liststore'
+multi_require 'user_object_treeview', 'child_user_object_liststore'
 
 class ChildTreeView < UserObjectTreeView
 	options :enable_search => false, :model_class => ChildUserObjectListStore

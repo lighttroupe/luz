@@ -16,7 +16,7 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-require 'parent_treeview', 'actor_liststore'
+multi_require 'parent_treeview', 'actor_liststore'
 
 class ActorTreeView < ParentTreeView
 	options :model_class => ActorListStore	# :reorderable => true,

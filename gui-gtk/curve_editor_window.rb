@@ -16,7 +16,7 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-require 'curve', 'curve_treeview', 'curve_editor', 'parent_user_object_editor_window_with_dialogs'
+multi_require 'curve', 'curve_treeview', 'curve_editor', 'parent_user_object_editor_window_with_dialogs'
 
 class CurveEditorWindow < ParentUserObjectEditorWindowWithDialogs
 	pipe :set_parent_objects, :parent_treeview, :method => :set_objects
