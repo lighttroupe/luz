@@ -1,4 +1,4 @@
-require 'gui_pointer_behavior', 'gui_object', 'gui_box', 'gui_hbox', 'gui_vbox', 'gui_list', 'gui_list_with_controls', 'gui_grid', 'gui_message_bar', 'gui_beat_monitor', 'gui_button', 'gui_float', 'gui_toggle', 'gui_curve', 'gui_curve_increasing', 'gui_theme', 'gui_integer', 'gui_select', 'gui_actor', 'gui_event', 'gui_variable', 'gui_engine_button', 'gui_engine_slider', 'gui_radio_buttons', 'gui_object_renderer', 'gui-ruby/fonts/bitmap-font', 'history', 'gui_history_buttons'
+require 'gui_pointer_behavior', 'gui_object', 'gui_box', 'gui_hbox', 'gui_vbox', 'gui_list', 'gui_list_with_controls', 'gui_grid', 'gui_message_bar', 'gui_beat_monitor', 'gui_button', 'gui_float', 'gui_toggle', 'gui_curve', 'gui_curve_increasing', 'gui_theme', 'gui_integer', 'gui_select', 'gui_actor', 'gui_event', 'gui_variable', 'gui_engine_button', 'gui_engine_slider', 'gui_radio_buttons', 'gui_object_renderer', 'gui-ruby/fonts/bitmap-font', 'history', 'gui_history_buttons', 'gui_main_menu'
 
 # Addons to existing objects
 load_directory(Dir.pwd + '/gui-ruby/addons/', '**.rb')
@@ -7,25 +7,6 @@ require 'gui_preferences_box', 'gui_user_object_editor', 'gui_add_window', 'gui_
 
 class String
 	boolean_accessor :shift, :control, :alt
-end
-
-class MainMenu < GuiBox
-	callback :close
-
-	def initialize
-		super
-		create!
-	end
-
-	def create!
-		self << GuiObject.new.set(:color => [0.5,0.5,0.5,0.5])
-		self << @vbox = GuiVBox.new
-		@vbox << @quit_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/menu.png'))
-		@quit_button.on_clicked { $application.finished! }
-
-		@vbox << @continue_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/play.png'))
-		@continue_button.on_clicked { close_notify }
-	end
 end
 
 class DirectorMenu < GuiBox
@@ -275,7 +256,7 @@ class GuiDefault < GuiInterface
 			set_state(:closed, {:opacity => 0.0, :hidden => true})
 
 		# Main menu
-		self << @main_menu = MainMenu.new.set(:hidden => true, :scale_y => 0.7).
+		self << @main_menu = GuiMainMenu.new.set(:hidden => true, :scale_y => 0.7).
 			add_state(:open, {:scale_x => 0.35, :hidden => false}).
 			set_state(:closed, {:scale_x => 0.0, :hidden => true})
 
