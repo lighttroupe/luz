@@ -59,8 +59,6 @@ module EngineImages
 	def load_image(path)
 		if (images=load_images(path))
 			images.first
-		else
-			nil
 		end
 	end
 end
