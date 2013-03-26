@@ -27,13 +27,17 @@ class Image
 
 	def initialize(options={})
 		@opengl_texture_id = GL.GenTexture
+		set_texture_options(options)
+	end
+
+	def set_texture_options(options)
 		using {
 			# TODO: make these based on instance variables and part of Drawing
 			GL.TexParameter(GL::TEXTURE_2D, GL::TEXTURE_WRAP_S, options[:repeat] ? GL::REPEAT : GL::CLAMP) #REPEAT)			# REPEAT mode adds noise to the transparent edge of a texture opposite an opaque edge
 			GL.TexParameter(GL::TEXTURE_2D, GL::TEXTURE_WRAP_T, options[:repeat] ? GL::REPEAT : GL::CLAMP) #REPEAT)
 
-			GL.TexParameter(GL::TEXTURE_2D, GL::TEXTURE_MAG_FILTER, GL::LINEAR) #GL::NEAREST)
-			GL.TexParameter(GL::TEXTURE_2D, GL::TEXTURE_MIN_FILTER, GL::LINEAR) #GL::NEAREST)
+			GL.TexParameter(GL::TEXTURE_2D, GL::TEXTURE_MAG_FILTER, options[:no_smoothing] ? GL::NEAREST : GL::LINEAR)
+			GL.TexParameter(GL::TEXTURE_2D, GL::TEXTURE_MIN_FILTER, options[:no_smoothing] ? GL::NEAREST : GL::LINEAR)
 
 			#GL.TexParameter(GL::TEXTURE_2D, GL::GENERATE_MIPMAP, GL::TRUE)
 		}
