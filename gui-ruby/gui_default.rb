@@ -404,7 +404,7 @@ class GuiDefault < GuiInterface
 	end
 
 	def render_actor_view
-		with_scale(0.77, 1.0) {
+		with_scale(0.75, 1.0) {
 			unless @actor_view_background
 				@actor_view_background = $engine.load_image('images/background.png')
 				@actor_view_background.set_texture_options(:no_smoothing => true)
