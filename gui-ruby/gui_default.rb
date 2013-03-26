@@ -80,12 +80,12 @@ class GuiDefault < GuiInterface
 	SAVE_BUTTON						= ''
 
 	EVENTS_BUTTON					= 'Keyboard / F1'
-	VARIABLES_BUTTON			= 'Keyboard / F2'
+	#VARIABLES_BUTTON			= 'Keyboard / F2'
 
 	ACTORS_BUTTON					= 'Keyboard / F8'
-	#THEMES_BUTTON					= 'Keyboard / F5'
-	#CURVES_BUTTON					= 'Keyboard / F6'
-	PREFERENCES_BUTTON		= 'Keyboard / F12'
+	#THEMES_BUTTON				= 'Keyboard / F5'
+	#CURVES_BUTTON				= 'Keyboard / F6'
+	#PREFERENCES_BUTTON		= 'Keyboard / F12'
 
 	callback :keypress
 
@@ -398,7 +398,7 @@ class GuiDefault < GuiInterface
 		with_translation(-camera_x, 0.0) {
 			# Render actor view
 			if camera_x < DIRECTOR_CAMERA_X
-				@chosen_actor.render! if @chosen_actor
+				render_actor_view
 			end
 
 			# Render director view
@@ -407,7 +407,7 @@ class GuiDefault < GuiInterface
 #					with_color([0.5,0.5,0.5,1.0]) {
 #						unit_square
 #					}
-					@chosen_director.render if @chosen_director
+					render_director_view
 				}
 			end
 
@@ -420,6 +420,23 @@ class GuiDefault < GuiInterface
 				}
 			end
 		}
+	end
+
+	def render_actor_view
+		with_scale(0.77, 1.0) {
+			unless @actor_view_background
+				@actor_view_background = $engine.load_image('images/background.png')
+				@actor_view_background.set_texture_options(:no_smoothing => true)
+			end
+			@actor_view_background.using {
+				unit_square
+			}
+			@chosen_actor.render! if @chosen_actor
+		}
+	end
+
+	def render_director_view
+		@chosen_director.render if @chosen_director
 	end
 
 	def gui_render!
