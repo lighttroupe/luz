@@ -2,7 +2,7 @@ class Actor
 	def gui_render!
 		gui_render_background
 
-		# Actor, render thyself!
+		# Render as cached image
 		with_image {
 			unit_square
 		}
@@ -18,8 +18,6 @@ class Actor
 	end
 
 	def update_offscreen_buffer?
-		@update_offscreen_buffer_once ||= 5
-		return true if (@update_offscreen_buffer_once > 0) and (@update_offscreen_buffer_once -= 1)
 		pointer_hovering?
 	end
 

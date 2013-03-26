@@ -2,7 +2,7 @@ class Director
 	def gui_render!
 		gui_render_background
 
-		# Actor, render thyself!
+		# Render as cached image
 		with_image {
 			with_scale(0.95,0.95) {
 				unit_square
@@ -11,7 +11,6 @@ class Director
 	end
 
 	def update_offscreen_buffer?
-		return (@update_offscreen_buffer_once = true) if @update_offscreen_buffer_once.nil?
 		pointer_hovering?
 	end
 
