@@ -482,6 +482,9 @@ class GuiDefault < GuiInterface
 	end
 
 	def on_key_press(value)
+		#
+		# Ctrl key
+		#
 		if value.control?
 			case value
 			when 'b'
@@ -496,7 +499,15 @@ class GuiDefault < GuiInterface
 				end
 			when 'r'
 				$engine.reload
+			when 'f11'
+				output_gc_counts
+			when 'f12'
+				toggle_gc_timing
 			end
+
+		#
+		# Alt key
+		#
 		elsif value.alt?
 			case value
 			when 'right'
@@ -508,12 +519,34 @@ class GuiDefault < GuiInterface
 			when 'up'
 				build_editor_for(@history.current, :history => false)
 			end
+
+		#
+		# no modifier
+		#
 		else
 			case value
 			when 'escape'
 				hide_something!
+			else
+				#puts value
 			end
 		end
+	end
+
+	def toggle_gc_timing
+		if GC::Profiler.enabled?
+			puts GC::Profiler.result
+			GC::Profiler.disable
+			positive_message 'GC Results Printed'
+		else
+			GC::Profiler.enable
+			positive_message 'GC Monitoring Enabled'
+		end
+	end
+
+	def output_object_counts
+		p (counts = ObjectSpace.count_objects)
+		positive_message "#{counts[:TOTAL]} Objects, #{counts[:FREE]} Free"
 	end
 
 	#
