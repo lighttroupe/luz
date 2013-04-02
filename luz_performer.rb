@@ -64,6 +64,7 @@ class LuzPerformer
 	def toggle_fullscreen!
 		@fullscreen = !@fullscreen
 		set_video_mode
+		init_gl_viewport
 	end
 
 	def create
@@ -71,6 +72,7 @@ class LuzPerformer
 		puts "Using SDL version #{SDL::VERSION}"
 
 		set_video_mode
+		init_gl_viewport
 		puts "Running at #{@screen.w}x#{@screen.h} @ #{@bits_per_pixel}bpp, #{@frames_per_second}fps (max)"
 
 		SDL::WM.set_caption(APP_NAME, '')
@@ -92,19 +94,24 @@ class LuzPerformer
 		$engine.on_render { $engine.render(enable_frame_saving=true) }		# NOTE: We just have one global context, so this renders to it
 	end
 
+	def sdl_video_mode_flags
+		flags = SDL::HWSURFACE | SDL::OPENGL
+		flags |= SDL::FULLSCREEN if @fullscreen
+		flags |= SDL::RESIZABLE if !@fullscreen
+		flags |= SDL::NOFRAME unless @border
+		flags
+	end
+
 	def set_video_mode
-		@sdl_video_mode_flags = SDL::HWSURFACE | SDL::OPENGL
-		@sdl_video_mode_flags |= SDL::FULLSCREEN if @fullscreen
-		@sdl_video_mode_flags |= SDL::RESIZABLE if !@fullscreen
-		@sdl_video_mode_flags |= SDL::NOFRAME unless @border
 		SDL.setGLAttr(SDL::GL_STENCIL_SIZE, 8) if @stencil_buffer
+		@screen = SDL.set_video_mode(@width, @height, @bits_per_pixel, sdl_video_mode_flags)
 
-		@screen = SDL.set_video_mode(@width, @height, @bits_per_pixel, @sdl_video_mode_flags)
+		# Save
 		@width, @height = @screen.w, @screen.h
-
-		# save useful info if we were using bpp=0 ("current")
 		@bits_per_pixel = @screen.bpp if @bits_per_pixel == 0
+	end
 
+	def init_gl_viewport
 		GL.Viewport(0, 0, @width, @height)
 		clear_screen([0.0, 0.0, 0.0, 0.0])
 	end
