@@ -30,7 +30,7 @@ class DirectorMenu < GuiBox
 	end
 end
 
-class GuiActorClassButton < GuiButton
+class GuiClassInstanceRendererButton < GuiButton
 	def initialize(klass)
 		super()
 		@object = klass.new
@@ -40,12 +40,25 @@ class GuiActorClassButton < GuiButton
 		super
 		with_positioning {
 			if pointer_hovering?
-				with_roll(-0.01 + fuzzy_sine($env[:beat]) * 0.02) {
+				with_hover_effect {
 					@object.render!
 				}
 			else
 				@object.render!
 			end
+		}
+	end
+
+	# for overriding
+	def with_hover_effect
+		yield
+	end
+end
+
+class GuiActorClassButton < GuiClassInstanceRendererButton
+	def with_hover_effect
+		with_roll(-0.01 + fuzzy_sine($env[:beat]) * 0.02) {
+			yield
 		}
 	end
 end
