@@ -3,64 +3,10 @@ require 'gui_pointer_behavior', 'gui_object', 'gui_box', 'gui_hbox', 'gui_vbox',
 # Addons to existing objects
 load_directory(Dir.pwd + '/gui-ruby/addons/', '**.rb')
 
-require 'gui_preferences_box', 'gui_user_object_editor', 'gui_add_window', 'gui_interface'
+require 'gui_preferences_box', 'gui_user_object_editor', 'gui_add_window', 'gui_interface', 'gui_actor_class_button', 'gui_director_menu'
 
 class String
 	boolean_accessor :shift, :control, :alt
-end
-
-class DirectorMenu < GuiBox
-	def initialize(contents)
-		super()
-		create!
-		@grid.contents = contents
-	end
-
-	def create!
-		self << @background = GuiObject.new.set(:color => [0,0,0,1], :opacity => 0.99)
-
-		self << @grid = GuiGrid.new.set(:scale => 0.95, :spacing_x => 0.1, :spacing_y => 0.1)
-
-		self << @add_button = GuiButton.new.set(:scale => 0.10, :offset_x => 0.45, :offset_y => -0.45, :background_image => $engine.load_image('images/buttons/add.png'))
-		@add_button.on_clicked {
-			director = Director.new
-			@grid << director
-			$gui.build_editor_for(director)
-		}
-	end
-end
-
-class GuiClassInstanceRendererButton < GuiButton
-	def initialize(klass)
-		super()
-		@object = klass.new
-	end
-
-	def gui_render!
-		super
-		with_positioning {
-			if pointer_hovering?
-				with_hover_effect {
-					@object.render!
-				}
-			else
-				@object.render!
-			end
-		}
-	end
-
-	# for overriding
-	def with_hover_effect
-		yield
-	end
-end
-
-class GuiActorClassButton < GuiClassInstanceRendererButton
-	def with_hover_effect
-		with_roll(-0.01 + fuzzy_sine($env[:beat]) * 0.02) {
-			yield
-		}
-	end
 end
 
 class GuiDefault < GuiInterface
@@ -279,7 +225,7 @@ class GuiDefault < GuiInterface
 		}
 
 		# Director Grid popup
-		self << @director_menu = DirectorMenu.new($engine.project.directors).
+		self << @director_menu = GuiDirectorMenu.new($engine.project.directors).
 			add_state(:open, {:scale_x => 1.0, :scale_y => 1.0, :opacity => 1.0, :hidden => false}).
 			set_state(:closed, {:scale_x => 1.1, :scale_y => 1.1, :offset_y => 0.0,:hidden => true})
 
