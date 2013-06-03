@@ -516,8 +516,10 @@ class GuiDefault < GuiInterface
 
 		pointer = options[:pointer]
 		editor = @user_object_editors[user_object]
+
+		# Single-editor interface: is an editor for this object already showing?
 		if editor && !editor.hidden?
-			# This is the second click on something
+			# This is the second click on the object
 			if user_object.is_a? Actor
 				if (self.mode == ACTOR_MODE && @chosen_actor == user_object)
 					@actors_list.animate_to_state(:closed, duration=0.1)
