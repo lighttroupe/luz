@@ -245,6 +245,21 @@ class GuiDefault < GuiInterface
 		set_initial_state
 	end
 
+	def set_initial_state
+		@user_object_editors = {}
+		@chosen_actor = nil
+
+		# Auto-select first director
+		director = $engine.project.directors.first
+
+		# Hack to load project file format 1
+		director.actors = $engine.project.actors if director.actors.empty? and not $engine.project.actors.empty?
+
+		self.chosen_director = director
+	end
+
+# TODO: make private?
+
 	def close_actor_drawer!
 		@actors_list.switch_state({:open => :closed}, duration=0.2)
 		@actor_drawer.switch_state({:open => :closed}, duration=0.2)
@@ -267,19 +282,6 @@ class GuiDefault < GuiInterface
 		@events_drawer.switch_state({:open => :closed, :closed => :open}, duration=0.2)
 		@variables_list.switch_state({:open => :closed, :closed => :open}, duration=0.2)
 		@events_list.switch_state({:open => :closed, :closed => :open}, duration=0.2)
-	end
-
-	def set_initial_state
-		@user_object_editors = {}
-		@chosen_actor = nil
-
-		# Auto-select first director
-		director = $engine.project.directors.first
-
-		# Hack to load project file format 1
-		director.actors = $engine.project.actors if director.actors.empty? and not $engine.project.actors.empty?
-
-		self.chosen_director = director
 	end
 
 	def trash!(user_object)
@@ -487,9 +489,13 @@ class GuiDefault < GuiInterface
 			when 'escape'
 				hide_something!
 			else
-				#puts value
+				route_keypress_to_selected_widget(value)
 			end
 		end
+	end
+
+	def route_keypress_to_selected_widget(value)
+		
 	end
 
 	def toggle_gc_timing
