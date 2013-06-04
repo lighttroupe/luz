@@ -97,6 +97,16 @@ class GuiList < GuiBox
 		@scroll == @scroll_max
 	end
 
+	def scroll_percentage
+		return 0.0 unless @scroll_max
+		@scroll / @scroll_max
+	end
+
+	def visible_percentage
+		return 1.0 if @contents.empty?
+		(@visible_slots / @contents.size).clamp(0.0, 1.0)
+	end
+
 	def scroll_to_selection!(&proc)
 		scroll_to(selection.first)
 	end
