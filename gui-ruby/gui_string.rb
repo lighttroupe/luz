@@ -48,7 +48,7 @@ class GuiString < GuiObject
 		# initiate keyboard grab
 		$gui.grab_keyboard { |key|
 			if @keyboard_focus == false
-				false
+				false			# cancel grab
 			elsif key == 'return' or key == 'escape'
 				@keyboard_focus = false
 				false			# cancel grab
