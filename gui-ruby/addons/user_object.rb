@@ -16,8 +16,12 @@ class UserObject
 			box = GuiBox.new
 
 			# Effects list
-			@gui_effects_list = GuiListWithControls.new(effects).set({:spacing_y => -0.8, :scale_x => 0.3, :scale_y => 0.75, :offset_x => -0.35, :offset_y => 0.0, :item_aspect_ratio => 4.5})
+			@gui_effects_list = GuiListWithControls.new(effects).set({:spacing_y => -0.8, :scale_x => 0.3, :offset_x => -0.35, :offset_y => 0.0, :scale_y => 0.75, :item_aspect_ratio => 4.5})
 			box << @gui_effects_list
+
+			# ...scrollbar
+			@gui_effects_list_scrollbar = GuiScrollbar.new(@gui_effects_list).set({:scale_x => 0.025, :offset_x => -0.187, :offset_y => 0.0, :scale_y => 0.75})
+			box << @gui_effects_list_scrollbar
 
 			# Add Button
 			@add_child_button = GuiButton.new.set(:scale_x => 0.07, :scale_y => 0.11, :offset_x => -0.46, :offset_y => -0.5 + 0.07, :background_image => $engine.load_image('images/buttons/add.png'))
@@ -47,9 +51,13 @@ class UserObject
 			}
 
 			# Settings list
-			@gui_settings_list = GuiList.new.set({:spacing_y => -1.0, :scale_x => 0.59, :offset_x => 0.15, :scale_y => 0.87, :offset_y => -0.06, :item_aspect_ratio => 5.0})
+			@gui_settings_list = GuiList.new.set({:spacing_y => -1.0, :scale_x => 0.59, :offset_x => 0.15, :offset_y => 0.0, :scale_y => 0.75, :item_aspect_ratio => 5.0})
 			box << @gui_settings_list
 			gui_fill_settings_list(self)		# show this object's settings
+
+			# ...scrollbar
+			@gui_settings_list_scrollbar = GuiScrollbar.new(@gui_settings_list).set({:scale_x => 0.03, :offset_x => -0.155, :offset_y => 0.0, :scale_y => 0.75})
+			box << @gui_settings_list_scrollbar
 
 			box
 		else
