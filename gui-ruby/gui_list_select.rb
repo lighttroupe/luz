@@ -1,12 +1,13 @@
 # superclass for single-value setting widgets like GuiTheme
 
 class GuiListSelect < GuiObject
-	easy_accessor :no_value_text
+	easy_accessor :no_value_text, :item_aspect_ratio
 
 	def initialize(object, method)
 		super()
 		@object, @method = object, '@'+method.to_s
 		@no_value_text = 'none'
+		@item_aspect_ratio = 1.6
 	end
 
 	#
@@ -63,7 +64,7 @@ class GuiListSelect < GuiObject
 private
 
 	def create_popup_list(pointer)
-		box = GuiBox.new.set(:offset_x => pointer.x, :offset_y => pointer.y, :color => [1,1,0,1], :scale_x => 0.0, :scale_y => 0.0).animate({:scale_x => 0.1, :scale_y => 0.4}, duration=0.1)
+		box = GuiBox.new.set(:offset_x => pointer.x, :offset_y => pointer.y, :color => [1,1,0,1], :scale_x => 0.0, :scale_y => 0.0).animate({:scale_x => 0.1, :scale_y => 0.6}, duration=0.1)
 
 		# Wrap the objects with a Renderer
 		renderers = list.map { |item| GuiObjectRenderer.new(item) }
@@ -75,7 +76,7 @@ private
 			}
 		}
 
-		box << (popup=GuiListWithControls.new(renderers).set(:scroll_wrap => true, :spacing_y => -1.0, :item_aspect_ratio => 1.6)).scroll_to(self.get_value)
+		box << (popup=GuiListWithControls.new(renderers).set(:scale_x => 2.0, :scroll_wrap => true, :spacing_y => -1.0, :item_aspect_ratio => item_aspect_ratio)).scroll_to(self.get_value)
 		add_to_root(box)
 
 		# Pointer takes responsibility for this window, and it auto-closes when pointer clicks away
