@@ -3,7 +3,6 @@
 #
 class GuiEngineButtonRenderer < GuiObject
 	GUI_COLOR_ON = [0.0, 0.0, 0.4, 0.8]
-	GUI_COLOR_OFF = [0.0,0.0,0.0,1.0]
 
 	attr_reader :text
 
