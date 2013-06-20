@@ -514,71 +514,81 @@ class GuiDefault < GuiInterface
 		positive_message "#{counts[:TOTAL]} Objects, #{counts[:FREE]} Free"
 	end
 
+	def handle_second_click_on_user_object(user_object, options)
+		pointer = options[:pointer]
+
+		# This is the second click on the object
+		if user_object.is_a? Actor
+			if (self.mode == ACTOR_MODE && @chosen_actor == user_object)
+				@actors_list.animate_to_state(:closed, duration=0.1)
+				@actor_drawer.animate_to_state(:closed, duration=0.1)
+			else
+				@chosen_actor = user_object
+				self.mode = ACTOR_MODE		# TODO: make this an option?
+			end
+		elsif user_object.is_a? Project
+			clear_editors!
+		elsif user_object.is_a?(Variable) or user_object.is_a?(Event)
+			close_inputs_drawer!
+		end
+	end
+
+	def handle_first_click_on_user_object(user_object, options)
+		pointer = options[:pointer]
+
+		if user_object.is_a?(ParentUserObject) || user_object.is_a?(Project)		# TODO: responds_to? :effects ?
+			#
+			# Browser-like history of edited objects
+			#
+			unless options.delete(:history) == false
+				@history.remove(user_object)		# is this correct?  browsers don't do this.
+				@history.add(user_object) if suitable_for_history?(user_object)
+			end
+
+			#
+			# Select / show object
+			#
+			clear_editors!		# only support one for now
+
+			if user_object.is_a? Director
+				# selecting a director
+				self.chosen_director = user_object
+				@director_menu.switch_state({:open => :closed}, duration=0.1)
+			else
+				if user_object.is_a? Actor
+					if @mode == ACTOR_MODE
+						# Rule: cannot view one actor (in actor-mode) while editing another
+						@chosen_actor = user_object
+					end
+				end
+
+				editor = create_user_object_editor_for_pointer(user_object, pointer || Vector3.new(0.0,-0.5), options)
+				@user_object_editors[user_object] = editor
+				@user_object_editor_container << editor
+
+				return editor
+			end
+		else
+			# tell editor its child was clicked (this is needed due to non-propagation of click messages: the user object gets notified, it tells us)
+			parent = @user_object_editors.keys.find { |uo| uo.effects.include? user_object }		# TODO: hacking around children not knowing their parents for easier puppetry
+			parent.on_child_user_object_selected(user_object) if parent		# NOTE: can't click a child if parent is not visible, but the 'if' doesn't hurt
+			return nil
+		end
+	end
+
 	#
 	#
 	#
 	def build_editor_for(user_object, options={})
 		return unless user_object
 
-		pointer = options[:pointer]
 		editor = @user_object_editors[user_object]
 
 		# Single-editor interface: is an editor for this object already showing?
 		if editor && !editor.hidden?
-			# This is the second click on the object
-			if user_object.is_a? Actor
-				if (self.mode == ACTOR_MODE && @chosen_actor == user_object)
-					@actors_list.animate_to_state(:closed, duration=0.1)
-					@actor_drawer.animate_to_state(:closed, duration=0.1)
-				else
-					@chosen_actor = user_object
-					self.mode = ACTOR_MODE		# TODO: make this an option?
-				end
-			elsif user_object.is_a? Project
-				clear_editors!
-			elsif user_object.is_a?(Variable) or user_object.is_a?(Event)
-				close_inputs_drawer!
-			end
-			return nil
+			handle_second_click_on_user_object(user_object, options)
 		else
-			if user_object.is_a?(ParentUserObject) || user_object.is_a?(Project)		# TODO: responds_to? :effects ?
-				#
-				# Browser-like history of edited objects
-				#
-				unless options.delete(:history) == false
-					@history.remove(user_object)		# is this correct?  browsers don't do this.
-					@history.add(user_object) if suitable_for_history?(user_object)
-				end
-
-				#
-				# Select / show object
-				#
-				clear_editors!		# only support one for now
-
-				if user_object.is_a? Director
-					# selecting a director
-					self.chosen_director = user_object
-					@director_menu.switch_state({:open => :closed}, duration=0.1)
-				else
-					if user_object.is_a? Actor
-						if @mode == ACTOR_MODE
-							# Rule: cannot view one actor (in actor-mode) while editing another
-							@chosen_actor = user_object
-						end
-					end
-
-					editor = create_user_object_editor_for_pointer(user_object, pointer || Vector3.new(0.0,-0.5), options)
-					@user_object_editors[user_object] = editor
-					@user_object_editor_container << editor
-
-					return	editor
-				end
-			else
-				# tell editor its child was clicked (this is needed due to non-propagation of click messages: the user object gets notified, it tells us)
-				parent = @user_object_editors.keys.find { |uo| uo.effects.include? user_object }		# TODO: hacking around children not knowing their parents for easier puppetry
-				parent.on_child_user_object_selected(user_object) if parent		# NOTE: can't click a child if parent is not visible, but the 'if' doesn't hurt
-				return nil
-			end
+			handle_first_click_on_user_object(user_object, options)
 		end
 	end
 
