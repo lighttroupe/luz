@@ -1,7 +1,7 @@
 class GuiScrollbarScroller < GuiObject
-	HOVER_COLOR = [0.7,0.7,0.0]
-	INACTIVE_COLOR = [0.08,0.08,0.08]
-	ACTIVE_COLOR = [0.15,0.15,0.15]
+	HOVER_COLOR = [0.7,0.7,0.0,0.8]
+	INACTIVE_COLOR = [0.08,0.08,0.08,0.4]
+	ACTIVE_COLOR = [0.15,0.15,0.15,0.9]
 
 	def initialize(scrollbar)
 		super()
@@ -35,7 +35,7 @@ class GuiScrollbarScroller < GuiObject
 end
 
 class GuiScrollbar < GuiBox
-	WELL_COLOR = [0.05,0.05,0.05]
+	WELL_COLOR = [0.05,0.05,0.05,0.4]
 
 	# target should support:
 	# scroll_velocity

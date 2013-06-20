@@ -39,7 +39,7 @@ class GuiList < GuiBox
 	BACKGROUND_COLOR = [0,0,0,0.8]
 	def gui_render!
 		return if hidden?
-		with_positioning { with_color(BACKGROUND_COLOR) { unit_square } }
+#		with_positioning { with_color(BACKGROUND_COLOR) { unit_square } }
 		each_with_positioning { |gui_object| gui_object.gui_render! }
 
 		# this allows those that respond to our scroll changes to init themselves

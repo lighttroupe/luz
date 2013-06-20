@@ -1,7 +1,7 @@
 class GuiUserObjectEditor < GuiBox
 	attr_accessor :pointer
 
-	BACKGROUND_COLOR = [0,0,0,0.8]
+	BACKGROUND_COLOR = [0,0,0,0.95]
 
 	def initialize(user_object, options)
 		@user_object, @options = user_object, options

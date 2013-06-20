@@ -1,4 +1,6 @@
 class GuiAddWindow < GuiBox
+	BACKGROUND_COLOR = [0,0,0,1.0]
+
 	easy_accessor :pointer
 
 	callback :add
@@ -17,7 +19,7 @@ private
 
 	def create!
 		# background
-		self << (@background=GuiObject.new.set(:color => [0,0,0,0.9]))
+		self << (@background=GuiObject.new.set(:color => BACKGROUND_COLOR))
 
 		@category = @categories.first
 
