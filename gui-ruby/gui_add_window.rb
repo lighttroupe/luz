@@ -18,8 +18,8 @@ class GuiAddWindow < GuiBox
 private
 
 	def create!
-		# background
-		self << (@background=GuiObject.new.set(:color => BACKGROUND_COLOR))
+		# Background
+		self << (@background=GuiObject.new.set(:background_image => $engine.load_image('images/add-window-background.png')))
 
 		@category = @categories.first
 

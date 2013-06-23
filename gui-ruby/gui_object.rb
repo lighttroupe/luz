@@ -58,7 +58,8 @@ module MethodsForGuiObject
 	def gui_render!
 		return if hidden?
 		with_positioning {
-			gui_render_placeholder
+			gui_render_background
+			gui_render_placeholder unless background_image
 		}
 	end
 

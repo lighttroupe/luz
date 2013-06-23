@@ -11,10 +11,8 @@ class GuiUserObjectEditor < GuiBox
 	end
 
 	def create!
-		#
 		# Background
-		#
-		self << (@background=GuiObject.new.set(:color => BACKGROUND_COLOR))
+		self << (@background=GuiObject.new.set(:background_image => $engine.load_image('images/user-object-editor-background.png')))
 
 		#
 		# Let object build its own content (eg. lists of effects and settings: gui-ruby/addons/user_object.rb)

@@ -11,6 +11,7 @@ class GuiBox < GuiObject
 		self.contents = contents
 		@selection = Set.new
 		@float_left = -0.5
+		@float_right = 0.5
 		super()
 	end
 
@@ -25,6 +26,10 @@ class GuiBox < GuiObject
 			extra_spacing = (gui_object.offset_x || 0.0)
 			gui_object.offset_x = @float_left + (gui_object.scale_x / 2.0) + extra_spacing
 			@float_left += gui_object.scale_x + extra_spacing
+		elsif gui_object.float == :right
+			extra_spacing = (gui_object.offset_x || 0.0)
+			gui_object.offset_x = @float_right - (gui_object.scale_x / 2.0) - extra_spacing
+			@float_right -= (gui_object.scale_x + extra_spacing)
 		end
 	end
 

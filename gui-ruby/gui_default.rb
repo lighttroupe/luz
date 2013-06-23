@@ -3,7 +3,7 @@ require 'gui_pointer_behavior', 'gui_object', 'gui_box', 'gui_hbox', 'gui_vbox',
 # Addons to existing objects
 load_directory(Dir.pwd + '/gui-ruby/addons/', '**.rb')
 
-require 'gui_preferences_box', 'gui_user_object_editor', 'gui_add_window', 'gui_interface', 'gui_actor_class_button', 'gui_director_menu'
+require 'gui_preferences_box', 'gui_user_object_editor', 'gui_add_window', 'gui_interface', 'gui_actor_class_button', 'gui_director_menu', 'gui_actors_flyout'
 
 class String
 	boolean_accessor :shift, :control, :alt
@@ -26,6 +26,7 @@ class GuiDefault < GuiInterface
 	#THEMES_BUTTON				= 'Keyboard / F5'
 	#CURVES_BUTTON				= 'Keyboard / F6'
 	#PREFERENCES_BUTTON		= 'Keyboard / F12'
+	PLAY_KEY		= 'Keyboard / F12'
 
 	callback :keypress
 
@@ -80,82 +81,36 @@ class GuiDefault < GuiInterface
 			@project_drawer << (@project_effects_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/arrow-down.png')))
 				@project_effects_button.on_clicked { |pointer| build_editor_for($engine.project, :pointer => pointer) }
 
-		# Project corner button
+		# Project corner button (upper left)
 		self << @project_menu_button = GuiButton.new.set(:hotkey => MENU_BUTTON, :scale_x => 0.04, :scale_y => 0.06, :offset_x => -0.48, :offset_y => 0.47, :background_image => $engine.load_image('images/corner.png'))
 			#.add_state(:closed, {:hidden => true, :offset_x => -0.49, :offset_y => 0.48}).
 			#set_state(:open, {:hidden => false, :offset_x => -0.48, :offset_y => 0.47})
 
 		@project_menu_button.on_clicked {
 			@project_drawer.switch_state({:open => :closed, :closed => :open}, duration=0.2)
-			#@project_menu_button.switch_state({:open => :closed, :closed => :open}, duration=0.2)
 		}
 
 		#
-		# Director drawer
+		# Actors / Directors
 		#
-		self << @directors_drawer = GuiHBox.new.set(:color => [1,1,1,1.0], :scale_x => 0.20, :scale_y => 0.045, :background_image => $engine.load_image('images/drawer-ne.png')).
-			add_state(:open, {:hidden => false, :offset_x => 0.41, :offset_y => 0.4775}).
-			set_state(:closed, {:hidden => true, :offset_x => 0.60, :offset_y => 0.4775})
+		self << @actors_flyout = GuiActorsFlyout.new.set(:scale_x => 0.12, :scale_y => 1.0, :offset_x => 0.5 - 0.06, :offset_y => 0.0).		# TODO: background image?
+			add_state(:open, {:offset_x => 0.44, :hidden => false}).
+			set_state(:closed, {:offset_x => 0.56, :hidden => true})
 
-			#
-			# Radio buttons for view mode
-			#
-			# view actors
-			@directors_drawer << @actor_view_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/actor-view.png'))
-			@actor_view_button.on_clicked { self.mode = ACTOR_MODE }
-
-			# view directors
-			@directors_drawer << @director_view_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/director-view.png'))
-			@director_view_button.on_clicked { self.mode = DIRECTOR_MODE }
-
-			# --> open directors menu
-			@directors_drawer << @director_menu_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/director-grid-view.png'))
-			@director_menu_button.on_clicked {
-				@director_menu.switch_state({:closed => :open},durection=0.4)
-			}
-
-			# view output preview
-			@directors_drawer << @output_view_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/output-view.png'))
-			@output_view_button.on_clicked { self.mode = OUTPUT_MODE }
-
-			@directors_drawer << GuiObject.new
-
-		# Directors corner button
+		# Directors corner button (top right)
 		self << (@directors_button = GuiButton.new.set(:hotkey => MENU_BUTTON, :scale_x => -0.04, :scale_y => 0.06, :offset_x => 0.48, :offset_y => 0.47, :background_image => $engine.load_image('images/corner.png')))
 		@directors_button.on_clicked {
-			@directors_drawer.switch_state({:open => :closed, :closed => :open}, duration=0.2)
+			@director_menu.switch_state({:closed => :open},durection=0.4)
 		}
 
-		#
-		# Actor drawer
-		#
-		self << @actor_drawer = GuiHBox.new.set(:scale_x => 0.16, :scale_y => 0.045, :background_image => $engine.load_image('images/drawer-se.png')).
-			add_state(:open, {:hidden => false, :offset_x => 0.42, :offset_y => -0.4775}).
-			set_state(:closed, {:hidden => true, :offset_x => 0.60, :offset_y => -0.4775})
-
-			# New Actor button(s)
-			[ActorStarFlower, ActorStar, ActorRectangle].each { |klass|
-				@actor_drawer << (new_actor_button = GuiActorClassButton.new(klass).set(:scale => 0.75))
-				new_actor_button.on_clicked { |pointer|
-					@actors_list.add_after_selection(actor = klass.new)
-					index = @actors_list.index(actor)
-					build_editor_for(actor, :pointer => pointer)
-				}
-			}
-
-		# Actor list
-		self << @actors_list = GuiListWithControls.new([]).set(:scroll_wrap => true, :scale_x => 0.12, :scale_y => 0.9, :offset_y => -0.05, :spacing_y => -1.0).
-			add_state(:open, {:offset_x => 0.44, :offset_y => 0.0, :hidden => false}).
-			set_state(:closed, {:offset_x => 0.56, :offset_y => 0.0, :hidden => true})
-
-		# Actors corner button
+		# Actors corner button (bottom right)
 		self << (@actors_button = GuiButton.new.set(:hotkey => ACTORS_BUTTON, :scale_x => -0.04, :scale_y => -0.06, :offset_x => 0.48, :offset_y => -0.47, :background_image => $engine.load_image('images/corner.png')))
 		@actors_button.on_clicked {
-			toggle_actor_drawer!
+			toggle_actors_flyout!
 		}
 
 		#
-		# Events/Variables drawer
+		# Events / Variables drawer
 		#
 		self << @events_drawer = GuiHBox.new.set(:scale_x => 0.16, :scale_y => 0.045, :background_image => $engine.load_image('images/drawer-sw.png')).
 			add_state(:open, {:hidden => false, :offset_x => -0.42, :offset_y => -0.4775}).
@@ -181,7 +136,7 @@ class GuiDefault < GuiInterface
 			add_state(:open, {:hidden => false, :offset_x => -0.44, :opacity => 1.0}).
 			set_state(:closed, {:offset_x => -0.6, :opacity => 0.0, :hidden => true})
 
-		# Events/Variables corner button
+		# Events/Variables corner button (bottom left)
 		self << @events_button = GuiButton.new.set(:hotkey => EVENTS_BUTTON, :scale_x => 0.04, :scale_y => -0.06, :background_image => $engine.load_image('images/corner.png')).
 			add_state(:closed, {:hidden => true, :offset_x => -0.55, :offset_y => -0.53}).
 			set_state(:open, {:hidden => false, :offset_x => -0.48, :offset_y => -0.47})
@@ -210,8 +165,8 @@ class GuiDefault < GuiInterface
 		#
 		# OVERLAY LEVEL (things above this line are obscured while overlay is showing)
 		#
-		self << @overlay = GuiObject.new.set(:color => [0,0,0]).
-			add_state(:open, {:opacity => 0.95, :hidden => false}).
+		self << @overlay = GuiObject.new.set(:background_image => $engine.load_image('images/overlay.png')).
+			add_state(:open, {:opacity => 1.0, :hidden => false}).
 			set_state(:closed, {:opacity => 0.0, :hidden => true})
 
 		# Main menu
@@ -260,14 +215,12 @@ class GuiDefault < GuiInterface
 
 # TODO: make private?
 
-	def close_actor_drawer!
-		@actors_list.switch_state({:open => :closed}, duration=0.2)
-		@actor_drawer.switch_state({:open => :closed}, duration=0.2)
+	def close_actors_flyout!
+		@actors_flyout.switch_state({:open => :closed}, duration=0.2)
 	end
 
-	def toggle_actor_drawer!
-		@actors_list.switch_state({:open => :closed, :closed => :open}, duration=0.2)
-		@actor_drawer.switch_state({:open => :closed, :closed => :open}, duration=0.2)
+	def toggle_actors_flyout!
+		@actors_flyout.switch_state({:open => :closed, :closed => :open}, duration=0.2)
 	end
 
 	def close_inputs_drawer!
@@ -285,7 +238,7 @@ class GuiDefault < GuiInterface
 	end
 
 	def trash!(user_object)
-		@actors_list.remove(user_object)
+		@actors_flyout.remove(user_object)
 		@chosen_actor = nil if @chosen_actor == user_object
 
 		@directors_list.remove(user_object)
@@ -302,7 +255,7 @@ class GuiDefault < GuiInterface
 	attr_reader :chosen_director
 	def chosen_director=(director)
 		@chosen_director = director
-		@actors_list.contents = director.actors
+		@actors_flyout.actors = director.actors
 
 		self.mode = DIRECTOR_MODE
 
@@ -333,7 +286,7 @@ class GuiDefault < GuiInterface
 	end
 
 	def camera_switch_time
-		0.4
+		0.0
 	end
 
 	def render
@@ -486,6 +439,8 @@ class GuiDefault < GuiInterface
 		#
 		else
 			case value
+			when 'f12'
+				self.mode = OUTPUT_MODE
 			when 'escape'
 				hide_something!
 			else
@@ -520,8 +475,7 @@ class GuiDefault < GuiInterface
 		# This is the second click on the object
 		if user_object.is_a? Actor
 			if (self.mode == ACTOR_MODE && @chosen_actor == user_object)
-				@actors_list.animate_to_state(:closed, duration=0.1)
-				@actor_drawer.animate_to_state(:closed, duration=0.1)
+				@actors_flyout.animate_to_state(:closed, duration=0.1)
 			else
 				@chosen_actor = user_object
 				self.mode = ACTOR_MODE		# TODO: make this an option?
@@ -615,13 +569,12 @@ class GuiDefault < GuiInterface
 	end
 
 	def hide_something!
-		if @project_drawer.visible? or @directors_drawer.visible?
+		if @project_drawer.visible?
 			@project_drawer.switch_state({:open => :closed}, duration=0.2)
-			@directors_drawer.switch_state({:open => :closed}, duration=0.2)
 
-		elsif @events_drawer.visible? or @actor_drawer.visible?
+		elsif @events_drawer.visible? or @actors_flyout.visible?
 			close_inputs_drawer!
-			close_actor_drawer!
+			close_actors_flyout!
 
 		else
 			# ?
