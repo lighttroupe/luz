@@ -3,7 +3,7 @@ require 'gui_pointer_behavior', 'gui_object', 'gui_box', 'gui_hbox', 'gui_vbox',
 # Addons to existing objects
 load_directory(Dir.pwd + '/gui-ruby/addons/', '**.rb')
 
-require 'gui_preferences_box', 'gui_user_object_editor', 'gui_add_window', 'gui_interface', 'gui_actor_class_button', 'gui_director_menu', 'gui_actors_flyout'
+require 'gui_preferences_box', 'gui_user_object_editor', 'gui_add_window', 'gui_interface', 'gui_actor_class_button', 'gui_director_menu', 'gui_actors_flyout', 'gui_variables_flyout'
 
 class String
 	boolean_accessor :shift, :control, :alt
@@ -58,42 +58,9 @@ class GuiDefault < GuiInterface
 		set(:mode => OUTPUT_MODE, :camera_x => OUTPUT_CAMERA_X, :output_opacity => 1.0)
 
 		#
-		# Project Drawer
+		# Actors / Directors flyout
 		#
-		self << @project_drawer = GuiHBox.new.set(:scale_x => 0.20, :scale_y => 0.045, :background_image => $engine.load_image('images/drawer-nw.png')).
-			add_state(:open, {:hidden => false, :offset_x => -0.41, :offset_y => 0.4775}).
-			set_state(:closed, {:hidden => true, :offset_x => -0.60, :offset_y => 0.4775})
-
-			@project_drawer << (GuiObject.new.set(:color => [0,0,0,0]))
-
-			# Quit button
-			@project_drawer << (@quit_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/exit.png')))
-				@quit_button.on_clicked {
-					@overlay.switch_state({:closed => :open}, duration=0.4)
-					@main_menu.switch_state({:closed => :open}, duration=0.2)
-				}
-
-			# Save button
-			@project_drawer << @save_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/save.png'))
-				@save_button.on_clicked { $engine.save ; positive_message 'Saved successfully.' }
-
-			# Project Effects button
-			@project_drawer << (@project_effects_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/arrow-down.png')))
-				@project_effects_button.on_clicked { |pointer| build_editor_for($engine.project, :pointer => pointer) }
-
-		# Project corner button (upper left)
-		self << @project_menu_button = GuiButton.new.set(:hotkey => MENU_BUTTON, :scale_x => 0.04, :scale_y => 0.06, :offset_x => -0.48, :offset_y => 0.47, :background_image => $engine.load_image('images/corner.png'))
-			#.add_state(:closed, {:hidden => true, :offset_x => -0.49, :offset_y => 0.48}).
-			#set_state(:open, {:hidden => false, :offset_x => -0.48, :offset_y => 0.47})
-
-		@project_menu_button.on_clicked {
-			@project_drawer.switch_state({:open => :closed, :closed => :open}, duration=0.2)
-		}
-
-		#
-		# Actors / Directors
-		#
-		self << @actors_flyout = GuiActorsFlyout.new.set(:scale_x => 0.12, :scale_y => 1.0, :offset_x => 0.5 - 0.06, :offset_y => 0.0).		# TODO: background image?
+		self << @actors_flyout = GuiActorsFlyout.new.set(:scale_x => 0.12, :scale_y => 1.0, :offset_x => 0.5 - 0.06).		# TODO: background image?
 			add_state(:open, {:offset_x => 0.44, :hidden => false}).
 			set_state(:closed, {:offset_x => 0.56, :hidden => true})
 
@@ -110,31 +77,11 @@ class GuiDefault < GuiInterface
 		}
 
 		#
-		# Events / Variables drawer
+		# Events / Variables flyout
 		#
-		self << @events_drawer = GuiHBox.new.set(:scale_x => 0.16, :scale_y => 0.045, :background_image => $engine.load_image('images/drawer-sw.png')).
-			add_state(:open, {:hidden => false, :offset_x => -0.42, :offset_y => -0.4775}).
-			set_state(:closed, {:hidden => true, :offset_x => -0.60, :offset_y => -0.4775})
-
-			@events_drawer << (GuiObject.new.set(:color => [0,0,0,0]))
-
-			# New Event button
-			@events_drawer << (@new_event_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/new.png')))
-			@new_event_button.on_clicked { |pointer| @events_list.add_after_selection(event = Event.new) ; build_editor_for(event, :pointer => pointer) }
-
-			# New Variable button
-			@events_drawer << (@new_variable_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/new.png')))
-			@new_variable_button.on_clicked { |pointer| @variables_list.add_after_selection(variable = Variable.new) ; build_editor_for(variable, :pointer => pointer) }
-
-		# Events list
-		self << @events_list = GuiListWithControls.new($engine.project.events).set(:scale_x => 0.12, :scale_y => 0.45, :offset_y => 0.22, :item_aspect_ratio => 3.2, :hidden => true, :spacing_y => -1.0).
-			add_state(:open, {:hidden => false, :offset_x => -0.44, :opacity => 1.0}).
-			set_state(:closed, {:offset_x => -0.6, :opacity => 0.0, :hidden => true})
-
-		# Variables list
-		self << @variables_list = GuiListWithControls.new($engine.project.variables).set(:scale_x => 0.12, :scale_y => 0.45, :offset_y => -0.23, :item_aspect_ratio => 3.2, :hidden => true, :spacing_y => -1.0).
-			add_state(:open, {:hidden => false, :offset_x => -0.44, :opacity => 1.0}).
-			set_state(:closed, {:offset_x => -0.6, :opacity => 0.0, :hidden => true})
+		self << @variables_flyout = GuiVariablessFlyout.new.set(:scale_x => 0.12, :scale_y => 1.0, :offset_x => -0.44).
+			add_state(:open, {:hidden => false, :offset_x => -0.44}).
+			set_state(:closed, {:hidden => true, :offset_x => -0.56})
 
 		# Events/Variables corner button (bottom left)
 		self << @events_button = GuiButton.new.set(:hotkey => EVENTS_BUTTON, :scale_x => 0.04, :scale_y => -0.06, :background_image => $engine.load_image('images/corner.png')).
@@ -142,8 +89,19 @@ class GuiDefault < GuiInterface
 			set_state(:open, {:hidden => false, :offset_x => -0.48, :offset_y => -0.47})
 
 		@events_button.on_clicked {
-			toggle_inputs_drawer!
+			toggle_inputs_flyout!
 		}
+
+		# Project corner button (upper left)
+		self << @project_menu_button = GuiButton.new.set(:hotkey => MENU_BUTTON, :scale_x => 0.04, :scale_y => 0.06, :offset_x => -0.48, :offset_y => 0.47, :background_image => $engine.load_image('images/corner.png'))
+		@project_menu_button.on_clicked {
+			@overlay.switch_state({:closed => :open}, duration=0.4)
+			@main_menu.switch_state({:closed => :open}, duration=0.2)
+		}
+
+			#@save_button.on_clicked { $engine.save ; positive_message 'Saved successfully.' }
+			#@project_effects_button.on_clicked { |pointer| build_editor_for($engine.project, :pointer => pointer) }
+
 
 		#
 		# User Object Editor
@@ -223,18 +181,12 @@ class GuiDefault < GuiInterface
 		@actors_flyout.switch_state({:open => :closed, :closed => :open}, duration=0.2)
 	end
 
-	def close_inputs_drawer!
-		#@events_button.switch_state({:open => :closed}, duration=0.2)
-		@events_drawer.switch_state({:open => :closed}, duration=0.2)
-		@variables_list.switch_state({:open => :closed}, duration=0.2)
-		@events_list.switch_state({:open => :closed}, duration=0.2)
+	def close_inputs_flyout!
+		@variables_flyout.switch_state({:open => :closed}, duration=0.2)
 	end
 
-	def toggle_inputs_drawer!
-		#@events_button.switch_state({:open => :closed}, duration=0.2)
-		@events_drawer.switch_state({:open => :closed, :closed => :open}, duration=0.2)
-		@variables_list.switch_state({:open => :closed, :closed => :open}, duration=0.2)
-		@events_list.switch_state({:open => :closed, :closed => :open}, duration=0.2)
+	def toggle_inputs_flyout!
+		@variables_flyout.switch_state({:open => :closed, :closed => :open}, duration=0.2)
 	end
 
 	def trash!(user_object)
@@ -244,8 +196,7 @@ class GuiDefault < GuiInterface
 		@directors_list.remove(user_object)
 		@chosen_director = nil if @chosen_director == user_object
 
-		@events_list.remove(user_object)
-		@variables_list.remove(user_object)
+		@variables_flyout.remove(user_object)
 
 		@history.remove(user_object)
 
@@ -483,7 +434,7 @@ class GuiDefault < GuiInterface
 		elsif user_object.is_a? Project
 			clear_editors!
 		elsif user_object.is_a?(Variable) or user_object.is_a?(Event)
-			close_inputs_drawer!
+			close_inputs_flyout!
 		end
 	end
 
@@ -569,11 +520,8 @@ class GuiDefault < GuiInterface
 	end
 
 	def hide_something!
-		if @project_drawer.visible?
-			@project_drawer.switch_state({:open => :closed}, duration=0.2)
-
-		elsif @events_drawer.visible? or @actors_flyout.visible?
-			close_inputs_drawer!
+		if @variables_flyout.visible? or @actors_flyout.visible?
+			close_inputs_flyout!
 			close_actors_flyout!
 
 		else

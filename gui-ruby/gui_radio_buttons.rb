@@ -5,19 +5,18 @@ class GuiRadioButton < GuiObject
 	easy_accessor :parent
 	easy_accessor :value
 
-	def on?
-		parent.get_value == value
-	end
-
 	def gui_render!
-		is_on = on?
-		with_color(is_on ? ON_COLOR : OFF_COLOR) {
+		with_color(on? ? ON_COLOR : OFF_COLOR) {
 			unit_square
 		}
 	end
 
 	def click(pointer)
 		parent.set_value(value)
+	end
+
+	def on?
+		parent.get_value == value
 	end
 end
 
@@ -48,6 +47,6 @@ class GuiRadioButtons < GuiList
 	end
 
 	def click(pointer)
-		set_index(selected_index + 1)
+		set_index(selected_index + 1) if selected_index
 	end
 end

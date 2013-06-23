@@ -6,7 +6,7 @@ class GuiDirectorMenu < GuiBox
 	end
 
 	def create!
-		self << @background = GuiObject.new.set(:color => [0,0,0,1], :opacity => 0.99)
+		self << @background = GuiObject.new.set(:background_image => $engine.load_image('images/overlay.png'))
 
 		self << @grid = GuiGrid.new.set(:scale => 0.95, :spacing_x => 0.1, :spacing_y => 0.1)
 
