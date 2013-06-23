@@ -16,37 +16,31 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-multi_require 'child_user_object', 'drawing'
+multi_require 'parent_user_object_editor_window_with_dialogs', 'add_actor_window', 'add_actor_effect_window', 'actor_treeview', 'effect_treeview', 'user_object_settings_editor'
 
-class ActorEffect < ChildUserObject
-	include Drawing
+class ActorEditorWindow < ParentUserObjectEditorWindowWithDialogs
+	alias :selected_actors :selected_parents
+	alias :selected_actors_each :selected_parents_each
 
-	RADIUS = 0.5 		# (used by children)
+	alias :add_actor_class :add_parent_class
+	alias :add_actor_effect_class :add_child_class
 
-	###################################################################
-	# Object-level functions
-	###################################################################
-	attr_accessor :parent_user_object  	# set just before render time
+	def initialize
+		super('user_object_editor_window',
+			Actor, ActorTreeView, UserObjectSettingsEditor, AddActorWindow,
+			ActorEffect, EffectTreeView, UserObjectSettingsEditor, AddActorEffectWindow,
+			$gui.actor_tag_model)
 
-	def after_load
-		set_default_instance_variables(:enabled => true)
-		super
+		@parent_treeview.model = $gui.actor_model
+
+		#@parent_editor.on_change { @parent_treeview.update_selected }
+		@child_editor.on_change { @child_treeview.update_selected }
 	end
 
-	def child_index
-		($env[:child_index] || 0)
-	end
+private
 
-	def total_children
-		($env[:total_children] || 1)
-	end
-
-	def child_number
-		child_index + 1
-	end
-
-	# default implementation just yields once (= renders the object once)
-	def render
-		yield
+	def on_parent_list_changed
+		$engine.project.actors = @parent_treeview.objects
 	end
 end
+

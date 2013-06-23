@@ -16,37 +16,26 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-multi_require 'child_user_object', 'drawing'
+multi_require 'parent_user_object_editor_window', 'director_treeview', 'effect_treeview', 'user_object_settings_editor', 'add_director_effect_window'
 
-class ActorEffect < ChildUserObject
-	include Drawing
+class DirectorEditorWindow < ParentUserObjectEditorWindowWithDialogs
+	alias :selected_directors :selected_parents
 
-	RADIUS = 0.5 		# (used by children)
+	alias :add_director_class :add_parent_class
+	alias :add_director_effect_class :add_child_class
 
-	###################################################################
-	# Object-level functions
-	###################################################################
-	attr_accessor :parent_user_object  	# set just before render time
+	def initialize
+		super('user_object_editor_window',
+			Director, DirectorTreeView, UserObjectSettingsEditor, nil,
+			DirectorEffect, EffectTreeView, UserObjectSettingsEditor, AddDirectorEffectWindow,
+			$gui.director_tag_model)
 
-	def after_load
-		set_default_instance_variables(:enabled => true)
-		super
+		@parent_treeview.model = $gui.director_model
 	end
 
-	def child_index
-		($env[:child_index] || 0)
-	end
+private
 
-	def total_children
-		($env[:total_children] || 1)
-	end
-
-	def child_number
-		child_index + 1
-	end
-
-	# default implementation just yields once (= renders the object once)
-	def render
-		yield
+	def on_parent_list_changed
+		$engine.project.directors = @parent_treeview.objects
 	end
 end

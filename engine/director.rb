@@ -16,7 +16,7 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-require 'parent_user_object', 'director_effect'
+multi_require 'parent_user_object', 'director_effect'
 
 class Director < ParentUserObject
 	title 'Director'

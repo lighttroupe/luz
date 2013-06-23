@@ -15,8 +15,8 @@ $LOAD_PATH << './user-object-settings'
 $LOAD_PATH << './engine'
 
 require 'reloadable_require'
-require 'addons_ruby', 'method_piping', 'boolean_accessor'
-require 'constants', 'sdl', 'opengl', 'addons_gl', 'drawing'
+multi_require 'addons_ruby', 'method_piping', 'boolean_accessor'
+multi_require 'constants', 'sdl', 'opengl', 'addons_gl', 'drawing'
 
 TESTS_PATH = 'tests'		# relative to root
 TEST_FRAME_LIMIT = 400

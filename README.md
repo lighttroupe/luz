@@ -32,4 +32,4 @@ Luz currently works best on Ubuntu 11.10.  It runs on Ubuntu 12.04 if you provid
 
 3. Run 'make' in the root directory to build Input Manager and Spectrum Analyzer
 
-4. Optionally run the ./build scripts in utils/video-file, utils/video, and utils/chipmunk.
+4. Optionally run the ./build scripts in utils/webcam, utils/video-file, and utils/chipmunk.

@@ -33,10 +33,10 @@ APP_AUTHORS 	= ['Ian McIntosh <ian@openanswers.org>']
 APP_VERSION		= 0.90
 
 require 'reloadable_require'
-require 'addons_ruby', 'method_piping', 'boolean_accessor'
+multi_require 'addons_ruby', 'method_piping', 'boolean_accessor'
 
 # Application basics
-require 'constants', 'sdl', 'opengl', 'addons_gl', 'drawing'
+multi_require 'constants', 'sdl', 'opengl', 'addons_gl', 'drawing'
 
 class LuzPerformer
 	include Drawing

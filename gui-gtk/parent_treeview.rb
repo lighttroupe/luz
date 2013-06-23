@@ -16,37 +16,13 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-multi_require 'child_user_object', 'drawing'
+multi_require 'user_object_treeview', 'parent_user_object_liststore'
 
-class ActorEffect < ChildUserObject
-	include Drawing
+class ParentTreeView < UserObjectTreeView
+	options :model_class => ParentUserObjectListStore	# :reorderable => true,
 
-	RADIUS = 0.5 		# (used by children)
-
-	###################################################################
-	# Object-level functions
-	###################################################################
-	attr_accessor :parent_user_object  	# set just before render time
-
-	def after_load
-		set_default_instance_variables(:enabled => true)
+	def initialize
 		super
-	end
-
-	def child_index
-		($env[:child_index] || 0)
-	end
-
-	def total_children
-		($env[:total_children] || 1)
-	end
-
-	def child_number
-		child_index + 1
-	end
-
-	# default implementation just yields once (= renders the object once)
-	def render
-		yield
+		self.selection.mode = Gtk::SELECTION_MULTIPLE
 	end
 end

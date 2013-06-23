@@ -16,37 +16,11 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-multi_require 'child_user_object', 'drawing'
+multi_require 'child_treeview', 'event_input_liststore'
 
-class ActorEffect < ChildUserObject
-	include Drawing
-
-	RADIUS = 0.5 		# (used by children)
-
-	###################################################################
-	# Object-level functions
-	###################################################################
-	attr_accessor :parent_user_object  	# set just before render time
-
-	def after_load
-		set_default_instance_variables(:enabled => true)
-		super
-	end
-
-	def child_index
-		($env[:child_index] || 0)
-	end
-
-	def total_children
-		($env[:total_children] || 1)
-	end
-
-	def child_number
-		child_index + 1
-	end
-
-	# default implementation just yields once (= renders the object once)
-	def render
-		yield
-	end
+class EventInputTreeView < ChildTreeView
+	options :model_class => EventInputListStore
+	#column :progress, :renderers => [{:name => :progress, :type => :progress, :model_column => :progress}], :expand => false, :position => 1
+	#column :count, :renderers => [{:name => :count, :type => :text, :model_column => :count}], :expand => false, :position => 1
+	column :changed, :renderers => [{:name => :changed, :type => :markup, :model_column => :changed}], :expand => false, :position => 1
 end

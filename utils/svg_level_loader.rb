@@ -30,6 +30,7 @@ class SVGLevelLoader
 		@width = @doc.root.attribute('width').to_s.to_f
 		@height = @doc.root.attribute('height').to_s.to_f
 		@filter_to_blend_mode = parse_filters
+		self
 	end
 
 =begin

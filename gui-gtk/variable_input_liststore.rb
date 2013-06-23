@@ -16,37 +16,15 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-multi_require 'child_user_object', 'drawing'
+multi_require 'child_user_object_liststore'
 
-class ActorEffect < ChildUserObject
-	include Drawing
+class VariableInputListStore < ChildUserObjectListStore
+	column :progress, :type => :integer, :from_object => Proc.new { |object| display_value_for(object.do_value) }
 
-	RADIUS = 0.5 		# (used by children)
-
-	###################################################################
-	# Object-level functions
-	###################################################################
-	attr_accessor :parent_user_object  	# set just before render time
-
-	def after_load
-		set_default_instance_variables(:enabled => true)
-		super
-	end
-
-	def child_index
-		($env[:child_index] || 0)
-	end
-
-	def total_children
-		($env[:total_children] || 1)
-	end
-
-	def child_number
-		child_index + 1
-	end
-
-	# default implementation just yields once (= renders the object once)
-	def render
-		yield
+	def self.display_value_for(value)
+		# convert 0.0..1.0 to 0.0..100.0 and prevent non-0.0 and non-1.0 from showing as such
+		return 1.0 if value > 0.0 and value <= 0.01
+		return 99.0 if value > 0.99 and value < 1.0
+		return (value * 100.0).ceil
 	end
 end

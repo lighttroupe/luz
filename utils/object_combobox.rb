@@ -16,7 +16,7 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-require 'smart_combobox', 'object_liststore'
+multi_require 'smart_combobox', 'object_liststore'
 
 class ObjectComboBox < SmartComboBox
 	options :model_class => ObjectListStore

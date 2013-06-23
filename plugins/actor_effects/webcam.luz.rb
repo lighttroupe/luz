@@ -11,7 +11,7 @@ class ActorEffectWebcam < ActorEffect
 	setting 'number', :integer, :range => 1..10, :summary => 'camera %'
 
 	def after_load
-		require 'video/video4linux2.rb'
+		require 'webcam/video4linux2.rb'
 		super
 	end
 

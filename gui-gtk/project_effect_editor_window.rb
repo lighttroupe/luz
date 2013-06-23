@@ -16,37 +16,22 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-multi_require 'child_user_object', 'drawing'
+multi_require 'project_effect', 'project_effect_treeview', 'parent_user_object_editor_window_with_dialogs', 'add_project_effect_window'
 
-class ActorEffect < ChildUserObject
-	include Drawing
+class ProjectEffectEditorWindow < ParentUserObjectEditorWindowWithDialogs
+	pipe :set_parent_objects, :parent_treeview, :method => :set_objects
+	alias :add_project_effect_class :add_parent_class
 
-	RADIUS = 0.5 		# (used by children)
+	def initialize
+		super('user_object_editor_window',
+			ProjectEffect, ProjectEffectTreeView, UserObjectSettingsEditor, AddProjectEffectWindow,
+			nil, nil, nil, nil)
 
-	###################################################################
-	# Object-level functions
-	###################################################################
-	attr_accessor :parent_user_object  	# set just before render time
-
-	def after_load
-		set_default_instance_variables(:enabled => true)
-		super
+		@child_container.hide
 	end
 
-	def child_index
-		($env[:child_index] || 0)
-	end
-
-	def total_children
-		($env[:total_children] || 1)
-	end
-
-	def child_number
-		child_index + 1
-	end
-
-	# default implementation just yields once (= renders the object once)
-	def render
-		yield
+	def on_parent_list_changed
+		$engine.project.effects = @parent_treeview.objects
 	end
 end
+

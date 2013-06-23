@@ -16,37 +16,29 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-multi_require 'child_user_object', 'drawing'
+multi_require 'parent_user_object_editor_window', 'theme', 'theme_treeview', 'style', 'style_treeview'
 
-class ActorEffect < ChildUserObject
-	include Drawing
+class ThemeEditorWindow < ParentUserObjectEditorWindow
+	def initialize
+		super('user_object_editor_window',
+			Theme, ThemeTreeView, UserObjectSettingsEditor,
+			Style, StyleTreeView, UserObjectSettingsEditor,
+			$gui.theme_tag_model)
 
-	RADIUS = 0.5 		# (used by children)
+		@parent_treeview.model = $gui.theme_model
 
-	###################################################################
-	# Object-level functions
-	###################################################################
-	attr_accessor :parent_user_object  	# set just before render time
+		@child_editor.on_change { @parent_treeview.update_selected }
+	end
 
-	def after_load
-		set_default_instance_variables(:enabled => true)
+private
+
+	def on_parent_list_changed
 		super
+		$engine.project.themes = @parent_treeview.objects
 	end
 
-	def child_index
-		($env[:child_index] || 0)
-	end
-
-	def total_children
-		($env[:total_children] || 1)
-	end
-
-	def child_number
-		child_index + 1
-	end
-
-	# default implementation just yields once (= renders the object once)
-	def render
-		yield
+	def on_child_list_changed
+		super
+		@parent_treeview.update_selected
 	end
 end

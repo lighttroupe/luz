@@ -16,7 +16,7 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-require 'gl_fragment_shader', 'gl_vertex_shader', 'gl_shader_program'
+multi_require 'gl_fragment_shader', 'gl_vertex_shader', 'gl_shader_program'
 
 module DrawingShaderSnippets
 	#

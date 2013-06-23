@@ -16,37 +16,14 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-multi_require 'child_user_object', 'drawing'
+multi_require 'parent_treeview', 'director_liststore'
 
-class ActorEffect < ChildUserObject
-	include Drawing
+class DirectorTreeView < ParentTreeView
+	options :model_class => DirectorListStore
+	column :title, :renderers => [{:name => :title, :type => :markup, :model_column => :title_and_tags, :options => {:ellipsize => Pango::ELLIPSIZE_END}}], :expand => true, :position => :start
 
-	RADIUS = 0.5 		# (used by children)
-
-	###################################################################
-	# Object-level functions
-	###################################################################
-	attr_accessor :parent_user_object  	# set just before render time
-
-	def after_load
-		set_default_instance_variables(:enabled => true)
+	def initialize
 		super
-	end
-
-	def child_index
-		($env[:child_index] || 0)
-	end
-
-	def total_children
-		($env[:total_children] || 1)
-	end
-
-	def child_number
-		child_index + 1
-	end
-
-	# default implementation just yields once (= renders the object once)
-	def render
-		yield
+		enabled_column.visible = false
 	end
 end
