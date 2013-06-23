@@ -433,8 +433,12 @@ class GuiDefault < GuiInterface
 			end
 		elsif user_object.is_a? Project
 			clear_editors!
+
 		elsif user_object.is_a?(Variable) or user_object.is_a?(Event)
 			close_inputs_flyout!
+		elsif user_object.is_a?(Director)
+			self.chosen_director = user_object
+			@director_menu.switch_state({:open => :closed}, duration=0.1)
 		end
 	end
 
@@ -456,9 +460,17 @@ class GuiDefault < GuiInterface
 			clear_editors!		# only support one for now
 
 			if user_object.is_a? Director
-				# selecting a director
-				self.chosen_director = user_object
-				@director_menu.switch_state({:open => :closed}, duration=0.1)
+				if @director_menu.visible?
+					# selecting a director
+					self.chosen_director = user_object
+					@director_menu.switch_state({:open => :closed}, duration=0.1)
+				else
+					editor = create_user_object_editor_for_pointer(user_object, pointer || Vector3.new(0.0,-0.5), options)
+					@user_object_editors[user_object] = editor
+					@user_object_editor_container << editor
+
+					return editor
+				end
 			else
 				if user_object.is_a? Actor
 					if @mode == ACTOR_MODE

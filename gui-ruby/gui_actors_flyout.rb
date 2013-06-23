@@ -20,7 +20,9 @@ class GuiActorsFlyout < GuiBox
 
 		# view directors
 		self << @director_view_button = GuiButton.new.set(:offset_y => 0.5 - 0.025, :scale_x => 1.0, :scale_y => 0.05, :background_image => $engine.load_image('images/buttons/director-view.png'))
-		@director_view_button.on_clicked { $gui.mode = GuiDefault::DIRECTOR_MODE }		# shouldn't need to know this here?
+		@director_view_button.on_clicked {
+			$gui.build_editor_for($gui.chosen_director)
+		}
 
 		#
 		# Actor drawer
