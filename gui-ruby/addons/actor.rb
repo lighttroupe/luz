@@ -1,13 +1,23 @@
 class Actor
+	ACTOR_COLOR = [1,1,1,1]
+
 	def gui_render!
+		# Checkerboard background
+		$gui.actor_view_background_image.using {
+			unit_square
+		}
+
+		# Highlighting (TODO: better solution)
 		gui_render_background
 
 		# Render as cached image
-		with_image {
-			unit_square
+		with_color(ACTOR_COLOR) {
+			with_image {
+				unit_square
+			}
 		}
-#		render!
 
+		# Label
 		if pointer_hovering?
 			with_translation(-0.35, -0.35) {
 				with_scale(0.25, 0.25) {
