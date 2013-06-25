@@ -27,8 +27,6 @@ class ActorEffectColorRGB < ActorEffect
 	setting 'blue', :float, :range => 0.0..1.0, :default => 1.0..1.0
 
 	def render
-		return yield if (red == 0.0 && green == 0.0 && blue == 0.0)
-
 		with_color([red, green, blue]) {
 			yield
 		}
