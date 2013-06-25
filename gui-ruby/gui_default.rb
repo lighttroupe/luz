@@ -268,13 +268,17 @@ class GuiDefault < GuiInterface
 		}
 	end
 
+	def actor_view_background_image
+		unless @actor_view_background
+			@actor_view_background = $engine.load_image('images/background.png')
+			@actor_view_background.set_texture_options(:no_smoothing => true)
+		end
+		@actor_view_background
+	end
+
 	def render_actor_view
 		with_scale(0.75, 1.0) {
-			unless @actor_view_background
-				@actor_view_background = $engine.load_image('images/background.png')
-				@actor_view_background.set_texture_options(:no_smoothing => true)
-			end
-			@actor_view_background.using {
+			actor_view_background_image.using {
 				unit_square
 			}
 			@chosen_actor.render! if @chosen_actor
