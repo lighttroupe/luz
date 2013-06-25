@@ -277,7 +277,7 @@ class GuiDefault < GuiInterface
 	end
 
 	def render_actor_view
-		with_scale(0.75, 1.0) {
+		with_scale(0.75, 1.0) {		# TODO: this is related to screen ratio
 			actor_view_background_image.using {
 				unit_square
 			}
@@ -360,12 +360,9 @@ class GuiDefault < GuiInterface
 				@beat_monitor.switch_state({:open => :closed, :closed => :open}, duration=0.2)
 
 			when 'n'
-				case mode
-				when ACTOR_MODE
-					# TODO not working @chosen_actor.build_add_child_window_for_pointer(nil) if @chosen_actor
-				when DIRECTOR_MODE
-					# TODO
-				end
+				positive_message 'TODO: add actor'
+			when 'm'
+				positive_message 'TODO: add effect'
 			when 'r'
 				$engine.reload
 			when 'f11'
