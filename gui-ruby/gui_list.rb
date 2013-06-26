@@ -71,6 +71,10 @@ class GuiList < GuiBox
 		@scroll_velocity = (@scroll_velocity + VELOCITY_PER_SCROLL).clamp(-MAX_SCROLL_VELOCITY, MAX_SCROLL_VELOCITY) 
 	end
 
+	def scroll_by(pointer, amount)
+		@scroll += amount
+	end
+
 	#
 	# Reordering
 	#

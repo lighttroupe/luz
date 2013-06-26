@@ -10,7 +10,7 @@ class GuiScrollbarScroller < GuiObject
 	end
 
 	def update_drag(pointer)
-		#@scrollbar.scroll_up!(point)
+		@scrollbar.scroll_by(pointer, -(pointer.drag_delta_y * 2.0))
 	end
 
 	def gui_render!
@@ -59,7 +59,17 @@ class GuiScrollbar < GuiBox
 
 		@scroller.set(:scale_y => scroller_size * 0.95, :offset_y => (0.5 - scroller_half_size) - (scroller_progress * space))
 
-		@scroller
+		#@scroller
+	end
+
+	def gui_render!
+		# @target.scroll_velocity
+		with_positioning {
+			with_color(WELL_COLOR) {
+				unit_square
+			}
+		}
+		super
 	end
 
 	def can_move?
@@ -74,13 +84,7 @@ class GuiScrollbar < GuiBox
 		@target.scroll_down!(pointer)
 	end
 
-	def gui_render!
-		# @target.scroll_velocity
-		with_positioning {
-			with_color(WELL_COLOR) {
-				unit_square
-			}
-		}
-		super
+	def scroll_by(pointer, amount)
+		@target.scroll_by(pointer, amount)
 	end
 end
