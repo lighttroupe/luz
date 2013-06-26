@@ -34,8 +34,8 @@ private
 		#
 		# Effects list and scrollbar
 		#
-		self << (@list = GuiListWithControls.new.set({:offset_x => -0.33, :offset_y => -0.05, :scale_x => 0.33, :scale_y => 0.85, :spacing_y => -0.8, :item_aspect_ratio => 4.0}))
-		self << (@list_scrollbar = GuiScrollbar.new(@list).set({:offset_x => -0.167, :offset_y => 0.0, :scale_x => 0.025, :scale_y => 0.75}))
+		self << (@list = GuiListWithControls.new.set({:offset_x => -0.33, :offset_y => -0.06, :scale_x => 0.33, :scale_y => 0.87, :spacing_y => -0.8, :item_aspect_ratio => 4.0}))
+		self << (@list_scrollbar = GuiScrollbar.new(@list).set({:offset_x => -0.154, :offset_y => -0.06, :scale_x => 0.025, :scale_y => 0.87}))
 
 		#
 		# Close
