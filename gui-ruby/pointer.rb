@@ -81,6 +81,20 @@ class Pointer
 		@drag_object = nil
 	end
 
+	def update_velocity
+		current_x, current_y = self.x, self.y
+		if @last_x
+			delta_x, delta_y = (x - @last_x), (y - @last_y)
+			@velocity_squared, @velocity = (delta_x**2 + delta_y**2), nil
+		end
+		@last_x, @last_y = current_x, current_y
+	end
+
+	def velocity
+		return 0.0 unless @velocity_squared
+		@velocity ||= Math.sqrt(@velocity_squared)
+	end
+
 	def drag_delta_x
 		x - @click_x
 	end
@@ -116,6 +130,7 @@ class Pointer
 		end
 
 		update_scroll_wheel
+		update_velocity
 	end
 
 	def render!
