@@ -26,7 +26,7 @@ private
 		#
 		# Category selector
 		#
-		self << (@category_selector = GuiRadioButtons.new(self, :category, @categories).set(:offset_x => 0.0, :offset_y => 0.485, :scale_x => 1.0, :scale_y => 0.12, :spacing_x => 1.0))
+		self << (@category_selector = GuiRadioButtons.new(self, :category, @categories).set(:offset_x => 0.0, :offset_y => 0.48, :scale_x => 1.0, :scale_y => 0.12, :spacing_x => 1.0))
 		@category_selector.on_selection_change {
 			fill_from_category!
 		}
