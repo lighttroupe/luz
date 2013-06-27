@@ -26,7 +26,7 @@ private
 		#
 		# Category selector
 		#
-		self << (@category_selector = GuiRadioButtons.new(self, :category, @categories).set(:offset_x => 0.0, :offset_y => 0.48, :scale_x => 1.0, :scale_y => 0.12, :spacing_x => 1.0))
+		self << (@category_selector = GuiRadioButtons.new(self, :category, @categories).set(:offset_x => 0.005, :offset_y => 0.44, :scale_x => 1.0, :scale_y => 0.11, :spacing_x => 1.0))
 		@category_selector.on_selection_change {
 			fill_from_category!
 		}
@@ -34,13 +34,15 @@ private
 		#
 		# Effects list and scrollbar
 		#
-		self << (@list = GuiListWithControls.new.set({:offset_x => -0.33, :offset_y => -0.06, :scale_x => 0.33, :scale_y => 0.87, :spacing_y => -0.8, :item_aspect_ratio => 4.0}))
-		self << (@list_scrollbar = GuiScrollbar.new(@list).set({:offset_x => -0.154, :offset_y => -0.06, :scale_x => 0.025, :scale_y => 0.87}))
+		self << (@list = GuiListWithControls.new.set({:offset_x => -0.33, :offset_y => -0.07, :scale_x => 0.33, :scale_y => 0.865, :spacing_y => -0.8, :item_aspect_ratio => 4.0}))
+		self << (@list_scrollbar = GuiScrollbar.new(@list).set({:offset_x => -0.154, :offset_y => -0.07, :scale_x => 0.025, :scale_y => 0.865}))
+
+		self << (@title = BitmapFont.new.set({:string => 'Title', :offset_x => 0.19, :offset_y => 0.3, :scale_x => 0.58, :scale_y => 0.1}))
 
 		#
 		# Close
 		#
-		self << (@close_button=GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.15, :offset_x => 0.5, :offset_y => 0.5, :background_image => $engine.load_image('images/buttons/close.png')))
+		self << (@close_button=GuiButton.new.set(:scale_x => 0.08, :scale_y => 0.15, :offset_x => 0.46, :offset_y => 0.43, :background_image => $engine.load_image('images/buttons/close.png')))
 		@close_button.on_clicked { hide! }
 
 		fill_from_category!
@@ -59,14 +61,31 @@ private
 
 			# user selects an effect (class)
 			renderer.on_clicked {
-				new_object = object.new
-				new_object.after_load
-				add_notify(new_object)
-				hide!
+				select_object(object)
 			}
 
 			@list << renderer
 		}
+	end
+
+	def select_object(object)
+		if object == @selected_object
+			add_object(object)
+			hide!
+		else
+			@selected_object = object
+			create_for_object(@selected_object)
+		end
+	end
+
+	def create_for_object(object)
+		@title.set_string(object.title)
+	end
+
+	def add_object(object)
+		new_object = object.new
+		new_object.after_load
+		add_notify(new_object)
 	end
 
 	def hide!
