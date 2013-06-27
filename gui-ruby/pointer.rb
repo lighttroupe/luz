@@ -67,11 +67,6 @@ class Pointer
 		@drag_object.begin_drag(self)
 	end
 
-	#def drag_distance
-	#	return 0.0 unless dragging?
-	#	Math.sqrt(drag_delta_x**2 + drag_delta_y**2)
-	#end
-
 	def update_drag
 		@drag_object.update_drag(self)
 	end
