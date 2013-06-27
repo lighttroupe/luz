@@ -446,6 +446,7 @@ class GuiDefault < GuiInterface
 
 		elsif user_object.is_a?(Variable) or user_object.is_a?(Event)
 			close_inputs_flyout!
+
 		elsif user_object.is_a?(Director)
 			self.chosen_director = user_object
 			@director_menu.switch_state({:open => :closed}, duration=0.1)
@@ -455,7 +456,10 @@ class GuiDefault < GuiInterface
 	def handle_first_click_on_user_object(user_object, options)
 		pointer = options[:pointer]
 
-		if user_object.is_a?(ParentUserObject) || user_object.is_a?(Project)		# TODO: responds_to? :effects ?
+		if user_object == chosen_director
+			self.mode = DIRECTOR_MODE
+
+		elsif user_object.is_a?(ParentUserObject) || user_object.is_a?(Project)		# TODO: responds_to? :effects ?
 			#
 			# Browser-like history of edited objects
 			#
