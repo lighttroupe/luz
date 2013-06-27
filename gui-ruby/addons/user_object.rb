@@ -17,7 +17,7 @@ class UserObject
 			box = GuiBox.new
 
 			# Effects list
-			@gui_effects_list = GuiListWithControls.new(effects).set({:spacing_y => -0.8, :scale_x => 0.3, :offset_x => -0.35, :offset_y => 0.0, :scale_y => 0.75, :item_aspect_ratio => 4.5})
+			@gui_effects_list = GuiListWithControls.new(effects).set({:spacing_y => -0.8, :scale_x => 0.334, :offset_x => -0.33, :offset_y => -0.025, :scale_y => 0.75, :item_aspect_ratio => 4.5})
 			box << @gui_effects_list
 
 			# ...scrollbar
