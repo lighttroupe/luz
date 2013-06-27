@@ -12,6 +12,8 @@ class GuiDefault < GuiInterface
 
 	callback :keypress
 
+	attr_accessor :mode
+
 	def initialize
 		super
 		@history = History.new
@@ -154,36 +156,15 @@ class GuiDefault < GuiInterface
 		self.mode = OUTPUT_MODE
 	end
 
-# TODO: make private?
-
-	def close_actors_flyout!
-		@actors_flyout.switch_state({:open => :closed}, duration=0.2)
+	#
+	# Actor and Director selection
+	#
+	def chosen_actor
+		@actor_view.actor
 	end
 
-	def toggle_actors_flyout!
-		@actors_flyout.switch_state({:open => :closed, :closed => :open}, duration=0.2)
-	end
-
-	def close_inputs_flyout!
-		@variables_flyout.switch_state({:open => :closed}, duration=0.2)
-	end
-
-	def toggle_inputs_flyout!
-		@variables_flyout.switch_state({:open => :closed, :closed => :open}, duration=0.2)
-	end
-
-	def trash!(user_object)
-		@actors_flyout.remove(user_object)
-		@actor_view.actor = nil if @actor_view.actor == user_object
-
-		@directors_list.remove(user_object)
-		@director_view.director = nil if @director_view.director == user_object
-
-		@variables_flyout.remove(user_object)
-
-		@history.remove(user_object)
-
-		clear_editors! if @user_object_editors[user_object]
+	def chosen_actor=(actor)
+		@actor_view.actor = actor
 	end
 
 	def chosen_director
@@ -198,24 +179,6 @@ class GuiDefault < GuiInterface
 
 		@actor_view.actor = director.actors.first
 		build_editor_for(@actor_view.actor) if self.mode == ACTOR_MODE
-	end
-
-	def chosen_actor
-		@actor_view.actor
-	end
-
-	def chosen_actor=(actor)
-		@actor_view.actor = actor
-	end
-
-	#
-	# Mode switching
-	#
-	attr_reader :mode
-	def mode=(mode)
-		return if mode == @mode
-		@mode = mode
-		# TODO: animate?
 	end
 
 	#
@@ -297,35 +260,18 @@ class GuiDefault < GuiInterface
 		@director_view.director.actors.index(@actor_view.actor)
 	end
 
-	def select_previous_actor!
-		return unless @actor_view.actor && @director_view.director && @director_view.director.actors.size > 0
-		index = ((chosen_actor_index || 1) - 1) % @director_view.director.actors.size
-		build_editor_for(@director_view.director.actors[index])
-	end
+	def trash!(user_object)
+		@actors_flyout.remove(user_object)
+		@actor_view.actor = nil if @actor_view.actor == user_object
 
-	def select_next_actor!
-		return unless @actor_view.actor && @director_view.director && @director_view.director.actors.size > 0
-		index = ((chosen_actor_index || -1) + 1) % @director_view.director.actors.size
-		build_editor_for(@director_view.director.actors[index])
-	end
+		@directors_list.remove(user_object)
+		@director_view.director = nil if @director_view.director == user_object
 
-	#
-	# Debug
-	#
-	def toggle_gc_timing
-		if GC::Profiler.enabled?
-			puts GC::Profiler.result
-			GC::Profiler.disable
-			positive_message 'GC Results Printed'
-		else
-			GC::Profiler.enable
-			positive_message 'GC Monitoring Enabled'
-		end
-	end
+		@variables_flyout.remove(user_object)
 
-	def output_object_counts
-		p (counts = ObjectSpace.count_objects)
-		positive_message "#{counts[:TOTAL]} Objects, #{counts[:FREE]} Free"
+		@history.remove(user_object)
+
+		clear_editors! if @user_object_editors[user_object]
 	end
 
 	#
@@ -444,5 +390,52 @@ class GuiDefault < GuiInterface
 
 	def suitable_for_history?(object)
 		[Actor, Variable, Event].any? { |klass| object.is_a? klass }
+	end
+
+	def select_previous_actor!
+		return unless @actor_view.actor && @director_view.director && @director_view.director.actors.size > 0
+		index = ((chosen_actor_index || 1) - 1) % @director_view.director.actors.size
+		build_editor_for(@director_view.director.actors[index])
+	end
+
+	def select_next_actor!
+		return unless @actor_view.actor && @director_view.director && @director_view.director.actors.size > 0
+		index = ((chosen_actor_index || -1) + 1) % @director_view.director.actors.size
+		build_editor_for(@director_view.director.actors[index])
+	end
+
+	def close_actors_flyout!
+		@actors_flyout.switch_state({:open => :closed}, duration=0.2)
+	end
+
+	def toggle_actors_flyout!
+		@actors_flyout.switch_state({:open => :closed, :closed => :open}, duration=0.2)
+	end
+
+	def close_inputs_flyout!
+		@variables_flyout.switch_state({:open => :closed}, duration=0.2)
+	end
+
+	def toggle_inputs_flyout!
+		@variables_flyout.switch_state({:open => :closed, :closed => :open}, duration=0.2)
+	end
+
+	#
+	# Debug
+	#
+	def toggle_gc_timing
+		if GC::Profiler.enabled?
+			puts GC::Profiler.result
+			GC::Profiler.disable
+			positive_message 'GC Results Printed'
+		else
+			GC::Profiler.enable
+			positive_message 'GC Monitoring Enabled'
+		end
+	end
+
+	def output_object_counts
+		p (counts = ObjectSpace.count_objects)
+		positive_message "#{counts[:TOTAL]} Objects, #{counts[:FREE]} Free"
 	end
 end
