@@ -29,7 +29,7 @@ class GuiUserObjectEditor < GuiBox
 				@user_object.gui_fill_settings_list(@user_object)
 			}
 		end
-		self << (@title_text=BitmapFont.new.set_string(@user_object.title).set(:scale_x => 0.5, :float => :left, :scale_y => 0.10, :offset_x => 0.0, :offset_y => 0.5 - 0.06))		#.set(:background_image => $engine.load_image('images/buttons/menu.png'))
+		self << (@title_text=BitmapFont.new.set_string(@user_object.title).set(:offset_x => -0.18, :offset_y => 0.5 - 0.06, :scale_x => 0.5, :scale_y => 0.10))		#.set(:background_image => $engine.load_image('images/buttons/menu.png'))
 
 		self << (@delete_button = GuiButton.new.set(:scale_x => 0.05, :scale_y => 0.05, :offset_x => 0.475, :offset_y => -0.475, :background_image => $engine.load_image('images/buttons/menu.png')))
 		@delete_button.on_clicked { |pointer|

@@ -21,7 +21,7 @@ class UserObject
 			box << @gui_effects_list
 
 			# ...scrollbar
-			@gui_effects_list_scrollbar = GuiScrollbar.new(@gui_effects_list).set({:scale_x => 0.025, :offset_x => -0.187, :offset_y => 0.0, :scale_y => 0.75})
+			@gui_effects_list_scrollbar = GuiScrollbar.new(@gui_effects_list).set({:scale_x => 0.025, :offset_x => -0.152, :offset_y => -0.03, :scale_y => 0.75})
 			box << @gui_effects_list_scrollbar
 
 			# Add Button
@@ -52,12 +52,12 @@ class UserObject
 			}
 
 			# Settings list
-			@gui_settings_list = GuiList.new.set({:spacing_y => -1.0, :scale_x => 0.59, :offset_x => 0.155, :offset_y => 0.0, :scale_y => 0.75, :item_aspect_ratio => 5.0})
+			@gui_settings_list = GuiList.new.set({:spacing_y => -1.0, :scale_x => 0.55, :offset_x => 0.195, :offset_y => -0.04, :scale_y => 0.75, :item_aspect_ratio => 5.0})
 			box << @gui_settings_list
 			gui_fill_settings_list(self)		# show this object's settings
 
 			# ...scrollbar
-			@gui_settings_list_scrollbar = GuiScrollbar.new(@gui_settings_list).set({:scale_x => 0.03, :offset_x => -0.155, :offset_y => 0.0, :scale_y => 0.75})
+			@gui_settings_list_scrollbar = GuiScrollbar.new(@gui_settings_list).set({:scale_x => 0.03, :offset_x => -0.104, :offset_y => -0.03, :scale_y => 0.75})
 			box << @gui_settings_list_scrollbar
 
 			box
