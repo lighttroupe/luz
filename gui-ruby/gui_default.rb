@@ -36,7 +36,7 @@ class GuiDefault < GuiInterface
 		#
 		# Actors / Directors flyout
 		#
-		self << @actors_flyout = GuiActorsFlyout.new.set(:scale_x => 0.12, :scale_y => 1.0, :offset_x => 0.5 - 0.06).		# TODO: background image?
+		self << @actors_flyout = GuiActorsFlyout.new.set(:scale_x => 0.12, :scale_y => 1.0, :offset_x => 0.5 - 0.06).
 			add_state(:open, {:offset_x => 0.44, :hidden => false}).
 			set_state(:closed, {:offset_x => 0.56, :hidden => true})
 
@@ -75,10 +75,6 @@ class GuiDefault < GuiInterface
 			@main_menu.switch_state({:closed => :open}, duration=0.2)
 		}
 
-			#@save_button.on_clicked { $engine.save ; positive_message 'Saved successfully.' }
-			#@project_effects_button.on_clicked { |pointer| build_editor_for($engine.project, :pointer => pointer) }
-
-
 		#
 		# User Object Editor
 		#
@@ -109,10 +105,6 @@ class GuiDefault < GuiInterface
 		self << @main_menu = GuiMainMenu.new.set(:opacity => 0.0, :hidden => true).
 			add_state(:open, {:scale_x => 1.0, :opacity => 1.0, :hidden => false}).
 			set_state(:closed, {:scale_x => 2.0, :opacity => 0.0, :hidden => true})
-
-#		self << @main_menu = GuiMainMenu.new.set(:hidden => true, :scale_y => 0.7).
-#			add_state(:open, {:scale_x => 0.35, :hidden => false}).
-#			set_state(:closed, {:scale_x => 0.0, :hidden => true})
 
 		@main_menu.on_close {
 			@main_menu.switch_state({:open => :closed}, duration=0.1)
