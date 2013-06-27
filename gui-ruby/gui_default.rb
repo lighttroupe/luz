@@ -159,26 +159,14 @@ class GuiDefault < GuiInterface
 	#
 	# Actor and Director selection
 	#
-	def chosen_actor
-		@actor_view.actor
-	end
-
-	def chosen_actor=(actor)
-		@actor_view.actor = actor
-	end
-
-	def chosen_director
-		@director_view.director
-	end
+	pipe [:chosen_actor], :actor_view, :method => :actor
+	pipe [:chosen_actor=], :actor_view, :method => :actor=
+	pipe [:chosen_director], :director_view, :method => :director
 
 	def chosen_director=(director)
 		@director_view.director = director
 		@actors_flyout.actors = director.actors
-
 		self.mode = DIRECTOR_MODE
-
-		@actor_view.actor = director.actors.first
-		build_editor_for(@actor_view.actor) if self.mode == ACTOR_MODE
 	end
 
 	#
@@ -203,6 +191,9 @@ class GuiDefault < GuiInterface
 		}
 	end
 
+	#
+	# Keyboard interaction
+	#
 	def on_key_press(value)
 		#
 		# Ctrl key
@@ -256,8 +247,20 @@ class GuiDefault < GuiInterface
 	def route_keypress_to_selected_widget(value)
 	end
 
-	def chosen_actor_index
-		@director_view.director.actors.index(@actor_view.actor)
+	#
+	# Main show / destroy API
+	#
+	def build_editor_for(user_object, options={})
+		return unless user_object
+
+		editor = @user_object_editors[user_object]
+
+		# Single-editor interface: is an editor for this object already showing?
+		if editor && !editor.hidden?
+			handle_second_click_on_user_object(user_object, options)
+		else
+			handle_first_click_on_user_object(user_object, options)
+		end
 	end
 
 	def trash!(user_object)
@@ -350,19 +353,6 @@ class GuiDefault < GuiInterface
 		end
 	end
 
-	def build_editor_for(user_object, options={})
-		return unless user_object
-
-		editor = @user_object_editors[user_object]
-
-		# Single-editor interface: is an editor for this object already showing?
-		if editor && !editor.hidden?
-			handle_second_click_on_user_object(user_object, options)
-		else
-			handle_first_click_on_user_object(user_object, options)
-		end
-	end
-
 	#
 	# Utility methods
 	#
@@ -392,18 +382,6 @@ class GuiDefault < GuiInterface
 		[Actor, Variable, Event].any? { |klass| object.is_a? klass }
 	end
 
-	def select_previous_actor!
-		return unless @actor_view.actor && @director_view.director && @director_view.director.actors.size > 0
-		index = ((chosen_actor_index || 1) - 1) % @director_view.director.actors.size
-		build_editor_for(@director_view.director.actors[index])
-	end
-
-	def select_next_actor!
-		return unless @actor_view.actor && @director_view.director && @director_view.director.actors.size > 0
-		index = ((chosen_actor_index || -1) + 1) % @director_view.director.actors.size
-		build_editor_for(@director_view.director.actors[index])
-	end
-
 	def close_actors_flyout!
 		@actors_flyout.switch_state({:open => :closed}, duration=0.2)
 	end
@@ -418,6 +396,25 @@ class GuiDefault < GuiInterface
 
 	def toggle_inputs_flyout!
 		@variables_flyout.switch_state({:open => :closed, :closed => :open}, duration=0.2)
+	end
+
+	#
+	# Next/Previous actor selection
+	#
+	def select_next_actor!
+		return unless @actor_view.actor && @director_view.director && @director_view.director.actors.size > 0
+		index = ((chosen_actor_index || -1) + 1) % @director_view.director.actors.size
+		build_editor_for(@director_view.director.actors[index])
+	end
+
+	def select_previous_actor!
+		return unless @actor_view.actor && @director_view.director && @director_view.director.actors.size > 0
+		index = ((chosen_actor_index || 1) - 1) % @director_view.director.actors.size
+		build_editor_for(@director_view.director.actors[index])
+	end
+
+	def chosen_actor_index
+		@director_view.director.actors.index(@actor_view.actor)
 	end
 
 	#
