@@ -37,7 +37,7 @@ private
 		self << (@list = GuiListWithControls.new.set({:offset_x => -0.33, :offset_y => -0.07, :scale_x => 0.33, :scale_y => 0.865, :spacing_y => -0.8, :item_aspect_ratio => 4.0}))
 		self << (@list_scrollbar = GuiScrollbar.new(@list).set({:offset_x => -0.154, :offset_y => -0.07, :scale_x => 0.025, :scale_y => 0.865}))
 
-		self << (@title = BitmapFont.new.set({:string => 'Title', :offset_x => 0.19, :offset_y => 0.3, :scale_x => 0.58, :scale_y => 0.1}))
+		self << (@title = BitmapFont.new.set({:string => '', :offset_x => 0.19, :offset_y => 0.3, :scale_x => 0.58, :scale_y => 0.1}))
 
 		#
 		# Close
