@@ -22,3 +22,10 @@ Makefile
 *.mp4
 *.mp3
 *.mov
+*.wmv
+*.mpg
+*.bmp
+*.luz
+
+# temp script to launch 2.0
+go
