@@ -170,7 +170,7 @@ class GuiDefault < GuiInterface
 	end
 
 	#
-	# Rendering
+	# Rendering: render is called every frame, gui_render! only when the Editor plugin thinks it's visible 
 	#
 	def render
 		case @mode
