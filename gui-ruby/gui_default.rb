@@ -430,29 +430,6 @@ class GuiDefault < GuiInterface
 		positive_message "#{counts[:TOTAL]} Objects, #{counts[:FREE]} Free"
 	end
 
-	def handle_second_click_on_user_object(user_object, options)
-		pointer = options[:pointer]
-
-		# This is the second click on the object
-		if user_object.is_a? Actor
-			if (self.mode == ACTOR_MODE && @chosen_actor == user_object)
-				@actors_flyout.animate_to_state(:closed, duration=0.1)
-			else
-				@chosen_actor = user_object
-				self.mode = ACTOR_MODE		# TODO: make this an option?
-			end
-		elsif user_object.is_a? Project
-			clear_editors!
-
-		elsif user_object.is_a?(Variable) or user_object.is_a?(Event)
-			close_inputs_flyout!
-
-		elsif user_object.is_a?(Director)
-			self.chosen_director = user_object
-			@director_menu.switch_state({:open => :closed}, duration=0.1)
-		end
-	end
-
 	def handle_first_click_on_user_object(user_object, options)
 		pointer = options[:pointer]
 
@@ -504,6 +481,28 @@ class GuiDefault < GuiInterface
 			parent = @user_object_editors.keys.find { |uo| uo.effects.include? user_object }		# TODO: hacking around children not knowing their parents for easier puppetry
 			parent.on_child_user_object_selected(user_object) if parent		# NOTE: can't click a child if parent is not visible, but the 'if' doesn't hurt
 			return nil
+		end
+	end
+
+	def handle_second_click_on_user_object(user_object, options)
+		pointer = options[:pointer]
+
+		if user_object.is_a? Actor
+			if (self.mode == ACTOR_MODE && @chosen_actor == user_object)
+				@actors_flyout.animate_to_state(:closed, duration=0.1)
+			else
+				@chosen_actor = user_object
+				self.mode = ACTOR_MODE		# TODO: make this an option?
+			end
+		elsif user_object.is_a? Project
+			clear_editors!
+
+		elsif user_object.is_a?(Variable) or user_object.is_a?(Event)
+			close_inputs_flyout!
+
+		elsif user_object.is_a?(Director)
+			self.chosen_director = user_object
+			@director_menu.switch_state({:open => :closed}, duration=0.1)
 		end
 	end
 
