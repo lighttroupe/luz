@@ -29,7 +29,6 @@ class GuiDefault < GuiInterface
 
 	def initialize
 		super
-		@gui_zoom_out = 1.0		# zoom out for debugging
 		@history = History.new
 		@history.on_navigation { |user_object|
 			build_editor_for(user_object, :history => false)
@@ -252,15 +251,11 @@ class GuiDefault < GuiInterface
 	end
 
 	def actor_view_background_image
-		unless @actor_view_background
-			@actor_view_background = $engine.load_image('images/background.png')
-			@actor_view_background.set_texture_options(:no_smoothing => true)
-		end
-		@actor_view_background
+		@actor_view_background_image ||= $engine.load_image('images/background.png').set_texture_options(:no_smoothing => true)
 	end
 
 	def gui_render!
-		with_scale(@gui_zoom_out * ($env[:enter] + $env[:exit]).scale(1.5, 1.0)) {
+		with_scale(($env[:enter] + $env[:exit]).scale(1.5, 1.0)) {
 			with_alpha(($env[:enter] + $env[:exit]).scale(0.0, 1.0)) {
 				super
 			}
