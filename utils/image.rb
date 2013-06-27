@@ -41,6 +41,7 @@ class Image
 
 			#GL.TexParameter(GL::TEXTURE_2D, GL::GENERATE_MIPMAP, GL::TRUE)
 		}
+		self
 	end
 
 	###################################################################
