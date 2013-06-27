@@ -3,17 +3,12 @@ multi_require 'gui_pointer_behavior', 'gui_object', 'gui_box', 'gui_hbox', 'gui_
 # Addons to existing objects
 load_directory(Dir.pwd + '/gui-ruby/addons/', '**.rb')
 
-multi_require 'gui_preferences_box', 'gui_user_object_editor', 'gui_add_window', 'gui_interface', 'gui_actor_class_button', 'gui_director_menu', 'gui_actors_flyout', 'gui_variables_flyout'
-
-class String
-	boolean_accessor :shift, :control, :alt
-end
+multi_require 'gui_actor_view', 'gui_director_view', 'gui_preferences_box', 'gui_user_object_editor', 'gui_add_window', 'gui_interface', 'gui_actor_class_button', 'gui_director_menu', 'gui_actors_flyout', 'gui_variables_flyout'
 
 class GuiDefault < GuiInterface
 	pipe [:positive_message, :negative_message], :message_bar
 
 	ACTOR_MODE, DIRECTOR_MODE, OUTPUT_MODE = 1, 2, 3
-	ACTOR_CAMERA_X, DIRECTOR_CAMERA_X, OUTPUT_CAMERA_X = 0.0, 1.0, 2.0
 
 	# hardcoded Luz keys
 	MENU_BUTTON						= ''
@@ -53,9 +48,6 @@ class GuiDefault < GuiInterface
 	# Minimal start for a new object: self << GuiObject.new.set(:scale_x => 0.1, :scale_y => 0.1)
 	def create!
 		# Remember: this is drawn first-to-last
-
-		# Defaults
-		set(:mode => OUTPUT_MODE, :camera_x => OUTPUT_CAMERA_X, :output_opacity => 1.0)
 
 		#
 		# Actors / Directors flyout
@@ -163,6 +155,9 @@ class GuiDefault < GuiInterface
 
 		self << @directors_list = GuiListWithControls.new([]).set(:hidden => true)
 
+		@actor_view = GuiActorView.new
+		@director_view = GuiDirectorView.new
+
 		#
 		# 
 		#
@@ -171,7 +166,7 @@ class GuiDefault < GuiInterface
 
 	def set_initial_state
 		@user_object_editors = {}
-		@chosen_actor = nil
+		@actor_view.actor = nil
 
 		# Auto-select first director
 		director = $engine.project.directors.first
@@ -180,6 +175,9 @@ class GuiDefault < GuiInterface
 		director.actors = $engine.project.actors if director.actors.empty? and not $engine.project.actors.empty?
 
 		self.chosen_director = director
+
+		self.mode = OUTPUT_MODE
+		self.output_opacity = 1.0
 	end
 
 # TODO: make private?
@@ -202,10 +200,10 @@ class GuiDefault < GuiInterface
 
 	def trash!(user_object)
 		@actors_flyout.remove(user_object)
-		@chosen_actor = nil if @chosen_actor == user_object
+		@actor_view.actor = nil if @actor_view.actor == user_object
 
 		@directors_list.remove(user_object)
-		@chosen_director = nil if @chosen_director == user_object
+		@director_view.director = nil if @director_view.director == user_object
 
 		@variables_flyout.remove(user_object)
 
@@ -214,15 +212,18 @@ class GuiDefault < GuiInterface
 		clear_editors! if @user_object_editors[user_object]
 	end
 
-	attr_reader :chosen_director
+	def chosen_director
+		@director_view.director
+	end
+
 	def chosen_director=(director)
-		@chosen_director = director
+		@director_view.director = director
 		@actors_flyout.actors = director.actors
 
 		self.mode = DIRECTOR_MODE
 
-		@chosen_actor = director.actors.first
-		build_editor_for(@chosen_actor) if self.mode == ACTOR_MODE
+		@actor_view.actor = director.actors.first
+		build_editor_for(@actor_view.actor) if self.mode == ACTOR_MODE
 	end
 
 	#
@@ -231,52 +232,23 @@ class GuiDefault < GuiInterface
 	attr_reader :mode
 	def mode=(mode)
 		return if mode == @mode
-
 		@mode = mode
-		after_mode_change
-	end
-
-	def after_mode_change
-		case @mode
-		when ACTOR_MODE
-			animate(:camera_x, ACTOR_CAMERA_X, camera_switch_time)
-		when DIRECTOR_MODE
-			animate(:camera_x, DIRECTOR_CAMERA_X, camera_switch_time)
-		when OUTPUT_MODE
-			animate(:camera_x, OUTPUT_CAMERA_X, camera_switch_time)
-		end
-	end
-
-	def camera_switch_time
-		0.0
+		# TODO: animate?
 	end
 
 	def render
-		with_translation(-camera_x, 0.0) {
-			# Render actor view
-			if camera_x < DIRECTOR_CAMERA_X
-				render_actor_view
-			end
+		case @mode
+		when ACTOR_MODE
+			@actor_view.gui_render!
 
-			# Render director view
-			if camera_x > ACTOR_CAMERA_X && camera_x < OUTPUT_CAMERA_X
-				with_translation(DIRECTOR_CAMERA_X, 0.0) {
-#					with_color([0.5,0.5,0.5,1.0]) {
-#						unit_square
-#					}
-					render_director_view
-				}
-			end
+		when DIRECTOR_MODE
+			@director_view.gui_render!
 
-			# Render output view
-			if camera_x > DIRECTOR_CAMERA_X
-				with_multiplied_alpha(output_opacity) {
-					with_translation(OUTPUT_CAMERA_X, 0.0) {
-						yield
-					}
-				}
-			end
-		}
+		when OUTPUT_MODE
+			with_multiplied_alpha(output_opacity) {
+				yield
+			}
+		end
 	end
 
 	def actor_view_background_image
@@ -285,72 +257,6 @@ class GuiDefault < GuiInterface
 			@actor_view_background.set_texture_options(:no_smoothing => true)
 		end
 		@actor_view_background
-	end
-
-	def render_actor_view
-		with_scale(0.75, 1.0) {		# TODO: this is related to screen ratio
-			actor_view_background_image.using {
-				unit_square
-			}
-			@chosen_actor.render! if @chosen_actor
-			draw_origin_cross
-		}
-	end
-
-	def render_director_view
-		draw_scaffolding
-		@chosen_director.render if @chosen_director
-	end
-
-	MAJOR_GRIDLINE_COLOR = Color.new([1.0, 1.0, 1.0, 0.3])
-
-	def draw_scaffolding
-		# Paint the scaffolding, writing and testing depths
-		GL.Enable(GL::DEPTH_TEST)
-		GL.DepthMask(true)				# write depths
-		GL.DepthFunc(GL::LEQUAL)	# nearer or newer
-
-		GL.LineWidth(1.0)
-		GL.PointSize(3.0)
-		draw_origin_cross
-
-		with_color(MAJOR_GRIDLINE_COLOR) {
-			GL.LineWidth(1.0)
-			with_roll(0.25, x=1.0, y=0.0, z=0.0) {
-				with_scale(10) {
-					draw_grid(10)
-				}
-			}
-		}
-	end
-
-	def draw_origin_cross(distance=5.0)
-		alpha = 0.9
-#		@origin_cross_list ||= {}
-#		@origin_cross_list[distance] ||= GL.RenderToList {
-			with_color([1.0, 0.0, 0.0, alpha]) { draw_origin_line_x(distance) }
-			with_color([0.0, 1.0, 0.0, alpha]) { with_roll(0.25, 0.0, 0.0, 1.0) { draw_origin_line_x(distance) } }
-			with_color([0.0, 0.0, 1.0, alpha]) { with_roll(0.25, 0.0, 1.0, 0.0) { draw_origin_line_x(distance) } }
-
-#		}
-#		GL.CallList(@origin_cross_list[distance])
-	end
-
-	def draw_origin_line_x(distance)
-		GL.Begin(GL::LINES)
-			GL.Vertex(distance, 0.0, 0.0) ; GL.Vertex(-distance, 0.0, 0.0)
-		GL.End
-
-		GL.Begin(GL::POINTS)
-			(-distance).step(distance, 0.5) { |d| GL.Vertex(d, 0.0, 0.0) }
-		GL.End
-	end
-
-	def draw_grid(grid_lines)
-		GL.Begin(GL::LINES)
-			(-0.5).step(0.5, 1.0 / grid_lines) { |x| GL.Vertex(x, 0.5) ; GL.Vertex(x, -0.5) }
-			(-0.5).step(0.5, 1.0 / grid_lines) { |y| GL.Vertex(0.5, y) ; GL.Vertex(-0.5, y) }
-		GL.End
 	end
 
 	def gui_render!
@@ -415,19 +321,19 @@ class GuiDefault < GuiInterface
 	end
 
 	def chosen_actor_index
-		@chosen_director.actors.index(@chosen_actor)
+		@director_view.director.actors.index(@actor_view.actor)
 	end
 
 	def select_previous_actor!
-		return unless @chosen_actor && @chosen_director && @chosen_director.actors.size > 0
-		index = ((chosen_actor_index || 1) - 1) % @chosen_director.actors.size
-		build_editor_for(@chosen_director.actors[index])
+		return unless @actor_view.actor && @director_view.director && @director_view.director.actors.size > 0
+		index = ((chosen_actor_index || 1) - 1) % @director_view.director.actors.size
+		build_editor_for(@director_view.director.actors[index])
 	end
 
 	def select_next_actor!
-		return unless @chosen_actor && @chosen_director && @chosen_director.actors.size > 0
-		index = ((chosen_actor_index || -1) + 1) % @chosen_director.actors.size
-		build_editor_for(@chosen_director.actors[index])
+		return unless @actor_view.actor && @director_view.director && @director_view.director.actors.size > 0
+		index = ((chosen_actor_index || -1) + 1) % @director_view.director.actors.size
+		build_editor_for(@director_view.director.actors[index])
 	end
 
 	def toggle_gc_timing
@@ -475,7 +381,7 @@ class GuiDefault < GuiInterface
 				if user_object.is_a? Actor
 					if @mode == ACTOR_MODE
 						# Rule: cannot view one actor (in actor-mode) while editing another
-						@chosen_actor = user_object
+						@actor_view.actor = user_object
 					end
 				end
 
@@ -497,10 +403,10 @@ class GuiDefault < GuiInterface
 		pointer = options[:pointer]
 
 		if user_object.is_a? Actor
-			if (self.mode == ACTOR_MODE && @chosen_actor == user_object)
+			if (self.mode == ACTOR_MODE && @actor_view.actor == user_object)
 				@actors_flyout.animate_to_state(:closed, duration=0.1)
 			else
-				@chosen_actor = user_object
+				@actor_view.actor = user_object
 				self.mode = ACTOR_MODE		# TODO: make this an option?
 			end
 		elsif user_object.is_a? Project
