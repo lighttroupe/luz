@@ -128,13 +128,22 @@ class GuiDefault < GuiInterface
 			set_state(:closed, {:opacity => 0.0, :hidden => true})
 
 		# Main menu
-		self << @main_menu = GuiMainMenu.new.set(:hidden => true, :scale_y => 0.7).
-			add_state(:open, {:scale_x => 0.35, :hidden => false}).
-			set_state(:closed, {:scale_x => 0.0, :hidden => true})
+		self << @main_menu = GuiMainMenu.new.set(:opacity => 0.0, :hidden => true).
+			add_state(:open, {:scale_x => 1.0, :opacity => 1.0, :hidden => false}).
+			set_state(:closed, {:scale_x => 2.0, :opacity => 0.0, :hidden => true})
+
+#		self << @main_menu = GuiMainMenu.new.set(:hidden => true, :scale_y => 0.7).
+#			add_state(:open, {:scale_x => 0.35, :hidden => false}).
+#			set_state(:closed, {:scale_x => 0.0, :hidden => true})
 
 		@main_menu.on_close {
 			@main_menu.switch_state({:open => :closed}, duration=0.1)
 			@overlay.switch_state({:open => :closed}, duration=0.2)
+		}
+
+		@main_menu.on_save {
+			$engine.save
+			positive_message 'Saved successfully.'
 		}
 
 		# Director Grid popup
