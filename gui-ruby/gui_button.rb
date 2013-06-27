@@ -5,7 +5,7 @@ class GuiButton < GuiObject
 
 	callback :clicked
 	callback :holding
-	easy_accessor :background_image, :hotkey
+	easy_accessor :background_image
 
 	def click(pointer)
 		clicked_notify(pointer)
@@ -13,11 +13,6 @@ class GuiButton < GuiObject
 
 	def click_hold(pointer)
 		holding_notify(pointer)
-	end
-
-	def gui_tick!
-		super
-		clicked_notify(nil) if hotkey && $engine.button_pressed_this_frame?(hotkey)
 	end
 
 	def gui_render!

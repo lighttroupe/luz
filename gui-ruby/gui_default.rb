@@ -10,22 +10,7 @@ class GuiDefault < GuiInterface
 
 	ACTOR_MODE, DIRECTOR_MODE, OUTPUT_MODE = 1, 2, 3
 
-	# hardcoded Luz keys
-	MENU_BUTTON						= ''
-	SAVE_BUTTON						= ''
-
-	EVENTS_BUTTON					= 'Keyboard / F1'
-	#VARIABLES_BUTTON			= 'Keyboard / F2'
-
-	ACTORS_BUTTON					= 'Keyboard / F8'
-	#THEMES_BUTTON				= 'Keyboard / F5'
-	#CURVES_BUTTON				= 'Keyboard / F6'
-	#PREFERENCES_BUTTON		= 'Keyboard / F12'
-	PLAY_KEY		= 'Keyboard / F12'
-
 	callback :keypress
-
-	easy_accessor :camera_x, :output_opacity
 
 	def initialize
 		super
@@ -56,13 +41,13 @@ class GuiDefault < GuiInterface
 			set_state(:closed, {:offset_x => 0.56, :hidden => true})
 
 		# Directors corner button (top right)
-		self << (@directors_button = GuiButton.new.set(:hotkey => MENU_BUTTON, :scale_x => -0.04, :scale_y => 0.06, :offset_x => 0.48, :offset_y => 0.47, :background_image => $engine.load_image('images/corner.png')))
+		self << (@directors_button = GuiButton.new.set(:scale_x => -0.04, :scale_y => 0.06, :offset_x => 0.48, :offset_y => 0.47, :background_image => $engine.load_image('images/corner.png')))
 		@directors_button.on_clicked {
 			@director_menu.switch_state({:closed => :open},durection=0.4)
 		}
 
 		# Actors corner button (bottom right)
-		self << (@actors_button = GuiButton.new.set(:hotkey => ACTORS_BUTTON, :scale_x => -0.04, :scale_y => -0.06, :offset_x => 0.48, :offset_y => -0.47, :background_image => $engine.load_image('images/corner.png')))
+		self << (@actors_button = GuiButton.new.set(:scale_x => -0.04, :scale_y => -0.06, :offset_x => 0.48, :offset_y => -0.47, :background_image => $engine.load_image('images/corner.png')))
 		@actors_button.on_clicked {
 			toggle_actors_flyout!
 		}
@@ -75,7 +60,7 @@ class GuiDefault < GuiInterface
 			set_state(:closed, {:hidden => true, :offset_x => -0.56})
 
 		# Events/Variables corner button (bottom left)
-		self << @events_button = GuiButton.new.set(:hotkey => EVENTS_BUTTON, :scale_x => 0.04, :scale_y => -0.06, :background_image => $engine.load_image('images/corner.png')).
+		self << @events_button = GuiButton.new.set(:scale_x => 0.04, :scale_y => -0.06, :background_image => $engine.load_image('images/corner.png')).
 			add_state(:closed, {:hidden => true, :offset_x => -0.55, :offset_y => -0.53}).
 			set_state(:open, {:hidden => false, :offset_x => -0.48, :offset_y => -0.47})
 
@@ -84,7 +69,7 @@ class GuiDefault < GuiInterface
 		}
 
 		# Project corner button (upper left)
-		self << @project_menu_button = GuiButton.new.set(:hotkey => MENU_BUTTON, :scale_x => 0.04, :scale_y => 0.06, :offset_x => -0.48, :offset_y => 0.47, :background_image => $engine.load_image('images/corner.png'))
+		self << @project_menu_button = GuiButton.new.set(:scale_x => 0.04, :scale_y => 0.06, :offset_x => -0.48, :offset_y => 0.47, :background_image => $engine.load_image('images/corner.png'))
 		@project_menu_button.on_clicked {
 			@overlay.switch_state({:closed => :open}, duration=0.4)
 			@main_menu.switch_state({:closed => :open}, duration=0.2)
@@ -165,7 +150,6 @@ class GuiDefault < GuiInterface
 
 	def set_initial_state
 		@user_object_editors = {}
-		@actor_view.actor = nil
 
 		# Auto-select first director
 		director = $engine.project.directors.first
@@ -173,10 +157,9 @@ class GuiDefault < GuiInterface
 		# Hack to load project file format 1
 		director.actors = $engine.project.actors if director.actors.empty? and not $engine.project.actors.empty?
 
+		self.chosen_actor = nil
 		self.chosen_director = director
-
 		self.mode = OUTPUT_MODE
-		self.output_opacity = 1.0
 	end
 
 # TODO: make private?
@@ -225,6 +208,14 @@ class GuiDefault < GuiInterface
 		build_editor_for(@actor_view.actor) if self.mode == ACTOR_MODE
 	end
 
+	def chosen_actor
+		@actor_view.actor
+	end
+
+	def chosen_actor=(actor)
+		@actor_view.actor = actor
+	end
+
 	#
 	# Mode switching
 	#
@@ -235,18 +226,17 @@ class GuiDefault < GuiInterface
 		# TODO: animate?
 	end
 
+	#
+	# Rendering
+	#
 	def render
 		case @mode
 		when ACTOR_MODE
 			@actor_view.gui_render!
-
 		when DIRECTOR_MODE
 			@director_view.gui_render!
-
 		when OUTPUT_MODE
-			with_multiplied_alpha(output_opacity) {
-				yield
-			}
+			yield
 		end
 	end
 
@@ -285,9 +275,9 @@ class GuiDefault < GuiInterface
 		#
 		elsif value.alt?
 			case value
-			when 'right'
+			#when 'right'
 				#@forward_button.click(nil)
-			when 'left'
+			#when 'left'
 				#@back_button.click(nil)
 			when 'down'
 				select_next_actor!
@@ -327,6 +317,9 @@ class GuiDefault < GuiInterface
 		build_editor_for(@director_view.director.actors[index])
 	end
 
+	#
+	# Debug
+	#
 	def toggle_gc_timing
 		if GC::Profiler.enabled?
 			puts GC::Profiler.result
@@ -341,6 +334,13 @@ class GuiDefault < GuiInterface
 	def output_object_counts
 		p (counts = ObjectSpace.count_objects)
 		positive_message "#{counts[:TOTAL]} Objects, #{counts[:FREE]} Free"
+	end
+
+	#
+	# Click Response
+	#
+	def pointer_click_on_nothing(pointer)
+		hide_something!
 	end
 
 	def handle_first_click_on_user_object(user_object, options)
@@ -412,9 +412,6 @@ class GuiDefault < GuiInterface
 		end
 	end
 
-	#
-	#
-	#
 	def build_editor_for(user_object, options={})
 		return unless user_object
 
@@ -426,10 +423,6 @@ class GuiDefault < GuiInterface
 		else
 			handle_first_click_on_user_object(user_object, options)
 		end
-	end
-
-	def pointer_click_on_nothing(pointer)
-		hide_something!
 	end
 
 	#
@@ -454,9 +447,6 @@ class GuiDefault < GuiInterface
 		if @variables_flyout.visible? or @actors_flyout.visible?
 			close_inputs_flyout!
 			close_actors_flyout!
-
-		else
-			# ?
 		end
 	end
 
