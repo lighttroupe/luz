@@ -1,9 +1,13 @@
 class Actor
 	ACTOR_COLOR = [1,1,1,1]
 
+	def background_image
+		@background_image ||= $engine.load_image('images/actor-background.png').set_texture_options(:no_smoothing => true)
+	end
+
 	def gui_render!
 		# Checkerboard background
-		$gui.actor_view_background_image.using {
+		background_image.using {
 			unit_square
 		}
 
