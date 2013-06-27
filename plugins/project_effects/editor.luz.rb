@@ -60,17 +60,11 @@ class ProjectEffectEditor < ProjectEffect
 		if show_amount > 0.0
 			@gui.gui_tick!
 
-			# Perform hit testing-- TODO: this needn't be every frame...
-			# Nor full-frame
-
-			#with_offscreen_buffer { |buffer|
-			#if @pointers.any? { |p| p.click? } || $env[:frame_number] % 5 == 0		# TODO: or "has moved fast"
-				with_hit_testing {				# render in special colors
-					@gui.hit_test_render!
-					hit_test_pointers
-				}
-			#}
-			#end
+			# TODO: only do hit testing when needed (NOTE: needed for hover as well as click response)
+			with_hit_testing {
+				@gui.hit_test_render!
+				hit_test_pointers
+			}
 			tick_pointers
 		end
 	end
@@ -88,18 +82,14 @@ class ProjectEffectEditor < ProjectEffect
 				render_pointers
 			}
 		end
-
-#		@fps_label ||= BitmapFont.new.set(:string => 'FPS', :scale_y => 0.05)
-#		@fps_label.set_string(sprintf("%2d FPS", $env[:current_frames_per_second] || 0)) if $env[:frame_number] % 10 == 0
-#		@fps_label.gui_render!
 	end
 
 	def tick_pointers
-		@pointers.each { |pointer| pointer.tick! }
+		@pointers.each(&:tick!)
 	end
 
 	def render_pointers
-		@pointers.each { |pointer| pointer.render! }
+		@pointers.each(&:render!)
 	end
  
 	def hit_test_pointers
