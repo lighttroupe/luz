@@ -36,7 +36,7 @@ class GuiUserObjectEditor < GuiBox
 			$gui.trash!(@user_object)
 		}
 
-		self << (@close_button=GuiButton.new.set(:scale_x => 0.04, :scale_y => 0.08, :offset_x => 0.48, :offset_y => 0.46, :background_image => $engine.load_image('images/buttons/close.png')))
+		self << (@close_button=GuiButton.new.set(:scale_x => 0.04, :scale_y => 0.08, :offset_x => 0.46, :offset_y => 0.43, :background_image => $engine.load_image('images/buttons/close.png')))
 		@close_button.on_clicked { $gui.clear_editors! }
 	end
 
