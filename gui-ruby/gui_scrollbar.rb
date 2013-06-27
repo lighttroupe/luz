@@ -6,11 +6,6 @@ class GuiScrollbarScroller < GuiObject
 	def initialize(scrollbar)
 		super()
 		@scrollbar = scrollbar
-		draggable!
-	end
-
-	def update_drag(pointer)
-		@scrollbar.scroll_by(pointer, -(pointer.drag_delta_y * 2.0))
 	end
 
 	def gui_render!
@@ -23,7 +18,7 @@ class GuiScrollbarScroller < GuiObject
 
 	def scroller_color
 		if @scrollbar.can_move?
-			if pointer_hovering?
+			if @scrollbar.pointer_hovering?
 				HOVER_COLOR
 			else
 				ACTIVE_COLOR
@@ -45,6 +40,7 @@ class GuiScrollbar < GuiBox
 	def initialize(target)
 		super()
 		@target = target
+		draggable!
 	end
 
 	def gui_tick!
@@ -58,8 +54,6 @@ class GuiScrollbar < GuiBox
 		space = (1.0 - scroller_size)
 
 		@scroller.set(:scale_y => scroller_size * 0.95, :offset_y => (0.5 - scroller_half_size) - (scroller_progress * space))
-
-		#@scroller
 	end
 
 	def gui_render!
@@ -72,8 +66,18 @@ class GuiScrollbar < GuiBox
 		super
 	end
 
+	def hit_test_render!
+		with_positioning {
+			render_hit_test_unit_square
+		} unless hidden?
+	end
+
 	def can_move?
 		@target.visible_percentage < 1.0
+	end
+
+	def update_drag(pointer)
+		scroll_by(pointer, -(pointer.drag_delta_y * 2.0))
 	end
 
 	def scroll_up!(pointer)
