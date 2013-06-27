@@ -108,6 +108,7 @@ class GuiDefault < GuiInterface
 		#
 		self << @user_object_editor_container = GuiBox.new
 
+=begin		History feature disabled in favor of up/down to move between actors
 		self << @toggle_user_object_editor_button = GuiButton.new.set(:offset_y => -0.495, :scale_x => 0.09, :scale_y => 0.02, :background_scale_y => -1.0, :background_image => $engine.load_image('images/drawer-n.png'))
 		@toggle_user_object_editor_button.on_clicked { |pointer|
 			if @user_object_editor_container.empty?
@@ -119,6 +120,7 @@ class GuiDefault < GuiInterface
 
 		self << @back_button = GuiBackButton.new(@history).set(:offset_x => -0.04, :offset_y => -0.495, :scale_x => 0.03, :scale_y => 0.02, :background_scale_y => -1.0, :background_image => $engine.load_image('images/buttons/arrow-left.png'))
 		self << @forward_button = GuiForwardButton.new(@history).set(:offset_x => 0.04, :offset_y => -0.495, :scale_x => -0.03, :scale_y => 0.02, :background_scale_y => -1.0, :background_image => $engine.load_image('images/buttons/arrow-left.png'))
+=end
 
 		#
 		# OVERLAY LEVEL (things above this line are obscured while overlay is showing)
@@ -367,7 +369,8 @@ class GuiDefault < GuiInterface
 			case value
 			when 'b'
 				@beat_monitor.switch_state({:open => :closed, :closed => :open}, duration=0.2)
-
+			when 'o'
+				output_object_counts
 			when 'n'
 				positive_message 'TODO: add actor'
 			when 'm'
@@ -386,13 +389,13 @@ class GuiDefault < GuiInterface
 		elsif value.alt?
 			case value
 			when 'right'
-				@forward_button.click(nil)
+				#@forward_button.click(nil)
 			when 'left'
-				@back_button.click(nil)
+				#@back_button.click(nil)
 			when 'down'
-				clear_editors!
+				select_next_actor!
 			when 'up'
-				build_editor_for(@history.current, :history => false)
+				select_previous_actor!
 			end
 
 		#
@@ -400,8 +403,6 @@ class GuiDefault < GuiInterface
 		#
 		else
 			case value
-			when 'f12'
-				self.mode = OUTPUT_MODE
 			when 'escape'
 				hide_something!
 			else
@@ -411,7 +412,22 @@ class GuiDefault < GuiInterface
 	end
 
 	def route_keypress_to_selected_widget(value)
-		
+	end
+
+	def chosen_actor_index
+		@chosen_director.actors.index(@chosen_actor)
+	end
+
+	def select_previous_actor!
+		return unless @chosen_actor && @chosen_director && @chosen_director.actors.size > 0
+		index = ((chosen_actor_index || 1) - 1) % @chosen_director.actors.size
+		build_editor_for(@chosen_director.actors[index])
+	end
+
+	def select_next_actor!
+		return unless @chosen_actor && @chosen_director && @chosen_director.actors.size > 0
+		index = ((chosen_actor_index || -1) + 1) % @chosen_director.actors.size
+		build_editor_for(@chosen_director.actors[index])
 	end
 
 	def toggle_gc_timing
@@ -435,6 +451,7 @@ class GuiDefault < GuiInterface
 
 		if user_object == chosen_director
 			self.mode = DIRECTOR_MODE
+			@director_menu.switch_state({:open => :closed}, duration=0.1)
 
 		elsif user_object.is_a?(ParentUserObject) || user_object.is_a?(Project)		# TODO: responds_to? :effects ?
 			#
@@ -450,18 +467,10 @@ class GuiDefault < GuiInterface
 			#
 			clear_editors!		# only support one for now
 
-			if user_object.is_a? Director
-				if @director_menu.visible?
-					# selecting a director
-					self.chosen_director = user_object
-					@director_menu.switch_state({:open => :closed}, duration=0.1)
-				else
-					editor = create_user_object_editor_for_pointer(user_object, pointer || Vector3.new(0.0,-0.5), options)
-					@user_object_editors[user_object] = editor
-					@user_object_editor_container << editor
-
-					return editor
-				end
+			if user_object.is_a?(Director) && @director_menu.visible?
+				# selecting a director
+				self.chosen_director = user_object
+				@director_menu.switch_state({:open => :closed}, duration=0.1)
 			else
 				if user_object.is_a? Actor
 					if @mode == ACTOR_MODE
