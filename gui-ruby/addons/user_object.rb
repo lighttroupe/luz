@@ -11,6 +11,7 @@ class UserObject
 
 	SHAKE_DISTANCE = 0.010
 
+	# Creates and returns a GuiObject to serve as an editor for this object
 	def gui_build_editor
 		if respond_to? :effects
 			box = GuiBox.new
