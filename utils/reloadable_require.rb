@@ -58,6 +58,7 @@ module Kernel
 
 		begin
 			@@loading_file_path = filepath
+			puts "Reloading - #{@@loading_file_path} ..."
 			load filepath
 			@@loading_file_path = nil
 			return true
