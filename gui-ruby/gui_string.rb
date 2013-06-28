@@ -1,8 +1,11 @@
 require 'gui_object'
 
+#
+# GuiString is for viewing and editing a single Ruby string property of an object.
+#
 class GuiString < GuiObject
-	FOCUS_COLOR = [1,1,0.2]
-	FOCUS_BACKGROUND_COLOR = [0.1,0.1,0.1]
+	FOCUS_COLOR = [1,0.9,0.3]
+	FOCUS_BACKGROUND_COLOR = [0.0,0.0,0.5]
 	COLOR = [1,1,1]
 
 	def initialize(object, method)
@@ -22,16 +25,22 @@ class GuiString < GuiObject
 	end
 
 	def gui_render!
-		if @keyboard_focus
-			with_color(FOCUS_BACKGROUND_COLOR) {
-				unit_square_outline
-			}
-		end
-
-		with_color(color) {
-			@label.gui_render!
+		with_positioning {
 			if @keyboard_focus
+				with_color(FOCUS_BACKGROUND_COLOR) {
+					unit_square
+				}
 			end
+
+			with_color(color) {
+				if @keyboard_focus && $env[:beat_number] % 2 == 0
+					@label.string = ((original=@label.string) + '_')
+					@label.gui_render!
+					@label.string = original
+				else
+					@label.gui_render!
+				end
+			}
 		}
 	end
 
