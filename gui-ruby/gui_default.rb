@@ -359,6 +359,10 @@ class GuiDefault < GuiInterface
 		@variables_flyout.switch_state({:open => :closed, :closed => :open}, duration=0.2)
 	end
 
+	def toggle_beat_monitor!
+		@beat_monitor.switch_state({:open => :closed, :closed => :open}, duration=0.2)
+	end
+
 	#
 	# Next/Previous actor selection
 	#

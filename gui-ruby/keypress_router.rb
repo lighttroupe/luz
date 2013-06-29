@@ -10,7 +10,7 @@ class KeypressRouter
 		if value.control?
 			case value
 			when 'b'
-				@object.beat_monitor.switch_state({:open => :closed, :closed => :open}, duration=0.2)
+				@object.toggle_beat_monitor!
 			when 'o'
 				@object.output_object_counts
 			when 'n'
