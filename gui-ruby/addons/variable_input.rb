@@ -5,7 +5,7 @@ class VariableInput
 		gui_render_background
 
 		# Status Indicator
-		if enabled? && (v=value) > 0.0
+		if enabled? && (v=do_value) > 0.0
 			with_translation(-0.5 + v/2.0, 0.0) {
 				with_scale_unsafe(v, 1.0) {
 					with_color(GUI_COLOR) {
