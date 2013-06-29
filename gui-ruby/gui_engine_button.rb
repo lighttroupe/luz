@@ -1,5 +1,4 @@
-require 'gui_list_select'
-require 'gui_engine_button_renderer'
+multi_require 'gui_list_select', 'gui_engine_button_renderer'
 
 class GuiEngineButton < GuiListSelect
 	def initialize(object, method)		# options is [[:one,'One'],[:two,'Two']]

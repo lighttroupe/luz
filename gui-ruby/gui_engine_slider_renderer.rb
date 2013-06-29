@@ -6,16 +6,24 @@ class GuiEngineSliderRenderer < GuiObject
 
 	attr_reader :text
 
+	callback :clicked
+
 	def initialize(text)
 		@text = text
 	end
 
-	def gui_render!
-		render_bar($engine.slider_value(@text))
+	def click(pointer)
+		clicked_notify(pointer)
+	end
 
-		with_color(label_color) {
-			@label ||= BitmapFont.new.set(:string => @text, :scale_x => 0.9, :scale_y => 0.65)
-			@label.gui_render!
+	def gui_render!
+		with_gui_object_properties {
+			render_bar($engine.slider_value(@text))
+
+			with_color(label_color) {
+				@label ||= BitmapFont.new.set(:string => @text, :scale_x => 0.9, :scale_y => 0.65)
+				@label.gui_render!
+			}
 		}
 	end
 

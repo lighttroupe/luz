@@ -1,4 +1,4 @@
-require 'gui_list_select'
+multi_require 'gui_list_select'
 
 #
 # This is a non-popup list
