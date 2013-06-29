@@ -174,14 +174,16 @@ class GuiDefault < GuiInterface
 	# Rendering: render is called every frame, gui_render! only when the Editor plugin thinks it's visible 
 	#
 	def render
-		case @mode
-		when ACTOR_MODE
-			@actor_view.gui_render!
-		when DIRECTOR_MODE
-			@director_view.gui_render!
-		when OUTPUT_MODE
-			yield
-		end
+		with_scale(0.75, 1.0) {		# TODO: properly set aspect ratio
+			case @mode
+			when ACTOR_MODE
+				@actor_view.gui_render!
+			when DIRECTOR_MODE
+				@director_view.gui_render!
+			when OUTPUT_MODE
+				yield
+			end
+		}
 	end
 
 	def gui_render!
