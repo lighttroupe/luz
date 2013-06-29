@@ -118,7 +118,8 @@ class UserObject
 
 	def gui_render_label_internal
 		with_color(label_color) {
-			@title_label ||= BitmapFont.new.set(:string => title, :scale_x => 0.95, :scale_y => USER_OBJECT_TITLE_HEIGHT)
+			@title_label ||= BitmapFont.new.set(:scale_x => 0.95, :scale_y => USER_OBJECT_TITLE_HEIGHT)
+			@title_label.string = title
 			if pointer_hovering?
 				@title_label.gui_render!
 			else
