@@ -9,7 +9,7 @@ class GuiActorsFlyout < GuiBox
 		self << (@background=GuiObject.new.set(:background_image => $engine.load_image('images/actor-flyout-background.png')))
 
 		# Actor list				# TODO: item_aspect_ratio is related to screen ratio
-		self << @actors_list = GuiList.new([]).set(:scroll_wrap => true, :scale_x => 0.95, :scale_y => 0.9 - 0.025, :offset_y => 0.045 - 0.025, :spacing_y => -1.0, :item_aspect_ratio => 0.75)
+		self << @actors_list = GuiList.new([]).set(:scroll_wrap => true, :scale_x => 0.95, :scale_y => 0.9 - 0.025, :offset_x => 0.025, :offset_y => 0.045 - 0.025, :spacing_y => -1.0, :item_aspect_ratio => 0.75)
 
 		self << @new_button = GuiButton.new.set(:scale_x => 0.8, :scale_y => 0.05, :color => [1,1,1], :offset_x => -0.1, :offset_y => -0.5 + 0.025)
 		@new_button.on_clicked { |pointer|

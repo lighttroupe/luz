@@ -48,6 +48,10 @@ class GuiString < GuiObject
 		@keyboard_focus ? FOCUS_COLOR : COLOR
 	end
 
+	def cancel_keyboard_focus!
+		@keyboard_focus = nil
+	end
+
 	#
 	# Mouse interaction
 	#
@@ -67,6 +71,7 @@ class GuiString < GuiObject
 				elsif key == 'space'
 					set_value(get_value + ' ')
 				elsif BitmapFont.renderable?(key)
+					key = key.upcase if key.shift?
 					set_value(get_value + key)
 				end
 				true			# keep grab

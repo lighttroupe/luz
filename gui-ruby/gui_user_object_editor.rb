@@ -23,9 +23,10 @@ class GuiUserObjectEditor < GuiBox
 		# Title
 		#
 		if @user_object.is_a? Actor
-			self << (@class_icon_button=GuiClassInstanceRendererButton.new(@user_object.class).set(:offset_x => -0.5 + 0.049, :offset_y => 0.5 - 0.075, :scale_x => 0.04, :scale_y => 0.06))
+			self << (@class_icon_button=GuiClassInstanceRendererButton.new(@user_object.class).set(:color => [0.5,0.5,0.5], :offset_x => -0.5 + 0.049, :offset_y => 0.5 - 0.075, :scale_x => 0.04, :scale_y => 0.06))
 			@class_icon_button.on_clicked {
 				@user_object.gui_fill_settings_list(@user_object)
+				@title_text.cancel_keyboard_focus!
 			}
 		end
 

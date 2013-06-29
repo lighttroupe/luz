@@ -3,7 +3,7 @@ multi_require 'gui_pointer_behavior', 'gui_object', 'gui_box', 'gui_hbox', 'gui_
 # Addons to existing objects
 load_directory(Dir.pwd + '/gui-ruby/addons/', '**.rb')
 
-multi_require 'gui_actor_view', 'gui_director_view', 'gui_preferences_box', 'gui_user_object_editor', 'gui_add_window', 'gui_interface', 'gui_actor_class_button', 'gui_director_menu', 'gui_actors_flyout', 'gui_variables_flyout'
+multi_require 'gui_actor_view', 'gui_director_view', 'gui_preferences_box', 'gui_user_object_editor', 'gui_add_window', 'gui_interface', 'gui_actor_class_button', 'gui_director_menu', 'gui_actors_flyout', 'gui_variables_flyout', 'keypress_router'
 
 class GuiDefault < GuiInterface
 	pipe [:positive_message, :negative_message], :message_bar
@@ -34,6 +34,7 @@ class GuiDefault < GuiInterface
 	# Minimal start for a new object: self << GuiObject.new.set(:scale_x => 0.1, :scale_y => 0.1)
 	def create!
 		# Remember: this is drawn first-to-last
+		@keypress_router = KeypressRouter.new(self)
 
 		#
 		# Actors / Directors flyout
@@ -192,62 +193,6 @@ class GuiDefault < GuiInterface
 	end
 
 	#
-	# Keyboard interaction
-	#
-	def on_key_press(value)
-		#
-		# Ctrl key
-		#
-		if value.control?
-			case value
-			when 'b'
-				@beat_monitor.switch_state({:open => :closed, :closed => :open}, duration=0.2)
-			when 'o'
-				output_object_counts
-			when 'n'
-				positive_message 'TODO: add actor'
-			when 'm'
-				positive_message 'TODO: add effect'
-			when 'r'
-				$engine.reload
-			when 'f11'
-				output_gc_counts
-			when 'f12'
-				toggle_gc_timing
-			end
-
-		#
-		# Alt key
-		#
-		elsif value.alt?
-			case value
-			#when 'right'
-				#@forward_button.click(nil)
-			#when 'left'
-				#@back_button.click(nil)
-			when 'down'
-				select_next_actor!
-			when 'up'
-				select_previous_actor!
-			end
-
-		#
-		# no modifier
-		#
-		else
-			case value
-			when 'escape'
-				hide_something!
-			else
-				route_keypress_to_selected_widget(value)
-			end
-		end
-	end
-
-	def route_keypress_to_selected_widget(value)
-	end
-
-	#
 	# Main show / destroy API
 	#
 	def build_editor_for(user_object, options={})
@@ -350,6 +295,22 @@ class GuiDefault < GuiInterface
 		elsif user_object.is_a?(Director)
 			self.chosen_director = user_object
 			@director_menu.switch_state({:open => :closed}, duration=0.1)
+		end
+	end
+
+	#
+	# Keyboard interaction (this is called by GuiInterface)
+	#
+	def grab_keyboard(&proc)
+		@keyboard_grab_proc = proc
+	end
+
+	# Called by SDL
+	def raw_keyboard_input(value)
+		if @keyboard_grab_proc
+			@keyboard_grab_proc = nil if @keyboard_grab_proc.call(value) == false
+		else
+			@keypress_router.on_key_press(value)
 		end
 	end
 
