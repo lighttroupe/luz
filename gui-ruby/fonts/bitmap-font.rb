@@ -1,11 +1,15 @@
 # encoding: UTF-8
 
 class BitmapFont < GuiObject		# TODO: mv ../gui_bitmap_font.rb
+	KEYBOARD_FOCUS_COLOR = [1,1,0,0.5]
+
 	include Drawing
 
 	attr_accessor :letter_width
 
 	easy_accessor :string
+
+	boolean_accessor :keyboard_focus
 
 	def string=(str)
 		str ||= ''		# treat nil as blank
@@ -45,11 +49,25 @@ class BitmapFont < GuiObject		# TODO: mv ../gui_bitmap_font.rb
 					with_aspect_ratio_fix {									# this leaves us as wide as the row is tall
 						@gui_render_list = GL.RenderCached(@gui_render_list) {
 							with_scale(0.5, 1.0) {								# HACK: text looks good at about 1x2
-									render_letters
+								render_letters
 							}
+						}
+
+						with_scale(0.5, 1.0) {								# HACK: text looks good at about 1x2
+							gui_render_keyboard_focus! if keyboard_focus? && $env[:beat_number] % 2 == 0
 						}
 						#with_color([0,0,1,0.9]) { unit_square } if $env[:frame_number] % 2 == 0		# testing "1 character width"
 					}
+				}
+			}
+		}
+	end
+
+	def gui_render_keyboard_focus!
+		with_translation(@cursor_offset_x, 0.0) {
+			with_scale(1.0, 1.0) {
+				with_color(KEYBOARD_FOCUS_COLOR) {
+					unit_square
 				}
 			}
 		}
@@ -62,6 +80,7 @@ class BitmapFont < GuiObject		# TODO: mv ../gui_bitmap_font.rb
 
 	def render_letters
 		draw_offset_x = 0.0
+
 		@image.using {
 			@chars.each_with_index { |letter, index|
 				if letter == ' '
@@ -98,6 +117,8 @@ class BitmapFont < GuiObject		# TODO: mv ../gui_bitmap_font.rb
 				end
 			}
 		}
+
+		@cursor_offset_x = draw_offset_x
 	end
 
 	def hit_test_render!

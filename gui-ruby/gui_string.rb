@@ -33,13 +33,8 @@ class GuiString < GuiObject
 			end
 
 			with_color(color) {
-				if @keyboard_focus && $env[:beat_number] % 2 == 0
-					@label.string = ((original=@label.string) + '_')
-					@label.gui_render!
-					@label.string = original
-				else
-					@label.gui_render!
-				end
+				@label.keyboard_focus = @keyboard_focus
+				@label.gui_render!
 			}
 		}
 	end
