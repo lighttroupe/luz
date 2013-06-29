@@ -21,7 +21,6 @@ class GuiListPopup < GuiBox
 
 		@objects.each { |object|
 			object.on_clicked {
-				puts "BAM"
 				@objects.each { |o2| o2.animate(:opacity => 0.2) unless object == o2 }		# FX: all but the selected item disappears
 				selected_notify(object)
 				exit!
