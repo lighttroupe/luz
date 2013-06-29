@@ -18,7 +18,7 @@ class GuiActorsFlyout < GuiBox
 		self << @actors_list = GuiList.new([]).set(:scroll_wrap => true, :scale_x => 0.91, :scale_y => 0.82, :offset_x => 0.036, :offset_y => 0.0, :spacing_y => -1.0, :item_aspect_ratio => 0.75)
 
 		# New actor button
-		self << @new_button = GuiButton.new.set(:offset_y => -0.5 + 0.025, :scale_y => 0.05, :color => [1,1,1])
+		self << @new_button = GuiButton.new.set(:offset_y => -0.5 + 0.025, :scale_y => 0.05, :color => [1,1,1], :background_image => $engine.load_image('images/buttons/new-actor-button.png'))
 		@new_button.on_clicked { |pointer|
 			klass = ActorStarFlower
 			@actors_list.add_after_selection(actor = klass.new)
