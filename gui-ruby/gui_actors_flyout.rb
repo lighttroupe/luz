@@ -8,20 +8,21 @@ class GuiActorsFlyout < GuiBox
 		# Background
 		self << (@background=GuiObject.new.set(:background_image => $engine.load_image('images/actor-flyout-background.png')))
 
-		# Actor list				# TODO: item_aspect_ratio is related to screen ratio
-		self << @actors_list = GuiList.new([]).set(:scroll_wrap => true, :scale_x => 0.95, :scale_y => 0.9 - 0.025, :offset_x => 0.025, :offset_y => 0.045 - 0.025, :spacing_y => -1.0, :item_aspect_ratio => 0.75)
+		# View directors button
+		self << @director_view_button = GuiButton.new.set(:offset_y => 0.5 - 0.025, :scale_y => 0.05, :background_image => $engine.load_image('images/buttons/director-view.png'))
+		@director_view_button.on_clicked {
+			$gui.build_editor_for($gui.chosen_director)
+		}
 
-		self << @new_button = GuiButton.new.set(:scale_x => 0.8, :scale_y => 0.05, :color => [1,1,1], :offset_x => -0.1, :offset_y => -0.5 + 0.025)
+		# Actor list				# TODO: item_aspect_ratio is related to screen ratio
+		self << @actors_list = GuiList.new([]).set(:scroll_wrap => true, :scale_x => 0.91, :scale_y => 0.82, :offset_x => 0.036, :offset_y => 0.0, :spacing_y => -1.0, :item_aspect_ratio => 0.75)
+
+		# New actor button
+		self << @new_button = GuiButton.new.set(:offset_y => -0.5 + 0.025, :scale_y => 0.05, :color => [1,1,1])
 		@new_button.on_clicked { |pointer|
 			klass = ActorStarFlower
 			@actors_list.add_after_selection(actor = klass.new)
 			$gui.build_editor_for(actor, :pointer => pointer)
-		}
-
-		# view directors
-		self << @director_view_button = GuiButton.new.set(:offset_y => 0.5 - 0.025, :scale_x => 1.0, :scale_y => 0.05, :background_image => $engine.load_image('images/buttons/director-view.png'))
-		@director_view_button.on_clicked {
-			$gui.build_editor_for($gui.chosen_director)
 		}
 
 		#
