@@ -65,9 +65,11 @@ class BitmapFont < GuiObject		# TODO: mv ../gui_bitmap_font.rb
 
 	def gui_render_keyboard_focus!
 		with_translation(@cursor_offset_x, 0.0) {
-			with_scale(1.0, 1.0) {
-				with_color(KEYBOARD_FOCUS_COLOR) {
-					unit_square
+			with_translation(0.5, 0.0) {
+				with_scale(0.1, 1.0) {
+					with_color(KEYBOARD_FOCUS_COLOR) {
+						unit_square
+					}
 				}
 			}
 		}
