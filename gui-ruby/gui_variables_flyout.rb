@@ -19,7 +19,7 @@ class GuiVariablessFlyout < GuiBox
 		}
 
 		# Variables list		TODO: don't use $engine here
-		self << @variables_list = GuiList.new($engine.project.variables).set(:scale_x => 0.91, :scale_y => 0.37, :offset_x => -0.036, :offset_y => -0.23, :item_aspect_ratio => 3.2, :spacing_y => -1.0)
+		self << @variables_list = GuiList.new($engine.project.variables).set(:scale_x => 0.91, :scale_y => 0.37, :offset_x => -0.036, :offset_y => -0.24, :item_aspect_ratio => 3.2, :spacing_y => -1.0)
 
 		# New Variable button
 		self << (@new_variable_button = GuiButton.new.set(:scale_x => 1.0, :scale_y => 0.043, :offset_x => 0.0, :offset_y => -0.476, :background_image => $engine.load_image('images/buttons/new-variable-button.png')))
