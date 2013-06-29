@@ -9,7 +9,7 @@ class UserObject
 	LABEL_COLOR_DISABLED = [1.0, 1.0, 1.0, 0.25]
 	USER_OBJECT_TITLE_HEIGHT = 0.65
 
-	SHAKE_DISTANCE = 0.010
+	SHAKE_DISTANCE = 0.007
 
 	# Creates and returns a GuiObject to serve as an editor for this object
 	def gui_build_editor
