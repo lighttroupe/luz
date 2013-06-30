@@ -1,10 +1,10 @@
 class Keyboard
-	def initialize(object)
-		@object = object
+	def initialize(gui)
+		@gui = gui
 	end
 
 	def on_key_press(key)
-		send_to_grab(key) or process_interface_key_press(key)
+		send_key_to_grab(key) or process_interface_key_press(key)
 	end
 
 	def grab(object=nil, &proc)
@@ -21,56 +21,56 @@ class Keyboard
 
 private
 
-	def send_to_grab(value)
+	def send_key_to_grab(key)
 		if @grab_proc
-			@grab_proc.call(value)
+			@grab_proc.call(key)
 			true
 		elsif @grab_object
-			@grab_object.on_key_press(value)
+			@grab_object.on_key_press(key)
 			true
 		end
 	end
 
-	def process_interface_key_press(value)
+	def process_interface_key_press(key)
 		#
 		# Ctrl key
 		#
-		if value.control?
-			case value
+		if key.control?
+			case key
 			when 'b'
-				@object.toggle_beat_monitor!
+				@gui.toggle_beat_monitor!
 			when 'o'
-				@object.output_object_counts
+				@gui.output_object_counts
 			when 'n'
-				@object.positive_message 'TODO: add actor'
+				@gui.positive_message 'TODO: add actor'
 			when 'm'
-				@object.positive_message 'TODO: add effect'
+				@gui.positive_message 'TODO: add effect'
 			when 'r'
 				$engine.reload
 			#when 'f11'
-			#	@object.output_gc_counts
+			#	@gui.output_gc_counts
 			when 'f12'
-				@object.toggle_gc_timing
+				@gui.toggle_gc_timing
 			end
 
 		#
 		# Alt key
 		#
-		elsif value.alt?
-			case value
+		elsif key.alt?
+			case key
 			when 'down'
-				@object.select_next_actor!
+				@gui.select_next_actor!
 			when 'up'
-				@object.select_previous_actor!
+				@gui.select_previous_actor!
 			end
 
 		#
 		# no modifier
 		#
 		else
-			case value
+			case key
 			when 'escape'
-				@object.toggle!
+				@gui.toggle!
 			end
 		end
 	end
