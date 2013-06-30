@@ -1,4 +1,4 @@
-class KeypressRouter
+class Keyboard
 	def initialize(object)
 		@object = object
 	end

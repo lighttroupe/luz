@@ -3,14 +3,14 @@ multi_require 'gui_pointer_behavior', 'gui_object', 'gui_box', 'gui_hbox', 'gui_
 # Addons to existing objects
 load_directory(Dir.pwd + '/gui-ruby/addons/', '**.rb')
 
-multi_require 'gui_actor_view', 'gui_director_view', 'gui_preferences_box', 'gui_user_object_editor', 'gui_add_window', 'gui_interface', 'gui_actor_class_button', 'gui_director_menu', 'gui_actors_flyout', 'gui_variables_flyout', 'keypress_router'
+multi_require 'gui_actor_view', 'gui_director_view', 'gui_preferences_box', 'gui_user_object_editor', 'gui_add_window', 'gui_interface', 'gui_actor_class_button', 'gui_director_menu', 'gui_actors_flyout', 'gui_variables_flyout', 'keyboard'
 
 class GuiDefault < GuiInterface
 	pipe [:positive_message, :negative_message], :message_bar
 
 	ACTOR_MODE, DIRECTOR_MODE, OUTPUT_MODE = 1, 2, 3
 
-	callback :keypress
+	callback :keypress		# TODO: do we need this?
 
 	attr_accessor :mode
 
@@ -33,8 +33,9 @@ class GuiDefault < GuiInterface
 	#
 	# Minimal start for a new object: self << GuiObject.new.set(:scale_x => 0.1, :scale_y => 0.1)
 	def create!
+		@keyboard = Keyboard.new(self)
+
 		# Remember: this is drawn first-to-last
-		@keypress_router = KeypressRouter.new(self)
 
 		#
 		# Actors / Directors flyout
@@ -307,7 +308,7 @@ class GuiDefault < GuiInterface
 
 	# raw_keyboard_input is called by SDL
 	def raw_keyboard_input(value)
-		@keypress_router.on_key_press(value)
+		@keyboard.on_key_press(value)
 	end
 
 	def grab_keyboard(object=nil, &proc)
