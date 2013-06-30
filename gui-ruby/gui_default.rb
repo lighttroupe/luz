@@ -289,13 +289,13 @@ class GuiDefault < GuiInterface
 	#
 	def create_user_object_editor_for_pointer(user_object, pointer, options)
 		GuiUserObjectEditor.new(user_object, {:scale_x => 0.3, :scale_y => 0.05}.merge(options)).
-			set({:offset_x => pointer.x, :offset_y => pointer.y, :opacity => 1.0, :scale_x => 0.0, :scale_y => 0.0, :hidden => false}).
-			animate({:offset_x => 0.0, :offset_y => -0.25, :scale_x => 0.65, :scale_y => 0.5, :opacity => 1.0}, duration=0.2)
+			set({:offset_x => pointer.x, :offset_y => pointer.y, :opacity => 1.0, :scale_x => 0.0, :scale_y => 0.0, :roll => -0.1, :hidden => false}).
+			animate({:offset_x => 0.0, :offset_y => -0.25, :scale_x => 0.65, :scale_y => 0.5, :roll => 0.0, :opacity => 1.0}, duration=0.25)
 	end
 
 	def clear_editors!
 		@user_object_editors.each { |user_object, editor|
-			editor.animate({:offset_y => editor.offset_y - 0.5}, duration=0.2) {
+			editor.animate({:opacity => 0.0, :offset_y => editor.offset_y - 0.5}, duration=0.2) {
 				editor.remove_from_parent!		# trashed forever! (no cache)
 			}
 		}

@@ -12,7 +12,7 @@ module MethodsForGuiObject
 	BACKGROUND_COLOR_HOVERING = [1.0,1.0,1.0,0.25]
 	BACKGROUND_COLOR_SELECTED = [1.0,1.0,1.0,0.15]
 
-	easy_accessor :parent, :offset_x, :offset_y, :scale_x, :scale_y, :opacity, :color, :background_image, :background_scale_x, :background_scale_y, :float
+	easy_accessor :parent, :offset_x, :offset_y, :scale_x, :scale_y, :roll, :opacity, :color, :background_image, :background_scale_x, :background_scale_y, :float
 	boolean_accessor :hidden
 	boolean_accessor :draggable
 
@@ -158,13 +158,15 @@ module MethodsForGuiObject
 
 	def with_positioning
 		with_translation(@offset_x, @offset_y) {
-			# Record the scaling we do, so it's possible to undo it when proper aspect ratio is needed (ie text)
-			with_env(:gui_scale_x, ($env[:gui_scale_x] || 1.0) * (@scale_x || 1.0)) {
-				with_env(:gui_scale_y, ($env[:gui_scale_y] || 1.0) * (@scale_y || 1.0)) {
-					with_scale(@scale_x || 1.0, @scale_y || 1.0) {
-						with_color(color) {
-							with_multiplied_alpha(@opacity || 1.0) {
-								yield
+			with_roll(@roll || 0.0) {
+				# Record the scaling we do, so it's possible to undo it when proper aspect ratio is needed (ie text)
+				with_env(:gui_scale_x, ($env[:gui_scale_x] || 1.0) * (@scale_x || 1.0)) {
+					with_env(:gui_scale_y, ($env[:gui_scale_y] || 1.0) * (@scale_y || 1.0)) {
+						with_scale(@scale_x || 1.0, @scale_y || 1.0) {
+							with_color(color) {
+								with_multiplied_alpha(@opacity || 1.0) {
+									yield
+								}
 							}
 						}
 					}
