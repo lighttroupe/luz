@@ -1,8 +1,5 @@
 multi_require 'gui_pointer_behavior', 'gui_object', 'gui_box', 'gui_hbox', 'gui_vbox', 'gui_list', 'gui_scrollbar', 'gui_list_with_controls', 'gui_grid', 'gui_message_bar', 'gui_beat_monitor', 'gui_button', 'gui_float', 'gui_toggle', 'gui_curve', 'gui_curve_increasing', 'gui_theme', 'gui_integer', 'gui_select', 'gui_actor', 'gui_event', 'gui_variable', 'gui_engine_button', 'gui_engine_slider', 'gui_radio_buttons', 'gui_object_renderer', 'gui-ruby/fonts/bitmap-font', 'gui_main_menu'
-
-# Addons to existing objects
-load_directory(Dir.pwd + '/gui-ruby/addons/', '**.rb')
-
+load_directory(Dir.pwd + '/gui-ruby/addons/', '**.rb')		# Addons to existing objects
 multi_require 'gui_actor_view', 'gui_director_view', 'gui_preferences_box', 'gui_user_object_editor', 'gui_add_window', 'gui_interface', 'gui_actor_class_button', 'gui_director_menu', 'gui_actors_flyout', 'gui_variables_flyout', 'keyboard'
 
 class GuiDefault < GuiInterface
@@ -12,7 +9,7 @@ class GuiDefault < GuiInterface
 
 	callback :keypress		# TODO: do we need this?
 
-	attr_accessor :mode
+	attr_accessor :mode, :directors_menu
 
 	def initialize
 		super
@@ -110,7 +107,7 @@ class GuiDefault < GuiInterface
 		}
 
 		# Director Grid popup
-		self << @director_menu = GuiDirectorMenu.new($engine.project.directors).
+		self << @directors_menu = GuiDirectorMenu.new($engine.project.directors).
 			add_state(:open, {:scale_x => 1.0, :scale_y => 1.0, :opacity => 1.0, :hidden => false}).
 			set_state(:closed, {:scale_x => 1.1, :scale_y => 1.1, :offset_y => 0.0,:hidden => true})
 
@@ -175,14 +172,6 @@ class GuiDefault < GuiInterface
 
 		gui_render!
 	end
-
-#	def gui_render!
-#		with_scale(($env[:enter] + $env[:exit]).scale(1.5, 1.0)) {
-#			with_alpha(($env[:enter] + $env[:exit]).scale(0.0, 1.0)) {
-#				super
-#			}
-#		}
-#	end
 
 	#
 	# build_editor_for is the main "object activated" message
@@ -314,11 +303,11 @@ class GuiDefault < GuiInterface
 	end
 
 	def open_directors_menu!
-		@director_menu.switch_state({:closed => :open},durection=0.4)
+		@directors_menu.switch_state({:closed => :open},durection=0.4)
 	end
 
 	def close_directors_menu!
-		@director_menu.switch_state({:open => :closed}, duration=0.1)
+		@directors_menu.switch_state({:open => :closed}, duration=0.1)
 	end
 
 	def toggle_actors_flyout!

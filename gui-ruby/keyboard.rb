@@ -45,8 +45,17 @@ private
 				@gui.positive_message 'TODO: add actor'
 			when 'm'
 				@gui.positive_message 'TODO: add effect'
+			when 'right'
+				@gui.toggle_actors_flyout!
+			when 'left'
+				@gui.toggle_inputs_flyout!
+			when 'up'
+				@gui.open_directors_menu!
 			when 'r'
 				$engine.reload
+			when 's'
+				$engine.project.save
+				@gui.positive_message 'Project Saved'
 			#when 'f11'
 			#	@gui.output_gc_counts
 			when 'f12'
@@ -70,7 +79,11 @@ private
 		else
 			case key
 			when 'escape'
-				@gui.toggle!
+				if @gui.directors_menu.visible?
+					@gui.close_directors_menu!
+				else
+					@gui.toggle!
+				end
 			end
 		end
 	end
