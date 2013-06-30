@@ -1,7 +1,7 @@
 --- 
   :version: 1
   :actors: 
-    - &id029 !ruby/object:ActorRectangle
+    - &id027 !ruby/object:ActorRectangle
       x: 0.0
       y: 0.0
       tags: 
@@ -40,8 +40,7 @@
           enabled: false
           amount_setting: !ruby/object:UserObjectSettingFloat
             name: &id009 amount
-            options: &id015
-              
+            options: 
               :range: !ruby/range
                 begin: 0.0
                 end: 1.0
@@ -102,11 +101,11 @@
                     enable_event: false
                     event: 
                     event_invert: false
-                  title: &id046 Button Toggle
+                  title: Button Toggle
                   enabled: true
                   button_setting: !ruby/object:UserObjectSettingButton
                     button: Keyboard / Escape
-                    name: &id031 button
+                    name: &id029 button
                     options: 
                       :summary: true
                     breaks_cache: 
@@ -178,11 +177,11 @@
             enable_event: false
             event: 
             event_invert: false
-          title: &id025 Roll
+          title: &id018 Roll
           enabled: true
           amount_setting: !ruby/object:UserObjectSettingFloat
-            name: &id026 amount
-            options: &id027
+            name: &id019 amount
+            options: &id020
               
               :default: !ruby/range
                 begin: 0.0
@@ -440,11 +439,11 @@
             enable_event: false
             event: 
             event_invert: false
-          title: &id021 Scale
+          title: &id014 Scale
           enabled: true
           amount_setting: !ruby/object:UserObjectSettingFloat
-            name: &id022 amount
-            options: &id023
+            name: &id015 amount
+            options: &id016
               
               :default: !ruby/range
                 begin: 1.0
@@ -470,7 +469,7 @@
             activation_direction: :to
             activation_curve: *id001
             activation_value: 0.9
-            activation_variable: &id043 !ruby/object:Variable
+            activation_variable: &id033 !ruby/object:Variable
               effects: 
                 - !ruby/object:VariableInputSlider
                   conditions: !ruby/object:ChildConditions
@@ -558,7 +557,7 @@
             activation_direction: :to
             activation_curve: *id001
             activation_value: 0.02
-            activation_variable: &id020 !ruby/object:Variable
+            activation_variable: &id017 !ruby/object:Variable
               effects: 
                 - !ruby/object:VariableInputSlider
                   conditions: !ruby/object:ChildConditions
@@ -708,8 +707,7 @@
           enabled: true
           folds_setting: !ruby/object:UserObjectSettingInteger
             name: folds
-            options: &id014
-              
+            options: 
               :range: !ruby/range
                 begin: 0
                 end: 100
@@ -754,12 +752,12 @@
         activation_curve: *id001
         activation_value: 1.0
         activation_variable: *id003
-    - &id030 !ruby/object:ActorStar
+    - &id028 !ruby/object:ActorStar
       x: 0.0
       y: 0.0
       tags: 
       effects: 
-        - !ruby/object:ActorEffectKScope
+        - !ruby/object:ActorEffectDrawMethod
           conditions: !ruby/object:ChildConditions
             enable_child_index: false
             child_index_min: 0
@@ -773,32 +771,82 @@
             enable_event: false
             event: 
             event_invert: false
-          title: KScope
-          enabled: false
-          folds_setting: !ruby/object:UserObjectSettingInteger
-            name: folds
-            options: *id014
-            breaks_cache: 
-            animation_min: 7
-        - !ruby/object:ActorEffectFade
-          conditions: !ruby/object:ChildConditions
-            enable_child_index: false
-            child_index_min: 0
-            child_index_max: 0
-            enable_event: false
-            event: 
-            event_invert: false
-            child_index_max: 0
-            child_index_min: 0
-            enable_child_index: false
-            enable_event: false
-            event: 
-            event_invert: false
-          title: Fade
+          title: &id034 Draw Method
           enabled: true
-          amount_setting: !ruby/object:UserObjectSettingFloat
-            name: amount
-            options: *id015
+          draw_method_setting: !ruby/object:UserObjectSettingSelect
+            selected: :invert
+            name: &id035 draw_method
+            options: 
+              :options: 
+                - - :average
+                  - Average
+                - - :brighten
+                  - Brighten
+                - - :darken
+                  - Darken
+                - - :multiply
+                  - Multiply
+                - - :invert
+                  - Invert
+                - - :min
+                  - Min
+                - - :max
+                  - Max
+              :summary: true
+            breaks_cache: 
+        - !ruby/object:ActorEffectTail
+          conditions: !ruby/object:ChildConditions
+            enable_child_index: false
+            child_index_min: 0
+            child_index_max: 0
+            enable_event: false
+            event: 
+            event_invert: false
+            child_index_max: 0
+            child_index_min: 0
+            enable_child_index: false
+            enable_event: false
+            event: 
+            event_invert: false
+          title: &id042 Tail
+          enabled: true
+          number_setting: !ruby/object:UserObjectSettingInteger
+            name: &id043 number
+            options: 
+              :range: !ruby/range
+                begin: 1
+                end: 100
+                excl: false
+              :default: !ruby/range
+                begin: 1
+                end: 2
+                excl: false
+            breaks_cache: 
+            animation_min: 4
+          beats_setting: !ruby/object:UserObjectSettingInteger
+            name: &id044 beats
+            options: 
+              :range: !ruby/range
+                begin: 1
+                end: 100
+                excl: false
+              :default: !ruby/range
+                begin: 1
+                end: 2
+                excl: false
+            breaks_cache: 
+            animation_min: 1
+          length_setting: !ruby/object:UserObjectSettingFloat
+            name: &id045 length
+            options: 
+              :range: !ruby/range
+                begin: 0.0
+                end: 1.0
+                excl: false
+              :default: !ruby/range
+                begin: 0.0
+                end: 1.0
+                excl: false
             breaks_cache: 
             min: 0.0
             max: 1.0
@@ -808,7 +856,7 @@
             enter_curve: 
             enable_animation: false
             animation_curve: *id001
-            animation_min: 0.0
+            animation_min: 0.5
             animation_max: 1.0
             animation_repeat_number: 4
             animation_repeat_unit: :beats
@@ -819,7 +867,7 @@
             activation_curve: *id001
             activation_value: 1.0
             activation_variable: *id003
-        - !ruby/object:ActorEffectStack
+        - !ruby/object:ActorEffectPitch
           conditions: !ruby/object:ChildConditions
             enable_child_index: false
             child_index_min: 0
@@ -833,55 +881,10 @@
             enable_event: false
             event: 
             event_invert: false
-          title: Stack
+          title: Pitch
           enabled: true
-          number_setting: !ruby/object:UserObjectSettingInteger
-            name: number
-            options: 
-              :range: !ruby/range
-                begin: 1
-                end: 1000
-                excl: false
-              :default: !ruby/range
-                begin: 1
-                end: 2
-                excl: false
-              :summary: true
-            breaks_cache: 
-            animation_min: 16
-          smallest_setting: !ruby/object:UserObjectSettingFloat
-            name: smallest
-            options: 
-              :range: !ruby/range
-                begin: 0.0
-                end: 9999.0
-                excl: false
-              :default: !ruby/range
-                begin: 1.0
-                end: 0.5
-                excl: false
-            breaks_cache: 
-            min: 0.0
-            max: 9999.0
-            enter_value: 0.0
-            exit_value: 0.0
-            enable_enter_animation: false
-            enter_curve: 
-            enable_animation: false
-            animation_curve: *id001
-            animation_min: 0.2
-            animation_max: 0.5
-            animation_repeat_number: 4
-            animation_repeat_unit: :beats
-            enable_exit_animation: false
-            exit_curve: 
-            enable_activation: false
-            activation_direction: :to
-            activation_curve: *id001
-            activation_value: 1.0
-            activation_variable: *id003
-          height_setting: !ruby/object:UserObjectSettingFloat
-            name: height
+          angle_setting: !ruby/object:UserObjectSettingFloat
+            name: angle
             options: 
               :default: !ruby/range
                 begin: 0.0
@@ -895,10 +898,224 @@
             exit_value: 0.0
             enable_enter_animation: false
             enter_curve: 
-            enable_animation: false
-            animation_curve: *id001
-            animation_min: 0.2
-            animation_max: 1.0
+            enable_animation: true
+            animation_curve: &id051 !ruby/object:Curve
+              vector: 
+                - 0.5
+                - 0.94306093454361
+                - 0.09691172093153
+                - 0.838171780109406
+                - 0.25435808300972
+                - 0.652214705944061
+                - 0.409974157810211
+                - 0.462336033582687
+                - 0.5
+              approximation: 
+                - 0.5
+                - 0.537595927715302
+                - 0.574999749660492
+                - 0.612019181251526
+                - 0.648462235927582
+                - 0.684136629104614
+                - 0.718850255012512
+                - 0.752410888671875
+                - 0.784626543521881
+                - 0.81530487537384
+                - 0.844253838062286
+                - 0.871281266212463
+                - 0.896194994449615
+                - 0.918802857398987
+                - 0.938912689685822
+                - 0.956332385540009
+                - 0.970869719982147
+                - 0.982332646846771
+                - 0.990528881549835
+                - 0.995266318321228
+                - 0.996352851390839
+                - 0.993596255779266
+                - 0.9868044257164
+                - 0.975785195827484
+                - 0.960346400737762
+                - 0.940296292304993
+                - 0.915608584880829
+                - 0.886674284934998
+                - 0.853949069976807
+                - 0.817888736724854
+                - 0.778949022293091
+                - 0.737585604190826
+                - 0.694254219532013
+                - 0.649410724639893
+                - 0.603510737419128
+                - 0.557010054588318
+                - 0.510364353656769
+                - 0.464029461145401
+                - 0.418461054563522
+                - 0.374114871025085
+                - 0.331446677446365
+                - 0.290912181138992
+                - 0.252967149019241
+                - 0.218067288398743
+                - 0.18666835129261
+                - 0.159226089715958
+                - 0.136196225881577
+                - 0.118034496903419
+                - 0.10519664734602
+                - 0.0981384068727493
+                - 0.0973105952143669
+                - 0.102821134030819
+                - 0.114217273890972
+                - 0.130994468927383
+                - 0.152648165822029
+                - 0.178673818707466
+                - 0.20856685936451
+                - 0.241822734475136
+                - 0.277936905622482
+                - 0.316404819488525
+                - 0.356721937656403
+                - 0.398383677005768
+                - 0.440885484218597
+                - 0.48372283577919
+                - 0.5263911485672
+                - 0.568385899066925
+                - 0.60920250415802
+                - 0.648336470127106
+                - 0.685283124446869
+                - 0.71953809261322
+                - 0.750596642494202
+                - 0.777954339981079
+                - 0.801106572151184
+                - 0.819548845291138
+                - 0.832776486873627
+                - 0.840301156044006
+                - 0.842061579227448
+                - 0.838458478450775
+                - 0.829915642738342
+                - 0.816856861114502
+                - 0.799705803394318
+                - 0.778886377811432
+                - 0.754822313785553
+                - 0.727937281131744
+                - 0.698655188083649
+                - 0.667399764060974
+                - 0.634594738483429
+                - 0.600663900375366
+                - 0.566031038761139
+                - 0.5311199426651
+                - 0.496354341506958
+                - 0.462158024311066
+                - 0.428954750299454
+                - 0.397168278694153
+                - 0.367222428321838
+                - 0.339540928602219
+                - 0.314547568559647
+                - 0.292666137218475
+                - 0.274320363998413
+                - 0.259934037923813
+                - 0.249924540519714
+                - 0.244416758418083
+                - 0.243127778172493
+                - 0.245744481682777
+                - 0.251953721046448
+                - 0.261442422866821
+                - 0.273897379636765
+                - 0.289005488157272
+                - 0.30645364522934
+                - 0.325928688049316
+                - 0.347117513418198
+                - 0.369706958532333
+                - 0.393383920192719
+                - 0.417835265398026
+                - 0.442747831344604
+                - 0.467808544635773
+                - 0.492704212665558
+                - 0.517121732234955
+                - 0.540748000144958
+                - 0.563269853591919
+                - 0.584374189376831
+                - 0.6037477850914
+                - 0.621077656745911
+                - 0.636050581932068
+                - 0.648353457450867
+                - 0.657685577869415
+                - 0.66399735212326
+                - 0.667470872402191
+                - 0.668297290802002
+                - 0.666667461395264
+                - 0.662772417068481
+                - 0.65680319070816
+                - 0.648950755596161
+                - 0.639406085014343
+                - 0.628360211849213
+                - 0.616004109382629
+                - 0.602528750896454
+                - 0.588125169277191
+                - 0.572984278202057
+                - 0.557297170162201
+                - 0.541254818439484
+                - 0.525048136711121
+                - 0.508868157863617
+                - 0.4929059445858
+                - 0.477352410554886
+                - 0.462398558855057
+                - 0.448235392570496
+                - 0.435053914785385
+                - 0.423045128583908
+                - 0.412400007247925
+                - 0.403294742107391
+                - 0.395745784044266
+                - 0.389671742916107
+                - 0.384989857673645
+                - 0.381617367267609
+                - 0.379471510648727
+                - 0.378469526767731
+                - 0.378528654575348
+                - 0.379566103219986
+                - 0.381499141454697
+                - 0.384245008230209
+                - 0.387720912694931
+                - 0.391844093799591
+                - 0.396531820297241
+                - 0.401701301336288
+                - 0.407269775867462
+                - 0.413154482841492
+                - 0.419272691011429
+                - 0.425541579723358
+                - 0.431878417730331
+                - 0.438200443983078
+                - 0.444424897432327
+                - 0.450468987226486
+                - 0.456249982118607
+                - 0.461685091257095
+                - 0.466701626777649
+                - 0.47129163146019
+                - 0.475472778081894
+                - 0.479262858629227
+                - 0.482679665088654
+                - 0.485740959644318
+                - 0.488464504480362
+                - 0.490868121385574
+                - 0.492969512939453
+                - 0.494786530733109
+                - 0.496336907148361
+                - 0.497638434171677
+                - 0.498708873987198
+                - 0.499565988779068
+                - 0.500227570533752
+                - 0.500711441040039
+                - 0.501035273075104
+                - 0.501216948032379
+                - 0.501274168491364
+                - 0.501224756240845
+                - 0.501086473464966
+                - 0.50087708234787
+                - 0.5006143450737
+                - 0.500316083431244
+                - 0.5
+              effects: *id002
+              title: Bong!
+              enabled: true
+            animation_min: -0.1
+            animation_max: 0.1
             animation_repeat_number: 4
             animation_repeat_unit: :beats
             enable_exit_animation: false
@@ -908,7 +1125,7 @@
             activation_curve: *id001
             activation_value: 1.0
             activation_variable: *id003
-        - !ruby/object:ActorEffectThemeChildren
+        - !ruby/object:ActorEffectScale
           conditions: !ruby/object:ChildConditions
             enable_child_index: false
             child_index_min: 0
@@ -922,425 +1139,29 @@
             enable_event: false
             event: 
             event_invert: false
-          title: Theme Children
+          title: *id014
           enabled: true
-          theme_setting: !ruby/object:UserObjectSettingTheme
-            theme: &id041 !ruby/object:Theme
-              tags: 
-              effects: 
-                - !ruby/object:Style
-                  title: ""
-                  enabled: true
-                  color_setting: !ruby/object:UserObjectSettingColor
-                    color: !ruby/object:Color
-                      alpha: 1.0
-                      blue: 0.349889372091249
-                      green: 0.964812695506218
-                      red: 0.744777599755856
-                    name: &id016 color
-                    options: &id017
-                      
-                      :default: 
-                        - 1.0
-                        - 1.0
-                        - 1.0
-                        - 1.0
-                      :only_literal: true
-                    breaks_cache: 
-                  image_setting: !ruby/object:UserObjectSettingImage
-                    image_name: 
-                    name: &id018 image
-                    options: &id019
-                      {}
-                    breaks_cache: 
-                - !ruby/object:Style
-                  title: ""
-                  enabled: true
-                  color_setting: !ruby/object:UserObjectSettingColor
-                    color: !ruby/object:Color
-                      alpha: 1.0
-                      blue: 0.35020981155108
-                      green: 0.868116273746853
-                      red: 0.213778896772717
-                    name: *id016
-                    options: *id017
-                    breaks_cache: 
-                  image_setting: !ruby/object:UserObjectSettingImage
-                    image_name: 
-                    name: *id018
-                    options: *id019
-                    breaks_cache: 
-                - !ruby/object:Style
-                  title: ""
-                  enabled: true
-                  color_setting: !ruby/object:UserObjectSettingColor
-                    color: !ruby/object:Color
-                      alpha: 1.0
-                      blue: 0.0189059281300069
-                      green: 0.83224231326772
-                      red: 0.575234607461662
-                    name: *id016
-                    options: *id017
-                    breaks_cache: 
-                  image_setting: !ruby/object:UserObjectSettingImage
-                    image_name: 
-                    name: *id018
-                    options: *id019
-                    breaks_cache: 
-                - !ruby/object:Style
-                  title: ""
-                  enabled: true
-                  color_setting: !ruby/object:UserObjectSettingColor
-                    color: !ruby/object:Color
-                      alpha: 1.0
-                      blue: 0.0501564049744411
-                      green: 0.493781948577096
-                      red: 0.255466544594491
-                    name: *id016
-                    options: *id017
-                    breaks_cache: 
-                  image_setting: !ruby/object:UserObjectSettingImage
-                    image_name: 
-                    name: *id018
-                    options: *id019
-                    breaks_cache: 
-              title: Forest
-              enabled: true
-              background_color_setting: !ruby/object:UserObjectSettingColor
-                color: !ruby/object:Color
-                  alpha: 1.0
-                  blue: 0.0
-                  green: 0.0
-                  red: 0.0
-                name: &id040 background_color
-                options: &id038
-                  
-                  :default: 
-                    - 0.0
-                    - 0.0
-                    - 0.0
-                    - 1.0
-                  :only_literal: true
-                breaks_cache: 
-            name: theme
-            options: {}
-            breaks_cache: 
           amount_setting: !ruby/object:UserObjectSettingFloat
-            name: amount
-            options: 
-              :range: !ruby/range
-                begin: 0.0
-                end: 1.0
-                excl: false
-              :default: !ruby/range
-                begin: 1.0
-                end: 1.0
-                excl: false
+            name: *id015
+            options: *id016
             breaks_cache: 
-            min: 0.0
-            max: 1.0
+            min: -1000.0
+            max: 1000.0
             enter_value: 0.0
             exit_value: 0.0
             enable_enter_animation: false
             enter_curve: 
-            enable_animation: false
-            animation_curve: *id001
-            animation_min: 1.0
-            animation_max: 1.0
-            animation_repeat_number: 0.25
+            enable_animation: true
+            animation_curve: *id013
+            animation_min: -0.2
+            animation_max: 2.0
+            animation_repeat_number: 4
             animation_repeat_unit: :beats
             enable_exit_animation: false
             exit_curve: 
             enable_activation: false
             activation_direction: :to
-            activation_curve: *id001
-            activation_value: 1.0
-            activation_variable: *id003
-          offset_setting: !ruby/object:UserObjectSettingInteger
-            name: offset
-            options: 
-              :range: !ruby/range
-                begin: -1000
-                end: 1000
-                excl: false
-              :default: !ruby/range
-                begin: 0
-                end: 1
-                excl: false
-            breaks_cache: 
-            animation_min: 0
-        - !ruby/object:ActorEffectBeatShiftChildren
-          conditions: !ruby/object:ChildConditions
-            enable_child_index: false
-            child_index_min: 0
-            child_index_max: 0
-            enable_event: false
-            event: 
-            event_invert: false
-            child_index_max: 0
-            child_index_min: 0
-            enable_child_index: false
-            enable_event: false
-            event: 
-            event_invert: false
-          title: Beat Shift Children
-          enabled: true
-          beats_per_child_setting: !ruby/object:UserObjectSettingInteger
-            name: beats_per_child
-            options: 
-              :range: !ruby/range
-                begin: 1
-                end: 100
-                excl: false
-              :default: !ruby/range
-                begin: 1
-                end: 2
-                excl: false
-            breaks_cache: 
-            animation_min: 1
-          amount_setting: !ruby/object:UserObjectSettingFloat
-            name: amount
-            options: 
-              :range: !ruby/range
-                begin: 0.0
-                end: 1.0
-                excl: false
-              :default: !ruby/range
-                begin: 1.0
-                end: 1.0
-                excl: false
-            breaks_cache: 
-            min: 0.0
-            max: 1.0
-            enter_value: 0.0
-            exit_value: 0.0
-            enable_enter_animation: false
-            enter_curve: 
-            enable_animation: false
-            animation_curve: &id028 !ruby/object:Curve
-              vector: 
-                - 0.0
-                - 0.0912469774484634
-                - 0.470689117908478
-                - 0.861580848693848
-                - 1.0
-                - 0.850959658622742
-                - 0.449575871229172
-                - 0.0877451002597809
-                - 0.0
-              approximation: 
-                - 0.0
-                - 0.000754420470912009
-                - 0.00153714104089886
-                - 0.00237646163441241
-                - 0.00330068240873516
-                - 0.00433810334652662
-                - 0.00551702454686165
-                - 0.00686574634164572
-                - 0.0084125678986311
-                - 0.0101857902482152
-                - 0.0122137134894729
-                - 0.0145246367901564
-                - 0.0171468611806631
-                - 0.0201086848974228
-                - 0.0234384089708328
-                - 0.0271643362939358
-                - 0.0313147604465485
-                - 0.0359179899096489
-                - 0.0410023182630539
-                - 0.0465960465371609
-                - 0.0527274757623672
-                - 0.0594249069690704
-                - 0.0667166411876678
-                - 0.0746309757232666
-                - 0.0831962078809738
-                - 0.0924406349658966
-                - 0.102380022406578
-                - 0.112992152571678
-                - 0.124247647821903
-                - 0.136117145419121
-                - 0.148571252822876
-                - 0.161580592393875
-                - 0.175115793943405
-                - 0.189147487282753
-                - 0.203646287322044
-                - 0.218582808971405
-                - 0.233927682042122
-                - 0.249651521444321
-                - 0.265724986791611
-                - 0.282118648290634
-                - 0.298803150653839
-                - 0.315749108791351
-                - 0.332927167415619
-                - 0.350307941436768
-                - 0.367862045764923
-                - 0.385560095310211
-                - 0.40337273478508
-                - 0.421270579099655
-                - 0.439224243164062
-                - 0.457204341888428
-                - 0.475181549787521
-                - 0.493129342794418
-                - 0.511027991771698
-                - 0.528858721256256
-                - 0.546602606773376
-                - 0.5642409324646
-                - 0.581754863262177
-                - 0.599125623703003
-                - 0.616334319114685
-                - 0.633362174034119
-                - 0.650190412998199
-                - 0.666800200939178
-                - 0.683172702789307
-                - 0.699289083480835
-                - 0.715130627155304
-                - 0.73067843914032
-                - 0.745913743972778
-                - 0.76081770658493
-                - 0.775371551513672
-                - 0.789556443691254
-                - 0.803353548049927
-                - 0.816744089126587
-                - 0.829709231853485
-                - 0.842230200767517
-                - 0.854288101196289
-                - 0.865864336490631
-                - 0.876946985721588
-                - 0.887537002563477
-                - 0.897636294364929
-                - 0.907247066497803
-                - 0.916371285915375
-                - 0.925011098384857
-                - 0.933168590068817
-                - 0.940845787525177
-                - 0.948044776916504
-                - 0.954767644405365
-                - 0.961016416549683
-                - 0.966793239116669
-                - 0.972100138664246
-                - 0.97693920135498
-                - 0.981312453746796
-                - 0.985222101211548
-                - 0.98867005109787
-                - 0.991658508777618
-                - 0.994189500808716
-                - 0.996265053749084
-                - 0.997887313365936
-                - 0.999058306217194
-                - 0.999780178070068
-                - 1.0
-                - 1.0
-                - 0.999269127845764
-                - 0.998205959796906
-                - 0.996691882610321
-                - 0.994724035263062
-                - 0.992299437522888
-                - 0.989415049552917
-                - 0.986067891120911
-                - 0.982254981994629
-                - 0.977973341941833
-                - 0.973219931125641
-                - 0.967991888523102
-                - 0.962286114692688
-                - 0.956099629402161
-                - 0.949429512023926
-                - 0.9422727227211
-                - 0.934626281261444
-                - 0.92648720741272
-                - 0.917852580547333
-                - 0.908719301223755
-                - 0.899084389209747
-                - 0.888944983482361
-                - 0.878297984600067
-                - 0.867140412330627
-                - 0.855469286441803
-                - 0.843283295631409
-                - 0.830596745014191
-                - 0.817432820796967
-                - 0.803814649581909
-                - 0.789765417575836
-                - 0.7753084897995
-                - 0.760466933250427
-                - 0.745263993740082
-                - 0.729722857475281
-                - 0.713866829872131
-                - 0.697719097137451
-                - 0.681302785873413
-                - 0.664641201496124
-                - 0.647757470607758
-                - 0.63067489862442
-                - 0.613416612148285
-                - 0.596005856990814
-                - 0.57846587896347
-                - 0.560819864273071
-                - 0.543090999126434
-                - 0.525302529335022
-                - 0.507477641105652
-                - 0.489639550447464
-                - 0.471811503171921
-                - 0.45401668548584
-                - 0.436278313398361
-                - 0.418619960546494
-                - 0.401065170764923
-                - 0.383637577295303
-                - 0.36636084318161
-                - 0.34925851225853
-                - 0.332354247570038
-                - 0.315671622753143
-                - 0.2992342710495
-                - 0.28306582570076
-                - 0.267189890146255
-                - 0.251630038022995
-                - 0.236409932374954
-                - 0.221553176641464
-                - 0.207083359360695
-                - 0.193024128675461
-                - 0.179399058222771
-                - 0.1662318110466
-                - 0.153545945882797
-                - 0.141365125775337
-                - 0.129712924361229
-                - 0.118612989783287
-                - 0.108088910579681
-                - 0.0981643125414848
-                - 0.088862806558609
-                - 0.0802018269896507
-                - 0.0721661299467087
-                - 0.0647296607494354
-                - 0.0578663609921932
-                - 0.0515501871705055
-                - 0.0457550808787346
-                - 0.040454987436533
-                - 0.0356238596141338
-                - 0.0312356371432543
-                - 0.0272642690688372
-                - 0.0236837025731802
-                - 0.0204678848385811
-                - 0.0175907611846924
-                - 0.0150262787938118
-                - 0.0127483839169145
-                - 0.0107310237362981
-                - 0.00894814357161522
-                - 0.00737369060516357
-                - 0.00598161155357957
-                - 0.00474585359916091
-                - 0.0036403622943908
-                - 0.00263908482156694
-                - 0.00171596743166447
-                - 0.000844957015942782
-                - 0.0
-              effects: *id002
-              title: Smooth
-              enabled: true
-            animation_min: 1.0
-            animation_max: 1.0
-            animation_repeat_number: 1.0
-            animation_repeat_unit: :minutes
-            enable_exit_animation: false
-            exit_curve: 
-            enable_activation: false
-            activation_direction: :to
-            activation_curve: &id024 !ruby/object:Curve
+            activation_curve: &id026 !ruby/object:Curve
               vector: 
                 - 0.0
                 - 0.025036059319973
@@ -1552,51 +1373,12 @@
                 - 0.978655099868774
                 - 0.989327073097229
                 - 1.0
-              effects: &id042
+              effects: &id032
                 []
               title: Slow
               enabled: true
-            activation_value: 1.0
-            activation_variable: *id020
-        - !ruby/object:ActorEffectScale
-          conditions: !ruby/object:ChildConditions
-            enable_child_index: false
-            child_index_min: 0
-            child_index_max: 0
-            enable_event: false
-            event: 
-            event_invert: false
-            child_index_max: 0
-            child_index_min: 0
-            enable_child_index: false
-            enable_event: false
-            event: 
-            event_invert: false
-          title: *id021
-          enabled: true
-          amount_setting: !ruby/object:UserObjectSettingFloat
-            name: *id022
-            options: *id023
-            breaks_cache: 
-            min: -1000.0
-            max: 1000.0
-            enter_value: 0.0
-            exit_value: 0.0
-            enable_enter_animation: false
-            enter_curve: 
-            enable_animation: false
-            animation_curve: *id001
-            animation_min: 0.6
-            animation_max: 4.0
-            animation_repeat_number: 4
-            animation_repeat_unit: :beats
-            enable_exit_animation: false
-            exit_curve: 
-            enable_activation: true
-            activation_direction: :to
-            activation_curve: *id024
             activation_value: 2.0
-            activation_variable: *id020
+            activation_variable: *id017
         - !ruby/object:ActorEffectRoll
           conditions: !ruby/object:ChildConditions
             enable_child_index: false
@@ -1611,11 +1393,11 @@
             enable_event: false
             event: 
             event_invert: false
-          title: *id025
+          title: *id018
           enabled: true
           amount_setting: !ruby/object:UserObjectSettingFloat
-            name: *id026
-            options: *id027
+            name: *id019
+            options: *id020
             breaks_cache: 
             min: -1000.0
             max: 1000.0
@@ -1624,7 +1406,221 @@
             enable_enter_animation: false
             enter_curve: 
             enable_animation: true
-            animation_curve: *id028
+            animation_curve: &id037 !ruby/object:Curve
+              vector: 
+                - 0.5
+                - 0.158814638853073
+                - 0.0
+                - 0.16001895070076
+                - 0.5
+                - 0.845267236232758
+                - 1.0
+                - 0.848762691020966
+                - 0.5
+              approximation: 
+                - 0.5
+                - 0.489469945430756
+                - 0.474308222532272
+                - 0.459171235561371
+                - 0.444071292877197
+                - 0.429020702838898
+                - 0.414031893014908
+                - 0.399117141962051
+                - 0.384288847446442
+                - 0.369559347629547
+                - 0.354940950870514
+                - 0.340446054935455
+                - 0.326086968183517
+                - 0.311876058578491
+                - 0.297825694084167
+                - 0.283948183059692
+                - 0.270255893468857
+                - 0.256761163473129
+                - 0.243476346135139
+                - 0.230413809418678
+                - 0.217585876584053
+                - 0.205004900693893
+                - 0.192683234810829
+                - 0.18063323199749
+                - 0.168867215514183
+                - 0.157397553324699
+                - 0.146236598491669
+                - 0.135396689176559
+                - 0.124890170991421
+                - 0.114729396998882
+                - 0.104926712810993
+                - 0.0954944640398026
+                - 0.0864450111985207
+                - 0.0777906849980354
+                - 0.0695438459515572
+                - 0.0617168322205544
+                - 0.0543219968676567
+                - 0.0473716929554939
+                - 0.0408782586455345
+                - 0.0348540507256985
+                - 0.0293114110827446
+                - 0.0242626890540123
+                - 0.019720233976841
+                - 0.0156963914632797
+                - 0.0122035127133131
+                - 0.00925394333899021
+                - 0.00686003174632788
+                - 0.00503412634134293
+                - 0.00378857436589897
+                - 0.00313572445884347
+                - 0.0
+                - 0.0036308029666543
+                - 0.00476045906543732
+                - 0.00646215211600065
+                - 0.0087238484993577
+                - 0.0115335155278444
+                - 0.0148791214451194
+                - 0.0187486317008734
+                - 0.023130014538765
+                - 0.0280112344771624
+                - 0.0333802625536919
+                - 0.0392250642180443
+                - 0.0455336049199104
+                - 0.0522938519716263
+                - 0.0594937764108181
+                - 0.0671213418245316
+                - 0.0751645117998123
+                - 0.0836112573742867
+                - 0.0924495533108711
+                - 0.101667352020741
+                - 0.111252628266811
+                - 0.12119334936142
+                - 0.131477475166321
+                - 0.142092987895012
+                - 0.153027847409248
+                - 0.164270013570786
+                - 0.17580746114254
+                - 0.187628149986267
+                - 0.199720054864883
+                - 0.212071135640144
+                - 0.224669367074966
+                - 0.237502723932266
+                - 0.250559151172638
+                - 0.263826638460159
+                - 0.277293115854263
+                - 0.29094660282135
+                - 0.304775029420853
+                - 0.318766355514526
+                - 0.332908600568771
+                - 0.347189664840698
+                - 0.361597567796707
+                - 0.376120239496231
+                - 0.390745669603348
+                - 0.405461817979813
+                - 0.420256644487381
+                - 0.435118138790131
+                - 0.450034260749817
+                - 0.464992970228195
+                - 0.479982197284698
+                - 0.494989991188049
+                - 0.510004222393036
+                - 0.525012969970703
+                - 0.540004074573517
+                - 0.554965615272522
+                - 0.569885492324829
+                - 0.584751725196838
+                - 0.59955221414566
+                - 0.614274978637695
+                - 0.628907978534698
+                - 0.643439173698425
+                - 0.657856464385986
+                - 0.672147929668427
+                - 0.686301529407501
+                - 0.700305104255676
+                - 0.714146733283997
+                - 0.727814376354218
+                - 0.741295993328094
+                - 0.754579544067383
+                - 0.767652928829193
+                - 0.78050422668457
+                - 0.793121337890625
+                - 0.805492281913757
+                - 0.817604959011078
+                - 0.829447329044342
+                - 0.841007471084595
+                - 0.852273225784302
+                - 0.863232612609863
+                - 0.873873651027679
+                - 0.884184181690216
+                - 0.894152283668518
+                - 0.903765916824341
+                - 0.913012981414795
+                - 0.921881437301636
+                - 0.930359363555908
+                - 0.938434660434723
+                - 0.94609522819519
+                - 0.953329145908356
+                - 0.960124313831329
+                - 0.966468751430511
+                - 0.972350358963013
+                - 0.977757155895233
+                - 0.982677102088928
+                - 0.987098157405853
+                - 0.991008222103119
+                - 0.99439537525177
+                - 0.997247576713562
+                - 0.999552667140961
+                - 1.0
+                - 1.0
+                - 1.0
+                - 1.0
+                - 1.0
+                - 1.0
+                - 0.99948513507843
+                - 0.99714207649231
+                - 0.99424421787262
+                - 0.990803897380829
+                - 0.986833453178406
+                - 0.982345223426819
+                - 0.977351486682892
+                - 0.971864581108093
+                - 0.965896904468536
+                - 0.959460735321045
+                - 0.952568352222443
+                - 0.945232152938843
+                - 0.937464475631714
+                - 0.92927759885788
+                - 0.920683860778809
+                - 0.911695599555969
+                - 0.90232515335083
+                - 0.89258486032486
+                - 0.882487058639526
+                - 0.872044026851654
+                - 0.861268103122711
+                - 0.850171625614166
+                - 0.838766992092133
+                - 0.827066421508789
+                - 0.815082311630249
+                - 0.802826941013336
+                - 0.790312647819519
+                - 0.777551829814911
+                - 0.764556765556335
+                - 0.751339733600616
+                - 0.737913191318512
+                - 0.724289298057556
+                - 0.710480511188507
+                - 0.696499168872833
+                - 0.682357490062714
+                - 0.668067932128906
+                - 0.65364271402359
+                - 0.639094173908234
+                - 0.62443470954895
+                - 0.609676659107208
+                - 0.594832241535187
+                - 0.579913854598999
+                - 0.564933896064758
+                - 0.549904525279999
+                - 0.534838259220123
+                - 0.519747257232666
+                - 0.5
+              effects: *id002
+              title: Sine Inv
+              enabled: true
             animation_min: 0.0
             animation_max: 1.0
             animation_repeat_number: 16.0
@@ -1636,7 +1632,7 @@
             activation_curve: *id001
             activation_value: 1.0
             activation_variable: *id003
-        - !ruby/object:ActorEffectColorGradientChildren
+        - !ruby/object:ActorEffectThemeChildren
           conditions: !ruby/object:ChildConditions
             enable_child_index: false
             child_index_min: 0
@@ -1650,22 +1646,238 @@
             enable_event: false
             event: 
             event_invert: false
-          title: Color Gradient Children
+          title: Theme Children
           enabled: true
-          color_setting: !ruby/object:UserObjectSettingColor
-            color: !ruby/object:Color
-              alpha: 1.0
-              blue: 0.0
-              green: 0.0
-              red: 0.0
-            name: color
-            options: 
-              :default: 
-                - 0.0
-                - 0.0
-                - 0.0
-                - 1.0
+          theme_setting: !ruby/object:UserObjectSettingTheme
+            theme: &id046 !ruby/object:Theme
+              tags: 
+              effects: 
+                - !ruby/object:Style
+                  title: &id021 ""
+                  enabled: true
+                  color_setting: !ruby/object:UserObjectSettingColor
+                    color: !ruby/object:Color
+                      alpha: 1.0
+                      blue: 0.0
+                      green: 0.474509803921569
+                      red: 0.96078431372549
+                    name: &id022 color
+                    options: &id023
+                      
+                      :default: 
+                        - 1.0
+                        - 1.0
+                        - 1.0
+                        - 1.0
+                      :only_literal: true
+                    breaks_cache: 
+                  image_setting: !ruby/object:UserObjectSettingImage
+                    image_name: 
+                    name: &id024 image
+                    options: &id025
+                      {}
+                    breaks_cache: 
+                - !ruby/object:Style
+                  title: *id021
+                  enabled: true
+                  color_setting: !ruby/object:UserObjectSettingColor
+                    color: !ruby/object:Color
+                      alpha: 1.0
+                      blue: 0.0
+                      green: 0.831372549019608
+                      red: 0.929411764705882
+                    name: *id022
+                    options: *id023
+                    breaks_cache: 
+                  image_setting: !ruby/object:UserObjectSettingImage
+                    image_name: 
+                    name: *id024
+                    options: *id025
+                    breaks_cache: 
+                - !ruby/object:Style
+                  title: *id021
+                  enabled: true
+                  color_setting: !ruby/object:UserObjectSettingColor
+                    color: !ruby/object:Color
+                      alpha: 1.0
+                      blue: 0.0862745098039216
+                      green: 0.823529411764706
+                      red: 0.450980392156863
+                    name: *id022
+                    options: *id023
+                    breaks_cache: 
+                  image_setting: !ruby/object:UserObjectSettingImage
+                    image_name: 
+                    name: *id024
+                    options: *id025
+                    breaks_cache: 
+                - !ruby/object:Style
+                  title: *id021
+                  enabled: true
+                  color_setting: !ruby/object:UserObjectSettingColor
+                    color: !ruby/object:Color
+                      alpha: 1.0
+                      blue: 0.811764705882353
+                      green: 0.623529411764706
+                      red: 0.447058823529412
+                    name: *id022
+                    options: *id023
+                    breaks_cache: 
+                  image_setting: !ruby/object:UserObjectSettingImage
+                    image_name: 
+                    name: *id024
+                    options: *id025
+                    breaks_cache: 
+                - !ruby/object:Style
+                  title: *id021
+                  enabled: true
+                  color_setting: !ruby/object:UserObjectSettingColor
+                    color: !ruby/object:Color
+                      alpha: 1.0
+                      blue: 0.643137254901961
+                      green: 0.396078431372549
+                      red: 0.203921568627451
+                    name: *id022
+                    options: *id023
+                    breaks_cache: 
+                  image_setting: !ruby/object:UserObjectSettingImage
+                    image_name: 
+                    name: *id024
+                    options: *id025
+                    breaks_cache: 
+                - !ruby/object:Style
+                  title: *id021
+                  enabled: true
+                  color_setting: !ruby/object:UserObjectSettingColor
+                    color: !ruby/object:Color
+                      alpha: 1.0
+                      blue: 0.630212863355459
+                      green: 0.149553673609522
+                      red: 0.563134203097581
+                    name: *id022
+                    options: *id023
+                    breaks_cache: 
+                  image_setting: !ruby/object:UserObjectSettingImage
+                    image_name: 
+                    name: *id024
+                    options: *id025
+                    breaks_cache: 
+                - !ruby/object:Style
+                  title: *id021
+                  enabled: true
+                  color_setting: !ruby/object:UserObjectSettingColor
+                    color: !ruby/object:Color
+                      alpha: 1.0
+                      blue: 0.0392156862745098
+                      green: 0.0392156862745098
+                      red: 0.866666666666667
+                    name: *id022
+                    options: *id023
+                    breaks_cache: 
+                  image_setting: !ruby/object:UserObjectSettingImage
+                    image_name: 
+                    name: *id024
+                    options: *id025
+                    breaks_cache: 
+                - !ruby/object:Style
+                  title: *id021
+                  enabled: true
+                  color_setting: !ruby/object:UserObjectSettingColor
+                    color: !ruby/object:Color
+                      alpha: 1.0
+                      blue: 0.353490501258869
+                      green: 0.353490501258869
+                      red: 0.936827649347677
+                    name: *id022
+                    options: *id023
+                    breaks_cache: 
+                  image_setting: !ruby/object:UserObjectSettingImage
+                    image_name: 
+                    name: *id024
+                    options: *id025
+                    breaks_cache: 
+                - !ruby/object:Style
+                  title: *id021
+                  enabled: true
+                  color_setting: !ruby/object:UserObjectSettingColor
+                    color: !ruby/object:Color
+                      alpha: 1.0
+                      blue: 0.079819943541619
+                      green: 1.0
+                      red: 0.924208438239109
+                    name: *id022
+                    options: *id023
+                    breaks_cache: 
+                  image_setting: !ruby/object:UserObjectSettingImage
+                    image_name: 
+                    name: *id024
+                    options: *id025
+                    breaks_cache: 
+              title: Tango
+              enabled: true
+              background_color_setting: !ruby/object:UserObjectSettingColor
+                color: !ruby/object:Color
+                  alpha: 1.0
+                  blue: 0.0
+                  green: 0.0
+                  red: 0.0
+                name: background_color
+                options: &id040
+                  
+                  :default: 
+                    - 0.0
+                    - 0.0
+                    - 0.0
+                    - 1.0
+                  :only_literal: true
+                breaks_cache: 
+            name: theme
+            options: {}
             breaks_cache: 
+          amount_setting: !ruby/object:UserObjectSettingFloat
+            name: amount
+            options: 
+              :range: !ruby/range
+                begin: 0.0
+                end: 1.0
+                excl: false
+              :default: !ruby/range
+                begin: 1.0
+                end: 1.0
+                excl: false
+            breaks_cache: 
+            min: 0.0
+            max: 1.0
+            enter_value: 0.0
+            exit_value: 0.0
+            enable_enter_animation: false
+            enter_curve: 
+            enable_animation: false
+            animation_curve: *id001
+            animation_min: 1.0
+            animation_max: 1.0
+            animation_repeat_number: 0.25
+            animation_repeat_unit: :beats
+            enable_exit_animation: false
+            exit_curve: 
+            enable_activation: false
+            activation_direction: :to
+            activation_curve: *id001
+            activation_value: 1.0
+            activation_variable: *id003
+          offset_setting: !ruby/object:UserObjectSettingInteger
+            name: offset
+            options: 
+              :range: !ruby/range
+                begin: -1000
+                end: 1000
+                excl: false
+              :default: !ruby/range
+                begin: 0
+                end: 1
+                excl: false
+            breaks_cache: 
+            animation_min: 0
       title: Pinwheel
       enabled: true
       arms_setting: !ruby/object:UserObjectSettingInteger
@@ -1703,17 +1915,17 @@
         enter_curve: *id001
         enable_animation: false
         animation_curve: *id001
-        animation_min: 0.03
+        animation_min: 0.31
         animation_max: 1.0
         animation_repeat_number: 4
         animation_repeat_unit: :beats
         enable_exit_animation: false
         exit_curve: *id001
-        enable_activation: true
+        enable_activation: false
         activation_direction: :to
         activation_curve: *id001
         activation_value: 0.6
-        activation_variable: *id020
+        activation_variable: *id017
       cutout_size_setting: !ruby/object:UserObjectSettingFloat
         name: cutout_size
         options: 
@@ -1735,22 +1947,22 @@
         enter_curve: *id001
         enable_animation: false
         animation_curve: *id001
-        animation_min: 0.97
+        animation_min: 0.43
         animation_max: 1.0
         animation_repeat_number: 4
         animation_repeat_unit: :beats
         enable_exit_animation: false
         exit_curve: *id001
-        enable_activation: true
+        enable_activation: false
         activation_direction: :to
-        activation_curve: *id024
+        activation_curve: *id026
         activation_value: 0.31
-        activation_variable: *id020
+        activation_variable: *id017
   :directors: 
-    - &id059 !ruby/object:Director
+    - &id064 !ruby/object:Director
       actors: 
-        - *id029
-        - *id030
+        - *id027
+        - *id028
       tags: 
       effects: 
         - !ruby/object:DirectorEffectActor
@@ -1774,7 +1986,7 @@
             options: 
               :summary: true
             breaks_cache: 
-            actor: *id029
+            actor: *id027
             x: 0.0
             y: 0.0
             z: 0.0
@@ -1801,7 +2013,7 @@
             breaks_cache: 
             tag: all
           forwards_setting: !ruby/object:UserObjectSettingEvent
-            event: &id056 !ruby/object:Event
+            event: &id061 !ruby/object:Event
               effects: 
                 - !ruby/object:EventInputButtonPress
                   conditions: !ruby/object:ChildConditions
@@ -1817,12 +2029,12 @@
                     enable_event: false
                     event: 
                     event_invert: false
-                  title: &id032 Button Press
+                  title: &id030 Button Press
                   enabled: true
                   button_setting: !ruby/object:UserObjectSettingButton
                     button: Keyboard / Equal
-                    name: *id031
-                    options: &id033
+                    name: *id029
+                    options: &id031
                       
                       :summary: true
                     breaks_cache: 
@@ -1833,7 +2045,7 @@
               :summary: % forward
             breaks_cache: 
           backwards_setting: !ruby/object:UserObjectSettingEvent
-            event: &id057 !ruby/object:Event
+            event: &id062 !ruby/object:Event
               effects: 
                 - !ruby/object:EventInputButtonPress
                   conditions: !ruby/object:ChildConditions
@@ -1849,12 +2061,12 @@
                     enable_event: false
                     event: 
                     event_invert: false
-                  title: *id032
+                  title: *id030
                   enabled: true
                   button_setting: !ruby/object:UserObjectSettingButton
                     button: Keyboard / Minus
-                    name: *id031
-                    options: *id033
+                    name: *id029
+                    options: *id031
                     breaks_cache: 
               title: previous
               enabled: true
@@ -1873,7 +2085,7 @@
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
-        options: &id034
+        options: &id041
           
           :summary: renders on %
         breaks_cache: 
@@ -1883,12 +2095,1162 @@
         z: 0.0
     - !ruby/object:Director
       actors: 
-        - !ruby/object:ActorStar
+        - !ruby/object:ActorStarFlower
           x: 0.0
           y: 0.0
           tags: 
-          effects: []
-          title: Star
+          effects: 
+            - !ruby/object:ActorEffectFade
+              conditions: !ruby/object:ChildConditions
+                enable_child_index: false
+                child_index_min: 0
+                child_index_max: 0
+                enable_event: false
+                event: 
+                event_invert: false
+                child_index_max: 0
+                child_index_min: 0
+                enable_child_index: false
+                enable_event: false
+                event: 
+                event_invert: false
+              title: Fade
+              enabled: true
+              amount_setting: !ruby/object:UserObjectSettingFloat
+                name: amount
+                options: 
+                  :range: !ruby/range
+                    begin: 0.0
+                    end: 1.0
+                    excl: false
+                  :default: !ruby/range
+                    begin: 0.0
+                    end: 1.0
+                    excl: false
+                breaks_cache: 
+                min: 0.0
+                max: 1.0
+                enter_value: 0.0
+                exit_value: 0.0
+                enable_enter_animation: false
+                enter_curve: 
+                enable_animation: true
+                animation_curve: &id054 !ruby/object:Curve
+                  vector: 
+                    - 0.0
+                    - 0.691340744495392
+                    - 1.0
+                    - 0.7453852891922
+                    - 0.376562356948853
+                    - 0.153726011514664
+                    - 0.0408035852015018
+                    - 0.00314226048067212
+                    - 0.0
+                  approximation: 
+                    - 0.0
+                    - 0.0303957313299179
+                    - 0.0607661791145802
+                    - 0.0910860598087311
+                    - 0.121330097317696
+                    - 0.151473000645638
+                    - 0.181489482522011
+                    - 0.211354285478592
+                    - 0.241042092442513
+                    - 0.27052766084671
+                    - 0.299785643815994
+                    - 0.328790843486786
+                    - 0.357517898082733
+                    - 0.385941565036774
+                    - 0.414036571979523
+                    - 0.441777616739273
+                    - 0.46913942694664
+                    - 0.496096700429916
+                    - 0.522624135017395
+                    - 0.548696517944336
+                    - 0.574288547039032
+                    - 0.599374890327454
+                    - 0.623930275440216
+                    - 0.647929489612579
+                    - 0.671347200870514
+                    - 0.69415807723999
+                    - 0.716337561607361
+                    - 0.737862586975098
+                    - 0.758710384368896
+                    - 0.778858184814453
+                    - 0.798283219337463
+                    - 0.816962718963623
+                    - 0.834873914718628
+                    - 0.851993978023529
+                    - 0.868300199508667
+                    - 0.883769750595093
+                    - 0.898379921913147
+                    - 0.912107884883881
+                    - 0.924930930137634
+                    - 0.936826169490814
+                    - 0.947770953178406
+                    - 0.95774245262146
+                    - 0.966717898845673
+                    - 0.97467452287674
+                    - 0.981589496135712
+                    - 0.98744010925293
+                    - 0.992203593254089
+                    - 0.995857119560242
+                    - 0.998377978801727
+                    - 0.999743342399597
+                    - 1.0
+                    - 0.998942375183105
+                    - 0.996819734573364
+                    - 0.993608295917511
+                    - 0.989353656768799
+                    - 0.984101116657257
+                    - 0.977896273136139
+                    - 0.970784425735474
+                    - 0.962811172008514
+                    - 0.954021871089935
+                    - 0.9444620013237
+                    - 0.934177041053772
+                    - 0.92321240901947
+                    - 0.911613523960114
+                    - 0.89942592382431
+                    - 0.886695027351379
+                    - 0.87346625328064
+                    - 0.859785079956055
+                    - 0.845696985721588
+                    - 0.831247389316559
+                    - 0.81648176908493
+                    - 0.801445484161377
+                    - 0.786184132099152
+                    - 0.770743072032928
+                    - 0.755167782306671
+                    - 0.73950320482254
+                    - 0.723780632019043
+                    - 0.708016693592072
+                    - 0.692227125167847
+                    - 0.676427781581879
+                    - 0.660634577274323
+                    - 0.644863247871399
+                    - 0.629129648208618
+                    - 0.613449692726135
+                    - 0.597839117050171
+                    - 0.582313776016235
+                    - 0.566889524459839
+                    - 0.551582217216492
+                    - 0.536407649517059
+                    - 0.521381676197052
+                    - 0.506520092487335
+                    - 0.491838753223419
+                    - 0.477353483438492
+                    - 0.463080167770386
+                    - 0.449034571647644
+                    - 0.435232549905777
+                    - 0.421689957380295
+                    - 0.408422619104385
+                    - 0.395446360111237
+                    - 0.382777005434036
+                    - 0.370430171489716
+                    - 0.358412355184555
+                    - 0.346717059612274
+                    - 0.335336953401566
+                    - 0.324264645576477
+                    - 0.313492774963379
+                    - 0.303014010190964
+                    - 0.292820900678635
+                    - 0.282906174659729
+                    - 0.27326238155365
+                    - 0.26388218998909
+                    - 0.254758208990097
+                    - 0.245883107185364
+                    - 0.237249478697777
+                    - 0.228849977254868
+                    - 0.220677211880684
+                    - 0.212723836302757
+                    - 0.204982459545135
+                    - 0.197445720434189
+                    - 0.190106257796288
+                    - 0.182956695556641
+                    - 0.175989657640457
+                    - 0.169197782874107
+                    - 0.1625736951828
+                    - 0.156110033392906
+                    - 0.149799585342407
+                    - 0.143638476729393
+                    - 0.137625902891159
+                    - 0.131761133670807
+                    - 0.126043498516083
+                    - 0.12047228962183
+                    - 0.115046814084053
+                    - 0.109766378998756
+                    - 0.104630269110203
+                    - 0.0996378064155579
+                    - 0.0947882831096649
+                    - 0.0900810062885284
+                    - 0.0855152755975723
+                    - 0.0810903906822205
+                    - 0.0768056586384773
+                    - 0.0726603791117668
+                    - 0.0686538591980934
+                    - 0.064785398542881
+                    - 0.0610543005168438
+                    - 0.057459868490696
+                    - 0.0540014021098614
+                    - 0.0506782010197639
+                    - 0.0474895760416985
+                    - 0.0444348268210888
+                    - 0.0415132530033588
+                    - 0.0387240163981915
+                    - 0.0360647700726986
+                    - 0.033532228320837
+                    - 0.0311231072992086
+                    - 0.0288341101258993
+                    - 0.0266619473695755
+                    - 0.0246033240109682
+                    - 0.0226549506187439
+                    - 0.0208135321736336
+                    - 0.0190757811069489
+                    - 0.0174384023994207
+                    - 0.0158981066197157
+                    - 0.0144515996798873
+                    - 0.0130955893546343
+                    - 0.0118267852813005
+                    - 0.0106418952345848
+                    - 0.00953762698918581
+                    - 0.00851068831980228
+                    - 0.00755778746679425
+                    - 0.00667563313618302
+                    - 0.00586093217134476
+                    - 0.00511039420962334
+                    - 0.00442072609439492
+                    - 0.00378863629885018
+                    - 0.00321083283051848
+                    - 0.00268414989113808
+                    - 0.00220623309724033
+                    - 0.00177504937164485
+                    - 0.00138856703415513
+                    - 0.00104475428815931
+                    - 0.000741579162422568
+                    - 0.000477009802125394
+                    - 0.000249014323344454
+                    - 5.5560809414601e-05
+                    - 0.0
+                    - 0.0
+                    - 0.0
+                    - 0.0
+                    - 0.0
+                    - 0.0
+                    - 0.0
+                    - 0.0
+                    - 0.0
+                    - 0.0
+                    - 0.0
+                    - 0.0
+                    - 0.0
+                    - 0.0
+                    - 0.0
+                    - 0.0
+                  effects: *id032
+                  title: Ramp
+                  enabled: true
+                animation_min: 0.21
+                animation_max: 0.79
+                animation_repeat_number: 4
+                animation_repeat_unit: :beats
+                enable_exit_animation: false
+                exit_curve: 
+                enable_activation: false
+                activation_direction: :to
+                activation_curve: *id001
+                activation_value: 1.0
+                activation_variable: *id033
+            - !ruby/object:ActorEffectInspect
+              conditions: !ruby/object:ChildConditions
+                enable_child_index: false
+                child_index_min: 0
+                child_index_max: 0
+                enable_event: false
+                event: 
+                event_invert: false
+                child_index_max: 0
+                child_index_min: 0
+                enable_child_index: false
+                enable_event: false
+                event: 
+                event_invert: false
+              title: Inspect
+              enabled: false
+              zoom_setting: !ruby/object:UserObjectSettingFloat
+                name: zoom
+                options: 
+                  :default: !ruby/range
+                    begin: 1.0
+                    end: 2.0
+                    excl: false
+                  :range: !ruby/range
+                    begin: -1000.0
+                    end: 1000.0
+                    excl: false
+                breaks_cache: 
+                min: -1000.0
+                max: 1000.0
+                enter_value: 0.0
+                exit_value: 0.0
+                enable_enter_animation: false
+                enter_curve: 
+                enable_animation: false
+                animation_curve: *id001
+                animation_min: 2.0
+                animation_max: 2.0
+                animation_repeat_number: 4
+                animation_repeat_unit: :beats
+                enable_exit_animation: false
+                exit_curve: 
+                enable_activation: true
+                activation_direction: :to
+                activation_curve: *id001
+                activation_value: 8.06
+                activation_variable: *id017
+              x_setting: !ruby/object:UserObjectSettingFloat
+                name: x
+                options: 
+                  :range: !ruby/range
+                    begin: -0.5
+                    end: 0.5
+                    excl: false
+                  :default: !ruby/range
+                    begin: 0.0
+                    end: 0.5
+                    excl: false
+                breaks_cache: 
+                min: -0.5
+                max: 0.5
+                enter_value: 0.0
+                exit_value: 0.0
+                enable_enter_animation: false
+                enter_curve: 
+                enable_animation: true
+                animation_curve: &id053 !ruby/object:Curve
+                  vector: 
+                    - 0.0
+                    - 0.288459807634354
+                    - 0.987236320972443
+                    - 0.270359605550766
+                    - 0.461924284696579
+                    - 0.247356384992599
+                    - 0.325064033269882
+                    - 0.0940449312329292
+                    - 0.0
+                  approximation: 
+                    - 0.0
+                    - 0.00224667275324464
+                    - 0.00458415411412716
+                    - 0.00710325129330158
+                    - 0.00989477336406708
+                    - 0.0130495289340615
+                    - 0.0166583247482777
+                    - 0.0208119712769985
+                    - 0.0256012752652168
+                    - 0.0311170443892479
+                    - 0.0374500900506973
+                    - 0.0446912162005901
+                    - 0.0529312305152416
+                    - 0.0622609481215477
+                    - 0.0727711692452431
+                    - 0.0845527052879333
+                    - 0.0976963713765144
+                    - 0.11229296028614
+                    - 0.128433302044868
+                    - 0.146208181977272
+                    - 0.165708422660828
+                    - 0.187024816870689
+                    - 0.210248202085495
+                    - 0.235469356179237
+                    - 0.262779116630554
+                    - 0.292268007993698
+                    - 0.323928713798523
+                    - 0.357506901025772
+                    - 0.392710000276566
+                    - 0.429245322942734
+                    - 0.466820269823074
+                    - 0.505142211914062
+                    - 0.543918550014496
+                    - 0.58285665512085
+                    - 0.621663868427277
+                    - 0.660047590732574
+                    - 0.697715163230896
+                    - 0.734373986721039
+                    - 0.769731462001801
+                    - 0.803494870662689
+                    - 0.835371732711792
+                    - 0.865069329738617
+                    - 0.892295002937317
+                    - 0.916756212711334
+                    - 0.938160300254822
+                    - 0.956214666366577
+                    - 0.970626592636108
+                    - 0.981103539466858
+                    - 0.987352848052979
+                    - 0.989081919193268
+                    - 0.986001491546631
+                    - 0.978056848049164
+                    - 0.965576946735382
+                    - 0.948926031589508
+                    - 0.928468465805054
+                    - 0.904568612575531
+                    - 0.877590715885162
+                    - 0.84789913892746
+                    - 0.815858244895935
+                    - 0.781832337379456
+                    - 0.746185660362244
+                    - 0.709282696247101
+                    - 0.671487629413605
+                    - 0.633164882659912
+                    - 0.594678699970245
+                    - 0.556393444538116
+                    - 0.518673479557037
+                    - 0.481883078813553
+                    - 0.446386605501175
+                    - 0.412548363208771
+                    - 0.38073268532753
+                    - 0.35130387544632
+                    - 0.324626296758652
+                    - 0.301064252853394
+                    - 0.280982047319412
+                    - 0.26473331451416
+                    - 0.252385824918747
+                    - 0.243698418140411
+                    - 0.238414540886879
+                    - 0.236277624964714
+                    - 0.237031102180481
+                    - 0.240418389439583
+                    - 0.246182933449745
+                    - 0.254068166017532
+                    - 0.263817548751831
+                    - 0.2751744389534
+                    - 0.28788235783577
+                    - 0.301684677600861
+                    - 0.316324859857559
+                    - 0.33154633641243
+                    - 0.347092509269714
+                    - 0.3627068400383
+                    - 0.37813276052475
+                    - 0.393113702535629
+                    - 0.407393097877502
+                    - 0.420714408159256
+                    - 0.432821005582809
+                    - 0.44345635175705
+                    - 0.452363878488541
+                    - 0.459287047386169
+                    - 0.463972896337509
+                    - 0.466335028409958
+                    - 0.466519176959991
+                    - 0.464688390493393
+                    - 0.461005568504333
+                    - 0.455633670091629
+                    - 0.44873571395874
+                    - 0.440474659204483
+                    - 0.431013464927673
+                    - 0.420515060424805
+                    - 0.40914249420166
+                    - 0.397058665752411
+                    - 0.384426593780518
+                    - 0.371409207582474
+                    - 0.35816952586174
+                    - 0.344870448112488
+                    - 0.331674993038177
+                    - 0.318746119737625
+                    - 0.306246817111969
+                    - 0.294340014457703
+                    - 0.283188700675964
+                    - 0.27295583486557
+                    - 0.263804376125336
+                    - 0.255897343158722
+                    - 0.249397665262222
+                    - 0.244461312890053
+                    - 0.241103485226631
+                    - 0.239209249615669
+                    - 0.238658756017685
+                    - 0.239332169294357
+                    - 0.241109654307365
+                    - 0.243871361017227
+                    - 0.247497454285622
+                    - 0.251868069171906
+                    - 0.256863415241241
+                    - 0.262363612651825
+                    - 0.268248796463013
+                    - 0.274399191141129
+                    - 0.280694901943207
+                    - 0.287016093730927
+                    - 0.293242961168289
+                    - 0.299255639314651
+                    - 0.30493426322937
+                    - 0.310159027576447
+                    - 0.314810067415237
+                    - 0.318767547607422
+                    - 0.321911662817001
+                    - 0.32412251830101
+                    - 0.325280278921127
+                    - 0.325265139341354
+                    - 0.323968023061752
+                    - 0.321396797895432
+                    - 0.317630857229233
+                    - 0.312750577926636
+                    - 0.306836307048798
+                    - 0.299968481063843
+                    - 0.292227476835251
+                    - 0.283693641424179
+                    - 0.274447411298752
+                    - 0.264569133520126
+                    - 0.254139214754105
+                    - 0.243238061666489
+                    - 0.231946021318436
+                    - 0.220343500375748
+                    - 0.208510890603065
+                    - 0.196528568863869
+                    - 0.184476926922798
+                    - 0.172436341643333
+                    - 0.160487219691277
+                    - 0.148709937930107
+                    - 0.137184873223305
+                    - 0.125992432236671
+                    - 0.115212976932526
+                    - 0.104926913976669
+                    - 0.0952146202325821
+                    - 0.0861457660794258
+                    - 0.07772096991539
+                    - 0.0699134543538094
+                    - 0.0626963898539543
+                    - 0.0560429282486439
+                    - 0.0499262362718582
+                    - 0.0443194732069969
+                    - 0.0391958020627499
+                    - 0.0345283858478069
+                    - 0.0302903819829226
+                    - 0.0264549553394318
+                    - 0.0229952689260244
+                    - 0.019884480163455
+                    - 0.0170957520604134
+                    - 0.0146022485569119
+                    - 0.0123771280050278
+                    - 0.0103935543447733
+                    - 0.00862468685954809
+                    - 0.00704368948936462
+                    - 0.00562372244894505
+                    - 0.00433794734999537
+                    - 0.00315952603705227
+                    - 0.00206161988899112
+                    - 0.00101739075034857
+                    - 0.0
+                  effects: *id002
+                  title: Coaster
+                  enabled: true
+                animation_min: -0.31
+                animation_max: 0.31
+                animation_repeat_number: 2.0
+                animation_repeat_unit: :minutes
+                enable_exit_animation: false
+                exit_curve: 
+                enable_activation: false
+                activation_direction: :to
+                activation_curve: *id001
+                activation_value: 0.5
+                activation_variable: *id033
+              y_setting: !ruby/object:UserObjectSettingFloat
+                name: y
+                options: 
+                  :range: !ruby/range
+                    begin: -0.5
+                    end: 0.5
+                    excl: false
+                  :default: !ruby/range
+                    begin: 0.0
+                    end: 0.5
+                    excl: false
+                breaks_cache: 
+                min: -0.5
+                max: 0.5
+                enter_value: 0.0
+                exit_value: 0.0
+                enable_enter_animation: false
+                enter_curve: 
+                enable_animation: true
+                animation_curve: &id047 !ruby/object:Curve
+                  vector: 
+                    - 0.0
+                    - 0.0912469774484634
+                    - 0.470689117908478
+                    - 0.861580848693848
+                    - 1.0
+                    - 0.850959658622742
+                    - 0.449575871229172
+                    - 0.0877451002597809
+                    - 0.0
+                  approximation: 
+                    - 0.0
+                    - 0.000754420470912009
+                    - 0.00153714104089886
+                    - 0.00237646163441241
+                    - 0.00330068240873516
+                    - 0.00433810334652662
+                    - 0.00551702454686165
+                    - 0.00686574634164572
+                    - 0.0084125678986311
+                    - 0.0101857902482152
+                    - 0.0122137134894729
+                    - 0.0145246367901564
+                    - 0.0171468611806631
+                    - 0.0201086848974228
+                    - 0.0234384089708328
+                    - 0.0271643362939358
+                    - 0.0313147604465485
+                    - 0.0359179899096489
+                    - 0.0410023182630539
+                    - 0.0465960465371609
+                    - 0.0527274757623672
+                    - 0.0594249069690704
+                    - 0.0667166411876678
+                    - 0.0746309757232666
+                    - 0.0831962078809738
+                    - 0.0924406349658966
+                    - 0.102380022406578
+                    - 0.112992152571678
+                    - 0.124247647821903
+                    - 0.136117145419121
+                    - 0.148571252822876
+                    - 0.161580592393875
+                    - 0.175115793943405
+                    - 0.189147487282753
+                    - 0.203646287322044
+                    - 0.218582808971405
+                    - 0.233927682042122
+                    - 0.249651521444321
+                    - 0.265724986791611
+                    - 0.282118648290634
+                    - 0.298803150653839
+                    - 0.315749108791351
+                    - 0.332927167415619
+                    - 0.350307941436768
+                    - 0.367862045764923
+                    - 0.385560095310211
+                    - 0.40337273478508
+                    - 0.421270579099655
+                    - 0.439224243164062
+                    - 0.457204341888428
+                    - 0.475181549787521
+                    - 0.493129342794418
+                    - 0.511027991771698
+                    - 0.528858721256256
+                    - 0.546602606773376
+                    - 0.5642409324646
+                    - 0.581754863262177
+                    - 0.599125623703003
+                    - 0.616334319114685
+                    - 0.633362174034119
+                    - 0.650190412998199
+                    - 0.666800200939178
+                    - 0.683172702789307
+                    - 0.699289083480835
+                    - 0.715130627155304
+                    - 0.73067843914032
+                    - 0.745913743972778
+                    - 0.76081770658493
+                    - 0.775371551513672
+                    - 0.789556443691254
+                    - 0.803353548049927
+                    - 0.816744089126587
+                    - 0.829709231853485
+                    - 0.842230200767517
+                    - 0.854288101196289
+                    - 0.865864336490631
+                    - 0.876946985721588
+                    - 0.887537002563477
+                    - 0.897636294364929
+                    - 0.907247066497803
+                    - 0.916371285915375
+                    - 0.925011098384857
+                    - 0.933168590068817
+                    - 0.940845787525177
+                    - 0.948044776916504
+                    - 0.954767644405365
+                    - 0.961016416549683
+                    - 0.966793239116669
+                    - 0.972100138664246
+                    - 0.97693920135498
+                    - 0.981312453746796
+                    - 0.985222101211548
+                    - 0.98867005109787
+                    - 0.991658508777618
+                    - 0.994189500808716
+                    - 0.996265053749084
+                    - 0.997887313365936
+                    - 0.999058306217194
+                    - 0.999780178070068
+                    - 1.0
+                    - 1.0
+                    - 0.999269127845764
+                    - 0.998205959796906
+                    - 0.996691882610321
+                    - 0.994724035263062
+                    - 0.992299437522888
+                    - 0.989415049552917
+                    - 0.986067891120911
+                    - 0.982254981994629
+                    - 0.977973341941833
+                    - 0.973219931125641
+                    - 0.967991888523102
+                    - 0.962286114692688
+                    - 0.956099629402161
+                    - 0.949429512023926
+                    - 0.9422727227211
+                    - 0.934626281261444
+                    - 0.92648720741272
+                    - 0.917852580547333
+                    - 0.908719301223755
+                    - 0.899084389209747
+                    - 0.888944983482361
+                    - 0.878297984600067
+                    - 0.867140412330627
+                    - 0.855469286441803
+                    - 0.843283295631409
+                    - 0.830596745014191
+                    - 0.817432820796967
+                    - 0.803814649581909
+                    - 0.789765417575836
+                    - 0.7753084897995
+                    - 0.760466933250427
+                    - 0.745263993740082
+                    - 0.729722857475281
+                    - 0.713866829872131
+                    - 0.697719097137451
+                    - 0.681302785873413
+                    - 0.664641201496124
+                    - 0.647757470607758
+                    - 0.63067489862442
+                    - 0.613416612148285
+                    - 0.596005856990814
+                    - 0.57846587896347
+                    - 0.560819864273071
+                    - 0.543090999126434
+                    - 0.525302529335022
+                    - 0.507477641105652
+                    - 0.489639550447464
+                    - 0.471811503171921
+                    - 0.45401668548584
+                    - 0.436278313398361
+                    - 0.418619960546494
+                    - 0.401065170764923
+                    - 0.383637577295303
+                    - 0.36636084318161
+                    - 0.34925851225853
+                    - 0.332354247570038
+                    - 0.315671622753143
+                    - 0.2992342710495
+                    - 0.28306582570076
+                    - 0.267189890146255
+                    - 0.251630038022995
+                    - 0.236409932374954
+                    - 0.221553176641464
+                    - 0.207083359360695
+                    - 0.193024128675461
+                    - 0.179399058222771
+                    - 0.1662318110466
+                    - 0.153545945882797
+                    - 0.141365125775337
+                    - 0.129712924361229
+                    - 0.118612989783287
+                    - 0.108088910579681
+                    - 0.0981643125414848
+                    - 0.088862806558609
+                    - 0.0802018269896507
+                    - 0.0721661299467087
+                    - 0.0647296607494354
+                    - 0.0578663609921932
+                    - 0.0515501871705055
+                    - 0.0457550808787346
+                    - 0.040454987436533
+                    - 0.0356238596141338
+                    - 0.0312356371432543
+                    - 0.0272642690688372
+                    - 0.0236837025731802
+                    - 0.0204678848385811
+                    - 0.0175907611846924
+                    - 0.0150262787938118
+                    - 0.0127483839169145
+                    - 0.0107310237362981
+                    - 0.00894814357161522
+                    - 0.00737369060516357
+                    - 0.00598161155357957
+                    - 0.00474585359916091
+                    - 0.0036403622943908
+                    - 0.00263908482156694
+                    - 0.00171596743166447
+                    - 0.000844957015942782
+                    - 0.0
+                  effects: *id002
+                  title: Smooth
+                  enabled: true
+                animation_min: -0.31
+                animation_max: 0.31
+                animation_repeat_number: 0.75
+                animation_repeat_unit: :minutes
+                enable_exit_animation: false
+                exit_curve: 
+                enable_activation: false
+                activation_direction: :to
+                activation_curve: *id001
+                activation_value: 0.5
+                activation_variable: *id033
+            - !ruby/object:ActorEffectDrawMethod
+              conditions: !ruby/object:ChildConditions
+                enable_child_index: false
+                child_index_min: 0
+                child_index_max: 0
+                enable_event: false
+                event: 
+                event_invert: false
+                child_index_max: 0
+                child_index_min: 0
+                enable_child_index: false
+                enable_event: false
+                event: 
+                event_invert: false
+              title: *id034
+              enabled: true
+              draw_method_setting: !ruby/object:UserObjectSettingSelect
+                selected: :invert
+                name: *id035
+                options: 
+                  :options: 
+                    - - :average
+                      - Average
+                    - - :brighten
+                      - Brighten
+                    - - :darken
+                      - Darken
+                    - - :multiply
+                      - Multiply
+                    - - :invert
+                      - Invert
+                    - - :min
+                      - Min
+                    - - :max
+                      - Max
+                  :summary: true
+                breaks_cache: 
+            - !ruby/object:ActorCircle
+              conditions: !ruby/object:ChildConditions
+                enable_child_index: false
+                child_index_min: 0
+                child_index_max: 0
+                enable_event: false
+                event: 
+                event_invert: false
+                child_index_max: 0
+                child_index_min: 0
+                enable_child_index: false
+                enable_event: false
+                event: 
+                event_invert: false
+              title: Circle
+              enabled: true
+              number_setting: !ruby/object:UserObjectSettingInteger
+                name: number
+                options: 
+                  :range: !ruby/range
+                    begin: 1
+                    end: 100
+                    excl: false
+                  :default: !ruby/range
+                    begin: 1
+                    end: 2
+                    excl: false
+                  :summary: true
+                breaks_cache: 
+                animation_min: 5
+              radius_setting: !ruby/object:UserObjectSettingFloat
+                name: radius
+                options: 
+                  :range: !ruby/range
+                    begin: -100.0
+                    end: 100.0
+                    excl: false
+                  :default: !ruby/range
+                    begin: 0.0
+                    end: 1.0
+                    excl: false
+                breaks_cache: 
+                min: -100.0
+                max: 100.0
+                enter_value: 0.0
+                exit_value: 0.0
+                enable_enter_animation: false
+                enter_curve: 
+                enable_animation: false
+                animation_curve: *id001
+                animation_min: 0.47
+                animation_max: 1.0
+                animation_repeat_number: 4
+                animation_repeat_unit: :beats
+                enable_exit_animation: false
+                exit_curve: 
+                enable_activation: false
+                activation_direction: :to
+                activation_curve: *id001
+                activation_value: 1.0
+                activation_variable: *id033
+              start_angle_setting: !ruby/object:UserObjectSettingFloat
+                name: start_angle
+                options: 
+                  :default: !ruby/range
+                    begin: 0.0
+                    end: 1.0
+                    excl: false
+                  :range: &id036 !ruby/range
+                    begin: -1000.0
+                    end: 1000.0
+                    excl: false
+                breaks_cache: 
+                min: -1000.0
+                max: 1000.0
+                enter_value: 0.0
+                exit_value: 0.0
+                enable_enter_animation: false
+                enter_curve: 
+                enable_animation: false
+                animation_curve: *id001
+                animation_min: 0.0
+                animation_max: 1.0
+                animation_repeat_number: 4
+                animation_repeat_unit: :beats
+                enable_exit_animation: false
+                exit_curve: 
+                enable_activation: false
+                activation_direction: :to
+                activation_curve: *id001
+                activation_value: 1.0
+                activation_variable: *id033
+              stop_angle_setting: !ruby/object:UserObjectSettingFloat
+                name: stop_angle
+                options: 
+                  :default: !ruby/range
+                    begin: 1.0
+                    end: 2.0
+                    excl: false
+                  :range: *id036
+                breaks_cache: 
+                min: -1000.0
+                max: 1000.0
+                enter_value: 0.0
+                exit_value: 0.0
+                enable_enter_animation: false
+                enter_curve: 
+                enable_animation: false
+                animation_curve: *id001
+                animation_min: 1.0
+                animation_max: 2.0
+                animation_repeat_number: 4
+                animation_repeat_unit: :beats
+                enable_exit_animation: false
+                exit_curve: 
+                enable_activation: false
+                activation_direction: :to
+                activation_curve: *id001
+                activation_value: 1.0
+                activation_variable: *id033
+              distribution_setting: !ruby/object:UserObjectSettingCurve
+                curve: *id001
+                name: distribution
+                options: {}
+                breaks_cache: 
+            - !ruby/object:ActorEffectScale
+              conditions: !ruby/object:ChildConditions
+                enable_child_index: false
+                child_index_min: 0
+                child_index_max: 0
+                enable_event: false
+                event: 
+                event_invert: false
+                child_index_max: 0
+                child_index_min: 0
+                enable_child_index: false
+                enable_event: false
+                event: 
+                event_invert: false
+              title: Scale
+              enabled: true
+              amount_setting: !ruby/object:UserObjectSettingFloat
+                name: amount
+                options: 
+                  :default: !ruby/range
+                    begin: 1.0
+                    end: 2.0
+                    excl: false
+                  :range: *id036
+                breaks_cache: 
+                min: -1000.0
+                max: 1000.0
+                enter_value: 0.0
+                exit_value: 0.0
+                enable_enter_animation: false
+                enter_curve: 
+                enable_animation: true
+                animation_curve: *id037
+                animation_min: 0.6
+                animation_max: 3.43
+                animation_repeat_number: 4
+                animation_repeat_unit: :minutes
+                enable_exit_animation: false
+                exit_curve: 
+                enable_activation: false
+                activation_direction: :to
+                activation_curve: *id001
+                activation_value: 1.0
+                activation_variable: *id033
+            - !ruby/object:ActorEffectThemeChildren
+              conditions: !ruby/object:ChildConditions
+                enable_child_index: false
+                child_index_min: 0
+                child_index_max: 0
+                enable_event: false
+                event: 
+                event_invert: false
+                child_index_max: 0
+                child_index_min: 0
+                enable_child_index: false
+                enable_event: false
+                event: 
+                event_invert: false
+              title: Theme Children
+              enabled: true
+              theme_setting: !ruby/object:UserObjectSettingTheme
+                theme: &id049 !ruby/object:Theme
+                  tags: 
+                  effects: 
+                    - !ruby/object:Style
+                      title: ""
+                      enabled: true
+                      color_setting: !ruby/object:UserObjectSettingColor
+                        color: !ruby/object:Color
+                          alpha: 1.0
+                          blue: 0.351400015259022
+                          green: 0.351400015259022
+                          red: 0.842145418478676
+                        name: &id038 color
+                        options: *id023
+                        breaks_cache: 
+                      image_setting: !ruby/object:UserObjectSettingImage
+                        image_name: 
+                        name: &id039 image
+                        options: *id025
+                        breaks_cache: 
+                    - !ruby/object:Style
+                      title: ""
+                      enabled: true
+                      color_setting: !ruby/object:UserObjectSettingColor
+                        color: !ruby/object:Color
+                          alpha: 1.0
+                          blue: 0.143968871595331
+                          green: 0.143968871595331
+                          red: 0.662485694666972
+                        name: *id038
+                        options: *id023
+                        breaks_cache: 
+                      image_setting: !ruby/object:UserObjectSettingImage
+                        image_name: 
+                        name: *id039
+                        options: *id025
+                        breaks_cache: 
+                    - !ruby/object:Style
+                      title: ""
+                      enabled: true
+                      color_setting: !ruby/object:UserObjectSettingColor
+                        color: !ruby/object:Color
+                          alpha: 1.0
+                          blue: 0.160845349813077
+                          green: 0.160845349813077
+                          red: 0.355291065842679
+                        name: *id038
+                        options: *id023
+                        breaks_cache: 
+                      image_setting: !ruby/object:UserObjectSettingImage
+                        image_name: 
+                        name: *id039
+                        options: *id025
+                        breaks_cache: 
+                    - !ruby/object:Style
+                      title: ""
+                      enabled: true
+                      color_setting: !ruby/object:UserObjectSettingColor
+                        color: !ruby/object:Color
+                          alpha: 1.0
+                          blue: 0.309742885481041
+                          green: 0.309742885481041
+                          red: 0.383810177767605
+                        name: *id038
+                        options: *id023
+                        breaks_cache: 
+                      image_setting: !ruby/object:UserObjectSettingImage
+                        image_name: 
+                        name: *id039
+                        options: *id025
+                        breaks_cache: 
+                  title: Down
+                  enabled: true
+                  background_color_setting: !ruby/object:UserObjectSettingColor
+                    color: !ruby/object:Color
+                      alpha: 1.0
+                      blue: 0.0
+                      green: 0.0
+                      red: 0.0
+                    name: &id050 background_color
+                    options: *id040
+                    breaks_cache: 
+                name: theme
+                options: {}
+                breaks_cache: 
+              amount_setting: !ruby/object:UserObjectSettingFloat
+                name: amount
+                options: 
+                  :range: !ruby/range
+                    begin: 0.0
+                    end: 1.0
+                    excl: false
+                  :default: !ruby/range
+                    begin: 1.0
+                    end: 1.0
+                    excl: false
+                breaks_cache: 
+                min: 0.0
+                max: 1.0
+                enter_value: 0.0
+                exit_value: 0.0
+                enable_enter_animation: false
+                enter_curve: 
+                enable_animation: false
+                animation_curve: *id001
+                animation_min: 1.0
+                animation_max: 1.0
+                animation_repeat_number: 4
+                animation_repeat_unit: :beats
+                enable_exit_animation: false
+                exit_curve: 
+                enable_activation: false
+                activation_direction: :to
+                activation_curve: *id001
+                activation_value: 1.0
+                activation_variable: *id033
+              offset_setting: !ruby/object:UserObjectSettingInteger
+                name: offset
+                options: 
+                  :range: !ruby/range
+                    begin: -1000
+                    end: 1000
+                    excl: false
+                  :default: !ruby/range
+                    begin: 0
+                    end: 1
+                    excl: false
+                breaks_cache: 
+                animation_min: 0
+          title: Star Flower
           enabled: true
           arms_setting: !ruby/object:UserObjectSettingInteger
             name: arms
@@ -1904,6 +3266,539 @@
               :breaks_cache: true
             breaks_cache: 
             animation_min: 5
+          radius_setting: !ruby/object:UserObjectSettingFloat
+            name: radius
+            options: 
+              :range: !ruby/range
+                begin: -2.0
+                end: 2.0
+                excl: false
+              :default: !ruby/range
+                begin: 0.2
+                end: 1.0
+                excl: false
+              :breaks_cache: true
+            breaks_cache: 
+            min: -2.0
+            max: 2.0
+            enter_value: 0.0
+            exit_value: 0.0
+            enable_enter_animation: false
+            enter_curve: 
+            enable_animation: false
+            animation_curve: *id001
+            animation_min: 0.1
+            animation_max: 1.0
+            animation_repeat_number: 4
+            animation_repeat_unit: :beats
+            enable_exit_animation: false
+            exit_curve: 
+            enable_activation: false
+            activation_direction: :to
+            activation_curve: *id001
+            activation_value: 1.0
+            activation_variable: *id033
+          detail_setting: !ruby/object:UserObjectSettingInteger
+            name: detail
+            options: 
+              :range: !ruby/range
+                begin: 1
+                end: 100
+                excl: false
+              :default: !ruby/range
+                begin: 50
+                end: 100
+                excl: false
+              :breaks_cache: true
+            breaks_cache: 
+            animation_min: 100
+      tags: 
+      effects: []
+      title: New Director
+      enabled: true
+      offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
+        name: offscreen_render_actor
+        options: *id041
+        breaks_cache: 
+        actor: 
+        x: 0.0
+        y: 0.0
+        z: 0.0
+    - !ruby/object:Director
+      actors: 
+        - !ruby/object:ActorStar
+          x: 0.0
+          y: 0.0
+          tags: 
+          effects: 
+            - !ruby/object:ActorEffectTail
+              conditions: !ruby/object:ChildConditions
+                enable_child_index: false
+                child_index_min: 0
+                child_index_max: 0
+                enable_event: false
+                event: 
+                event_invert: false
+                child_index_max: 0
+                child_index_min: 0
+                enable_child_index: false
+                enable_event: false
+                event: 
+                event_invert: false
+              title: *id042
+              enabled: true
+              number_setting: !ruby/object:UserObjectSettingInteger
+                name: *id043
+                options: 
+                  :range: !ruby/range
+                    begin: 1
+                    end: 100
+                    excl: false
+                  :default: !ruby/range
+                    begin: 1
+                    end: 2
+                    excl: false
+                breaks_cache: 
+                animation_min: 16
+              beats_setting: !ruby/object:UserObjectSettingInteger
+                name: *id044
+                options: 
+                  :range: !ruby/range
+                    begin: 1
+                    end: 100
+                    excl: false
+                  :default: !ruby/range
+                    begin: 1
+                    end: 2
+                    excl: false
+                breaks_cache: 
+                animation_min: 5
+              length_setting: !ruby/object:UserObjectSettingFloat
+                name: *id045
+                options: 
+                  :range: !ruby/range
+                    begin: 0.0
+                    end: 1.0
+                    excl: false
+                  :default: !ruby/range
+                    begin: 0.0
+                    end: 1.0
+                    excl: false
+                breaks_cache: 
+                min: 0.0
+                max: 1.0
+                enter_value: 0.0
+                exit_value: 0.0
+                enable_enter_animation: false
+                enter_curve: 
+                enable_animation: false
+                animation_curve: *id001
+                animation_min: 0.2
+                animation_max: 1.0
+                animation_repeat_number: 4
+                animation_repeat_unit: :beats
+                enable_exit_animation: false
+                exit_curve: 
+                enable_activation: false
+                activation_direction: :to
+                activation_curve: *id001
+                activation_value: 1.0
+                activation_variable: *id003
+            - !ruby/object:ActorEffectThemeStyleVoyage
+              conditions: !ruby/object:ChildConditions
+                enable_child_index: false
+                child_index_min: 0
+                child_index_max: 0
+                enable_event: false
+                event: 
+                event_invert: false
+                child_index_max: 0
+                child_index_min: 0
+                enable_child_index: false
+                enable_event: false
+                event: 
+                event_invert: false
+              title: Theme Voyage
+              enabled: true
+              theme_setting: !ruby/object:UserObjectSettingTheme
+                theme: *id046
+                name: theme
+                options: {}
+                breaks_cache: 
+              progress_setting: !ruby/object:UserObjectSettingFloat
+                name: progress
+                options: 
+                  :default: !ruby/range
+                    begin: 0.0
+                    end: 1.0
+                    excl: false
+                  :range: *id036
+                breaks_cache: 
+                min: -1000.0
+                max: 1000.0
+                enter_value: 0.0
+                exit_value: 0.0
+                enable_enter_animation: false
+                enter_curve: 
+                enable_animation: true
+                animation_curve: *id001
+                animation_min: 0.0
+                animation_max: 1.0
+                animation_repeat_number: 16.0
+                animation_repeat_unit: :beats
+                enable_exit_animation: false
+                exit_curve: 
+                enable_activation: false
+                activation_direction: :to
+                activation_curve: *id001
+                activation_value: 1.0
+                activation_variable: *id003
+            - !ruby/object:ActorEffectTranslate
+              conditions: !ruby/object:ChildConditions
+                enable_child_index: false
+                child_index_min: 0
+                child_index_max: 0
+                enable_event: false
+                event: 
+                event_invert: false
+                child_index_max: 0
+                child_index_min: 0
+                enable_child_index: false
+                enable_event: false
+                event: 
+                event_invert: false
+              title: Translate
+              enabled: true
+              x_setting: !ruby/object:UserObjectSettingFloat
+                name: x
+                options: 
+                  :default: !ruby/range
+                    begin: 0.0
+                    end: 1.0
+                    excl: false
+                  :range: *id036
+                breaks_cache: 
+                min: -1000.0
+                max: 1000.0
+                enter_value: 0.0
+                exit_value: 0.0
+                enable_enter_animation: false
+                enter_curve: 
+                enable_animation: true
+                animation_curve: *id047
+                animation_min: -0.16
+                animation_max: 0.13
+                animation_repeat_number: 8.0
+                animation_repeat_unit: :beats
+                enable_exit_animation: false
+                exit_curve: 
+                enable_activation: false
+                activation_direction: :to
+                activation_curve: *id001
+                activation_value: 1.0
+                activation_variable: *id003
+              y_setting: !ruby/object:UserObjectSettingFloat
+                name: y
+                options: 
+                  :default: !ruby/range
+                    begin: 0.0
+                    end: 1.0
+                    excl: false
+                  :range: *id036
+                breaks_cache: 
+                min: -1000.0
+                max: 1000.0
+                enter_value: 0.0
+                exit_value: 0.0
+                enable_enter_animation: false
+                enter_curve: 
+                enable_animation: true
+                animation_curve: &id052 !ruby/object:Curve
+                  vector: 
+                    - 0.0
+                    - 0.369195938110352
+                    - 0.685079336166382
+                    - 0.910014510154724
+                    - 1.0
+                    - 0.910014808177948
+                    - 0.685079276561737
+                    - 0.369196027517319
+                    - 0.0
+                  approximation: 
+                    - 0.0
+                    - 0.015226736664772
+                    - 0.0304497368633747
+                    - 0.0456652641296387
+                    - 0.0608695857226849
+                    - 0.0760589614510536
+                    - 0.0912296548485756
+                    - 0.106377929449081
+                    - 0.121500052511692
+                    - 0.136592283844948
+                    - 0.15165089070797
+                    - 0.166672125458717
+                    - 0.181652277708054
+                    - 0.196587577462196
+                    - 0.211474314332008
+                    - 0.22630874812603
+                    - 0.241087138652802
+                    - 0.255805730819702
+                    - 0.270460814237595
+                    - 0.28504866361618
+                    - 0.299565523862839
+                    - 0.314007639884949
+                    - 0.328371286392212
+                    - 0.342652767896652
+                    - 0.356848269701004
+                    - 0.370954155921936
+                    - 0.384966999292374
+                    - 0.398884624242783
+                    - 0.412704885005951
+                    - 0.426425635814667
+                    - 0.440044850111008
+                    - 0.453560352325439
+                    - 0.466970056295395
+                    - 0.480271875858307
+                    - 0.493463665246964
+                    - 0.506543338298798
+                    - 0.519508838653564
+                    - 0.53235799074173
+                    - 0.545088648796082
+                    - 0.557698845863342
+                    - 0.57018631696701
+                    - 0.582549095153809
+                    - 0.59478497505188
+                    - 0.606891870498657
+                    - 0.618867695331573
+                    - 0.630710363388062
+                    - 0.642417669296265
+                    - 0.653987646102905
+                    - 0.665418088436127
+                    - 0.676706910133362
+                    - 0.687851965427399
+                    - 0.698851108551025
+                    - 0.709701776504517
+                    - 0.720401465892792
+                    - 0.73094767332077
+                    - 0.741337835788727
+                    - 0.75156956911087
+                    - 0.761640250682831
+                    - 0.771547436714172
+                    - 0.78128856420517
+                    - 0.790861189365387
+                    - 0.800262749195099
+                    - 0.809490740299225
+                    - 0.818542659282684
+                    - 0.827416002750397
+                    - 0.836108267307281
+                    - 0.844616889953613
+                    - 0.852939486503601
+                    - 0.86107337474823
+                    - 0.869016230106354
+                    - 0.876765429973602
+                    - 0.884318470954895
+                    - 0.891672849655151
+                    - 0.898826062679291
+                    - 0.905775606632233
+                    - 0.912518918514252
+                    - 0.919052362442017
+                    - 0.925370931625366
+                    - 0.931469738483429
+                    - 0.937343776226044
+                    - 0.942988038063049
+                    - 0.948397576808929
+                    - 0.953567385673523
+                    - 0.958492517471313
+                    - 0.963168025016785
+                    - 0.967588901519775
+                    - 0.971750140190125
+                    - 0.97564685344696
+                    - 0.979273974895477
+                    - 0.982626557350159
+                    - 0.985699653625488
+                    - 0.988488256931305
+                    - 0.990987360477448
+                    - 0.993192076683044
+                    - 0.99509733915329
+                    - 0.996698260307312
+                    - 0.997989773750305
+                    - 0.998966991901398
+                    - 0.999624848365784
+                    - 0.999958455562592
+                    - 1.0
+                    - 0.999637186527252
+                    - 0.998986065387726
+                    - 0.998014509677887
+                    - 0.996727526187897
+                    - 0.995130240917206
+                    - 0.993227660655975
+                    - 0.991024851799011
+                    - 0.98852676153183
+                    - 0.985738515853882
+                    - 0.982665121555328
+                    - 0.979311585426331
+                    - 0.975683033466339
+                    - 0.971784472465515
+                    - 0.96762090921402
+                    - 0.963197410106659
+                    - 0.958518981933594
+                    - 0.953590750694275
+                    - 0.948417663574219
+                    - 0.943004786968231
+                    - 0.937357187271118
+                    - 0.931479871273041
+                    - 0.925377905368805
+                    - 0.919056355953217
+                    - 0.912520170211792
+                    - 0.905774414539337
+                    - 0.898822724819183
+                    - 0.891667723655701
+                    - 0.884311854839325
+                    - 0.876757562160492
+                    - 0.869007468223572
+                    - 0.861063897609711
+                    - 0.852929472923279
+                    - 0.844606637954712
+                    - 0.836097896099091
+                    - 0.827405750751495
+                    - 0.818532645702362
+                    - 0.809481143951416
+                    - 0.800253629684448
+                    - 0.790852725505829
+                    - 0.781280815601349
+                    - 0.771540462970734
+                    - 0.761634171009064
+                    - 0.75156432390213
+                    - 0.741333484649658
+                    - 0.730944216251373
+                    - 0.720398902893066
+                    - 0.709700047969818
+                    - 0.698850154876709
+                    - 0.687851786613464
+                    - 0.676707327365875
+                    - 0.665419042110443
+                    - 0.65398907661438
+                    - 0.642419517040253
+                    - 0.630712509155273
+                    - 0.618870139122009
+                    - 0.606894493103027
+                    - 0.59478771686554
+                    - 0.582551896572113
+                    - 0.57018917798996
+                    - 0.557701647281647
+                    - 0.545091390609741
+                    - 0.5323606133461
+                    - 0.519511342048645
+                    - 0.506545722484589
+                    - 0.493465811014175
+                    - 0.480273813009262
+                    - 0.466971784830093
+                    - 0.453561842441559
+                    - 0.440046072006226
+                    - 0.426426649093628
+                    - 0.412705630064011
+                    - 0.398885160684586
+                    - 0.38496732711792
+                    - 0.370954245328903
+                    - 0.356848210096359
+                    - 0.342652529478073
+                    - 0.328370928764343
+                    - 0.314007163047791
+                    - 0.299564927816391
+                    - 0.285048007965088
+                    - 0.270460098981857
+                    - 0.25580495595932
+                    - 0.241086333990097
+                    - 0.226307928562164
+                    - 0.211473494768143
+                    - 0.196586757898331
+                    - 0.181651473045349
+                    - 0.166671350598335
+                    - 0.15165014564991
+                    - 0.136591598391533
+                    - 0.121499419212341
+                    - 0.106377363204956
+                    - 0.0912291556596756
+                    - 0.0760585367679596
+                    - 0.0608692392706871
+                    - 0.0456650033593178
+                    - 0.0304495617747307
+                    - 0.0152266481891274
+                    - 0.0
+                  effects: *id032
+                  title: Wide
+                  enabled: true
+                animation_min: -0.17
+                animation_max: 0.22
+                animation_repeat_number: 4
+                animation_repeat_unit: :beats
+                enable_exit_animation: false
+                exit_curve: 
+                enable_activation: false
+                activation_direction: :to
+                activation_curve: *id001
+                activation_value: 1.0
+                activation_variable: *id003
+            - !ruby/object:ActorEffectRoll
+              conditions: !ruby/object:ChildConditions
+                enable_child_index: false
+                child_index_min: 0
+                child_index_max: 0
+                enable_event: false
+                event: 
+                event_invert: false
+                child_index_max: 0
+                child_index_min: 0
+                enable_child_index: false
+                enable_event: false
+                event: 
+                event_invert: false
+              title: Roll
+              enabled: true
+              amount_setting: !ruby/object:UserObjectSettingFloat
+                name: amount
+                options: 
+                  :default: !ruby/range
+                    begin: 0.0
+                    end: 1.0
+                    excl: false
+                  :range: *id036
+                breaks_cache: 
+                min: -1000.0
+                max: 1000.0
+                enter_value: 0.0
+                exit_value: 0.0
+                enable_enter_animation: false
+                enter_curve: 
+                enable_animation: true
+                animation_curve: *id001
+                animation_min: 0.0
+                animation_max: -0.13
+                animation_repeat_number: 4
+                animation_repeat_unit: :beats
+                enable_exit_animation: false
+                exit_curve: 
+                enable_activation: false
+                activation_direction: :to
+                activation_curve: *id001
+                activation_value: 1.0
+                activation_variable: *id003
+          title: Star
+          enabled: true
+          arms_setting: !ruby/object:UserObjectSettingInteger
+            name: arms
+            options: 
+              :range: !ruby/range
+                begin: 2
+                end: 100
+                excl: false
+              :default: !ruby/range
+                begin: 5
+                end: 100
+                excl: false
+              :breaks_cache: true
+            breaks_cache: 
+            animation_min: 14
           radius_setting: !ruby/object:UserObjectSettingFloat
             name: radius
             options: 
@@ -1925,7 +3820,7 @@
             enter_curve: 
             enable_animation: false
             animation_curve: *id001
-            animation_min: 0.25
+            animation_min: 0.57
             animation_max: 1.0
             animation_repeat_number: 4
             animation_repeat_unit: :beats
@@ -1957,7 +3852,7 @@
             enter_curve: 
             enable_animation: false
             animation_curve: *id001
-            animation_min: 0.0
+            animation_min: 0.74
             animation_max: 1.0
             animation_repeat_number: 4
             animation_repeat_unit: :beats
@@ -1974,185 +3869,19 @@
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
-        options: *id034
+        options: *id041
         breaks_cache: 
         actor: 
         x: 0.0
         y: 0.0
         z: 0.0
   :themes: 
+    - *id046
     - !ruby/object:Theme
       tags: 
       effects: 
         - !ruby/object:Style
-          title: &id035 ""
-          enabled: true
-          color_setting: !ruby/object:UserObjectSettingColor
-            color: !ruby/object:Color
-              alpha: 1.0
-              blue: 0.0
-              green: 0.474509803921569
-              red: 0.96078431372549
-            name: &id036 color
-            options: *id017
-            breaks_cache: 
-          image_setting: !ruby/object:UserObjectSettingImage
-            image_name: 
-            name: &id037 image
-            options: *id019
-            breaks_cache: 
-        - !ruby/object:Style
-          title: *id035
-          enabled: true
-          color_setting: !ruby/object:UserObjectSettingColor
-            color: !ruby/object:Color
-              alpha: 1.0
-              blue: 0.0
-              green: 0.831372549019608
-              red: 0.929411764705882
-            name: *id036
-            options: *id017
-            breaks_cache: 
-          image_setting: !ruby/object:UserObjectSettingImage
-            image_name: 
-            name: *id037
-            options: *id019
-            breaks_cache: 
-        - !ruby/object:Style
-          title: *id035
-          enabled: true
-          color_setting: !ruby/object:UserObjectSettingColor
-            color: !ruby/object:Color
-              alpha: 1.0
-              blue: 0.0862745098039216
-              green: 0.823529411764706
-              red: 0.450980392156863
-            name: *id036
-            options: *id017
-            breaks_cache: 
-          image_setting: !ruby/object:UserObjectSettingImage
-            image_name: 
-            name: *id037
-            options: *id019
-            breaks_cache: 
-        - !ruby/object:Style
-          title: *id035
-          enabled: true
-          color_setting: !ruby/object:UserObjectSettingColor
-            color: !ruby/object:Color
-              alpha: 1.0
-              blue: 0.811764705882353
-              green: 0.623529411764706
-              red: 0.447058823529412
-            name: *id036
-            options: *id017
-            breaks_cache: 
-          image_setting: !ruby/object:UserObjectSettingImage
-            image_name: 
-            name: *id037
-            options: *id019
-            breaks_cache: 
-        - !ruby/object:Style
-          title: *id035
-          enabled: true
-          color_setting: !ruby/object:UserObjectSettingColor
-            color: !ruby/object:Color
-              alpha: 1.0
-              blue: 0.643137254901961
-              green: 0.396078431372549
-              red: 0.203921568627451
-            name: *id036
-            options: *id017
-            breaks_cache: 
-          image_setting: !ruby/object:UserObjectSettingImage
-            image_name: 
-            name: *id037
-            options: *id019
-            breaks_cache: 
-        - !ruby/object:Style
-          title: *id035
-          enabled: true
-          color_setting: !ruby/object:UserObjectSettingColor
-            color: !ruby/object:Color
-              alpha: 1.0
-              blue: 0.630212863355459
-              green: 0.149553673609522
-              red: 0.563134203097581
-            name: *id036
-            options: *id017
-            breaks_cache: 
-          image_setting: !ruby/object:UserObjectSettingImage
-            image_name: 
-            name: *id037
-            options: *id019
-            breaks_cache: 
-        - !ruby/object:Style
-          title: *id035
-          enabled: true
-          color_setting: !ruby/object:UserObjectSettingColor
-            color: !ruby/object:Color
-              alpha: 1.0
-              blue: 0.0392156862745098
-              green: 0.0392156862745098
-              red: 0.866666666666667
-            name: *id036
-            options: *id017
-            breaks_cache: 
-          image_setting: !ruby/object:UserObjectSettingImage
-            image_name: 
-            name: *id037
-            options: *id019
-            breaks_cache: 
-        - !ruby/object:Style
-          title: *id035
-          enabled: true
-          color_setting: !ruby/object:UserObjectSettingColor
-            color: !ruby/object:Color
-              alpha: 1.0
-              blue: 0.353490501258869
-              green: 0.353490501258869
-              red: 0.936827649347677
-            name: *id036
-            options: *id017
-            breaks_cache: 
-          image_setting: !ruby/object:UserObjectSettingImage
-            image_name: 
-            name: *id037
-            options: *id019
-            breaks_cache: 
-        - !ruby/object:Style
-          title: *id035
-          enabled: true
-          color_setting: !ruby/object:UserObjectSettingColor
-            color: !ruby/object:Color
-              alpha: 1.0
-              blue: 0.079819943541619
-              green: 1.0
-              red: 0.924208438239109
-            name: *id036
-            options: *id017
-            breaks_cache: 
-          image_setting: !ruby/object:UserObjectSettingImage
-            image_name: 
-            name: *id037
-            options: *id019
-            breaks_cache: 
-      title: Tango
-      enabled: true
-      background_color_setting: !ruby/object:UserObjectSettingColor
-        color: !ruby/object:Color
-          alpha: 1.0
-          blue: 0.0
-          green: 0.0
-          red: 0.0
-        name: background_color
-        options: *id038
-        breaks_cache: 
-    - !ruby/object:Theme
-      tags: 
-      effects: 
-        - !ruby/object:Style
-          title: *id035
+          title: *id021
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -2160,16 +3889,16 @@
               blue: 0.0
               green: 0.269413290608072
               red: 1.0
-            name: *id036
-            options: *id017
+            name: *id022
+            options: *id023
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id037
-            options: *id019
+            name: *id024
+            options: *id025
             breaks_cache: 
         - !ruby/object:Style
-          title: *id035
+          title: *id021
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -2177,16 +3906,16 @@
               blue: 0.0
               green: 0.894560158693828
               red: 1.0
-            name: *id036
-            options: *id017
+            name: *id022
+            options: *id023
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id037
-            options: *id019
+            name: *id024
+            options: *id025
             breaks_cache: 
         - !ruby/object:Style
-          title: *id035
+          title: *id021
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -2194,16 +3923,16 @@
               blue: 0.135072861829557
               green: 0.838284885938811
               red: 0.513176165407797
-            name: *id036
-            options: *id017
+            name: *id022
+            options: *id023
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id037
-            options: *id019
+            name: *id024
+            options: *id025
             breaks_cache: 
         - !ruby/object:Style
-          title: *id035
+          title: *id021
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -2211,13 +3940,13 @@
               blue: 0.0376897840848402
               green: 0.0470283054856184
               red: 0.780117494468605
-            name: *id036
-            options: *id017
+            name: *id022
+            options: *id023
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id037
-            options: *id019
+            name: *id024
+            options: *id025
             breaks_cache: 
       title: Autumn
       enabled: true
@@ -2227,14 +3956,14 @@
           blue: 0.0
           green: 0.0
           red: 0.0
-        name: &id039 background_color
-        options: *id038
+        name: &id048 background_color
+        options: *id040
         breaks_cache: 
     - !ruby/object:Theme
       tags: 
       effects: 
         - !ruby/object:Style
-          title: *id035
+          title: *id021
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -2242,16 +3971,16 @@
               blue: 1.0
               green: 1.0
               red: 1.0
-            name: *id036
-            options: *id017
+            name: *id022
+            options: *id023
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id037
-            options: *id019
+            name: *id024
+            options: *id025
             breaks_cache: 
         - !ruby/object:Style
-          title: *id035
+          title: *id021
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -2259,16 +3988,16 @@
               blue: 0.0
               green: 0.0
               red: 0.0
-            name: *id036
-            options: *id017
+            name: *id022
+            options: *id023
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id037
-            options: *id019
+            name: *id024
+            options: *id025
             breaks_cache: 
         - !ruby/object:Style
-          title: *id035
+          title: *id021
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -2276,16 +4005,16 @@
               blue: 1.0
               green: 1.0
               red: 1.0
-            name: *id036
-            options: *id017
+            name: *id022
+            options: *id023
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id037
-            options: *id019
+            name: *id024
+            options: *id025
             breaks_cache: 
         - !ruby/object:Style
-          title: *id035
+          title: *id021
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -2293,16 +4022,16 @@
               blue: 0.0
               green: 1.0
               red: 1.0
-            name: *id036
-            options: *id017
+            name: *id022
+            options: *id023
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id037
-            options: *id019
+            name: *id024
+            options: *id025
             breaks_cache: 
         - !ruby/object:Style
-          title: *id035
+          title: *id021
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -2310,16 +4039,16 @@
               blue: 1.0
               green: 1.0
               red: 1.0
-            name: *id036
-            options: *id017
+            name: *id022
+            options: *id023
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id037
-            options: *id019
+            name: *id024
+            options: *id025
             breaks_cache: 
         - !ruby/object:Style
-          title: *id035
+          title: *id021
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -2327,16 +4056,16 @@
               blue: 0.0
               green: 1.0
               red: 1.0
-            name: *id036
-            options: *id017
+            name: *id022
+            options: *id023
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id037
-            options: *id019
+            name: *id024
+            options: *id025
             breaks_cache: 
         - !ruby/object:Style
-          title: *id035
+          title: *id021
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -2344,16 +4073,16 @@
               blue: 1.0
               green: 1.0
               red: 1.0
-            name: *id036
-            options: *id017
+            name: *id022
+            options: *id023
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id037
-            options: *id019
+            name: *id024
+            options: *id025
             breaks_cache: 
         - !ruby/object:Style
-          title: *id035
+          title: *id021
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
@@ -2361,13 +4090,13 @@
               blue: 0.0
               green: 0.0
               red: 0.0
-            name: *id036
-            options: *id017
+            name: *id022
+            options: *id023
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id037
-            options: *id019
+            name: *id024
+            options: *id025
             breaks_cache: 
       title: Buzz
       enabled: true
@@ -2377,9 +4106,10 @@
           blue: 0.0
           green: 0.0
           red: 0.0
-        name: *id039
-        options: *id038
+        name: *id048
+        options: *id040
         breaks_cache: 
+    - *id049
     - !ruby/object:Theme
       tags: 
       effects: 
@@ -2389,16 +4119,16 @@
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
               alpha: 1.0
-              blue: 0.351400015259022
-              green: 0.351400015259022
-              red: 0.842145418478676
-            name: *id016
-            options: *id017
+              blue: 0.349889372091249
+              green: 0.964812695506218
+              red: 0.744777599755856
+            name: *id038
+            options: *id023
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id018
-            options: *id019
+            name: *id039
+            options: *id025
             breaks_cache: 
         - !ruby/object:Style
           title: ""
@@ -2406,16 +4136,16 @@
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
               alpha: 1.0
-              blue: 0.143968871595331
-              green: 0.143968871595331
-              red: 0.662485694666972
-            name: *id016
-            options: *id017
+              blue: 0.35020981155108
+              green: 0.868116273746853
+              red: 0.213778896772717
+            name: *id038
+            options: *id023
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id018
-            options: *id019
+            name: *id039
+            options: *id025
             breaks_cache: 
         - !ruby/object:Style
           title: ""
@@ -2423,16 +4153,16 @@
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
               alpha: 1.0
-              blue: 0.160845349813077
-              green: 0.160845349813077
-              red: 0.355291065842679
-            name: *id016
-            options: *id017
+              blue: 0.0189059281300069
+              green: 0.83224231326772
+              red: 0.575234607461662
+            name: *id038
+            options: *id023
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id018
-            options: *id019
+            name: *id039
+            options: *id025
             breaks_cache: 
         - !ruby/object:Style
           title: ""
@@ -2440,18 +4170,18 @@
           color_setting: !ruby/object:UserObjectSettingColor
             color: !ruby/object:Color
               alpha: 1.0
-              blue: 0.309742885481041
-              green: 0.309742885481041
-              red: 0.383810177767605
-            name: *id016
-            options: *id017
+              blue: 0.0501564049744411
+              green: 0.493781948577096
+              red: 0.255466544594491
+            name: *id038
+            options: *id023
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id018
-            options: *id019
+            name: *id039
+            options: *id025
             breaks_cache: 
-      title: Down
+      title: Forest
       enabled: true
       background_color_setting: !ruby/object:UserObjectSettingColor
         color: !ruby/object:Color
@@ -2459,10 +4189,9 @@
           blue: 0.0
           green: 0.0
           red: 0.0
-        name: *id040
-        options: *id038
+        name: *id050
+        options: *id040
         breaks_cache: 
-    - *id041
   :curves: 
     - *id001
     - !ruby/object:Curve
@@ -2677,10 +4406,10 @@
         - 0.998661935329437
         - 0.999331414699554
         - 1.0
-      effects: *id042
+      effects: *id032
       title: Fast
       enabled: true
-    - *id024
+    - *id026
     - !ruby/object:Curve
       vector: 
         - 0.0
@@ -2893,7 +4622,7 @@
         - 0.999280989170074
         - 0.999642431735992
         - 1.0
-      effects: *id042
+      effects: *id032
       title: Easy
       enabled: true
     - !ruby/object:Curve
@@ -3108,7 +4837,7 @@
         - 0.959363162517548
         - 0.979675114154816
         - 1.0
-      effects: *id042
+      effects: *id032
       title: Psych
       enabled: true
     - !ruby/object:Curve
@@ -3323,656 +5052,14 @@
         - 0.97583019733429
         - 0.987901508808136
         - 1.0
-      effects: *id042
+      effects: *id032
       title: Wobble
       enabled: true
     - *id013
-    - !ruby/object:Curve
-      vector: 
-        - 0.5
-        - 0.158814638853073
-        - 0.0
-        - 0.16001895070076
-        - 0.5
-        - 0.845267236232758
-        - 1.0
-        - 0.848762691020966
-        - 0.5
-      approximation: 
-        - 0.5
-        - 0.489469945430756
-        - 0.474308222532272
-        - 0.459171235561371
-        - 0.444071292877197
-        - 0.429020702838898
-        - 0.414031893014908
-        - 0.399117141962051
-        - 0.384288847446442
-        - 0.369559347629547
-        - 0.354940950870514
-        - 0.340446054935455
-        - 0.326086968183517
-        - 0.311876058578491
-        - 0.297825694084167
-        - 0.283948183059692
-        - 0.270255893468857
-        - 0.256761163473129
-        - 0.243476346135139
-        - 0.230413809418678
-        - 0.217585876584053
-        - 0.205004900693893
-        - 0.192683234810829
-        - 0.18063323199749
-        - 0.168867215514183
-        - 0.157397553324699
-        - 0.146236598491669
-        - 0.135396689176559
-        - 0.124890170991421
-        - 0.114729396998882
-        - 0.104926712810993
-        - 0.0954944640398026
-        - 0.0864450111985207
-        - 0.0777906849980354
-        - 0.0695438459515572
-        - 0.0617168322205544
-        - 0.0543219968676567
-        - 0.0473716929554939
-        - 0.0408782586455345
-        - 0.0348540507256985
-        - 0.0293114110827446
-        - 0.0242626890540123
-        - 0.019720233976841
-        - 0.0156963914632797
-        - 0.0122035127133131
-        - 0.00925394333899021
-        - 0.00686003174632788
-        - 0.00503412634134293
-        - 0.00378857436589897
-        - 0.00313572445884347
-        - 0.0
-        - 0.0036308029666543
-        - 0.00476045906543732
-        - 0.00646215211600065
-        - 0.0087238484993577
-        - 0.0115335155278444
-        - 0.0148791214451194
-        - 0.0187486317008734
-        - 0.023130014538765
-        - 0.0280112344771624
-        - 0.0333802625536919
-        - 0.0392250642180443
-        - 0.0455336049199104
-        - 0.0522938519716263
-        - 0.0594937764108181
-        - 0.0671213418245316
-        - 0.0751645117998123
-        - 0.0836112573742867
-        - 0.0924495533108711
-        - 0.101667352020741
-        - 0.111252628266811
-        - 0.12119334936142
-        - 0.131477475166321
-        - 0.142092987895012
-        - 0.153027847409248
-        - 0.164270013570786
-        - 0.17580746114254
-        - 0.187628149986267
-        - 0.199720054864883
-        - 0.212071135640144
-        - 0.224669367074966
-        - 0.237502723932266
-        - 0.250559151172638
-        - 0.263826638460159
-        - 0.277293115854263
-        - 0.29094660282135
-        - 0.304775029420853
-        - 0.318766355514526
-        - 0.332908600568771
-        - 0.347189664840698
-        - 0.361597567796707
-        - 0.376120239496231
-        - 0.390745669603348
-        - 0.405461817979813
-        - 0.420256644487381
-        - 0.435118138790131
-        - 0.450034260749817
-        - 0.464992970228195
-        - 0.479982197284698
-        - 0.494989991188049
-        - 0.510004222393036
-        - 0.525012969970703
-        - 0.540004074573517
-        - 0.554965615272522
-        - 0.569885492324829
-        - 0.584751725196838
-        - 0.59955221414566
-        - 0.614274978637695
-        - 0.628907978534698
-        - 0.643439173698425
-        - 0.657856464385986
-        - 0.672147929668427
-        - 0.686301529407501
-        - 0.700305104255676
-        - 0.714146733283997
-        - 0.727814376354218
-        - 0.741295993328094
-        - 0.754579544067383
-        - 0.767652928829193
-        - 0.78050422668457
-        - 0.793121337890625
-        - 0.805492281913757
-        - 0.817604959011078
-        - 0.829447329044342
-        - 0.841007471084595
-        - 0.852273225784302
-        - 0.863232612609863
-        - 0.873873651027679
-        - 0.884184181690216
-        - 0.894152283668518
-        - 0.903765916824341
-        - 0.913012981414795
-        - 0.921881437301636
-        - 0.930359363555908
-        - 0.938434660434723
-        - 0.94609522819519
-        - 0.953329145908356
-        - 0.960124313831329
-        - 0.966468751430511
-        - 0.972350358963013
-        - 0.977757155895233
-        - 0.982677102088928
-        - 0.987098157405853
-        - 0.991008222103119
-        - 0.99439537525177
-        - 0.997247576713562
-        - 0.999552667140961
-        - 1.0
-        - 1.0
-        - 1.0
-        - 1.0
-        - 1.0
-        - 1.0
-        - 0.99948513507843
-        - 0.99714207649231
-        - 0.99424421787262
-        - 0.990803897380829
-        - 0.986833453178406
-        - 0.982345223426819
-        - 0.977351486682892
-        - 0.971864581108093
-        - 0.965896904468536
-        - 0.959460735321045
-        - 0.952568352222443
-        - 0.945232152938843
-        - 0.937464475631714
-        - 0.92927759885788
-        - 0.920683860778809
-        - 0.911695599555969
-        - 0.90232515335083
-        - 0.89258486032486
-        - 0.882487058639526
-        - 0.872044026851654
-        - 0.861268103122711
-        - 0.850171625614166
-        - 0.838766992092133
-        - 0.827066421508789
-        - 0.815082311630249
-        - 0.802826941013336
-        - 0.790312647819519
-        - 0.777551829814911
-        - 0.764556765556335
-        - 0.751339733600616
-        - 0.737913191318512
-        - 0.724289298057556
-        - 0.710480511188507
-        - 0.696499168872833
-        - 0.682357490062714
-        - 0.668067932128906
-        - 0.65364271402359
-        - 0.639094173908234
-        - 0.62443470954895
-        - 0.609676659107208
-        - 0.594832241535187
-        - 0.579913854598999
-        - 0.564933896064758
-        - 0.549904525279999
-        - 0.534838259220123
-        - 0.519747257232666
-        - 0.5
-      effects: *id002
-      title: Sine Inv
-      enabled: true
-    - !ruby/object:Curve
-      vector: 
-        - 0.5
-        - 0.94306093454361
-        - 0.09691172093153
-        - 0.838171780109406
-        - 0.25435808300972
-        - 0.652214705944061
-        - 0.409974157810211
-        - 0.462336033582687
-        - 0.5
-      approximation: 
-        - 0.5
-        - 0.537595927715302
-        - 0.574999749660492
-        - 0.612019181251526
-        - 0.648462235927582
-        - 0.684136629104614
-        - 0.718850255012512
-        - 0.752410888671875
-        - 0.784626543521881
-        - 0.81530487537384
-        - 0.844253838062286
-        - 0.871281266212463
-        - 0.896194994449615
-        - 0.918802857398987
-        - 0.938912689685822
-        - 0.956332385540009
-        - 0.970869719982147
-        - 0.982332646846771
-        - 0.990528881549835
-        - 0.995266318321228
-        - 0.996352851390839
-        - 0.993596255779266
-        - 0.9868044257164
-        - 0.975785195827484
-        - 0.960346400737762
-        - 0.940296292304993
-        - 0.915608584880829
-        - 0.886674284934998
-        - 0.853949069976807
-        - 0.817888736724854
-        - 0.778949022293091
-        - 0.737585604190826
-        - 0.694254219532013
-        - 0.649410724639893
-        - 0.603510737419128
-        - 0.557010054588318
-        - 0.510364353656769
-        - 0.464029461145401
-        - 0.418461054563522
-        - 0.374114871025085
-        - 0.331446677446365
-        - 0.290912181138992
-        - 0.252967149019241
-        - 0.218067288398743
-        - 0.18666835129261
-        - 0.159226089715958
-        - 0.136196225881577
-        - 0.118034496903419
-        - 0.10519664734602
-        - 0.0981384068727493
-        - 0.0973105952143669
-        - 0.102821134030819
-        - 0.114217273890972
-        - 0.130994468927383
-        - 0.152648165822029
-        - 0.178673818707466
-        - 0.20856685936451
-        - 0.241822734475136
-        - 0.277936905622482
-        - 0.316404819488525
-        - 0.356721937656403
-        - 0.398383677005768
-        - 0.440885484218597
-        - 0.48372283577919
-        - 0.5263911485672
-        - 0.568385899066925
-        - 0.60920250415802
-        - 0.648336470127106
-        - 0.685283124446869
-        - 0.71953809261322
-        - 0.750596642494202
-        - 0.777954339981079
-        - 0.801106572151184
-        - 0.819548845291138
-        - 0.832776486873627
-        - 0.840301156044006
-        - 0.842061579227448
-        - 0.838458478450775
-        - 0.829915642738342
-        - 0.816856861114502
-        - 0.799705803394318
-        - 0.778886377811432
-        - 0.754822313785553
-        - 0.727937281131744
-        - 0.698655188083649
-        - 0.667399764060974
-        - 0.634594738483429
-        - 0.600663900375366
-        - 0.566031038761139
-        - 0.5311199426651
-        - 0.496354341506958
-        - 0.462158024311066
-        - 0.428954750299454
-        - 0.397168278694153
-        - 0.367222428321838
-        - 0.339540928602219
-        - 0.314547568559647
-        - 0.292666137218475
-        - 0.274320363998413
-        - 0.259934037923813
-        - 0.249924540519714
-        - 0.244416758418083
-        - 0.243127778172493
-        - 0.245744481682777
-        - 0.251953721046448
-        - 0.261442422866821
-        - 0.273897379636765
-        - 0.289005488157272
-        - 0.30645364522934
-        - 0.325928688049316
-        - 0.347117513418198
-        - 0.369706958532333
-        - 0.393383920192719
-        - 0.417835265398026
-        - 0.442747831344604
-        - 0.467808544635773
-        - 0.492704212665558
-        - 0.517121732234955
-        - 0.540748000144958
-        - 0.563269853591919
-        - 0.584374189376831
-        - 0.6037477850914
-        - 0.621077656745911
-        - 0.636050581932068
-        - 0.648353457450867
-        - 0.657685577869415
-        - 0.66399735212326
-        - 0.667470872402191
-        - 0.668297290802002
-        - 0.666667461395264
-        - 0.662772417068481
-        - 0.65680319070816
-        - 0.648950755596161
-        - 0.639406085014343
-        - 0.628360211849213
-        - 0.616004109382629
-        - 0.602528750896454
-        - 0.588125169277191
-        - 0.572984278202057
-        - 0.557297170162201
-        - 0.541254818439484
-        - 0.525048136711121
-        - 0.508868157863617
-        - 0.4929059445858
-        - 0.477352410554886
-        - 0.462398558855057
-        - 0.448235392570496
-        - 0.435053914785385
-        - 0.423045128583908
-        - 0.412400007247925
-        - 0.403294742107391
-        - 0.395745784044266
-        - 0.389671742916107
-        - 0.384989857673645
-        - 0.381617367267609
-        - 0.379471510648727
-        - 0.378469526767731
-        - 0.378528654575348
-        - 0.379566103219986
-        - 0.381499141454697
-        - 0.384245008230209
-        - 0.387720912694931
-        - 0.391844093799591
-        - 0.396531820297241
-        - 0.401701301336288
-        - 0.407269775867462
-        - 0.413154482841492
-        - 0.419272691011429
-        - 0.425541579723358
-        - 0.431878417730331
-        - 0.438200443983078
-        - 0.444424897432327
-        - 0.450468987226486
-        - 0.456249982118607
-        - 0.461685091257095
-        - 0.466701626777649
-        - 0.47129163146019
-        - 0.475472778081894
-        - 0.479262858629227
-        - 0.482679665088654
-        - 0.485740959644318
-        - 0.488464504480362
-        - 0.490868121385574
-        - 0.492969512939453
-        - 0.494786530733109
-        - 0.496336907148361
-        - 0.497638434171677
-        - 0.498708873987198
-        - 0.499565988779068
-        - 0.500227570533752
-        - 0.500711441040039
-        - 0.501035273075104
-        - 0.501216948032379
-        - 0.501274168491364
-        - 0.501224756240845
-        - 0.501086473464966
-        - 0.50087708234787
-        - 0.5006143450737
-        - 0.500316083431244
-        - 0.5
-      effects: *id002
-      title: Bong!
-      enabled: true
-    - !ruby/object:Curve
-      vector: 
-        - 0.0
-        - 0.369195938110352
-        - 0.685079336166382
-        - 0.910014510154724
-        - 1.0
-        - 0.910014808177948
-        - 0.685079276561737
-        - 0.369196027517319
-        - 0.0
-      approximation: 
-        - 0.0
-        - 0.015226736664772
-        - 0.0304497368633747
-        - 0.0456652641296387
-        - 0.0608695857226849
-        - 0.0760589614510536
-        - 0.0912296548485756
-        - 0.106377929449081
-        - 0.121500052511692
-        - 0.136592283844948
-        - 0.15165089070797
-        - 0.166672125458717
-        - 0.181652277708054
-        - 0.196587577462196
-        - 0.211474314332008
-        - 0.22630874812603
-        - 0.241087138652802
-        - 0.255805730819702
-        - 0.270460814237595
-        - 0.28504866361618
-        - 0.299565523862839
-        - 0.314007639884949
-        - 0.328371286392212
-        - 0.342652767896652
-        - 0.356848269701004
-        - 0.370954155921936
-        - 0.384966999292374
-        - 0.398884624242783
-        - 0.412704885005951
-        - 0.426425635814667
-        - 0.440044850111008
-        - 0.453560352325439
-        - 0.466970056295395
-        - 0.480271875858307
-        - 0.493463665246964
-        - 0.506543338298798
-        - 0.519508838653564
-        - 0.53235799074173
-        - 0.545088648796082
-        - 0.557698845863342
-        - 0.57018631696701
-        - 0.582549095153809
-        - 0.59478497505188
-        - 0.606891870498657
-        - 0.618867695331573
-        - 0.630710363388062
-        - 0.642417669296265
-        - 0.653987646102905
-        - 0.665418088436127
-        - 0.676706910133362
-        - 0.687851965427399
-        - 0.698851108551025
-        - 0.709701776504517
-        - 0.720401465892792
-        - 0.73094767332077
-        - 0.741337835788727
-        - 0.75156956911087
-        - 0.761640250682831
-        - 0.771547436714172
-        - 0.78128856420517
-        - 0.790861189365387
-        - 0.800262749195099
-        - 0.809490740299225
-        - 0.818542659282684
-        - 0.827416002750397
-        - 0.836108267307281
-        - 0.844616889953613
-        - 0.852939486503601
-        - 0.86107337474823
-        - 0.869016230106354
-        - 0.876765429973602
-        - 0.884318470954895
-        - 0.891672849655151
-        - 0.898826062679291
-        - 0.905775606632233
-        - 0.912518918514252
-        - 0.919052362442017
-        - 0.925370931625366
-        - 0.931469738483429
-        - 0.937343776226044
-        - 0.942988038063049
-        - 0.948397576808929
-        - 0.953567385673523
-        - 0.958492517471313
-        - 0.963168025016785
-        - 0.967588901519775
-        - 0.971750140190125
-        - 0.97564685344696
-        - 0.979273974895477
-        - 0.982626557350159
-        - 0.985699653625488
-        - 0.988488256931305
-        - 0.990987360477448
-        - 0.993192076683044
-        - 0.99509733915329
-        - 0.996698260307312
-        - 0.997989773750305
-        - 0.998966991901398
-        - 0.999624848365784
-        - 0.999958455562592
-        - 1.0
-        - 0.999637186527252
-        - 0.998986065387726
-        - 0.998014509677887
-        - 0.996727526187897
-        - 0.995130240917206
-        - 0.993227660655975
-        - 0.991024851799011
-        - 0.98852676153183
-        - 0.985738515853882
-        - 0.982665121555328
-        - 0.979311585426331
-        - 0.975683033466339
-        - 0.971784472465515
-        - 0.96762090921402
-        - 0.963197410106659
-        - 0.958518981933594
-        - 0.953590750694275
-        - 0.948417663574219
-        - 0.943004786968231
-        - 0.937357187271118
-        - 0.931479871273041
-        - 0.925377905368805
-        - 0.919056355953217
-        - 0.912520170211792
-        - 0.905774414539337
-        - 0.898822724819183
-        - 0.891667723655701
-        - 0.884311854839325
-        - 0.876757562160492
-        - 0.869007468223572
-        - 0.861063897609711
-        - 0.852929472923279
-        - 0.844606637954712
-        - 0.836097896099091
-        - 0.827405750751495
-        - 0.818532645702362
-        - 0.809481143951416
-        - 0.800253629684448
-        - 0.790852725505829
-        - 0.781280815601349
-        - 0.771540462970734
-        - 0.761634171009064
-        - 0.75156432390213
-        - 0.741333484649658
-        - 0.730944216251373
-        - 0.720398902893066
-        - 0.709700047969818
-        - 0.698850154876709
-        - 0.687851786613464
-        - 0.676707327365875
-        - 0.665419042110443
-        - 0.65398907661438
-        - 0.642419517040253
-        - 0.630712509155273
-        - 0.618870139122009
-        - 0.606894493103027
-        - 0.59478771686554
-        - 0.582551896572113
-        - 0.57018917798996
-        - 0.557701647281647
-        - 0.545091390609741
-        - 0.5323606133461
-        - 0.519511342048645
-        - 0.506545722484589
-        - 0.493465811014175
-        - 0.480273813009262
-        - 0.466971784830093
-        - 0.453561842441559
-        - 0.440046072006226
-        - 0.426426649093628
-        - 0.412705630064011
-        - 0.398885160684586
-        - 0.38496732711792
-        - 0.370954245328903
-        - 0.356848210096359
-        - 0.342652529478073
-        - 0.328370928764343
-        - 0.314007163047791
-        - 0.299564927816391
-        - 0.285048007965088
-        - 0.270460098981857
-        - 0.25580495595932
-        - 0.241086333990097
-        - 0.226307928562164
-        - 0.211473494768143
-        - 0.196586757898331
-        - 0.181651473045349
-        - 0.166671350598335
-        - 0.15165014564991
-        - 0.136591598391533
-        - 0.121499419212341
-        - 0.106377363204956
-        - 0.0912291556596756
-        - 0.0760585367679596
-        - 0.0608692392706871
-        - 0.0456650033593178
-        - 0.0304495617747307
-        - 0.0152266481891274
-        - 0.0
-      effects: *id042
-      title: Wide
-      enabled: true
-    - *id028
+    - *id037
+    - *id051
+    - *id052
+    - *id047
     - !ruby/object:Curve
       vector: 
         - 0.0
@@ -4185,439 +5272,11 @@
         - 0.00325438962318003
         - 0.00159761554095894
         - 0.0
-      effects: *id042
+      effects: *id032
       title: Plateau
       enabled: true
-    - !ruby/object:Curve
-      vector: 
-        - 0.0
-        - 0.288459807634354
-        - 0.987236320972443
-        - 0.270359605550766
-        - 0.461924284696579
-        - 0.247356384992599
-        - 0.325064033269882
-        - 0.0940449312329292
-        - 0.0
-      approximation: 
-        - 0.0
-        - 0.00224667275324464
-        - 0.00458415411412716
-        - 0.00710325129330158
-        - 0.00989477336406708
-        - 0.0130495289340615
-        - 0.0166583247482777
-        - 0.0208119712769985
-        - 0.0256012752652168
-        - 0.0311170443892479
-        - 0.0374500900506973
-        - 0.0446912162005901
-        - 0.0529312305152416
-        - 0.0622609481215477
-        - 0.0727711692452431
-        - 0.0845527052879333
-        - 0.0976963713765144
-        - 0.11229296028614
-        - 0.128433302044868
-        - 0.146208181977272
-        - 0.165708422660828
-        - 0.187024816870689
-        - 0.210248202085495
-        - 0.235469356179237
-        - 0.262779116630554
-        - 0.292268007993698
-        - 0.323928713798523
-        - 0.357506901025772
-        - 0.392710000276566
-        - 0.429245322942734
-        - 0.466820269823074
-        - 0.505142211914062
-        - 0.543918550014496
-        - 0.58285665512085
-        - 0.621663868427277
-        - 0.660047590732574
-        - 0.697715163230896
-        - 0.734373986721039
-        - 0.769731462001801
-        - 0.803494870662689
-        - 0.835371732711792
-        - 0.865069329738617
-        - 0.892295002937317
-        - 0.916756212711334
-        - 0.938160300254822
-        - 0.956214666366577
-        - 0.970626592636108
-        - 0.981103539466858
-        - 0.987352848052979
-        - 0.989081919193268
-        - 0.986001491546631
-        - 0.978056848049164
-        - 0.965576946735382
-        - 0.948926031589508
-        - 0.928468465805054
-        - 0.904568612575531
-        - 0.877590715885162
-        - 0.84789913892746
-        - 0.815858244895935
-        - 0.781832337379456
-        - 0.746185660362244
-        - 0.709282696247101
-        - 0.671487629413605
-        - 0.633164882659912
-        - 0.594678699970245
-        - 0.556393444538116
-        - 0.518673479557037
-        - 0.481883078813553
-        - 0.446386605501175
-        - 0.412548363208771
-        - 0.38073268532753
-        - 0.35130387544632
-        - 0.324626296758652
-        - 0.301064252853394
-        - 0.280982047319412
-        - 0.26473331451416
-        - 0.252385824918747
-        - 0.243698418140411
-        - 0.238414540886879
-        - 0.236277624964714
-        - 0.237031102180481
-        - 0.240418389439583
-        - 0.246182933449745
-        - 0.254068166017532
-        - 0.263817548751831
-        - 0.2751744389534
-        - 0.28788235783577
-        - 0.301684677600861
-        - 0.316324859857559
-        - 0.33154633641243
-        - 0.347092509269714
-        - 0.3627068400383
-        - 0.37813276052475
-        - 0.393113702535629
-        - 0.407393097877502
-        - 0.420714408159256
-        - 0.432821005582809
-        - 0.44345635175705
-        - 0.452363878488541
-        - 0.459287047386169
-        - 0.463972896337509
-        - 0.466335028409958
-        - 0.466519176959991
-        - 0.464688390493393
-        - 0.461005568504333
-        - 0.455633670091629
-        - 0.44873571395874
-        - 0.440474659204483
-        - 0.431013464927673
-        - 0.420515060424805
-        - 0.40914249420166
-        - 0.397058665752411
-        - 0.384426593780518
-        - 0.371409207582474
-        - 0.35816952586174
-        - 0.344870448112488
-        - 0.331674993038177
-        - 0.318746119737625
-        - 0.306246817111969
-        - 0.294340014457703
-        - 0.283188700675964
-        - 0.27295583486557
-        - 0.263804376125336
-        - 0.255897343158722
-        - 0.249397665262222
-        - 0.244461312890053
-        - 0.241103485226631
-        - 0.239209249615669
-        - 0.238658756017685
-        - 0.239332169294357
-        - 0.241109654307365
-        - 0.243871361017227
-        - 0.247497454285622
-        - 0.251868069171906
-        - 0.256863415241241
-        - 0.262363612651825
-        - 0.268248796463013
-        - 0.274399191141129
-        - 0.280694901943207
-        - 0.287016093730927
-        - 0.293242961168289
-        - 0.299255639314651
-        - 0.30493426322937
-        - 0.310159027576447
-        - 0.314810067415237
-        - 0.318767547607422
-        - 0.321911662817001
-        - 0.32412251830101
-        - 0.325280278921127
-        - 0.325265139341354
-        - 0.323968023061752
-        - 0.321396797895432
-        - 0.317630857229233
-        - 0.312750577926636
-        - 0.306836307048798
-        - 0.299968481063843
-        - 0.292227476835251
-        - 0.283693641424179
-        - 0.274447411298752
-        - 0.264569133520126
-        - 0.254139214754105
-        - 0.243238061666489
-        - 0.231946021318436
-        - 0.220343500375748
-        - 0.208510890603065
-        - 0.196528568863869
-        - 0.184476926922798
-        - 0.172436341643333
-        - 0.160487219691277
-        - 0.148709937930107
-        - 0.137184873223305
-        - 0.125992432236671
-        - 0.115212976932526
-        - 0.104926913976669
-        - 0.0952146202325821
-        - 0.0861457660794258
-        - 0.07772096991539
-        - 0.0699134543538094
-        - 0.0626963898539543
-        - 0.0560429282486439
-        - 0.0499262362718582
-        - 0.0443194732069969
-        - 0.0391958020627499
-        - 0.0345283858478069
-        - 0.0302903819829226
-        - 0.0264549553394318
-        - 0.0229952689260244
-        - 0.019884480163455
-        - 0.0170957520604134
-        - 0.0146022485569119
-        - 0.0123771280050278
-        - 0.0103935543447733
-        - 0.00862468685954809
-        - 0.00704368948936462
-        - 0.00562372244894505
-        - 0.00433794734999537
-        - 0.00315952603705227
-        - 0.00206161988899112
-        - 0.00101739075034857
-        - 0.0
-      effects: *id002
-      title: Coaster
-      enabled: true
-    - !ruby/object:Curve
-      vector: 
-        - 0.0
-        - 0.691340744495392
-        - 1.0
-        - 0.7453852891922
-        - 0.376562356948853
-        - 0.153726011514664
-        - 0.0408035852015018
-        - 0.00314226048067212
-        - 0.0
-      approximation: 
-        - 0.0
-        - 0.0303957313299179
-        - 0.0607661791145802
-        - 0.0910860598087311
-        - 0.121330097317696
-        - 0.151473000645638
-        - 0.181489482522011
-        - 0.211354285478592
-        - 0.241042092442513
-        - 0.27052766084671
-        - 0.299785643815994
-        - 0.328790843486786
-        - 0.357517898082733
-        - 0.385941565036774
-        - 0.414036571979523
-        - 0.441777616739273
-        - 0.46913942694664
-        - 0.496096700429916
-        - 0.522624135017395
-        - 0.548696517944336
-        - 0.574288547039032
-        - 0.599374890327454
-        - 0.623930275440216
-        - 0.647929489612579
-        - 0.671347200870514
-        - 0.69415807723999
-        - 0.716337561607361
-        - 0.737862586975098
-        - 0.758710384368896
-        - 0.778858184814453
-        - 0.798283219337463
-        - 0.816962718963623
-        - 0.834873914718628
-        - 0.851993978023529
-        - 0.868300199508667
-        - 0.883769750595093
-        - 0.898379921913147
-        - 0.912107884883881
-        - 0.924930930137634
-        - 0.936826169490814
-        - 0.947770953178406
-        - 0.95774245262146
-        - 0.966717898845673
-        - 0.97467452287674
-        - 0.981589496135712
-        - 0.98744010925293
-        - 0.992203593254089
-        - 0.995857119560242
-        - 0.998377978801727
-        - 0.999743342399597
-        - 1.0
-        - 0.998942375183105
-        - 0.996819734573364
-        - 0.993608295917511
-        - 0.989353656768799
-        - 0.984101116657257
-        - 0.977896273136139
-        - 0.970784425735474
-        - 0.962811172008514
-        - 0.954021871089935
-        - 0.9444620013237
-        - 0.934177041053772
-        - 0.92321240901947
-        - 0.911613523960114
-        - 0.89942592382431
-        - 0.886695027351379
-        - 0.87346625328064
-        - 0.859785079956055
-        - 0.845696985721588
-        - 0.831247389316559
-        - 0.81648176908493
-        - 0.801445484161377
-        - 0.786184132099152
-        - 0.770743072032928
-        - 0.755167782306671
-        - 0.73950320482254
-        - 0.723780632019043
-        - 0.708016693592072
-        - 0.692227125167847
-        - 0.676427781581879
-        - 0.660634577274323
-        - 0.644863247871399
-        - 0.629129648208618
-        - 0.613449692726135
-        - 0.597839117050171
-        - 0.582313776016235
-        - 0.566889524459839
-        - 0.551582217216492
-        - 0.536407649517059
-        - 0.521381676197052
-        - 0.506520092487335
-        - 0.491838753223419
-        - 0.477353483438492
-        - 0.463080167770386
-        - 0.449034571647644
-        - 0.435232549905777
-        - 0.421689957380295
-        - 0.408422619104385
-        - 0.395446360111237
-        - 0.382777005434036
-        - 0.370430171489716
-        - 0.358412355184555
-        - 0.346717059612274
-        - 0.335336953401566
-        - 0.324264645576477
-        - 0.313492774963379
-        - 0.303014010190964
-        - 0.292820900678635
-        - 0.282906174659729
-        - 0.27326238155365
-        - 0.26388218998909
-        - 0.254758208990097
-        - 0.245883107185364
-        - 0.237249478697777
-        - 0.228849977254868
-        - 0.220677211880684
-        - 0.212723836302757
-        - 0.204982459545135
-        - 0.197445720434189
-        - 0.190106257796288
-        - 0.182956695556641
-        - 0.175989657640457
-        - 0.169197782874107
-        - 0.1625736951828
-        - 0.156110033392906
-        - 0.149799585342407
-        - 0.143638476729393
-        - 0.137625902891159
-        - 0.131761133670807
-        - 0.126043498516083
-        - 0.12047228962183
-        - 0.115046814084053
-        - 0.109766378998756
-        - 0.104630269110203
-        - 0.0996378064155579
-        - 0.0947882831096649
-        - 0.0900810062885284
-        - 0.0855152755975723
-        - 0.0810903906822205
-        - 0.0768056586384773
-        - 0.0726603791117668
-        - 0.0686538591980934
-        - 0.064785398542881
-        - 0.0610543005168438
-        - 0.057459868490696
-        - 0.0540014021098614
-        - 0.0506782010197639
-        - 0.0474895760416985
-        - 0.0444348268210888
-        - 0.0415132530033588
-        - 0.0387240163981915
-        - 0.0360647700726986
-        - 0.033532228320837
-        - 0.0311231072992086
-        - 0.0288341101258993
-        - 0.0266619473695755
-        - 0.0246033240109682
-        - 0.0226549506187439
-        - 0.0208135321736336
-        - 0.0190757811069489
-        - 0.0174384023994207
-        - 0.0158981066197157
-        - 0.0144515996798873
-        - 0.0130955893546343
-        - 0.0118267852813005
-        - 0.0106418952345848
-        - 0.00953762698918581
-        - 0.00851068831980228
-        - 0.00755778746679425
-        - 0.00667563313618302
-        - 0.00586093217134476
-        - 0.00511039420962334
-        - 0.00442072609439492
-        - 0.00378863629885018
-        - 0.00321083283051848
-        - 0.00268414989113808
-        - 0.00220623309724033
-        - 0.00177504937164485
-        - 0.00138856703415513
-        - 0.00104475428815931
-        - 0.000741579162422568
-        - 0.000477009802125394
-        - 0.000249014323344454
-        - 5.5560809414601e-05
-        - 0.0
-        - 0.0
-        - 0.0
-        - 0.0
-        - 0.0
-        - 0.0
-        - 0.0
-        - 0.0
-        - 0.0
-        - 0.0
-        - 0.0
-        - 0.0
-        - 0.0
-        - 0.0
-        - 0.0
-        - 0.0
-      effects: *id042
-      title: Ramp
-      enabled: true
+    - *id053
+    - *id054
     - !ruby/object:Curve
       vector: 
         - 0.0
@@ -4830,7 +5489,7 @@
         - 0.0592498257756233
         - 0.0315002426505089
         - 0.0
-      effects: *id042
+      effects: *id032
       title: Climb
       enabled: true
     - !ruby/object:Curve
@@ -5045,139 +5704,12 @@
         - 0.517381072044373
         - 0.508691847324371
         - 0.5
-      effects: *id042
+      effects: *id032
       title: Lob
       enabled: true
   :variables: 
-    - *id003
-    - *id043
-    - *id020
-    - !ruby/object:Variable
-      effects: 
-        - !ruby/object:VariableInputSlider
-          conditions: !ruby/object:ChildConditions
-            enable_child_index: false
-            child_index_min: 0
-            child_index_max: 0
-            enable_event: false
-            event: 
-            event_invert: false
-            child_index_max: 0
-            child_index_min: 0
-            enable_child_index: false
-            enable_event: false
-            event: 
-            event_invert: false
-          title: *id010
-          enabled: true
-          slider_setting: !ruby/object:UserObjectSettingSlider
-            slider: /bass
-            is_inverted: 
-            input_min: 0.0
-            input_max: 1.0
-            dead_center_size: 0.0
-            output_min: 0.0
-            output_max: 1.0
-            output_curve: *id001
-            name: *id011
-            options: *id012
-            breaks_cache: 
-      title: bass
-      enabled: true
-      combine_method_setting: !ruby/object:UserObjectSettingSelect
-        selected: :sum
-        name: *id005
-        options: *id006
-        breaks_cache: 
-      damper_method_setting: !ruby/object:UserObjectSettingSelect
-        selected: :none
-        name: *id007
-        options: *id008
-        breaks_cache: 
-    - !ruby/object:Variable
-      effects: 
-        - !ruby/object:VariableInputSlider
-          conditions: !ruby/object:ChildConditions
-            enable_child_index: false
-            child_index_min: 0
-            child_index_max: 0
-            enable_event: false
-            event: 
-            event_invert: false
-            child_index_max: 0
-            child_index_min: 0
-            enable_child_index: false
-            enable_event: false
-            event: 
-            event_invert: false
-          title: &id044 Slider
-          enabled: true
-          slider_setting: !ruby/object:UserObjectSettingSlider
-            slider: /curves
-            is_inverted: 
-            input_min: 0.0
-            input_max: 1.0
-            dead_center_size: 0.0
-            output_min: 0.0
-            output_max: 1.0
-            output_curve: *id001
-            name: &id045 slider
-            options: *id012
-            breaks_cache: 
-      title: curves
-      enabled: true
-      combine_method_setting: !ruby/object:UserObjectSettingSelect
-        selected: :minimum
-        name: *id005
-        options: *id006
-        breaks_cache: 
-      damper_method_setting: !ruby/object:UserObjectSettingSelect
-        selected: :medium
-        name: *id007
-        options: *id008
-        breaks_cache: 
-    - !ruby/object:Variable
-      effects: 
-        - !ruby/object:VariableInputSlider
-          conditions: !ruby/object:ChildConditions
-            enable_child_index: false
-            child_index_min: 0
-            child_index_max: 0
-            enable_event: false
-            event: 
-            event_invert: false
-            child_index_max: 0
-            child_index_min: 0
-            enable_child_index: false
-            enable_event: false
-            event: 
-            event_invert: false
-          title: *id044
-          enabled: true
-          slider_setting: !ruby/object:UserObjectSettingSlider
-            slider: /progress
-            is_inverted: 
-            input_min: 0.0
-            input_max: 1.0
-            dead_center_size: 0.0
-            output_min: 0.0
-            output_max: 1.0
-            output_curve: *id001
-            name: *id045
-            options: *id012
-            breaks_cache: 
-      title: progress
-      enabled: true
-      combine_method_setting: !ruby/object:UserObjectSettingSelect
-        selected: :sum
-        name: combine_method
-        options: *id006
-        breaks_cache: 
-      damper_method_setting: !ruby/object:UserObjectSettingSelect
-        selected: :none
-        name: damper_method
-        options: *id008
-        breaks_cache: 
+    - *id033
+    - *id017
     - !ruby/object:Variable
       effects: 
         - !ruby/object:VariableInputSlider
@@ -5347,7 +5879,7 @@
         options: *id008
         breaks_cache: 
   :events: 
-    - &id058 !ruby/object:Event
+    - &id063 !ruby/object:Event
       effects: 
         - !ruby/object:EventInputButtonPress
           conditions: !ruby/object:ChildConditions
@@ -5363,71 +5895,17 @@
             enable_event: false
             event: 
             event_invert: false
-          title: *id032
+          title: *id030
           enabled: true
           button_setting: !ruby/object:UserObjectSettingButton
             button: Keyboard / Space
-            name: *id031
-            options: *id033
+            name: *id029
+            options: *id031
             breaks_cache: 
       title: beat tap!
       enabled: true
     - !ruby/object:Event
       effects: 
-        - !ruby/object:EventInputAlways
-          conditions: !ruby/object:ChildConditions
-            enable_child_index: false
-            child_index_min: 0
-            child_index_max: 0
-            enable_event: false
-            event: 
-            event_invert: false
-            child_index_max: 0
-            child_index_min: 0
-            enable_child_index: false
-            enable_event: false
-            event: 
-            event_invert: false
-          title: Always
-          enabled: true
-      title: always on
-      enabled: true
-    - !ruby/object:Event
-      effects: 
-        - !ruby/object:EventInputButtonToggle
-          conditions: !ruby/object:ChildConditions
-            enable_child_index: false
-            child_index_min: 0
-            child_index_max: 0
-            enable_event: false
-            event: 
-            event_invert: false
-            child_index_max: 0
-            child_index_min: 0
-            enable_child_index: false
-            enable_event: false
-            event: 
-            event_invert: false
-          title: *id046
-          enabled: true
-          button_setting: !ruby/object:UserObjectSettingButton
-            button: Keyboard / Grave
-            name: *id031
-            options: &id053
-              
-              :summary: true
-            breaks_cache: 
-          clear_setting: !ruby/object:UserObjectSettingButton
-            button: Keyboard / Escape
-            name: &id054 clear
-            options: &id055
-              
-              :summary: true
-            breaks_cache: 
-      title: show editor
-      enabled: true
-    - !ruby/object:Event
-      effects: 
         - !ruby/object:EventInputButtonComboDown
           conditions: !ruby/object:ChildConditions
             enable_child_index: false
@@ -5442,19 +5920,19 @@
             enable_event: false
             event: 
             event_invert: false
-          title: &id047 Button Combo Down
+          title: &id055 Button Combo Down
           enabled: true
           button_one_setting: !ruby/object:UserObjectSettingButton
             button: Keyboard / Right Control
-            name: &id048 button_one
-            options: &id049
+            name: &id056 button_one
+            options: &id057
               
               :summary: true
             breaks_cache: 
           button_two_setting: !ruby/object:UserObjectSettingButton
-            button: &id050 Keyboard / R
-            name: &id051 button_two
-            options: &id052
+            button: &id058 Keyboard / R
+            name: &id059 button_two
+            options: &id060
               
               :summary: true
             breaks_cache: 
@@ -5472,111 +5950,22 @@
             enable_event: false
             event: 
             event_invert: false
-          title: *id047
+          title: *id055
           enabled: true
           button_one_setting: !ruby/object:UserObjectSettingButton
             button: Keyboard / Left Control
-            name: *id048
-            options: *id049
+            name: *id056
+            options: *id057
             breaks_cache: 
           button_two_setting: !ruby/object:UserObjectSettingButton
-            button: *id050
-            name: *id051
-            options: *id052
+            button: *id058
+            name: *id059
+            options: *id060
             breaks_cache: 
       title: reload set!
       enabled: true
-    - !ruby/object:Event
-      effects: 
-        - !ruby/object:EventInputButtonToggle
-          conditions: !ruby/object:ChildConditions
-            enable_child_index: false
-            child_index_min: 0
-            child_index_max: 0
-            enable_event: false
-            event: 
-            event_invert: false
-            child_index_max: 0
-            child_index_min: 0
-            enable_child_index: false
-            enable_event: false
-            event: 
-            event_invert: false
-          title: *id046
-          enabled: true
-          button_setting: !ruby/object:UserObjectSettingButton
-            button: Keyboard / 1
-            name: *id031
-            options: *id053
-            breaks_cache: 
-          clear_setting: !ruby/object:UserObjectSettingButton
-            button: 
-            name: *id054
-            options: *id055
-            breaks_cache: 
-      title: toggle test 1
-      enabled: true
-    - !ruby/object:Event
-      effects: 
-        - !ruby/object:EventInputButtonToggle
-          conditions: !ruby/object:ChildConditions
-            enable_child_index: false
-            child_index_min: 0
-            child_index_max: 0
-            enable_event: false
-            event: 
-            event_invert: false
-            child_index_max: 0
-            child_index_min: 0
-            enable_child_index: false
-            enable_event: false
-            event: 
-            event_invert: false
-          title: *id046
-          enabled: true
-          button_setting: !ruby/object:UserObjectSettingButton
-            button: Keyboard / 2
-            name: *id031
-            options: *id053
-            breaks_cache: 
-          clear_setting: !ruby/object:UserObjectSettingButton
-            button: 
-            name: *id054
-            options: *id055
-            breaks_cache: 
-        - !ruby/object:EventInputButtonRepeater
-          conditions: !ruby/object:ChildConditions
-            enable_child_index: false
-            child_index_min: 0
-            child_index_max: 0
-            enable_event: false
-            event: 
-            event_invert: false
-            child_index_max: 0
-            child_index_min: 0
-            enable_child_index: false
-            enable_event: false
-            event: 
-            event_invert: false
-          title: Button Repeater
-          enabled: true
-          button_setting: !ruby/object:UserObjectSettingButton
-            button: Keyboard / Right Shift
-            name: *id031
-            options: 
-              :summary: true
-            breaks_cache: 
-          period_setting: !ruby/object:UserObjectSettingTimespan
-            time_number: 0.25
-            time_unit: :beats
-            name: period
-            options: 
-              :summary: true
-            breaks_cache: 
-      title: toggle test 2
-      enabled: true
-    - *id056
-    - *id057
+    - *id061
+    - *id062
   :effects: 
     - !ruby/object:ProjectEffectBeatTapping
       conditions: !ruby/object:ChildConditions
@@ -5595,7 +5984,7 @@
       title: Beat Tapping
       enabled: true
       event_setting: !ruby/object:UserObjectSettingEvent
-        event: *id058
+        event: *id063
         name: event
         options: 
           :summary: true
@@ -5657,9 +6046,9 @@
         exit_curve: *id001
         enable_activation: true
         activation_direction: :to
-        activation_curve: *id024
+        activation_curve: *id026
         activation_value: 0.9
-        activation_variable: *id043
+        activation_variable: *id033
     - !ruby/object:ProjectEffectEditor
       conditions: !ruby/object:ChildConditions
         enable_child_index: false
@@ -5676,46 +6065,6 @@
         event_invert: false
       title: Editor
       enabled: true
-      show_amount_setting: !ruby/object:UserObjectSettingFloat
-        name: show_amount
-        options: 
-          :range: !ruby/range
-            begin: 0.0
-            end: 1.0
-            excl: false
-          :default: !ruby/range
-            begin: 1.0
-            end: 1.0
-            excl: false
-        breaks_cache: 
-        min: 0.0
-        max: 1.0
-        enter_value: 0.0
-        exit_value: 0.0
-        enable_enter_animation: false
-        enter_curve: *id001
-        enable_animation: false
-        animation_curve: *id001
-        animation_min: 0.0
-        animation_max: 1.0
-        animation_repeat_number: 4
-        animation_repeat_unit: :beats
-        enable_exit_animation: false
-        exit_curve: *id001
-        enable_activation: true
-        activation_direction: :to
-        activation_curve: *id001
-        activation_value: 1.0
-        activation_variable: *id003
-      gui_color_setting: !ruby/object:UserObjectSettingColor
-        color: !ruby/object:Color
-          alpha: 1.0
-          blue: 1.0
-          green: 1.0
-          red: 1.0
-        name: gui_color
-        options: {}
-        breaks_cache: 
     - !ruby/object:ProjectEffectDirector
       conditions: !ruby/object:ChildConditions
         enable_child_index: false
@@ -5737,7 +6086,7 @@
         options: 
           :summary: true
         breaks_cache: 
-        director: *id059
+        director: *id064
       progress_setting: !ruby/object:UserObjectSettingFloat
         name: progress
         options: 
