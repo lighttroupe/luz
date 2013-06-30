@@ -341,19 +341,19 @@ class GuiDefault < GuiInterface
 	# Next/Previous actor selection
 	#
 	def select_next_actor!
-		return unless @actor_view.actor && @director_view.director && @director_view.director.actors.size > 0
-		index = ((chosen_actor_index || -1) + 1) % @director_view.director.actors.size
-		build_editor_for(@director_view.director.actors[index])
+		return unless chosen_director && chosen_director.actors.size > 0
+		index = ((chosen_actor_index || -1) + 1) % chosen_director.actors.size
+		build_editor_for(chosen_director.actors[index])
 	end
 
 	def select_previous_actor!
-		return unless @actor_view.actor && @director_view.director && @director_view.director.actors.size > 0
-		index = ((chosen_actor_index || 1) - 1) % @director_view.director.actors.size
-		build_editor_for(@director_view.director.actors[index])
+		return unless chosen_director && chosen_director.actors.size > 0
+		index = ((chosen_actor_index || 1) - 1) % chosen_director.actors.size
+		build_editor_for(chosen_director.actors[index])
 	end
 
 	def chosen_actor_index
-		@director_view.director.actors.index(@actor_view.actor)
+		chosen_director.actors.index(chosen_actor)
 	end
 
 	#
