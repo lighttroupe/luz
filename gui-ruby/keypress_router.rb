@@ -50,5 +50,12 @@ class KeypressRouter
 	end
 
 	def route_keypress_to_selected_widget(value)
+		if @object.keyboard_grab_proc
+			@object.keyboard_grab_proc.call(value)
+		elsif @object.keyboard_grab_object
+			@object.keyboard_grab_object.on_key_press(value)
+		else
+			puts "keypress-router: unhandled key '#{value}'"
+		end
 	end
 end

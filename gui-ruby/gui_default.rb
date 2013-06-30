@@ -303,16 +303,11 @@ class GuiDefault < GuiInterface
 	#
 	# Keyboard interaction
 	#
+	attr_reader :keyboard_grab_object, :keyboard_grab_proc
 
 	# raw_keyboard_input is called by SDL
 	def raw_keyboard_input(value)
-		if @keyboard_grab_proc
-			@keyboard_grab_proc.call(value)
-		elsif @keyboard_grab_object
-			@keyboard_grab_object.on_key_press(value)
-		else
-			@keypress_router.on_key_press(value)
-		end
+		@keypress_router.on_key_press(value)
 	end
 
 	def grab_keyboard(object=nil, &proc)
