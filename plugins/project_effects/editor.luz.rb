@@ -25,9 +25,6 @@ class ProjectEffectEditor < ProjectEffect
 	title				"Editor"
 	description ""
 
-	setting 'show_amount', :float, :range => 0.0..1.0, :default => 1.0..1.0
-	setting 'gui_color', :color
-
 	def inhibit_hardware?		# TODO: rename hardwire
 		true
 	end
@@ -57,7 +54,7 @@ class ProjectEffectEditor < ProjectEffect
 	def tick
 		create_gui unless @gui
 
-		if show_amount > 0.0
+		unless @gui.hidden?
 			@gui.gui_tick!
 
 			# TODO: only do hit testing when needed (NOTE: needed for hover as well as click response)
@@ -73,15 +70,7 @@ class ProjectEffectEditor < ProjectEffect
 		@gui.render {
 			yield
 		}
-
-		if show_amount > 0.0
-			with_enter_and_exit(show_amount, 0.0) {
-				with_color(gui_color) {
-					@gui.gui_render!
-				}
-				render_pointers
-			}
-		end
+		render_pointers unless @gui.hidden?
 	end
 
 	def tick_pointers

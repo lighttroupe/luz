@@ -1,4 +1,4 @@
-multi_require 'gui_pointer_behavior', 'gui_object', 'gui_box', 'gui_hbox', 'gui_vbox', 'gui_list', 'gui_scrollbar', 'gui_list_with_controls', 'gui_grid', 'gui_message_bar', 'gui_beat_monitor', 'gui_button', 'gui_float', 'gui_toggle', 'gui_curve', 'gui_curve_increasing', 'gui_theme', 'gui_integer', 'gui_select', 'gui_actor', 'gui_event', 'gui_variable', 'gui_engine_button', 'gui_engine_slider', 'gui_radio_buttons', 'gui_object_renderer', 'gui-ruby/fonts/bitmap-font', 'history', 'gui_history_buttons', 'gui_main_menu'
+multi_require 'gui_pointer_behavior', 'gui_object', 'gui_box', 'gui_hbox', 'gui_vbox', 'gui_list', 'gui_scrollbar', 'gui_list_with_controls', 'gui_grid', 'gui_message_bar', 'gui_beat_monitor', 'gui_button', 'gui_float', 'gui_toggle', 'gui_curve', 'gui_curve_increasing', 'gui_theme', 'gui_integer', 'gui_select', 'gui_actor', 'gui_event', 'gui_variable', 'gui_engine_button', 'gui_engine_slider', 'gui_radio_buttons', 'gui_object_renderer', 'gui-ruby/fonts/bitmap-font', 'gui_main_menu'
 
 # Addons to existing objects
 load_directory(Dir.pwd + '/gui-ruby/addons/', '**.rb')
@@ -16,11 +16,13 @@ class GuiDefault < GuiInterface
 
 	def initialize
 		super
-		@history = History.new
-		@history.on_navigation { |user_object|
-			build_editor_for(user_object, :history => false)
-		}
 		create!
+		add_state(:closed, {:scale_x => 1.5, :scale_y => 1.5, :opacity => 0.0, :hidden => true})
+		set_state(:open, {:scale_x => 1.0, :scale_y => 1.0, :opacity => 1.0, :hidden => false})
+	end
+
+	def toggle!
+		switch_state({:open => :closed, :closed => :open}, duration=0.35)
 	end
 
 	def reload_notify
@@ -35,6 +37,9 @@ class GuiDefault < GuiInterface
 	def create!
 		# Remember: this is drawn first-to-last
 
+		@actor_view = GuiActorView.new	#.set(:opacity => 0.0, :hidden => true)
+		@director_view = GuiDirectorView.new	#.set(:opacity => 0.0, :hidden => true)
+
 		#
 		# Actors / Directors flyout
 		#
@@ -45,7 +50,7 @@ class GuiDefault < GuiInterface
 		# Directors corner button (top right)
 		self << (@directors_button = GuiButton.new.set(:scale_x => -0.04, :scale_y => 0.06, :offset_x => 0.48, :offset_y => 0.47, :background_image => $engine.load_image('images/corner.png')))
 		@directors_button.on_clicked {
-			@director_menu.switch_state({:closed => :open},durection=0.4)
+			open_directors_menu!
 		}
 
 		# Actors corner button (bottom right)
@@ -81,20 +86,6 @@ class GuiDefault < GuiInterface
 		# User Object Editor
 		#
 		self << @user_object_editor_container = GuiBox.new
-
-=begin		History feature disabled in favor of up/down to move between actors
-		self << @toggle_user_object_editor_button = GuiButton.new.set(:offset_y => -0.495, :scale_x => 0.09, :scale_y => 0.02, :background_scale_y => -1.0, :background_image => $engine.load_image('images/drawer-n.png'))
-		@toggle_user_object_editor_button.on_clicked { |pointer|
-			if @user_object_editor_container.empty?
-				build_editor_for(@history.current, :pointer => pointer)
-			else
-				clear_editors!
-			end
-		}
-
-		self << @back_button = GuiBackButton.new(@history).set(:offset_x => -0.04, :offset_y => -0.495, :scale_x => 0.03, :scale_y => 0.02, :background_scale_y => -1.0, :background_image => $engine.load_image('images/buttons/arrow-left.png'))
-		self << @forward_button = GuiForwardButton.new(@history).set(:offset_x => 0.04, :offset_y => -0.495, :scale_x => -0.03, :scale_y => 0.02, :background_scale_y => -1.0, :background_image => $engine.load_image('images/buttons/arrow-left.png'))
-=end
 
 		#
 		# OVERLAY LEVEL (things above this line are obscured while overlay is showing)
@@ -133,9 +124,6 @@ class GuiDefault < GuiInterface
 
 		self << @directors_list = GuiListWithControls.new([]).set(:hidden => true)
 
-		@actor_view = GuiActorView.new
-		@director_view = GuiDirectorView.new
-
 		#
 		# 
 		#
@@ -167,6 +155,7 @@ class GuiDefault < GuiInterface
 		@director_view.director = director
 		@actors_flyout.actors = director.actors
 		self.mode = DIRECTOR_MODE
+		clear_editors!
 	end
 
 	#
@@ -183,29 +172,66 @@ class GuiDefault < GuiInterface
 				yield
 			end
 		}
+
+		gui_render!
 	end
 
-	def gui_render!
-		with_scale(($env[:enter] + $env[:exit]).scale(1.5, 1.0)) {
-			with_alpha(($env[:enter] + $env[:exit]).scale(0.0, 1.0)) {
-				super
-			}
-		}
-	end
+#	def gui_render!
+#		with_scale(($env[:enter] + $env[:exit]).scale(1.5, 1.0)) {
+#			with_alpha(($env[:enter] + $env[:exit]).scale(0.0, 1.0)) {
+#				super
+#			}
+#		}
+#	end
 
 	#
-	# Main show / destroy API
+	# build_editor_for is the main "object activated" message
 	#
 	def build_editor_for(user_object, options={})
 		return unless user_object
 
+		pointer = options[:pointer]
 		editor = @user_object_editors[user_object]
+		editor_visible = (editor && !editor.hidden?)
 
-		# Single-editor interface: is an editor for this object already showing?
-		if editor && !editor.hidden?
-			handle_second_click_on_user_object(user_object, options)
+		if user_object.is_a?(Director)
+			close_directors_menu! if self.chosen_director == user_object
+
+			self.chosen_director = user_object
+
+			return nil
+
+		elsif user_object.is_a?(ParentUserObject) || user_object.is_a?(Project)		# TODO: responds_to? :effects ?
+			case user_object
+			when Actor
+				if editor_visible
+					@actor_view.actor = user_object
+					self.mode = ACTOR_MODE
+					return
+				else
+					# Rule: cannot edit one actor while viewing a different one (so show this actor while editing)
+					@actor_view.actor = user_object if self.mode == ACTOR_MODE
+				end
+			when Variable, Event
+				clear_editors! and return if editor_visible
+			end
+
+			#
+			# Select / show object
+			#
+			clear_editors!		# only support one for now
+
+			editor = create_user_object_editor_for_pointer(user_object, pointer || Vector3.new(0.0,-0.5), options)
+			@user_object_editors[user_object] = editor
+			@user_object_editor_container << editor
+
+			return editor
 		else
-			handle_first_click_on_user_object(user_object, options)
+			# tell editor its child was clicked (this is needed due to non-propagation of click messages: the user object gets notified, it tells us)
+			parent = @user_object_editors.keys.find { |uo| uo.effects.include? user_object }		# TODO: hacking around children not knowing their parents for easier puppetry
+			parent.on_child_user_object_selected(user_object) if parent		# NOTE: can't click a child if parent is not visible, but the 'if' doesn't hurt
+
+			return nil
 		end
 	end
 
@@ -218,8 +244,6 @@ class GuiDefault < GuiInterface
 
 		@variables_flyout.remove(user_object)
 
-		@history.remove(user_object)
-
 		clear_editors! if @user_object_editors[user_object]
 	end
 
@@ -228,75 +252,6 @@ class GuiDefault < GuiInterface
 	#
 	def pointer_click_on_nothing(pointer)
 		hide_something!
-	end
-
-	def handle_first_click_on_user_object(user_object, options)
-		pointer = options[:pointer]
-
-		if user_object == chosen_director
-			self.mode = DIRECTOR_MODE
-			@director_menu.switch_state({:open => :closed}, duration=0.1)
-
-		elsif user_object.is_a?(ParentUserObject) || user_object.is_a?(Project)		# TODO: responds_to? :effects ?
-			#
-			# Browser-like history of edited objects
-			#
-			unless options.delete(:history) == false
-				@history.remove(user_object)		# is this correct?  browsers don't do this.
-				@history.add(user_object) if suitable_for_history?(user_object)
-			end
-
-			#
-			# Select / show object
-			#
-			clear_editors!		# only support one for now
-
-			if user_object.is_a?(Director) && @director_menu.visible?
-				# selecting a director
-				self.chosen_director = user_object
-				@director_menu.switch_state({:open => :closed}, duration=0.1)
-			else
-				if user_object.is_a? Actor
-					if @mode == ACTOR_MODE
-						# Rule: cannot view one actor (in actor-mode) while editing another
-						@actor_view.actor = user_object
-					end
-				end
-
-				editor = create_user_object_editor_for_pointer(user_object, pointer || Vector3.new(0.0,-0.5), options)
-				@user_object_editors[user_object] = editor
-				@user_object_editor_container << editor
-
-				return editor
-			end
-		else
-			# tell editor its child was clicked (this is needed due to non-propagation of click messages: the user object gets notified, it tells us)
-			parent = @user_object_editors.keys.find { |uo| uo.effects.include? user_object }		# TODO: hacking around children not knowing their parents for easier puppetry
-			parent.on_child_user_object_selected(user_object) if parent		# NOTE: can't click a child if parent is not visible, but the 'if' doesn't hurt
-			return nil
-		end
-	end
-
-	def handle_second_click_on_user_object(user_object, options)
-		pointer = options[:pointer]
-
-		if user_object.is_a? Actor
-			if (self.mode == ACTOR_MODE && @actor_view.actor == user_object)
-				@actors_flyout.animate_to_state(:closed, duration=0.1)
-			else
-				@actor_view.actor = user_object
-				self.mode = ACTOR_MODE		# TODO: make this an option?
-			end
-		elsif user_object.is_a? Project
-			clear_editors!
-
-		elsif user_object.is_a?(Variable) or user_object.is_a?(Event)
-			close_inputs_flyout!
-
-		elsif user_object.is_a?(Director)
-			self.chosen_director = user_object
-			@director_menu.switch_state({:open => :closed}, duration=0.1)
-		end
 	end
 
 	#
@@ -354,12 +309,16 @@ class GuiDefault < GuiInterface
 		end
 	end
 
-	def suitable_for_history?(object)
-		[Actor, Variable, Event].any? { |klass| object.is_a? klass }
-	end
-
 	def close_actors_flyout!
 		@actors_flyout.switch_state({:open => :closed}, duration=0.2)
+	end
+
+	def open_directors_menu!
+		@director_menu.switch_state({:closed => :open},durection=0.4)
+	end
+
+	def close_directors_menu!
+		@director_menu.switch_state({:open => :closed}, duration=0.1)
 	end
 
 	def toggle_actors_flyout!

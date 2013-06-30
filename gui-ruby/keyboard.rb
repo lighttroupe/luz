@@ -70,7 +70,7 @@ private
 		else
 			case value
 			when 'escape'
-				@object.hide_something!
+				@object.toggle!
 			end
 		end
 	end
