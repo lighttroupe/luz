@@ -301,19 +301,34 @@ class GuiDefault < GuiInterface
 	end
 
 	#
-	# Keyboard interaction (this is called by GuiInterface)
+	# Keyboard interaction
 	#
-	def grab_keyboard(&proc)
-		@keyboard_grab_proc = proc
-	end
 
-	# Called by SDL
+	# raw_keyboard_input is called by SDL
 	def raw_keyboard_input(value)
 		if @keyboard_grab_proc
-			@keyboard_grab_proc = nil if @keyboard_grab_proc.call(value) == false
+			@keyboard_grab_proc.call(value)
+		elsif @keyboard_grab_object
+			@keyboard_grab_object.on_key_press(value)
 		else
 			@keypress_router.on_key_press(value)
 		end
+	end
+
+	def grab_keyboard(object=nil, &proc)
+		@keyboard_grab_object, @keyboard_grab_proc = object, proc
+	end
+
+	def cancel_keyboard_focus!
+		@keyboard_grab_object, @keyboard_grab_proc = nil, nil
+	end
+
+	def has_keyboard_focus?(object)
+		@keyboard_grab_object && object == @keyboard_grab_object
+	end
+
+	def cancel_keyboard_focus_for(object)
+		cancel_keyboard_focus! if has_keyboard_focus?(object)
 	end
 
 	#

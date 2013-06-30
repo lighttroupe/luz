@@ -37,7 +37,28 @@ module MethodsForGuiObject
 		!hidden?
 	end
 
+	#
+	# Keyboard focus
+	#
+	def cancel_keyboard_focus!
+		$gui.cancel_keyboard_focus_for(self)
+	end
+
+	def grab_keyboard_focus!(&proc)
+		$gui.grab_keyboard(self, &proc)
+	end
+
+	def keyboard_focus?
+		$gui.has_keyboard_focus?(self)
+	end
+
+	def on_key_press(value)
+		@parent.on_key_press(value) if @parent		# Default is to pass it up the stack
+	end
+
+	#
 	# 
+	#
 	def gui_tick!
 		tick_animations!
 	end

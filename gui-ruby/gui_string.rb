@@ -26,51 +26,48 @@ class GuiString < GuiObject
 
 	def gui_render!
 		with_positioning {
-			if @keyboard_focus
+			if keyboard_focus?
 				with_color(FOCUS_BACKGROUND_COLOR) {
 					unit_square
 				}
 			end
 
 			with_color(color) {
-				@label.keyboard_focus = @keyboard_focus
+				@label.keyboard_focus = keyboard_focus?
 				@label.gui_render!
 			}
 		}
 	end
 
 	def color
-		@keyboard_focus ? FOCUS_COLOR : COLOR
-	end
-
-	def cancel_keyboard_focus!
-		@keyboard_focus = nil
+		keyboard_focus? ? FOCUS_COLOR : COLOR
 	end
 
 	#
 	# Mouse interaction
 	#
 	def click(pointer)
-		@keyboard_focus = true
+		grab_keyboard_focus!
+	end
 
-		# initiate keyboard grab
-		$gui.grab_keyboard { |key|
-			if @keyboard_focus == false
-				false			# cancel grab
-			elsif key == 'return' or key == 'escape'
-				@keyboard_focus = false
-				false			# cancel grab
+	def on_key_press(key)
+		case key
+		when 'return', 'escape'
+			cancel_keyboard_focus!
+		when 'backspace'
+			set_value(get_value[0, get_value.length-1])
+		when 'space'
+			append_text(' ')
+		else
+			if BitmapFont.renderable?(key)
+				append_text(key.shift? ? key.upcase : key)
 			else
-				if key == 'backspace'
-					set_value(get_value[0, get_value.length-1])
-				elsif key == 'space'
-					set_value(get_value + ' ')
-				elsif BitmapFont.renderable?(key)
-					key = key.upcase if key.shift?
-					set_value(get_value + key)
-				end
-				true			# keep grab
+				super
 			end
-		}
+		end
+	end
+
+	def append_text(text)
+		set_value(get_value + text)
 	end
 end
