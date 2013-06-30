@@ -17,10 +17,12 @@
  ###############################################################################
 
 class ActorEffectTail < ActorEffect
-	virtual		# deprecated
+#	virtual		# deprecated
 
 	title				"Tail"
 	description ''
+
+	category :child_producer
 
 	setting 'number', :integer, :range => 1..100, :default => 1..2
 	setting 'beats', :integer, :range => 1..100, :default => 1..2
