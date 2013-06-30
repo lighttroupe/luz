@@ -28,6 +28,7 @@ class GuiListPopup < GuiBox
 		}
 
 		unless @list
+			# HACK to build the list once we have item_aspect_ratio available (after new.set)
 			self << (@list = (GuiList.new(@objects).set(:scale_x => 0.85, :scale_y => 0.7, :scroll_wrap => true, :spacing_y => -1.0, :item_aspect_ratio => item_aspect_ratio)))
 		end
 
