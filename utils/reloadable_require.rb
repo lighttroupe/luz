@@ -30,7 +30,7 @@ module Kernel
 				# Grab latest file name (which now includes the .rb) from $LOADED_FEATURES (list of all require'd files)
 				ext = File.extname($LOADED_FEATURES.last)
 
-				#	Add on extension unless it already has it (seems to happen with .so files)
+				# Add on extension unless it already has it (seems to happen with .so files)
 				file += ext unless file[-ext.length, ext.length] == ext
 
 				# Find the full file path that was loaded by searching the path the way Ruby does

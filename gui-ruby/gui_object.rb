@@ -53,7 +53,7 @@ module MethodsForGuiObject
 	end
 
 	def on_key_press(value)
-		@parent.on_key_press(value) if @parent		# Default is to pass it up the stack
+		@parent.on_key_press(value) if @parent		# Default is to pass it up the heirarchy
 	end
 
 	#
@@ -130,13 +130,13 @@ module MethodsForGuiObject
 	end
 
 	def click(pointer)
-		@parent.click(pointer) if @parent			# Default is to pass it up the stack		TODO: change this to "child_click" ? (see UserObject monkeypatching)
+		@parent.click(pointer) if @parent			# Default is to pass it up the heirarchy		TODO: change this to "child_click" ? (see UserObject monkeypatching)
 	end
 	def scroll_up!(pointer)
-		@parent.scroll_up!(pointer) if @parent			# Default is to pass it up the stack		TODO: change this to "child_click" ? (see UserObject monkeypatching)
+		@parent.scroll_up!(pointer) if @parent			# Default is to pass it up the heirarchy
 	end
 	def scroll_down!(pointer)
-		@parent.scroll_down!(pointer) if @parent			# Default is to pass it up the stack		TODO: change this to "child_click" ? (see UserObject monkeypatching)
+		@parent.scroll_down!(pointer) if @parent			# Default is to pass it up the heirarchy
 	end
 
 	def begin_drag(pointer)
