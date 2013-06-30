@@ -45,7 +45,7 @@ module MethodsForGuiObject
 	end
 
 	def grab_keyboard_focus!(&proc)
-		$gui.grab_keyboard(self, &proc)
+		$gui.grab_keyboard_focus(self, &proc)
 	end
 
 	def keyboard_focus?

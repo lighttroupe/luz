@@ -33,8 +33,6 @@ class GuiDefault < GuiInterface
 	#
 	# Minimal start for a new object: self << GuiObject.new.set(:scale_x => 0.1, :scale_y => 0.1)
 	def create!
-		@keyboard = Keyboard.new(self)
-
 		# Remember: this is drawn first-to-last
 
 		#
@@ -304,23 +302,27 @@ class GuiDefault < GuiInterface
 	#
 	# Keyboard interaction
 	#
+	def keyboard
+		@keyboard ||= Keyboard.new(self)
+	end
+
 	attr_reader :keyboard_grab_object, :keyboard_grab_proc
 
 	# raw_keyboard_input is called by SDL
 	def raw_keyboard_input(value)
-		@keyboard.on_key_press(value)
+		keyboard.on_key_press(value)
 	end
 
-	def grab_keyboard(object=nil, &proc)
-		@keyboard_grab_object, @keyboard_grab_proc = object, proc
+	def grab_keyboard_focus(object=nil, &proc)
+		keyboard.grab(object, &proc)
 	end
 
 	def cancel_keyboard_focus!
-		@keyboard_grab_object, @keyboard_grab_proc = nil, nil
+		keyboard.cancel_grab!
 	end
 
 	def has_keyboard_focus?(object)
-		@keyboard_grab_object && object == @keyboard_grab_object
+		keyboard.grabbed_by_object?(object)
 	end
 
 	def cancel_keyboard_focus_for(object)

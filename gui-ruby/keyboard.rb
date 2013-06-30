@@ -3,7 +3,35 @@ class Keyboard
 		@object = object
 	end
 
-	def on_key_press(value)
+	def on_key_press(key)
+		send_to_grab(key) or process_interface_key_press(key)
+	end
+
+	def grab(object=nil, &proc)
+		@grab_object, @grab_proc = object, proc
+	end
+
+	def cancel_grab!
+		@grab_object, @grab_proc = nil, nil
+	end
+
+	def grabbed_by_object?(object)
+		@grab_object && object == @grab_object		# not true when nils
+	end
+
+private
+
+	def send_to_grab(value)
+		if @grab_proc
+			@grab_proc.call(value)
+			true
+		elsif @grab_object
+			@grab_object.on_key_press(value)
+			true
+		end
+	end
+
+	def process_interface_key_press(value)
 		#
 		# Ctrl key
 		#
@@ -43,19 +71,7 @@ class Keyboard
 			case value
 			when 'escape'
 				@object.hide_something!
-			else
-				route_keypress_to_selected_widget(value)
 			end
-		end
-	end
-
-	def route_keypress_to_selected_widget(value)
-		if @object.keyboard_grab_proc
-			@object.keyboard_grab_proc.call(value)
-		elsif @object.keyboard_grab_object
-			@object.keyboard_grab_object.on_key_press(value)
-		else
-			puts "keypress-router: unhandled key '#{value}'"
 		end
 	end
 end
