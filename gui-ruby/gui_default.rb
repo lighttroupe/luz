@@ -157,7 +157,7 @@ class GuiDefault < GuiInterface
 	# Rendering: render is called every frame, gui_render! only when the Editor plugin thinks it's visible 
 	#
 	def render
-		with_scale(0.75, 1.0) {		# TODO: properly set aspect ratio
+		with_scale(0.62, 1.0) {		# TODO: properly set aspect ratio
 			case @mode
 			when :actor
 				@actor_view.gui_render!
