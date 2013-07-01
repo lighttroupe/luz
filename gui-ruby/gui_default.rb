@@ -5,8 +5,6 @@ multi_require 'gui_actor_view', 'gui_director_view', 'gui_preferences_box', 'gui
 class GuiDefault < GuiInterface
 	pipe [:positive_message, :negative_message], :message_bar
 
-	ACTOR_MODE, DIRECTOR_MODE, OUTPUT_MODE = 1, 2, 3
-
 	callback :keypress		# TODO: do we need this?
 
 	attr_accessor :mode, :directors_menu
@@ -138,7 +136,7 @@ class GuiDefault < GuiInterface
 
 		self.chosen_actor = nil
 		self.chosen_director = director
-		self.mode = OUTPUT_MODE
+		self.mode = :output
 	end
 
 	#
@@ -151,7 +149,7 @@ class GuiDefault < GuiInterface
 	def chosen_director=(director)
 		@director_view.director = director
 		@actors_flyout.actors = director.actors
-		self.mode = DIRECTOR_MODE
+		self.mode = :director
 		clear_editors!
 	end
 
@@ -161,11 +159,11 @@ class GuiDefault < GuiInterface
 	def render
 		with_scale(0.75, 1.0) {		# TODO: properly set aspect ratio
 			case @mode
-			when ACTOR_MODE
+			when :actor
 				@actor_view.gui_render!
-			when DIRECTOR_MODE
+			when :director
 				@director_view.gui_render!
-			when OUTPUT_MODE
+			when :output
 				yield
 			end
 		}
@@ -195,11 +193,11 @@ class GuiDefault < GuiInterface
 			when Actor
 				if editor_visible
 					@actor_view.actor = user_object
-					self.mode = ACTOR_MODE
+					self.mode = :actor
 					return
 				else
 					# Rule: cannot edit one actor while viewing a different one (so show this actor while editing)
-					@actor_view.actor = user_object if self.mode == ACTOR_MODE
+					@actor_view.actor = user_object if self.mode == :actor
 				end
 			when Variable, Event
 				clear_editors! and return if editor_visible
@@ -292,7 +290,9 @@ class GuiDefault < GuiInterface
 	end
 
 	def hide_something!
-		if @variables_flyout.visible? or @actors_flyout.visible?
+		if @directors_menu.visible?
+			close_directors_menu!
+		elsif @variables_flyout.visible? or @actors_flyout.visible?
 			close_inputs_flyout!
 			close_actors_flyout!
 		end
@@ -308,6 +308,10 @@ class GuiDefault < GuiInterface
 
 	def close_directors_menu!
 		@directors_menu.switch_state({:open => :closed}, duration=0.1)
+	end
+
+	def toggle_directors_menu!
+		@directors_menu.switch_state({:open => :closed, :closed => :open}, duration=0.2)
 	end
 
 	def toggle_actors_flyout!

@@ -50,14 +50,22 @@ private
 			when 'left'
 				@gui.toggle_inputs_flyout!
 			when 'up'
-				@gui.open_directors_menu!
+				@gui.toggle_directors_menu!
+			when 'down'
+				@gui.hide_something!
 			when 'r'
 				$engine.reload
 			when 's'
 				$engine.project.save
 				@gui.positive_message 'Project Saved'
-			#when 'f11'
-			#	@gui.output_gc_counts
+
+			when 'f1'
+				@gui.mode = :actor
+			when 'f2'
+				@gui.mode = :director
+			when 'f3'
+				@gui.mode = :output
+
 			when 'f12'
 				@gui.toggle_gc_timing
 			end
