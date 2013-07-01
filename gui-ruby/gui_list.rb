@@ -117,6 +117,21 @@ class GuiList < GuiBox
 	end
 
 	#
+	# Reordering
+	#
+	def move_child_up(child)
+		if (index = @contents.index(child)) > 0
+			@contents[index], @contents[index-1] = @contents[index-1], @contents[index]
+		end
+	end
+
+	def move_child_down(child)
+		if (index = @contents.index(child)) < (@contents.size - 1)
+			@contents[index], @contents[index+1] = @contents[index+1], @contents[index]
+		end
+	end
+
+	#
 	# Helpers
 	#
 	def index_of(value)
