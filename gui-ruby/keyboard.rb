@@ -37,14 +37,6 @@ private
 		#
 		if key.control?
 			case key
-			when 'b'
-				@gui.toggle_beat_monitor!
-			when 'o'
-				@gui.output_object_counts
-			when 'n'
-				@gui.positive_message 'TODO: add actor'
-			when 'm'
-				@gui.positive_message 'TODO: add effect'
 			when 'right'
 				@gui.toggle_actors_flyout!
 			when 'left'
@@ -53,21 +45,27 @@ private
 				@gui.toggle_directors_menu!
 			when 'down'
 				@gui.hide_something!
+			when 'b'
+				@gui.toggle_beat_monitor!
+			when 'n'
+				@gui.positive_message 'TODO: add'
 			when 'r'
 				$engine.reload
 			when 's'
 				$engine.project.save
 				@gui.positive_message 'Project Saved'
-
 			when 'f1'
 				@gui.mode = :actor
 			when 'f2'
 				@gui.mode = :director
 			when 'f3'
 				@gui.mode = :output
-
-			when 'f12'
+			when 'o'
+				@gui.output_object_counts
+			when 'g'
 				@gui.toggle_gc_timing
+			#when 't'
+				#ObjectSpace.each_object(Variable) { |variable| puts variable.title }
 			end
 
 		#
