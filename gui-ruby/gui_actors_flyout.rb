@@ -1,3 +1,5 @@
+multi_require 'gui_actor_class_flyout'
+
 class GuiActorsFlyout < GuiBox
 	def initialize
 		super
@@ -17,30 +19,28 @@ class GuiActorsFlyout < GuiBox
 		# Actor list				# TODO: item_aspect_ratio is related to screen ratio
 		self << @actors_list = GuiList.new([]).set(:scroll_wrap => true, :scale_x => 0.91, :scale_y => 0.82, :offset_x => 0.036, :offset_y => 0.0, :spacing_y => -1.0, :item_aspect_ratio => 0.75)
 
+#			klass = ActorStarFlower
+#			@actors_list.add_after_selection(actor = klass.new)
+#			$gui.build_editor_for(actor, :pointer => pointer)
+
+		# Actor Class flyout (for creating new actors)
+		self << @actor_class_flyout = GuiActorClassFlyout.new.set(:scale_x => 0.5, :scale_y => 0.3).
+			add_state(:open, {:offset_y => -0.3, :hidden => false}).
+			set_state(:closed, {:offset_y => -0.8, :hidden => true})
+
+		@actor_class_flyout.on_actor_class_selected { |pointer, klass|
+			actor = klass.new
+			@actors_list.add_after_selection(actor)
+			$gui.build_editor_for(actor, :pointer => pointer)
+			@actor_class_flyout.switch_state({:open => :closed}, duration=0.2)
+		}
+
 		# New actor button
 		self << @new_button = GuiButton.new.set(:offset_y => -0.5 + 0.025, :scale_y => 0.05, :color => [1,1,1], :background_image => $engine.load_image('images/buttons/new-actor-button.png'))
+
 		@new_button.on_clicked { |pointer|
-			klass = ActorStarFlower
-			@actors_list.add_after_selection(actor = klass.new)
-			$gui.build_editor_for(actor, :pointer => pointer)
+			@actor_class_flyout.switch_state({:open => :closed, :closed => :open}, duration=0.2)
 		}
-
-		#
-		# Actor drawer
-		#
-=begin
-		self << @actor_drawer = GuiVBox.new.set(:scale_x => 0.95, :scale_y => 0.95)
-
-		# New Actor button(s)
-		[ActorStarFlower, ActorStar, ActorRectangle].each { |klass|
-			@actor_drawer << (new_actor_button = GuiActorClassButton.new(klass).set(:scale => 0.75))
-			new_actor_button.on_clicked { |pointer|
-				@actors_list.add_after_selection(actor = klass.new)
-				index = @actors_list.index(actor)
-				build_editor_for(actor, :pointer => pointer)
-			}
-		}
-=end
 	end
 
 	def actors=(actors)
