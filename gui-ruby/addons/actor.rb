@@ -32,7 +32,7 @@ class Actor
 	end
 
 	def update_offscreen_buffer?
-		pointer_hovering?
+		true		#pointer_hovering?
 	end
 
 	#

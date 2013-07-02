@@ -11,7 +11,7 @@ class Director
 	end
 
 	def update_offscreen_buffer?
-		pointer_hovering?
+		true		#pointer_hovering?
 	end
 
 	def init_offscreen_buffer
