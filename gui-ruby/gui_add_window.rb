@@ -38,6 +38,9 @@ private
 		self << (@list_scrollbar = GuiScrollbar.new(@list).set({:offset_x => -0.154, :offset_y => -0.07, :scale_x => 0.025, :scale_y => 0.865}))
 
 		self << (@title = BitmapFont.new.set({:string => '', :offset_x => 0.19, :offset_y => 0.3, :scale_x => 0.58, :scale_y => 0.1}))
+		self << (@hint = BitmapFont.new.set({:string => '', :color => [0.7,0.7,0.7], :offset_x => 0.19, :offset_y => 0.2, :scale_x => 0.58, :scale_y => 0.06}))
+
+		self << (@hint = BitmapFont.new.set({:string => '', :color => [0.7,0.7,0.7], :offset_x => 0.19, :offset_y => 0.2, :scale_x => 0.58, :scale_y => 0.06}))
 
 		#
 		# Close
@@ -80,6 +83,7 @@ private
 
 	def create_for_object(object)
 		@title.set_string(object.title)
+		@hint.set_string(object.hint)
 	end
 
 	def add_object(object)
