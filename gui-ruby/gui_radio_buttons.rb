@@ -1,13 +1,15 @@
 class GuiRadioButton < GuiObject
 	ON_COLOR = [1,1,1,1]
-	OFF_COLOR = [0.0,0.0,0.0,0.5]
+	OFF_COLOR = [1,1,1,0.5]
 
 	easy_accessor :parent
 	easy_accessor :value
 
 	def gui_render!
 		with_color(on? ? ON_COLOR : OFF_COLOR) {
-			unit_square
+			background_image.using {
+				unit_square
+			}
 		}
 	end
 
@@ -24,8 +26,8 @@ class GuiRadioButtons < GuiList
 	def initialize(object, method, options)
 		super()
 		@object, @method, @options = object, method.to_s, options
-		@options.each { |value|
-			self << GuiRadioButton.new.set_value(value).set_parent(self)
+		@options.each { |value, image|
+			self << GuiRadioButton.new.set_value(value).set_parent(self).set_background_image(image)
 		}
 	end
 

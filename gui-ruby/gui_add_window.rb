@@ -26,7 +26,7 @@ private
 		#
 		# Category selector
 		#
-		self << (@category_selector = GuiRadioButtons.new(self, :category, @categories).set(:offset_x => 0.005, :offset_y => 0.44, :scale_x => 1.0, :scale_y => 0.11, :spacing_x => 1.0))
+		self << (@category_selector = GuiRadioButtons.new(self, :category, categories_for_radio_buttons).set(:offset_x => 0.005, :offset_y => 0.44, :scale_x => 0.16 * @categories.size, :scale_y => 0.11, :spacing_x => 1.0))
 		@category_selector.on_selection_change {
 			fill_from_category!
 		}
@@ -55,6 +55,8 @@ private
 		puts "fill_from_category! #{@category}"
 
 		@list.clear!
+		@title.set_string('')
+		@hint.set_string('')
 
 		find_valid_effect_classes.each { |object|
 			next unless (@category.nil? || object.in_category?(@category))
@@ -100,5 +102,13 @@ private
 		UserObject.inherited_classes.select { |user_object_class|
 			@user_object.valid_child_class?(user_object_class) && !user_object_class.virtual? && !user_object_class.title.blank?
 		}.sort { |a,b| a.title <=> b.title }
+	end
+
+	def categories_for_radio_buttons
+		@categories.map { |category| [category, $engine.load_image(category_image_path(category))] }
+	end
+
+	def category_image_path(category)
+		"images/categories/#{category}.png"
 	end
 end
