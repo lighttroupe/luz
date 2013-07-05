@@ -346,7 +346,7 @@ class GuiDefault < GuiInterface
 	end
 
 	def chosen_actor_index
-		chosen_director.actors.index(chosen_actor)
+		chosen_director.actors.index(chosen_actor)		# possibly nil
 	end
 
 	#
