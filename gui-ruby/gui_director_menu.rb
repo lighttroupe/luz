@@ -15,6 +15,7 @@ class GuiDirectorMenu < GuiBox
 			director = Director.new
 			@grid << director
 			$gui.build_editor_for(director)
+			switch_state({:open => :closed}, duration=0.5)
 		}
 
 		self << @cancel_button = GuiButton.new.set(:scale => 0.05, :offset_x => 0.475, :offset_y => 0.475, :background_image => $engine.load_image('images/buttons/close.png'))
