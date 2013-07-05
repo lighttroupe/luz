@@ -1,6 +1,10 @@
 class Director
+	BACKGROUND_COLOR = [0,0,0]
+
 	def gui_render!
-		gui_render_background
+		with_color(BACKGROUND_COLOR) {
+			unit_square
+		}
 
 		# Render as cached image
 		with_image {
