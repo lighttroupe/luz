@@ -52,19 +52,7 @@ class EventInput < ChildUserObject
 		resolve_settings
 
 		user_object_try {
-			@current_value_raw = self.value
-
-			case @current_value_raw
-			when true
-				@current_value = 1
-			when false
-				@current_value = 0
-			when Integer
-				@current_value = @current_value_raw
-			else
-				throw ArgumentError.new "Event Input plugins should return true, false, or an Integer (got: #{@current_value_raw.class})"
-			end
-
+			@current_value = clean_value(self.value)
 			@last_activation_time = $env[:time] if @current_value > 0
 			return @current_value
 		}
@@ -73,5 +61,20 @@ class EventInput < ChildUserObject
 
 	def changed?
 		@current_value != @last_value
+	end
+
+private
+
+	def clean_value(value)
+		case value
+		when true
+			1
+		when false
+			0
+		when Integer
+			value
+		else
+			throw ArgumentError.new "Event Input plugins should return true, false, or an Integer (got: #{value.class})"
+		end
 	end
 end
