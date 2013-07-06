@@ -43,6 +43,10 @@ class GuiString < GuiObject
 		keyboard_focus? ? FOCUS_COLOR : COLOR
 	end
 
+	def renderable?(key)
+		BitmapFont.renderable?(key)
+	end
+
 	#
 	# Mouse interaction
 	#
@@ -55,14 +59,12 @@ class GuiString < GuiObject
 		when 'return', 'escape'
 			cancel_keyboard_focus!
 		when 'backspace'
-			set_value(get_value[0, get_value.length-1])
+			set_value(get_value[0, get_value.length-1]) if get_value.length > 0
 		when 'space'
 			append_text(' ')
 		else
-			if BitmapFont.renderable?(key)
+			if renderable?(key)
 				append_text(key.shift? ? key.upcase : key)
-			else
-				super
 			end
 		end
 	end

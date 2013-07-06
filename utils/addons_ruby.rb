@@ -447,14 +447,16 @@ class String
 		search_words = search_string.downcase.split(' ')
 		return false if search_words.empty?
 
-		# Each search word must match consecutive self.words eg. "music visuals".match?("m vis") == true
-		string_words = self.split(' ')
-		return false if search_words.size > string_words.size
+		search_words.all? { |word| self.include? word }
 
-		search_words.each_with_index { |search_word, index|
-			return false unless string_words[index].begins_with? search_word
-		}
-		return true
+		# Each search word must match consecutive self.words eg. "music visuals".match?("m vis") == true
+		#string_words = self.split(' ')
+		#return false if search_words.size > string_words.size
+#
+		#search_words.each_with_index { |search_word, index|
+			#return false unless string_words[index].begins_with? search_word
+		#}
+		#return true
 	end
 
 	# Adds spaces between capitalized words and converts underscores to spaces

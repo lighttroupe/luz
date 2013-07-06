@@ -1,4 +1,4 @@
-class GuiUserObjectEditor < GuiBox
+class GuiUserObjectEditor < GuiWindow
 	attr_accessor :pointer
 
 	BACKGROUND_COLOR = [0,0,0,0.95]
@@ -8,6 +8,10 @@ class GuiUserObjectEditor < GuiBox
 		super([])
 		create!
 		set(options)
+	end
+
+	def create_something!
+		@user_object.create_something!
 	end
 
 	def create!
@@ -39,6 +43,17 @@ class GuiUserObjectEditor < GuiBox
 
 		self << (@close_button=GuiButton.new.set(:scale_x => 0.04, :scale_y => 0.08, :offset_x => 0.46, :offset_y => 0.43, :background_image => $engine.load_image('images/buttons/close.png')))
 		@close_button.on_clicked { $gui.clear_editors! }
+	end
+
+	def on_key_press(value)
+		case value
+		when 'up'
+			@list.select_previous!
+			@list.scroll_to_selection!
+		when 'down'
+			@list.select_next!
+			@list.scroll_to_selection!
+		end
 	end
 
 	def close!

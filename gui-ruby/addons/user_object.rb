@@ -11,6 +11,15 @@ class UserObject
 
 	SHAKE_DISTANCE = 0.007
 
+	def create_something!
+		open_add_child_window!
+	end
+
+	def open_add_child_window!
+		@add_child_window.grab_keyboard_focus!
+		@add_child_window.switch_state({:closed => :open}, duration=0.2)
+	end
+
 	# Creates and returns a GuiObject to serve as an editor for this object
 	def gui_build_editor
 		if respond_to? :effects
@@ -27,8 +36,7 @@ class UserObject
 			# Add Child Popup Button
 			@add_child_button = GuiButton.new.set(:scale_x => 0.05, :scale_y => 0.07, :offset_x => -0.46, :offset_y => -0.5 + 0.035, :background_image => $engine.load_image('images/buttons/add.png'))
 			@add_child_button.on_clicked { |pointer|
-				@add_child_window.grab_keyboard_focus!
-				@add_child_window.switch_state({:closed => :open}, duration=0.2)
+				open_add_child_window!
 			}
 			box << @add_child_button
 
@@ -56,11 +64,12 @@ class UserObject
 			# Add Child Popup
 			@add_child_window = GuiAddWindow.new(self)
 			@add_child_window.on_add { |new_object|
+				@add_child_window.hide!
+
 				@gui_effects_list.add_after_selection(new_object)
 				@gui_effects_list.set_selection(new_object)
 				@gui_effects_list.scroll_to_selection!
 				gui_fill_settings_list(new_object)
-				@add_child_window.hide!
 			}
 			box << @add_child_window
 
@@ -89,11 +98,11 @@ class UserObject
 	def gui_fill_settings_list(user_object)
 		return unless @gui_settings_list
 
-		@gui_effects_list.clear_selection! if user_object == self
+		@gui_effects_list.clear_selection! if user_object == self		# selecting parent, so no children can be selected
 
 		@gui_settings_list.clear!
-		user_object.settings.each { |setting|
-			@gui_settings_list << setting.gui_build_editor
+		user_object.settings.each_with_index { |setting, index|
+			@gui_settings_list << setting.gui_build_editor.set(:opacity => 0.0).animate({:opacity => 1.0}, duration=index*0.2)
 		}
 	end
 

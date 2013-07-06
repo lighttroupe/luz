@@ -5,7 +5,7 @@ class GuiAddWindow < GuiBox
 
 	callback :add
 
-	attr_accessor :category
+	attr_accessor :category, :search
 
 	def initialize(user_object, options={})
 		@user_object, @options = user_object, options
@@ -28,26 +28,40 @@ class GuiAddWindow < GuiBox
 			@list.select_next!
 			@list.scroll_to_selection!
 		when 'left'
+			end_search!
 			@category = @categories[(@categories.index(@category) - 1) % @categories.size]
 			fill_from_category!
 		when 'right'
+			end_search!
 			@category = @categories[(@categories.index(@category) + 1) % @categories.size]
 			fill_from_category!
 		when 'return'
-			choose_object(@selected_object) if @selected_object
+			add_object(@selected_object) if @selected_object
 		else
 			if value.control?
 				super
-			elsif BitmapFont.renderable?(value)
-				$gui.positive_message "TODO: search #{value}"
 			else
-				super
+				@search_label.on_key_press(value)
+				if @search && @search.length > 0
+					@search_label.switch_state({:closed => :open}, duration=0.1)
+					@category_selector.switch_state({:open => :closed}, duration=0.1)
+					fill_from_search!
+				else
+					end_search!
+				end
 			end
 		end
 	end
 
 	def hide!
 		switch_state({:open => :closed}, duration=0.1)
+	end
+
+	def end_search!
+		@search_label.set_value('')
+		@search_label.switch_state({:open => :closed}, duration=0.1)
+		@category_selector.switch_state({:closed => :open}, duration=0.1)
+		fill_from_category!
 	end
 
 private
@@ -62,9 +76,15 @@ private
 		# Category selector
 		#
 		self << (@category_selector = GuiRadioButtons.new(self, :category, categories_for_radio_buttons).set(:offset_x => 0.005, :offset_y => 0.44, :scale_x => 0.16 * @categories.size, :scale_y => 0.11, :spacing_x => 1.0))
+			.add_state(:closed, {:opacity => 0.0, :hidden => true})
+			.set_state(:open, {:opacity => 1.0, :hidden => false})
 		@category_selector.on_selection_change {
 			fill_from_category!
 		}
+
+		self << (@search_label = GuiString.new(self, :search).set(:offset_x => @category_selector.offset_x, :offset_y => @category_selector.offset_y, :scale_x => @category_selector.scale_x, :scale_y => @category_selector.scale_y))
+			.add_state(:open, {:opacity => 1.0, :hidden => false})
+			.set_state(:closed, {:opacity => 0.0, :hidden => true})
 
 		#
 		# Effects list and scrollbar
@@ -87,13 +107,16 @@ private
 		fill_from_category!
 	end
 
-	def fill_from_category!
-		return if @last_category == @category
-		puts "fill_from_category! #{@category}"
-
+	def clear_list!
 		@list.clear!
 		@title.set_string('')
 		@hint.set_string('')
+	end
+
+	def fill_from_category!
+		puts "fill_from_category! #{@category}"
+
+		clear_list!
 
 		find_valid_effect_classes.each { |object|
 			next unless (@category.nil? || object.in_category?(@category))
@@ -103,12 +126,32 @@ private
 
 			# user selects an effect (class)
 			renderer.on_clicked {
-				@list.set_selection(renderer)
+				if @selected_object == object
+					add_object(@selected_object)
+				else
+					@list.set_selection(renderer)
+				end
 			}
 
 			@list << renderer
 		}
 		@last_category = @category
+	end
+
+	def fill_from_search!
+		clear_list!
+		find_valid_effect_classes.select { |object| object.text_match?(@search) }.each { |object|
+			renderer = GuiObjectRenderer.new(object)		# NOTE: we unwrap this in a few places
+			renderer.on_clicked {
+				if @selected_object == object
+					add_object(@selected_object)
+				else
+					@list.set_selection(renderer)
+				end
+			}
+			@list << renderer
+		}
+		@list.set_selection(@list.first)
 	end
 
 	def on_list_selection_change
@@ -117,13 +160,8 @@ private
 	end
 
 	def choose_object(object)
-		# double selection
-		if object == @selected_object
-			add_object(object)
-		else
-			@selected_object = object
-			create_for_object(@selected_object)
-		end
+		@selected_object = object
+		create_for_object(object)
 	end
 
 	def create_for_object(object)
@@ -131,6 +169,7 @@ private
 		@hint.set_string(object.hint)
 	end
 
+	# initiate callback
 	def add_object(object)
 		new_object = object.new
 		new_object.after_load

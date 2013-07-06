@@ -48,7 +48,7 @@ private
 			when 'b'
 				@gui.toggle_beat_monitor!
 			when 'n'
-				@gui.positive_message 'TODO: add'
+				@gui.create_something!
 			when 'r'
 				$engine.reload
 			when 's'

@@ -65,7 +65,6 @@ module MethodsForGuiObject
 	end
 
 	def hit_test_render!
-		return if hidden?
 		with_positioning {
 			render_hit_test_unit_square
 		}
@@ -78,7 +77,6 @@ module MethodsForGuiObject
 	end
 
 	def gui_render!
-		return if hidden?
 		with_positioning {
 			gui_render_background
 			gui_render_placeholder unless background_image
@@ -150,7 +148,6 @@ module MethodsForGuiObject
 	end
 
 	def with_gui_object_properties
-		return if hidden?
 		with_positioning {
 			gui_render_background
 			yield
@@ -158,6 +155,7 @@ module MethodsForGuiObject
 	end
 
 	def with_positioning
+		return if hidden?
 		with_translation(@offset_x, @offset_y) {
 			with_roll(@roll || 0.0) {
 				# Record the scaling we do, so it's possible to undo it when proper aspect ratio is needed (ie text)

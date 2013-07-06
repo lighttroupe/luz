@@ -33,22 +33,21 @@ class GuiBox < GuiObject
 		end
 	end
 
+	def first
+		@contents.first
+	end
+
 	def insert(index, object)
-		@contents.insert(index+1, object)		# HACK: whoops shouldn't use @list here!!
+		@contents.insert(index, object)
 		object.parent = self
 	end
 
 	def add_after_selection(object)
-		if (obj = selection.first) && (index = @contents.index(obj))
+		if (selected_object = selection.first) && (index = @contents.index(selected_object))
 			insert(index+1, object)
 		else
 			self << object
 		end
-	end
-
-	def insert(index, gui_object)
-		@contents.insert(index, gui_object)
-		gui_object.parent = self
 	end
 
 	def remove(gui_object)
@@ -67,6 +66,7 @@ class GuiBox < GuiObject
 	def clear!
 		unlink!
 		@contents.clear
+		clear_selection!
 	end
 
 	def contents=(contents)
@@ -113,11 +113,13 @@ class GuiBox < GuiObject
 	end
 
 	def set_selection(object)
+		return if @selection.size == 1 && child_is_selected?(object)
 		@selection.clear					# without notify
 		add_to_selection(object)	# with notify
 	end
 
 	def clear_selection!
+		return if @selection.empty?
 		@selection.clear
 		selection_change_notify
 	end
@@ -126,7 +128,7 @@ class GuiBox < GuiObject
 		selection = @selection.first		# TODO: support multiselection?
 		index = @contents.index(selection) || -1
 		index = (index + 1) % @contents.size
-		clear_selection!
+		@selection.clear
 		add_to_selection(@contents[index])
 	end
 
@@ -134,7 +136,7 @@ class GuiBox < GuiObject
 		selection = @selection.first		# TODO: support multiselection?
 		index = @contents.index(selection) || @contents.size
 		index = (index - 1) % @contents.size
-		clear_selection!
+		@selection.clear
 		add_to_selection(@contents[index])
 	end
 
