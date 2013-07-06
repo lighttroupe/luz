@@ -17,11 +17,15 @@ class ChildUserObject < UserObject
 		gui_render_background
 		gui_render_label
 
-#		if selected?
-			with_positioning {
-				enable_checkbox.gui_render!
-			}
-#		end
+		#if selected?
+			gui_render_enable_checkbox
+		#end
+	end
+
+	def gui_render_enable_checkbox
+		with_positioning {
+			enable_checkbox.gui_render!
+		}
 	end
 
 	def hit_test_render!
