@@ -25,7 +25,7 @@ private
 		if @grab_proc
 			@grab_proc.call(key)
 			true
-		elsif @grab_object
+		elsif @grab_object && !@grab_object.hidden?		# being hidden prevents grab behavior
 			@grab_object.on_key_press(key)
 			true
 		end

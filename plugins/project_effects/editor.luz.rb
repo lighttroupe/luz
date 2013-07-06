@@ -32,6 +32,7 @@ class ProjectEffectEditor < ProjectEffect
 	def after_load
 		super
 		@gui = nil
+		$engine.project.each_user_object { |user_object| user_object.clear_selection! if user_object.respond_to? :clear_selection! }
 	end
 
 	def luz_2?

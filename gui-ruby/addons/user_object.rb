@@ -24,20 +24,13 @@ class UserObject
 			@gui_effects_list_scrollbar = GuiScrollbar.new(@gui_effects_list).set({:scale_x => 0.025, :offset_x => -0.152, :offset_y => -0.03, :scale_y => 0.75})
 			box << @gui_effects_list_scrollbar
 
-			# Add Button
+			# Add Child Popup Button
 			@add_child_button = GuiButton.new.set(:scale_x => 0.05, :scale_y => 0.07, :offset_x => -0.46, :offset_y => -0.5 + 0.035, :background_image => $engine.load_image('images/buttons/add.png'))
-			box << @add_child_button
 			@add_child_button.on_clicked { |pointer|
-				window = build_add_child_window_for_pointer(pointer)
-				window.on_add { |new_object|
-					@gui_effects_list.add_after_selection(new_object)
-					@gui_effects_list.set_selection(new_object)
-					@gui_effects_list.scroll_to_selection!
-
-					gui_fill_settings_list(new_object)
-				}
-				$gui << window
+				@add_child_window.grab_keyboard_focus!
+				@add_child_window.switch_state({:closed => :open}, duration=0.2)
 			}
+			box << @add_child_button
 
 			# Clone button
 			box << (@clone_button=GuiButton.new.set(:opacity => 0.5, :scale_x => 0.05, :scale_y => 0.07, :offset_x => -0.41, :offset_y => -0.5 + 0.035, :background_image => $engine.load_image('images/buttons/clone.png')))
@@ -60,6 +53,17 @@ class UserObject
 			@gui_settings_list_scrollbar = GuiScrollbar.new(@gui_settings_list).set({:scale_x => 0.03, :offset_x => -0.104, :offset_y => -0.03, :scale_y => 0.75})
 			box << @gui_settings_list_scrollbar
 
+			# Add Child Popup
+			@add_child_window = GuiAddWindow.new(self)
+			@add_child_window.on_add { |new_object|
+				@gui_effects_list.add_after_selection(new_object)
+				@gui_effects_list.set_selection(new_object)
+				@gui_effects_list.scroll_to_selection!
+				gui_fill_settings_list(new_object)
+				@add_child_window.hide!
+			}
+			box << @add_child_window
+
 			box
 		else
 			GuiObject.new		# nothing
@@ -67,10 +71,9 @@ class UserObject
 	end
 
 	def build_add_child_window_for_pointer(pointer)
-		window = GuiAddWindow.new(self)
-		window.set({:offset_x => 0.0, :offset_y => -0.65, :opacity => 0.0, :scale_x => 0.5, :scale_y => 0.4, :hidden => false})
-		window.animate({:offset_x => 0.0, :offset_y => -0.3, :scale_x => 0.5, :scale_y => 0.4, :opacity => 1.0}, duration=0.2)
-		window
+		@add_window ||= 
+		@add_window.switch_state(:closed => :open)
+		@add_window
 	end
 
 	def remove_selected

@@ -113,14 +113,29 @@ class GuiBox < GuiObject
 	end
 
 	def set_selection(object)
-		clear_selection!
-		add_to_selection(object)
-		selection_change_notify
+		@selection.clear					# without notify
+		add_to_selection(object)	# with notify
 	end
 
 	def clear_selection!
 		@selection.clear
 		selection_change_notify
+	end
+
+	def select_next!
+		selection = @selection.first		# TODO: support multiselection?
+		index = @contents.index(selection) || -1
+		index = (index + 1) % @contents.size
+		clear_selection!
+		add_to_selection(@contents[index])
+	end
+
+	def select_previous!
+		selection = @selection.first		# TODO: support multiselection?
+		index = @contents.index(selection) || @contents.size
+		index = (index - 1) % @contents.size
+		clear_selection!
+		add_to_selection(@contents[index])
 	end
 
 	attr_reader :selection

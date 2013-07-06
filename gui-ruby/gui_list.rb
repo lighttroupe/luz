@@ -106,8 +106,8 @@ class GuiList < GuiBox
 
 	# instant-scroll a list to given value
 	def scroll_to(value)
-		if(index = index_of(value))
-			@scroll = (index * -distance_between_items) # NOTE: this puts 'value' at the top of the list.  putting it under the pointer that invoked us might be nice.
+		if((index = index_of(value)) && @contents.size > 1)
+			animate({:scroll => (index.to_f / (@contents.size - 1)) * @scroll_max}, duration=0.2) if @scroll_max
 		end
 		self
 	end
@@ -153,6 +153,11 @@ class GuiList < GuiBox
 				each_with_positioning_horizontal(&proc)
 			end
 		}
+	end
+
+	def clear!
+		super
+		@scroll = 0.0
 	end
 
 private
