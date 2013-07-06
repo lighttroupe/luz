@@ -23,7 +23,12 @@ class UserObjectSettingImage < UserObjectSetting
 		['@image_name'] + super
 	end
 
-	attr_reader :width, :height
+	attr_reader :image_name, :width, :height
+
+	def image_name=(name)
+		clear
+		@image_name = name
+	end
 
 	def after_load
 		@width ||= 0
@@ -70,7 +75,7 @@ class UserObjectSettingImage < UserObjectSetting
 			$gui.safe_open_image(File.join($engine.project.file_path, @image_name))
 		}
 
-		return Gtk::hbox_for_widgets([choose_button, clear_button, edit_button])
+		Gtk::hbox_for_widgets([choose_button, clear_button, edit_button])
 	end
 
 	def clear
