@@ -3,7 +3,7 @@ class Keyboard
 		@gui = gui
 	end
 
-	def on_key_press(key)
+	def raw_keyboard_input(key)
 		# TODO: filter somehow?
 		send_key_to_grab(key) or @gui.on_key_press(key)
 	end

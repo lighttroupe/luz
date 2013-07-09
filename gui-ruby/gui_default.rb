@@ -252,7 +252,7 @@ class GuiDefault < GuiInterface
 
 	# raw_keyboard_input is called by SDL
 	def raw_keyboard_input(value)
-		keyboard.on_key_press(value)
+		keyboard.raw_keyboard_input(value)
 	end
 
 	def grab_keyboard_focus(object=nil, &proc)
