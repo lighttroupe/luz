@@ -1,4 +1,7 @@
-class GuiVariablessFlyout < GuiBox
+#
+# GuiVariablesFlyout is the left-edge window containing variables and events lists.
+#
+class GuiVariablesFlyout < GuiBox
 	def initialize
 		super
 		create!

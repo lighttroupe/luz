@@ -57,7 +57,7 @@ class GuiDefault < GuiInterface
 		#
 		# Events / Variables flyout
 		#
-		self << @variables_flyout = GuiVariablessFlyout.new.set(:scale_x => 0.12, :scale_y => 1.0, :offset_x => -0.44).
+		self << @variables_flyout = GuiVariablesFlyout.new.set(:scale_x => 0.12, :scale_y => 1.0, :offset_x => -0.44).
 			add_state(:open, {:hidden => false, :offset_x => -0.44}).
 			set_state(:closed, {:hidden => true, :offset_x => -0.56})
 
