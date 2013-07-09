@@ -325,7 +325,9 @@ class GuiDefault < GuiInterface
 	end
 
 	def toggle_actors_flyout!
+		grab = @actors_flyout.hidden?
 		@actors_flyout.switch_state({:open => :closed, :closed => :open}, duration=0.2)
+		@actors_flyout.grab_keyboard_focus! if grab
 	end
 
 	def close_inputs_flyout!
@@ -357,6 +359,69 @@ class GuiDefault < GuiInterface
 
 	def chosen_actor_index
 		chosen_director.actors.index(chosen_actor)		# possibly nil
+	end
+
+	def on_key_press(key)
+		#
+		# Ctrl key
+		#
+		if key.control?
+			case key
+			when 'right'
+				toggle_actors_flyout!
+			when 'left'
+				toggle_inputs_flyout!
+			when 'up'
+				toggle_directors_menu!
+			when 'down'
+				hide_something!
+			when 'b'
+				toggle_beat_monitor!
+			when 'n'
+				create_something!
+			when 'r'
+				$engine.reload
+			when 's'
+				$engine.project.save
+				positive_message 'Project Saved'
+			when 'f1'
+				self.mode = :actor
+			when 'f2'
+				self.mode = :director
+			when 'f3'
+				self.mode = :output
+			when 'o'
+				output_object_counts
+			when 'g'
+				toggle_gc_timing
+			#when 't'
+				#ObjectSpace.each_object(Variable) { |variable| puts variable.title }
+			end
+
+		#
+		# Alt key
+		#
+		elsif key.alt?
+			case key
+			when 'down'
+				select_next_actor!
+			when 'up'
+				select_previous_actor!
+			end
+
+		#
+		# no modifier
+		#
+		else
+			case key
+			when 'escape'
+				if @directors_menu.visible?
+					close_directors_menu!
+				else
+					toggle!
+				end
+			end
+		end
 	end
 
 	#

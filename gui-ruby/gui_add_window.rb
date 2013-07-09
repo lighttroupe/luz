@@ -17,6 +17,17 @@ class GuiAddWindow < GuiBox
 		set(options)
 	end
 
+	def hide!
+		switch_state({:open => :closed}, duration=0.1)
+	end
+
+	def end_search!
+		@search_label.set_value('')
+		@search_label.switch_state({:open => :closed}, duration=0.1)
+		@category_selector.switch_state({:closed => :open}, duration=0.1)
+		fill_from_category!
+	end
+
 	def on_key_press(value)
 		case value
 		when 'escape'
@@ -51,17 +62,6 @@ class GuiAddWindow < GuiBox
 				end
 			end
 		end
-	end
-
-	def hide!
-		switch_state({:open => :closed}, duration=0.1)
-	end
-
-	def end_search!
-		@search_label.set_value('')
-		@search_label.switch_state({:open => :closed}, duration=0.1)
-		@category_selector.switch_state({:closed => :open}, duration=0.1)
-		fill_from_category!
 	end
 
 private

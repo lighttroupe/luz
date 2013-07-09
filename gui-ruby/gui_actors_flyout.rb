@@ -6,6 +6,22 @@ class GuiActorsFlyout < GuiBox
 		create!
 	end
 
+	def on_key_press(key)
+		# TODO: up/down keys to scroll actor list
+		case key
+		when 'down'
+			@actors_list.select_next!
+			@actors_list.scroll_to_selection!
+		when 'up'
+			@actors_list.select_previous!
+			@actors_list.scroll_to_selection!
+		when 'enter'
+			add_object(@selected_object) if @selected_object
+		else
+			super
+		end
+	end
+
 	def create!
 		# Background
 		self << (@background=GuiObject.new.set(:background_image => $engine.load_image('images/actor-flyout-background.png')))
@@ -18,6 +34,7 @@ class GuiActorsFlyout < GuiBox
 
 		# Actor list				# TODO: item_aspect_ratio is related to screen ratio
 		self << @actors_list = GuiList.new([]).set(:scroll_wrap => true, :scale_x => 0.91, :scale_y => 0.82, :offset_x => 0.036, :offset_y => 0.0, :spacing_y => -1.0, :item_aspect_ratio => 0.75)
+		@actors_list.on_selection_change { on_list_selection_change }
 
 #			klass = ActorStarFlower
 #			@actors_list.add_after_selection(actor = klass.new)
@@ -41,6 +58,11 @@ class GuiActorsFlyout < GuiBox
 		@new_button.on_clicked { |pointer|
 			@actor_class_flyout.switch_state({:open => :closed, :closed => :open}, duration=0.2)
 		}
+	end
+
+	def on_list_selection_change
+		return unless (selection = @actors_list.selection.first)
+		$gui.build_editor_for(selection)		#.object)		# NOTE: undoing above wrapping
 	end
 
 	def actors=(actors)
