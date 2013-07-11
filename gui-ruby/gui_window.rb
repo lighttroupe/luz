@@ -7,8 +7,16 @@ class GuiWindow < GuiBox
 		open_notify
 	end
 
+	def open?
+		in_state?(:open)
+	end
+
 	def close!
 		switch_state({:open => :closed}, duration=0.1)
 		close_notify
+	end
+
+	def closed?
+		in_state?(:closed)
 	end
 end

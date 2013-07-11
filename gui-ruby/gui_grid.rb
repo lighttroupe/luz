@@ -4,7 +4,7 @@ class GuiGrid < GuiBox
 	DEFAULT_MIN_COLUMNS = 3
 
 	def each_with_positioning
-		num_per_row = min_columns || DEFAULT_MIN_COLUMNS
+		num_per_row = column_count
 		distance_x = (1.0 / num_per_row)
 		distance_y = distance_x
 
@@ -20,6 +20,10 @@ class GuiGrid < GuiBox
 		}
 	end
 
+	def column_count
+		min_columns || DEFAULT_MIN_COLUMNS		# TODO: default value
+	end
+
 	def gui_render!
 		return if hidden?
 		each_with_positioning { |gui_object| gui_object.gui_render! }
@@ -28,5 +32,16 @@ class GuiGrid < GuiBox
 	def hit_test_render!
 		return if hidden?
 		each_with_positioning { |gui_object| gui_object.hit_test_render! }
+	end
+
+	def on_key_press(key)
+		case key
+		when 'up'
+			
+		when 'down'
+		when 'left'
+		when 'right'
+			
+		end
 	end
 end

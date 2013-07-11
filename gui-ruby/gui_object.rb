@@ -12,7 +12,7 @@ module MethodsForGuiObject
 	BACKGROUND_COLOR_HOVERING = [1.0,1.0,1.0,0.25]
 	BACKGROUND_COLOR_SELECTED = [1.0,1.0,1.0,0.15]
 
-	easy_accessor :parent, :offset_x, :offset_y, :scale_x, :scale_y, :roll, :opacity, :color, :background_image, :background_scale_x, :background_scale_y, :float
+	easy_accessor :parent, :offset_x, :offset_y, :float, :scale_x, :scale_y, :roll, :opacity, :color, :keyboard_focus_image, :background_image, :background_scale_x, :background_scale_y
 	boolean_accessor :hidden
 	boolean_accessor :draggable
 
@@ -80,6 +80,21 @@ module MethodsForGuiObject
 		with_positioning {
 			gui_render_background
 			gui_render_placeholder unless background_image
+		}
+	end
+
+	def with_keyboard_focus_image
+		if keyboard_focus_image
+			keyboard_focus_image.using { yield }
+		else
+			@default_keyboard_focus_image ||= $engine.load_image('images/keyboard-focus-overlay.png')
+			@default_keyboard_focus_image.using { yield }
+		end
+	end
+
+	def gui_render_keyboard_focus
+		with_keyboard_focus_image {
+			unit_square
 		}
 	end
 
@@ -151,6 +166,8 @@ module MethodsForGuiObject
 		with_positioning {
 			gui_render_background
 			yield
+			gui_render_keyboard_focus if keyboard_focus?
+			gui_render_keyboard_focus if selected?		# TODO: custom drawing
 		}
 	end
 

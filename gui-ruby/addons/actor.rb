@@ -6,29 +6,29 @@ class Actor
 	end
 
 	def gui_render!
-		# Checkerboard background
-		background_image.using {
-			unit_square
-		}
+		with_gui_object_properties {
 
-		# Highlighting (TODO: better solution)
-		gui_render_background
+			# Checkerboard background
+			#background_image.using {
+				#unit_square
+			#}
 
-		# Render as cached image
-		with_color(ACTOR_COLOR) {
-			with_image {
-				unit_square
-			}
-		}
-
-		# Label
-		if pointer_hovering?
-			with_translation(-0.35, -0.35) {
-				with_scale(0.25, 0.25) {
-					gui_render_label
+			# Render as cached image
+			with_color(ACTOR_COLOR) {
+				with_image {
+					unit_square
 				}
 			}
-		end
+
+			# Label
+			if pointer_hovering?
+				with_translation(-0.35, -0.35) {
+					with_scale(0.25, 0.25) {
+						gui_render_label
+					}
+				}
+			end
+		}
 	end
 
 	def update_offscreen_buffer?

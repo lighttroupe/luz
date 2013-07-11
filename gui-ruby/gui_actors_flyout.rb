@@ -1,22 +1,23 @@
 multi_require 'gui_actor_class_flyout'
 
-class GuiActorsFlyout < GuiBox
+class GuiActorsFlyout < GuiWindow
 	def initialize
 		super
 		create!
 	end
 
 	def on_key_press(key)
-		# TODO: up/down keys to scroll actor list
-		case key
-		when 'down'
+		if key == 'down' && !key.control?
 			@actors_list.select_next!
 			@actors_list.scroll_to_selection!
-		when 'up'
+		elsif key == 'up' && !key.control?
 			@actors_list.select_previous!
 			@actors_list.scroll_to_selection!
-		when 'enter'
-			add_object(@selected_object) if @selected_object
+		elsif key == 'return'
+			actor = @actors_list.selection.first
+			$gui.build_editor_for(actor) if actor
+		elsif key == 'n' && key.control?
+			@actor_class_flyout.switch_state({:open => :closed, :closed => :open}, duration=0.2)
 		else
 			super
 		end

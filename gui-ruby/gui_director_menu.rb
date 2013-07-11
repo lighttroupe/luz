@@ -1,4 +1,4 @@
-class GuiDirectorMenu < GuiBox
+class GuiDirectorMenu < GuiWindow
 	def initialize(contents)
 		super()
 		create!
@@ -26,5 +26,18 @@ class GuiDirectorMenu < GuiBox
 		@grid << director
 		$gui.build_editor_for(director)
 		switch_state({:open => :closed}, duration=0.5)
+	end
+
+	def on_key_press(key)
+		return super if key.control?		# ignore
+
+		case key
+		when 'escape'
+			close!
+		when 'up', 'down', 'left', 'right'
+			@grid.on_key_press(key)
+		else
+			super
+		end
 	end
 end

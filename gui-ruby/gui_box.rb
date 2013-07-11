@@ -171,8 +171,10 @@ class GuiBox < GuiObject
 
 	def gui_render!
 		return if hidden?
+		# TODO: collapse this into with_standard { bg ; each ; focus }
 		with_positioning { gui_render_background }
 		each_with_positioning { |gui_object| gui_object.gui_render! }
+		with_positioning { gui_render_keyboard_focus } if keyboard_focus?
 	end
 
 	def hit_test_render!

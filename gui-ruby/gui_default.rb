@@ -325,9 +325,7 @@ class GuiDefault < GuiInterface
 	end
 
 	def toggle_actors_flyout!
-		grab = @actors_flyout.hidden?
 		@actors_flyout.switch_state({:open => :closed, :closed => :open}, duration=0.2)
-		@actors_flyout.grab_keyboard_focus! if grab
 	end
 
 	def close_inputs_flyout!
@@ -361,6 +359,17 @@ class GuiDefault < GuiInterface
 		chosen_director.actors.index(chosen_actor)		# possibly nil
 	end
 
+	def default_focus!
+		user_object_editor = @user_object_editor_container.first
+		if user_object_editor && user_object_editor.open?
+			user_object_editor.grab_keyboard_focus!
+		elsif @actors_flyout.open?
+			@actors_flyout.grab_keyboard_focus!
+		elsif @variables_flyout.open?
+			@variables_flyout.grab_keyboard_focus!
+		end
+	end
+
 	def on_key_press(key)
 		#
 		# Ctrl key
@@ -368,11 +377,32 @@ class GuiDefault < GuiInterface
 		if key.control?
 			case key
 			when 'right'
-				toggle_actors_flyout!
+				if @actors_flyout.keyboard_focus?
+					@actors_flyout.close!
+					default_focus!
+				elsif @actors_flyout.open?
+					@actors_flyout.grab_keyboard_focus!
+				else
+					@actors_flyout.open!
+					@actors_flyout.grab_keyboard_focus!
+				end
 			when 'left'
-				toggle_inputs_flyout!
+				if @variables_flyout.keyboard_focus?
+					@variables_flyout.close!
+					default_focus!
+				elsif @variables_flyout.open?
+					@variables_flyout.grab_keyboard_focus!
+				else
+					@variables_flyout.open!
+					@variables_flyout.grab_keyboard_focus!
+				end
 			when 'up'
-				toggle_directors_menu!
+				if @directors_menu.open?
+					@directors_menu.close!
+				else
+					@directors_menu.open!
+					@directors_menu.grab_keyboard_focus!
+				end
 			when 'down'
 				hide_something!
 			when 'b'

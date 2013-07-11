@@ -14,6 +14,21 @@ class GuiUserObjectEditor < GuiWindow
 		@user_object.create_something!
 	end
 
+	def on_key_press(key)
+		case value
+		when 'escape'
+			hide!
+		when 'up'
+			@list.select_previous!
+			@list.scroll_to_selection!
+		when 'down'
+			@list.select_next!
+			@list.scroll_to_selection!
+		else
+			super
+		end
+	end
+
 	def create!
 		# Background
 		self << (@background=GuiObject.new.set(:background_image => $engine.load_image('images/user-object-editor-background.png')))
@@ -43,17 +58,6 @@ class GuiUserObjectEditor < GuiWindow
 
 		self << (@close_button=GuiButton.new.set(:scale_x => 0.04, :scale_y => 0.08, :offset_x => 0.46, :offset_y => 0.43, :background_image => $engine.load_image('images/buttons/close.png')))
 		@close_button.on_clicked { $gui.clear_editors! }
-	end
-
-	def on_key_press(value)
-		case value
-		when 'up'
-			@list.select_previous!
-			@list.scroll_to_selection!
-		when 'down'
-			@list.select_next!
-			@list.scroll_to_selection!
-		end
 	end
 
 	def close!
