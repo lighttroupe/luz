@@ -17,6 +17,19 @@ class GuiList < GuiBox
 		@visible_slots = 0.0
 	end
 
+	def on_key_press(key)
+		case key
+		when 'down'
+			select_next!
+			scroll_to_selection!
+		when 'up'
+			select_previous!
+			scroll_to_selection!
+		else
+			super
+		end
+	end
+
 	#
 	# tick, render
 	#
@@ -41,6 +54,12 @@ class GuiList < GuiBox
 		return if hidden?
 #		with_positioning { with_color(BACKGROUND_COLOR) { unit_square } }
 		each_with_positioning { |gui_object| gui_object.gui_render! }
+
+		if keyboard_focus?
+			with_positioning {
+				gui_render_keyboard_focus
+			}
+		end
 
 		# this allows those that respond to our scroll changes to init themselves
 		scroll_change_notify if @one_fake_scroll_change_notify

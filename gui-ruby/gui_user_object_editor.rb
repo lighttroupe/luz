@@ -15,18 +15,16 @@ class GuiUserObjectEditor < GuiWindow
 	end
 
 	def on_key_press(key)
-		case value
+		case key
 		when 'escape'
 			hide!
-		when 'up'
-			@list.select_previous!
-			@list.scroll_to_selection!
-		when 'down'
-			@list.select_next!
-			@list.scroll_to_selection!
 		else
 			super
 		end
+	end
+
+	def grab_keyboard_focus!
+		@user_object.gui_effects_list.grab_keyboard_focus!
 	end
 
 	def create!
