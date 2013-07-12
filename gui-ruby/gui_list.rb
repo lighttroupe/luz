@@ -162,7 +162,15 @@ class GuiList < GuiBox
 
 private
 
-	def each_with_positioning_vertical
+	def each_with_positioning_vertical(&proc)
+		with_horizontal_clip_plane_above(0.5) {
+			with_horizontal_clip_plane_below(-0.5) {
+				each_with_positioning_vertical_within_clipping(&proc)
+			}
+		}
+	end
+
+	def each_with_positioning_vertical_within_clipping
 		final_spacing_y = distance_between_items
 
 		with_translation(0.0, 0.5) {
