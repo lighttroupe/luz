@@ -31,6 +31,11 @@ class Actor
 		}
 	end
 
+	def gui_tick!
+		init_offscreen_buffer unless @offscreen_buffer
+		update_offscreen_buffer! if update_offscreen_buffer?
+	end
+
 	def update_offscreen_buffer?
 		true		#pointer_hovering?
 	end
@@ -49,13 +54,7 @@ class Actor
 	end
 
 	def with_image
-		init_offscreen_buffer
-		if @offscreen_buffer
-			update_offscreen_buffer! if update_offscreen_buffer?
-			@offscreen_buffer.with_image {
-				yield
-			}
-		end
+		@offscreen_buffer.with_image { yield } if @offscreen_buffer		# otherwise doesn't yield
 	end
 
 	def update_offscreen_buffer!
