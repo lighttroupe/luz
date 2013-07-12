@@ -19,6 +19,7 @@ class GuiAddWindow < GuiBox
 
 	def hide!
 		switch_state({:open => :closed}, duration=0.1)
+		$gui.default_focus!
 	end
 
 	def end_search!

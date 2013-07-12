@@ -11,6 +11,10 @@ class UserObject
 
 	SHAKE_DISTANCE = 0.007
 
+	def grab_keyboard_focus!
+		@gui_effects_list.grab_keyboard_focus!
+	end
+
 	def create_something!
 		open_add_child_window!
 	end

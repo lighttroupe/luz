@@ -15,8 +15,11 @@ class GuiUserObjectEditor < GuiWindow
 	end
 
 	def on_key_press(key)
-		case key
-		when 'escape'
+		if key == 'n' && key.control?
+			@user_object.open_add_child_window!
+		elsif key == 'delete' && key.control?
+			@user_object.remove_selected
+		elsif key == 'escape'
 			hide!
 		else
 			super
@@ -24,7 +27,7 @@ class GuiUserObjectEditor < GuiWindow
 	end
 
 	def grab_keyboard_focus!
-		@user_object.gui_effects_list.grab_keyboard_focus!
+		@user_object.grab_keyboard_focus!
 	end
 
 	def create!
