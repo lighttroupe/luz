@@ -41,7 +41,7 @@ module ValueAnimation
 		# of course this level shouldn't know what :hidden means...
 		send(set_method, target_value) if field == :hidden && target_value == false
 
-		active_animations << animation_struct_stack.pop(field, set_method, current_value, target_value, $env[:frame_time], $env[:frame_time] + duration, proc)
+		active_animations << animation_struct_stack.pop(field, set_method, current_value, target_value, (frame_time=$env[:frame_time]), (frame_time + duration), proc)
 	end
 
 	def finalize_animation!(animation)
