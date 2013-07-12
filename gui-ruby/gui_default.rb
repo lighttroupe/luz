@@ -233,43 +233,6 @@ class GuiDefault < GuiInterface
 	end
 
 	#
-	# Click Response
-	#
-	def pointer_click_on_nothing(pointer)
-		hide_something!
-	end
-
-	#
-	# Keyboard interaction
-	#
-	def keyboard
-		@keyboard ||= Keyboard.new(self)
-	end
-
-	attr_reader :keyboard_grab_object, :keyboard_grab_proc
-
-	# raw_keyboard_input is called by SDL
-	def raw_keyboard_input(value)
-		keyboard.raw_keyboard_input(value)
-	end
-
-	def grab_keyboard_focus(object=nil, &proc)
-		keyboard.grab(object, &proc)
-	end
-
-	def cancel_keyboard_focus!
-		keyboard.cancel_grab!
-	end
-
-	def has_keyboard_focus?(object)
-		keyboard.grabbed_by_object?(object)
-	end
-
-	def cancel_keyboard_focus_for(object)
-		cancel_keyboard_focus! if has_keyboard_focus?(object)
-	end
-
-	#
 	# Utility methods
 	#
 	def create_user_object_editor_for_pointer(user_object, pointer, options)
@@ -290,19 +253,11 @@ class GuiDefault < GuiInterface
 	def hide_something!
 		if @directors_menu.visible?
 			close_directors_menu!
+			default_focus!
 		elsif @variables_flyout.visible? or @actors_flyout.visible?
 			close_inputs_flyout!
 			close_actors_flyout!
-		end
-	end
-
-	def create_something!
-		if @directors_menu.visible?
-			@directors_menu.add_new_director!
-		else
-			if (user_object_editor = @user_object_editor_container.first)
-				user_object_editor.create_something!
-			end
+			default_focus!
 		end
 	end
 
@@ -360,7 +315,7 @@ class GuiDefault < GuiInterface
 	def default_focus!
 		user_object_editor = @user_object_editor_container.first
 
-		if user_object_editor && user_object_editor.open?
+		if user_object_editor && user_object_editor.visible?
 			user_object_editor.grab_keyboard_focus!
 		elsif @actors_flyout.open?
 			@actors_flyout.grab_keyboard_focus!
@@ -409,8 +364,6 @@ class GuiDefault < GuiInterface
 				hide_something!
 			when 'b'
 				toggle_beat_monitor!
-			when 'n'
-				create_something!
 			when 'r'
 				$engine.reload
 			when 's'
@@ -454,6 +407,43 @@ class GuiDefault < GuiInterface
 				end
 			end
 		end
+	end
+
+	#
+	# Click Response
+	#
+	def pointer_click_on_nothing(pointer)
+		hide_something!
+	end
+
+	#
+	# Keyboard interaction
+	#
+	def keyboard
+		@keyboard ||= Keyboard.new(self)
+	end
+
+	attr_reader :keyboard_grab_object, :keyboard_grab_proc
+
+	# raw_keyboard_input is called by SDL
+	def raw_keyboard_input(value)
+		keyboard.raw_keyboard_input(value)
+	end
+
+	def grab_keyboard_focus(object=nil, &proc)
+		keyboard.grab(object, &proc)
+	end
+
+	def cancel_keyboard_focus!
+		keyboard.cancel_grab!
+	end
+
+	def has_keyboard_focus?(object)
+		keyboard.grabbed_by_object?(object)
+	end
+
+	def cancel_keyboard_focus_for(object)
+		cancel_keyboard_focus! if has_keyboard_focus?(object)
 	end
 
 	#
