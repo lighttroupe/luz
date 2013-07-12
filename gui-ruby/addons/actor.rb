@@ -32,21 +32,19 @@ class Actor
 	end
 
 	def gui_tick!
-		init_offscreen_buffer unless @offscreen_buffer
+		init_offscreen_buffer
 		update_offscreen_buffer! if update_offscreen_buffer?
 	end
 
 	def update_offscreen_buffer?
-		true		#pointer_hovering?
+		true		# pointer_hovering?
 	end
 
 	#
 	# ...
 	#
 	def init_offscreen_buffer
-		return if @offscreen_buffer
-		@offscreen_buffer = get_offscreen_buffer(framebuffer_image_size)
-		update_offscreen_buffer!
+		@offscreen_buffer ||= get_offscreen_buffer(framebuffer_image_size)
 	end
 
 	def framebuffer_image_size
@@ -58,8 +56,6 @@ class Actor
 	end
 
 	def update_offscreen_buffer!
-		@offscreen_buffer.using {
-			render!
-		}
+		@offscreen_buffer.using { render! }
 	end
 end

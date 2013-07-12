@@ -14,14 +14,17 @@ class Director
 		}
 	end
 
+	def gui_tick!
+		init_offscreen_buffer
+		update_offscreen_buffer! if update_offscreen_buffer?
+	end
+
 	def update_offscreen_buffer?
 		true		#pointer_hovering?
 	end
 
 	def init_offscreen_buffer
-		return if @offscreen_buffer
-		@offscreen_buffer = get_offscreen_buffer(framebuffer_image_size)
-		update_offscreen_buffer!
+		@offscreen_buffer ||= get_offscreen_buffer(framebuffer_image_size)
 	end
 
 	def framebuffer_image_size
@@ -29,18 +32,10 @@ class Director
 	end
 
 	def with_image
-		init_offscreen_buffer
-		if @offscreen_buffer
-			update_offscreen_buffer! if update_offscreen_buffer?
-			@offscreen_buffer.with_image {
-				yield
-			}
-		end
+		@offscreen_buffer.with_image { yield } if @offscreen_buffer		# otherwise doesn't yield
 	end
 
 	def update_offscreen_buffer!
-		@offscreen_buffer.using {
-			render!
-		}
+		@offscreen_buffer.using { render! }
 	end
 end
