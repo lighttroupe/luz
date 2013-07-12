@@ -17,6 +17,6 @@ class GuiWindow < GuiBox
 	end
 
 	def closed?
-		in_state?(:closed)
+		!open?
 	end
 end

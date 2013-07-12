@@ -13,6 +13,11 @@ class Keyboard
 	end
 
 	def cancel_grab!
+		cancel_grab_silently!
+		@gui.default_focus!		# alert the world!
+	end
+
+	def cancel_grab_silently!
 		@grab_object, @grab_proc = nil, nil
 	end
 
@@ -26,11 +31,11 @@ private
 		if @grab_proc
 			@grab_proc.call(key)
 			true
-		elsif @grab_object && !@grab_object.hidden?
+		elsif @grab_object && !@grab_object.hidden?		# NOTE object can hide and unhide 
 			@grab_object.on_key_press(key)
 			true
 		else
-			@gui.default_focus!
+			false
 		end
 	end
 end

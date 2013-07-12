@@ -5,8 +5,6 @@ multi_require 'gui_actor_view', 'gui_director_view', 'gui_preferences_box', 'gui
 class GuiDefault < GuiInterface
 	pipe [:positive_message, :negative_message], :message_bar
 
-	callback :keypress		# TODO: do we need this?
-
 	attr_accessor :mode, :directors_menu
 
 	def initialize
@@ -361,12 +359,15 @@ class GuiDefault < GuiInterface
 
 	def default_focus!
 		user_object_editor = @user_object_editor_container.first
+
 		if user_object_editor && user_object_editor.open?
 			user_object_editor.grab_keyboard_focus!
 		elsif @actors_flyout.open?
 			@actors_flyout.grab_keyboard_focus!
 		elsif @variables_flyout.open?
 			@variables_flyout.grab_keyboard_focus!
+		else
+			@keyboard.cancel_grab_silently!
 		end
 	end
 
@@ -399,6 +400,7 @@ class GuiDefault < GuiInterface
 			when 'up'
 				if @directors_menu.open?
 					@directors_menu.close!
+					default_focus!
 				else
 					@directors_menu.open!
 					@directors_menu.grab_keyboard_focus!
