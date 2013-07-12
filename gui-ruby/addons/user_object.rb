@@ -28,6 +28,10 @@ class UserObject
 			# Effects list
 			@gui_effects_list = GuiListWithControls.new(effects).set({:spacing_y => -0.8, :scale_x => 0.334, :offset_x => -0.33, :offset_y => 0.01, :scale_y => 0.65, :item_aspect_ratio => 4.5})
 			box << @gui_effects_list
+			@gui_effects_list.on_selection_change {
+				selection = @gui_effects_list.selection.first
+				gui_fill_settings_list(selection) if selection
+			}
 
 			# ...scrollbar
 			@gui_effects_list_scrollbar = GuiScrollbar.new(@gui_effects_list).set({:scale_x => 0.025, :offset_x => -0.152, :offset_y => -0.03, :scale_y => 0.75})
@@ -176,9 +180,8 @@ class UserObject
 		@parent.child_click(pointer) if @parent
 	end
 
-	# TODO: called by the $gui... @gui_effects_list.on_selection_change { ... }
+	# TODO: called by the $gui...
 	def on_child_user_object_selected(user_object)
-		gui_fill_settings_list(user_object)
 		@gui_effects_list.set_selection(user_object) if @gui_effects_list
 	end
 
