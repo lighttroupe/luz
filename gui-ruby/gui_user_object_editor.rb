@@ -21,9 +21,19 @@ class GuiUserObjectEditor < GuiWindow
 			@user_object.remove_selected
 		elsif key == 'escape'
 			hide!
+		elsif key == 'left' && !key.control?
+			@user_object.effects_list_grab_focus!
+		elsif key == 'right' && !key.control?
+			@user_object.settings_list_grab_focus!
 		else
 			super
 		end
+	end
+
+	def hide!
+		#switch_state({:open => :closed}, duration=0.1)
+		remove_from_parent!
+		$gui.default_focus!
 	end
 
 	def grab_keyboard_focus!

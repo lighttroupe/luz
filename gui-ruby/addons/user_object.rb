@@ -12,7 +12,15 @@ class UserObject
 	SHAKE_DISTANCE = 0.007
 
 	def grab_keyboard_focus!
+		effects_list_grab_focus!
+	end
+
+	def effects_list_grab_focus!
 		@gui_effects_list.grab_keyboard_focus!
+	end
+
+	def settings_list_grab_focus!
+		@gui_settings_list.grab_keyboard_focus!
 	end
 
 	def create_something!
@@ -106,7 +114,8 @@ class UserObject
 	def gui_fill_settings_list(user_object)
 		return unless @gui_settings_list
 
-		@gui_effects_list.clear_selection! if user_object == self		# selecting parent, so no children can be selected
+		# UX: we're selecting the parent object, so no children should be selected
+		@gui_effects_list.clear_selection! if user_object == self
 
 		@gui_settings_list.clear!
 		user_object.settings.each_with_index { |setting, index|
