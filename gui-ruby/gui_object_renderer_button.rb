@@ -1,6 +1,8 @@
 require 'gui_button'
 
 class GuiObjectRendererButton < GuiButton
+	attr_accessor :object
+
 	def initialize(object)
 		super()
 		@object = object

@@ -18,6 +18,7 @@ class GuiActorsFlyout < GuiWindow
 			$gui.build_editor_for(actor) if actor
 		elsif key == 'n' && key.control?
 			@actor_class_flyout.switch_state({:open => :closed, :closed => :open}, duration=0.2)
+			@actor_class_flyout.grab_keyboard_focus! if @actor_class_flyout.open?
 		else
 			super
 		end
@@ -58,6 +59,7 @@ class GuiActorsFlyout < GuiWindow
 
 		@new_button.on_clicked { |pointer|
 			@actor_class_flyout.switch_state({:open => :closed, :closed => :open}, duration=0.2)
+			@actor_class_flyout.grab_keyboard_focus! if @actor_class_flyout.open?
 		}
 	end
 

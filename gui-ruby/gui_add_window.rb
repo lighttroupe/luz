@@ -22,6 +22,10 @@ class GuiAddWindow < GuiBox
 		$gui.default_focus!
 	end
 
+	def searching?
+		@search && @search.length > 0
+	end
+
 	def end_search!
 		@search_label.set_value('')
 		@search_label.switch_state({:open => :closed}, duration=0.1)
@@ -32,7 +36,11 @@ class GuiAddWindow < GuiBox
 	def on_key_press(value)
 		case value
 		when 'escape'
-			hide!
+			if searching?
+				end_search!
+			else
+				hide!
+			end
 		when 'up'
 			@list.select_previous!
 			@list.scroll_to_selection!
@@ -54,7 +62,7 @@ class GuiAddWindow < GuiBox
 				super
 			else
 				@search_label.on_key_press(value)
-				if @search && @search.length > 0
+				if searching?
 					@search_label.switch_state({:closed => :open}, duration=0.1)
 					@category_selector.switch_state({:open => :closed}, duration=0.1)
 					fill_from_search!

@@ -1,9 +1,24 @@
-class GuiActorClassFlyout < GuiBox
+class GuiActorClassFlyout < GuiWindow
 	callback :actor_class_selected
 
 	def initialize
 		super
 		create!
+	end
+
+	def on_key_press(key)
+		case key
+		when 'up'
+			@list.select_previous!
+		when 'down'
+			@list.select_next!
+		when 'return'
+			if (class_button = @list.selection.first)
+				actor_class_selected_notify(pointer=nil, class_button.klass)
+			end
+		else
+			super
+		end
 	end
 
 	def create!
