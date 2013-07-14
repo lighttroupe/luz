@@ -60,13 +60,6 @@ class BeatDetector
 				@seconds_per_beat, @new_seconds_per_beat = @new_seconds_per_beat, nil
 			end
 
-			if @beat_double != 0
-				@seconds_per_beat /= (2 ** @beat_double)
-				@seconds_per_beat = 8.0 if @seconds_per_beat > 8.0
-				@seconds_per_beat = 0.1 if @seconds_per_beat < 0.1
-				@beat_double = 0
-			end
-
 			# Now in the past, make a note that this beat was reported
 			@last_beat_time = @next_planned_beat_time
 
@@ -90,6 +83,18 @@ class BeatDetector
 		else
 			@is_beat = false
 		end
+
+		if @beat_double != 0
+			divisor = (2 ** @beat_double)
+			@seconds_per_beat /= divisor
+			@seconds_per_beat = 8.0 if @seconds_per_beat > 8.0
+			@seconds_per_beat = 0.1 if @seconds_per_beat < 0.1
+
+			@next_planned_beat_time = ((@next_planned_beat_time - @last_beat_time) / divisor) + @last_beat_time
+
+			@beat_double = 0
+		end
+
 		@progress = (@time - @last_beat_time) / (@next_planned_beat_time - @last_beat_time)
 	end
 
