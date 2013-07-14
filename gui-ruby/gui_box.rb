@@ -125,6 +125,7 @@ class GuiBox < GuiObject
 	end
 
 	def select_next!
+		return if @contents.empty?
 		selection = @selection.first		# TODO: support multiselection?
 		index = @contents.index(selection) || -1
 		index = (index + 1) % @contents.size
@@ -133,6 +134,7 @@ class GuiBox < GuiObject
 	end
 
 	def select_previous!
+		return if @contents.empty?
 		selection = @selection.first		# TODO: support multiselection?
 		index = @contents.index(selection) || @contents.size
 		index = (index - 1) % @contents.size

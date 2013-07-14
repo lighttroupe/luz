@@ -18,6 +18,7 @@ class GuiList < GuiBox
 	end
 
 	def on_key_press(key)
+		return super unless key.no_modifiers?
 		case key
 		when 'down'
 			select_next!
