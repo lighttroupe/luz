@@ -1,4 +1,6 @@
 class UserObjectSettingFloat
+	attr_accessor :min, :max, :enable_enter, :enable_exit
+
 	def gui_build_editor
 		box = GuiBox.new
 		box << create_user_object_setting_name_label
@@ -30,6 +32,33 @@ class UserObjectSettingFloat
 		# Row 2
 		row = GuiBox.new	#.set(:scale_y => 0.5, :offset_y => -0.25)
 		unless @options[:simple]
+			row << (@enable_enter_exit_button=GuiEnterExitButton.new(self).set(:scale_x => 0.10, :scale_y => 0.65, :offset_x => -0.425, :offset_y => 0.1))
+
+			@enable_enter_exit_button.on_clicked { |pointer|
+				if @enter_exit_popup
+					@enter_exit_popup.animate({:scale_x => 0.0, :scale_y => 0.0}, 0.05) {
+						@enter_exit_popup.remove_from_parent!
+						@enter_exit_popup = nil
+					}
+				else
+					$gui << (@enter_exit_popup=GuiEnterExitPopup.new(self).set(:offset_x => pointer.x, :offset_y => pointer.y - 0.035, :scale_x => 0.0, :scale_y => 0.03).animate({:scale_x => 0.25, :scale_y => 0.05}, duration=0.25))
+
+					pointer.capture_object!(@enter_exit_popup) { |click_object|		# callback is for a click
+						if @enter_exit_popup.include?(click_object)
+							pointer.click_on(click_object)
+							true
+						else
+							@enter_exit_popup.animate({:scale_x => 0.0, :scale_y => 0.0}, 0.05) {
+								@enter_exit_popup.remove_from_parent!
+								@enter_exit_popup = nil
+							}
+							pointer.uncapture_object!
+							false
+						end
+					}
+				end
+			}
+
 			row << (@enable_activation_toggle=GuiToggle.new(self, :enable_activation).set(:scale_x => 0.07, :float => :left, :offset_x => 0.15, :color => [1,0,0,1], :image => $engine.load_image('images/buttons/play.png')))
 			row << (@activation_curve_widget=GuiCurveIncreasing.new(self, :activation_curve).set(:scale_x => 0.15, :scale_y => 0.8, :float => :left, :opacity => 0.4))
 			row << (@activation_direction_widget=GuiSelect.new(self, :activation_direction, ACTIVATION_DIRECTION_OPTIONS).set(:scale_x => 0.1, :float => :left, :opacity => 0.4))

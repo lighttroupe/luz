@@ -177,6 +177,14 @@ class Pointer
 		self
 	end
 
+	def click_on(object)
+		object.click(self) if object.respond_to?(:click)
+		@click_x, @click_y, @click_time = x, y, Time.now
+		begin_drag(object) if object.draggable?
+		@long_click_potential = true
+		@click_object = object
+	end
+
 private
 
 	def respond_to_click
@@ -194,11 +202,7 @@ private
 		# 
 		#
 		if @hover_object
-			@hover_object.click(self) if @hover_object.respond_to?(:click)
-			@click_x, @click_y, @click_time = x, y, Time.now
-			begin_drag(@hover_object) if @hover_object.draggable?
-			@long_click_potential = true
-			@click_object = @hover_object
+			click_on(@hover_object)
 		else
 			$gui.pointer_click_on_nothing(self) if $gui.respond_to? :pointer_click_on_nothing
 		end
