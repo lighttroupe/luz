@@ -208,6 +208,7 @@ class GuiDefault < GuiInterface
 			clear_editors!		# only support one for now
 
 			@user_object_editor = create_user_object_editor_for_pointer(user_object, pointer || Vector3.new(0.0,-0.5), options)
+			@user_object_editor.grab_keyboard_focus!
 			@user_object = user_object
 			@user_object_editor_container << @user_object_editor
 
