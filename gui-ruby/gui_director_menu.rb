@@ -48,6 +48,10 @@ class GuiDirectorMenu < GuiWindow
 			close!
 		when 'up', 'down', 'left', 'right'
 			@grid.on_key_press(key)
+		when 'return'
+			selected = @grid.selection.first
+			$gui.build_editor_for(selected) if selected
+			close!
 		else
 			super
 		end
