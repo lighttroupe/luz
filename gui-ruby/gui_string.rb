@@ -59,7 +59,11 @@ class GuiString < GuiObject
 		when 'return', 'escape'
 			cancel_keyboard_focus!
 		when 'backspace'
-			set_value(get_value[0, get_value.length-1]) if get_value.length > 0
+			if key.alt?
+				set_value('')
+			else
+				set_value(get_value[0, get_value.length-1]) if get_value.length > 0
+			end
 		when 'space'
 			append_text(' ')
 		else
