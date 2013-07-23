@@ -181,6 +181,7 @@ private
 		new_object = object.new
 		new_object.after_load
 		add_notify(new_object)
+		end_search!		# ...
 	end
 
 	def find_valid_effect_classes
