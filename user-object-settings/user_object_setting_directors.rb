@@ -28,7 +28,7 @@ class UserObjectSettingDirectors < UserObjectSetting
 	end
 
 	def one(index=0)
-		list = Director.with_tag(@tag)
+		list = get_directors
 		return nil if list.empty?		# NOTE: return without yielding
 
 		selection = list[index % list.size]		# NOTE: nicely wraps around at both edges
@@ -37,14 +37,24 @@ class UserObjectSettingDirectors < UserObjectSetting
 	end
 
 	def count
-		Director.with_tag(@tag).size
+		get_directors.size
 	end
 
 	def each
-		Director.with_tag(@tag).each { |director| yield director }
+		get_directors.each { |director| yield director }
 	end
 
 	def all
-		yield Director.with_tag(@tag)
+		yield get_directors
+	end
+
+private
+
+	def get_directors
+		if @tag
+			Director.with_tag(@tag)
+		else
+			$engine.project.directors
+		end
 	end
 end
