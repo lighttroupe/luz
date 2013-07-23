@@ -116,7 +116,7 @@ class GuiList < GuiBox
 		(@visible_slots / @contents.size).clamp(0.0, 1.0)
 	end
 
-	def scroll_to_selection!(&proc)
+	def scroll_to_selection!(&proc)		# TODO: why does this take a proc?
 		scroll_to(selection.first)
 	end
 
