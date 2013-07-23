@@ -429,7 +429,7 @@ class GuiDefault < GuiInterface
 	end
 
 	def pointer_double_click_on_nothing(pointer)
-		build_editor_for(@user_object) if @user_object
+		build_editor_for(@user_object, :grab_keyboard_focus => true) if @user_object
 	end
 
 	#
