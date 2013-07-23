@@ -10,6 +10,12 @@ class GuiDirectorMenu < GuiWindow
 
 		self << @grid = GuiGrid.new.set(:scale => 0.95, :spacing_x => 0.1, :spacing_y => 0.1)
 
+		self << @project_effects_button = GuiButton.new.set(:scale_x => 0.05, :scale_y => 0.05, :offset_x => 0.475, :offset_y => -0.475, :background_image => $engine.load_image('images/buttons/project-effects.png'))
+		@project_effects_button.on_clicked {
+			$gui.build_editor_for($engine.project)
+			close!
+		}
+
 		self << @add_button = GuiButton.new.set(:scale => 0.05, :offset_x => -0.475, :offset_y => -0.475, :background_image => $engine.load_image('images/buttons/add.png'))
 		@add_button.on_clicked {
 			add_new_director!

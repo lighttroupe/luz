@@ -123,8 +123,6 @@ private
 	end
 
 	def fill_from_category!
-		puts "fill_from_category! #{@category}"
-
 		clear_list!
 
 		find_valid_effect_classes.each { |object|

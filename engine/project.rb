@@ -198,6 +198,10 @@ class Project < UserObject
 		klass.sort_tagged_objects { |a,b| (objs.index(a) || 0) <=> (objs.index(b) || 0) } # TODO: slow!!!
 	end
 
+	def valid_child_class?(klass)
+		klass.ancestors.include? ProjectEffect
+	end
+
 private
 
 	def save_to_file(file)
