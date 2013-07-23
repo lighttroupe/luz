@@ -20,8 +20,8 @@ class ActorLine < ActorShape
 	title				"Line"
 	description "A line with controllable length and width."
 
-	setting 'length', :float, :range => 0..100.0, :default => 0.0..1.0, :breaks_cache => true
-	setting 'width', :float, :range => 0.0..100.0, :default => 1.0..100.0, :breaks_cache => true
+	setting 'length', :float, :range => 0..100.0, :default => 0.5..1.0, :breaks_cache => true
+	setting 'width', :float, :range => 0.0..100.0, :default => 0.25..100.0, :breaks_cache => true
 	setting 'detail', :integer, :range => 2..100, :default => 100..100, :breaks_cache => true
 
 	cache_rendering
