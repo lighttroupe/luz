@@ -10,8 +10,8 @@ class GuiEnterExitPopup < GuiWindow
 		self << (@background=GuiObject.new.set(:background_image => $engine.load_image('images/enter-exit-popup.png')))
 
 		self << (@enter_value_widget=GuiFloat.new(@object, :enter_value, @object.min, @object.max).set(:scale_x => 0.20, :scale_y => 0.8, :float => :left))
-		self << (@enter_curve_widget=GuiCurve.new(@object, :enter_curve).set(:scale_x => 0.20, :scale_y => 0.8, :float => :left))
-		self << (@enable_enter_toggle=GuiToggle.new(@object, :enable_enter).set(:scale_x => 0.1, :float => :left, :color => [1,0,0,1], :image => $engine.load_image('images/buttons/enter.png')))
+		self << (@enter_curve_widget=GuiCurveIncreasing.new(@object, :enter_curve).set(:scale_x => 0.20, :scale_y => 0.8, :float => :left))
+		self << (@enable_enter_toggle=GuiToggle.new(@object, :enable_enter_animation).set(:scale_x => 0.1, :float => :left, :color => [1,0,0,1], :image => $engine.load_image('images/buttons/enter.png')))
 
 		@enter_widgets = [@enter_value_widget, @enter_curve_widget]
 
@@ -23,8 +23,8 @@ class GuiEnterExitPopup < GuiWindow
 			end
 		}
 
-		self << (@enable_exit_toggle=GuiToggle.new(@object, :enable_exit).set(:scale_x => 0.1, :float => :left, :color => [1,0,0,1], :image => $engine.load_image('images/buttons/exit.png')))
-		self << (@exit_curve_widget=GuiCurve.new(@object, :exit_curve).set(:scale_x => 0.20, :scale_y => 0.8, :float => :left))
+		self << (@enable_exit_toggle=GuiToggle.new(@object, :enable_exit_animation).set(:scale_x => 0.1, :float => :left, :color => [1,0,0,1], :image => $engine.load_image('images/buttons/exit.png')))
+		self << (@exit_curve_widget=GuiCurveIncreasing.new(@object, :exit_curve).set(:scale_x => 0.20, :scale_y => 0.8, :float => :left))
 		self << (@exit_value_widget=GuiFloat.new(@object, :exit_value, @object.min, @object.max).set(:scale_x => 0.20, :scale_y => 0.8, :float => :left))
 
 		@exit_widgets = [@exit_curve_widget, @exit_value_widget]

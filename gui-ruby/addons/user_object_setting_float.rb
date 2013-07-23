@@ -1,5 +1,5 @@
 class UserObjectSettingFloat
-	attr_accessor :min, :max, :enable_enter, :enable_exit
+	attr_accessor :min, :max, :enable_enter_animation, :enable_exit_animation
 
 	def gui_build_editor
 		box = GuiBox.new
