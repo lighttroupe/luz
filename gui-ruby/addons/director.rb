@@ -1,15 +1,13 @@
 class Director
-	BACKGROUND_COLOR = [0,0,0]
+	easy_accessor :background_color, :default => [0,0,0,0.9]
 
 	def gui_render!
-		with_color(BACKGROUND_COLOR) {
-			unit_square
-		}
-
-		# Render as cached image
-		with_image {
-			with_scale(0.95,0.95) {
-				unit_square
+		with_gui_object_properties {
+			# Render as cached image
+			with_image {
+				with_scale(0.95,0.95) {
+					unit_square
+				}
 			}
 		}
 	end
