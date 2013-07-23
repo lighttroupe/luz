@@ -19,8 +19,6 @@ class GuiUserObjectEditor < GuiWindow
 			@user_object.open_add_child_window!
 		elsif key == 'delete' && key.control?
 			@user_object.remove_selected
-		elsif key == 'escape'
-			hide!
 		elsif key == 'left' && !key.control?
 			@user_object.effects_list_grab_focus!
 		elsif key == 'right' && !key.control?
