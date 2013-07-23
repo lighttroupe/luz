@@ -178,33 +178,47 @@ class Pointer
 	end
 
 	def click_on(object)
-		object.click(self) if object.respond_to?(:click)
-		@click_x, @click_y, @click_time = x, y, Time.now
-		begin_drag(object) if object.draggable?
-		@long_click_potential = true
-		@click_object = object
+		if double_click? && object.respond_to?(:double_click)
+			object.double_click(self)
+			@click_x, @click_y, @click_time = x, y, Time.now
+		else
+			object.click(self)
+			@click_x, @click_y, @click_time = x, y, Time.now
+			begin_drag(object) if object.draggable?
+			@long_click_potential = true
+			@click_object = object
+		end
 	end
 
 private
+
+	def double_click?
+		!@click_time.nil? && (Time.now - @click_time) < 0.4
+	end
 
 	def respond_to_click
 		#
 		# Pointer capture feature: all clicks go to the "capture object", which can uncapture via return value
 		#
 		if @capture_object
-			if @capture_drop_proc.call(@hover_object) != true		# returns: still captured?
+			if @capture_drop_proc.call(@hover_object) != true		# proc returns: still captured?
 				@capture_object, @capture_drop_proc = nil, nil
 			end
 			return if @capture_object
 		end
 
 		#
-		# 
+		# Well, are we over something?
 		#
 		if @hover_object
 			click_on(@hover_object)
 		else
-			$gui.pointer_click_on_nothing(self) if $gui.respond_to? :pointer_click_on_nothing
+			if double_click? && $gui.respond_to?(:pointer_double_click_on_nothing)
+				$gui.pointer_double_click_on_nothing(self)
+			elsif $gui.respond_to?(:pointer_click_on_nothing)
+				$gui.pointer_click_on_nothing(self)
+				@click_time = Time.now
+			end
 		end
 	end
 

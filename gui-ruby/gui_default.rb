@@ -124,7 +124,8 @@ class GuiDefault < GuiInterface
 	end
 
 	def set_initial_state
-		@user_object_editors = {}
+		@user_object = nil					# this object the user is editing
+		@user_object_editor = nil		# editor widget (window)
 
 		# Auto-select first director
 		director = $engine.project.directors.first
@@ -176,7 +177,7 @@ class GuiDefault < GuiInterface
 		return unless user_object
 
 		pointer = options[:pointer]
-		editor = @user_object_editors[user_object]
+		editor = @user_object_editor if @user_object == user_object
 		editor_visible = (editor && !editor.hidden?)
 
 		if user_object.is_a?(Director)
@@ -206,17 +207,17 @@ class GuiDefault < GuiInterface
 			#
 			clear_editors!		# only support one for now
 
-			editor = create_user_object_editor_for_pointer(user_object, pointer || Vector3.new(0.0,-0.5), options)
-			@user_object_editors[user_object] = editor
-			@user_object_editor_container << editor
+			@user_object_editor = create_user_object_editor_for_pointer(user_object, pointer || Vector3.new(0.0,-0.5), options)
+			@user_object = user_object
+			@user_object_editor_container << @user_object_editor
 
-			return editor
+			@user_object_editor
 		else
 			# tell editor its child was clicked (this is needed due to non-propagation of click messages: the user object gets notified, it tells us)
-			parent = @user_object_editors.keys.find { |uo| uo.effects.include? user_object }		# TODO: hacking around children not knowing their parents for easier puppetry
+			parent = @user_object if @user_object && @user_object.effects.include?(user_object)		# TODO: hacking around children not knowing their parents for easier puppetry
 			parent.on_child_user_object_selected(user_object) if parent		# NOTE: can't click a child if parent is not visible, but the 'if' doesn't hurt
 
-			return nil
+			nil
 		end
 	end
 
@@ -229,7 +230,7 @@ class GuiDefault < GuiInterface
 
 		@variables_flyout.remove(user_object)
 
-		clear_editors! if @user_object_editors[user_object]
+		clear_editors! if user_object == @user_object
 	end
 
 	#
@@ -242,12 +243,13 @@ class GuiDefault < GuiInterface
 	end
 
 	def clear_editors!
-		@user_object_editors.each { |user_object, editor|
-			editor.animate({:opacity => 0.0, :offset_y => editor.offset_y - 0.05}, duration=0.1) {
-				editor.remove_from_parent!		# trashed forever! (no cache)
+		if @user_object_editor
+			editor = @user_object_editor		# local cache (closures!)
+			@user_object_editor.animate({:opacity => 0.0, :offset_y => @user_object_editor.offset_y - 0.05}, duration=0.1) {
+				editor.remove_from_parent!
 			}
-		}
-		@user_object_editors.clear
+		end
+		@user_object_editor = nil
 	end
 
 	def hide_something!
@@ -258,6 +260,8 @@ class GuiDefault < GuiInterface
 			close_inputs_flyout!
 			close_actors_flyout!
 			default_focus!
+		else
+			clear_editors!
 		end
 	end
 
@@ -313,7 +317,7 @@ class GuiDefault < GuiInterface
 	end
 
 	def default_focus!
-		user_object_editor = @user_object_editor_container.first
+		user_object_editor = @user_object_editor
 
 		if user_object_editor && user_object_editor.visible?
 			user_object_editor.grab_keyboard_focus!
@@ -420,6 +424,10 @@ class GuiDefault < GuiInterface
 	#
 	def pointer_click_on_nothing(pointer)
 		hide_something!
+	end
+
+	def pointer_double_click_on_nothing(pointer)
+		build_editor_for(@user_object) if @user_object
 	end
 
 	#
