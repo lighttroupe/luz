@@ -33,8 +33,8 @@ class GuiAddWindow < GuiBox
 		fill_from_category!
 	end
 
-	def on_key_press(value)
-		case value
+	def on_key_press(key)
+		case key
 		when 'escape'
 			if searching?
 				end_search!
@@ -58,10 +58,14 @@ class GuiAddWindow < GuiBox
 		when 'return'
 			add_object(@selected_object) if @selected_object
 		else
-			if value.control?
+			if key.control?
 				super
+			elsif key.alt? && key == 'backspace'
+				end_search!
 			else
-				@search_label.on_key_press(value)
+				@search_label.on_key_press(key)
+				@search = @search.lstrip
+
 				if searching?
 					@search_label.switch_state({:closed => :open}, duration=0.1)
 					@category_selector.switch_state({:open => :closed}, duration=0.1)
