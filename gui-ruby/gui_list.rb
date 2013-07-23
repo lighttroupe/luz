@@ -208,7 +208,7 @@ private
 					last_index = first_index + (@visible_slots) + 1
 
 					for fake_index in first_index..last_index
-						index = fake_index	# % @contents.size		# this achieves endless looping!
+						index = fake_index % @contents.size		# this achieves endless looping!
 						gui_object = @contents[index]
 						next unless gui_object		# support for nils-- potentially useful feature?
 
