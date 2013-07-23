@@ -34,14 +34,36 @@ class GuiGrid < GuiBox
 		each_with_positioning { |gui_object| gui_object.hit_test_render! }
 	end
 
+	def select_next!(number=1)
+		if (index = selected_index)
+			if (index + number) > @contents.size
+				set_selection(@contents.last)
+				return
+			end
+		end
+		super
+	end
+
+	def select_previous!(number=1)
+		if (index = selected_index)
+			if (index - number) < 0
+				set_selection(@contents.first)
+				return
+			end
+		end
+		super
+	end
+
 	def on_key_press(key)
 		case key
 		when 'up'
-			
+			select_previous!(column_count)
 		when 'down'
+			select_next!(column_count)
 		when 'left'
+			select_previous!
 		when 'right'
-			
+			select_next!
 		end
 	end
 end

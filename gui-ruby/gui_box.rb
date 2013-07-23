@@ -118,26 +118,31 @@ class GuiBox < GuiObject
 		add_to_selection(object)	# with notify
 	end
 
+	def selected_index
+		selection = @selection.first
+		index(selection) if selection
+	end
+
 	def clear_selection!
 		return if @selection.empty?
 		@selection.clear
 		selection_change_notify
 	end
 
-	def select_next!
+	def select_next!(number=1)
 		return if @contents.empty?
 		selection = @selection.first		# TODO: support multiselection?
 		index = @contents.index(selection) || -1
-		index = (index + 1) % @contents.size
+		index = (index + number) % @contents.size
 		@selection.clear
 		add_to_selection(@contents[index])
 	end
 
-	def select_previous!
+	def select_previous!(number=1)
 		return if @contents.empty?
 		selection = @selection.first		# TODO: support multiselection?
 		index = @contents.index(selection) || @contents.size
-		index = (index - 1) % @contents.size
+		index = (index - number) % @contents.size
 		@selection.clear
 		add_to_selection(@contents[index])
 	end
