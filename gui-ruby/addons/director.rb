@@ -34,6 +34,6 @@ class Director
 	end
 
 	def update_offscreen_buffer!
-		@offscreen_buffer.using { render! }
+		@offscreen_buffer.using { with_scale(0.625,1.0) { render! } }		# TODO: aspect ratio
 	end
 end
