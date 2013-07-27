@@ -44,4 +44,20 @@ class GuiVariablesFlyout < GuiWindow
 		@variables_list.remove(obj)
 		@events_list.remove(obj)
 	end
+
+	def on_key_press(key)
+		case key
+		when 'up'
+			@variables_list.grab_keyboard_focus!
+		when 'down'
+			@events_list.grab_keyboard_focus!
+		when 'return'
+			if @events_list.keyboard_focus?
+				$gui.build_editor_for(@events_list.selection.first)
+			elsif @variables_list.keyboard_focus?
+				$gui.build_editor_for(@variables_list.selection.first)
+			end
+		end
+		super
+	end
 end
