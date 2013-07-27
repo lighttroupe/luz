@@ -40,16 +40,16 @@ class GuiDefault < GuiInterface
 			add_state(:open, {:offset_x => 0.44, :hidden => false}).
 			set_state(:closed, {:offset_x => 0.56, :hidden => true})
 
-		# Directors corner button (top right)
-		self << (@directors_button = GuiButton.new.set(:scale_x => -0.04, :scale_y => 0.06, :offset_x => 0.48, :offset_y => 0.47, :background_image => $engine.load_image('images/corner.png')))
-		@directors_button.on_clicked {
-			open_directors_menu!
-		}
-
 		# Actors corner button (bottom right)
 		self << (@actors_button = GuiButton.new.set(:scale_x => -0.04, :scale_y => -0.06, :offset_x => 0.48, :offset_y => -0.47, :background_image => $engine.load_image('images/corner.png')))
 		@actors_button.on_clicked {
 			toggle_actors_flyout!
+		}
+
+		# Directors corner button (top right)
+		self << (@directors_button = GuiButton.new.set(:scale_x => -0.04, :scale_y => 0.06, :offset_x => 0.48, :offset_y => 0.47, :background_image => $engine.load_image('images/corner.png')))
+		@directors_button.on_clicked {
+			open_directors_menu!
 		}
 
 		#
@@ -257,14 +257,13 @@ class GuiDefault < GuiInterface
 	def hide_something!
 		if @directors_menu.visible?
 			close_directors_menu!
-			default_focus!
 		elsif @variables_flyout.visible? or @actors_flyout.visible?
 			close_inputs_flyout!
 			close_actors_flyout!
-			default_focus!
 		else
 			clear_editors!
 		end
+		default_focus!
 	end
 
 	def close_actors_flyout!
