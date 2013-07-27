@@ -17,8 +17,7 @@ class GuiVariablesFlyout < GuiWindow
 		# New Event button
 		self << (@new_event_button = GuiButton.new.set(:scale_x => 1.0, :scale_y => 0.045, :offset_x => 0.0, :offset_y => -0.013, :background_image => $engine.load_image('images/buttons/new-event-button.png')))
 		@new_event_button.on_clicked { |pointer|
-			@events_list.add_after_selection(event = Event.new)
-			$gui.build_editor_for(event, :pointer => pointer)
+			new_event!
 		}
 
 		# Variables list		TODO: don't use $engine here
@@ -27,8 +26,7 @@ class GuiVariablesFlyout < GuiWindow
 		# New Variable button
 		self << (@new_variable_button = GuiButton.new.set(:scale_x => 1.0, :scale_y => 0.043, :offset_x => 0.0, :offset_y => -0.476, :background_image => $engine.load_image('images/buttons/new-variable-button.png')))
 		@new_variable_button.on_clicked { |pointer|
-			@variables_list.add_after_selection(variable = Variable.new)
-			$gui.build_editor_for(variable, :pointer => pointer)
+			new_variable!(pointer)
 		}
 	end
 
@@ -45,12 +43,36 @@ class GuiVariablesFlyout < GuiWindow
 		@events_list.remove(obj)
 	end
 
+	def new_variable!(pointer=nil)
+		@variables_list.add_after_selection(variable = Variable.new)
+		@variables_list.set_selection(variable)
+		$gui.build_editor_for(variable, :pointer => pointer)
+	end
+
+	def new_event!(pointer=nil)
+		@events_list.add_after_selection(event = Event.new)
+		@events_list.set_selection(event)
+		$gui.build_editor_for(event, :pointer => pointer)
+	end
+
 	def on_key_press(key)
 		case key
+		when 'n'
+			if key.control?
+				if @events_list.keyboard_focus?
+					new_event!
+					#close!
+				elsif @variables_list.keyboard_focus?
+					new_variable!
+					#close!
+				end
+			end
 		when 'up'
 			@variables_list.grab_keyboard_focus!
+			return
 		when 'down'
 			@events_list.grab_keyboard_focus!
+			return
 		when 'return'
 			if @events_list.keyboard_focus?
 				$gui.build_editor_for(@events_list.selection.first)
