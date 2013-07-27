@@ -49,13 +49,17 @@ class GuiAddWindow < GuiBox
 			@list.select_next!
 			@list.scroll_to_selection!
 		when 'left'
-			end_search!
-			@category = @categories[(@categories.index(@category) - 1) % @categories.size]
-			fill_from_category!
+			unless @categories.empty?
+				end_search!
+				@category = @categories[(@categories.index(@category) - 1) % @categories.size]
+				fill_from_category!
+			end
 		when 'right'
-			end_search!
-			@category = @categories[(@categories.index(@category) + 1) % @categories.size]
-			fill_from_category!
+			unless @categories.empty?
+				end_search!
+				@category = @categories[(@categories.index(@category) + 1) % @categories.size]
+				fill_from_category!
+			end
 		when 'return'
 			add_object(@selected_object) if @selected_object
 		else
