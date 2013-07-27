@@ -20,6 +20,8 @@ class VariableInputButtonPairSpring < VariableInput
 	title				"Button Pair Spring"
 	description "Activation rises when one button is pressed, lowers when a different button is pressed, and otherwise returns to chosen spring value."
 
+	categories :button
+
 	setting 'button_on', :button, :summary => '% on'
 	setting :on_time, :timespan
 	setting 'button_off', :button, :summary => '% off'

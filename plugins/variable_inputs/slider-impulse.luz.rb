@@ -20,6 +20,8 @@ class VariableInputSliderImpulse < VariableInput
 	title				"Slider Impulse"
 	description "Treats slider input value as an upward impulse. The value falls back down to 0% according to a chosen gravity."
 
+	categories :slider
+
 	hint "Only registers a second impulse after the input value has returned to 0. Works well with MIDI drums which send the velocity of impact, then immediately send a 0 value."
 
 	setting 'slider', :slider, :summary => true

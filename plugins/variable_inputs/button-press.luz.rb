@@ -20,6 +20,8 @@ class VariableInputButtonPress < VariableInput
 	title				"Button Press"
 	description "Activation rises with each press of a button, lowers constantly."
 
+	categories :button
+
 	setting 'button_on', :button
 	setting 'number_on', :integer, :range => 1..100, :default => 1..100
 	setting 'off_time', :timespan

@@ -20,6 +20,8 @@ class VariableInputTimeline < VariableInput
 	title				"Timeline"
 	description "Reads Y value from a timeline with controllable X value."
 
+	categories :special
+
 	setting 'timeline', :timeline
 	setting 'progress', :float, :range => 0.0..1.0
 

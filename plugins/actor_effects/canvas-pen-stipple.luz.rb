@@ -17,6 +17,8 @@
  ###############################################################################
 
 class ActorEffectCanvasPenStipple < ActorEffectCanvas
+	virtual		# deprecated
+
 	title				"Canvas Pen Stipple"
 	description "Draws as dots of a given width, spaced an even distance apart, randomized within a given radius."
 

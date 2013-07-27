@@ -20,6 +20,8 @@ class VariableInputButtonPair < VariableInput
 	title				"Button Pair"
 	description "Activation rises when one button is pressed, lowers when a different button is pressed, and stays steady when neither (or both) are pressed."
 
+	categories :button
+
 	setting 'button_on', :button, :summary => '% on'
 	setting :on_time, :timespan
 	setting 'button_off', :button, :summary => '% off'

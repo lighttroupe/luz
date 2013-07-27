@@ -20,6 +20,8 @@ class VariableInputSliderWithHoldButton < VariableInput
 	title				"Slider with Hold Button"
 	description "Holds slider value while button is pressed, otherwise acts as normal."
 
+	categories :slider
+
 	setting 'slider', :slider, :summary => true
 	setting 'button', :button, :summary => true
 

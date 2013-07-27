@@ -20,6 +20,8 @@ class VariableInputButtonPressAndHold < VariableInput
 	title				"Button Press and Hold"
 	description	"Activation rises with each press of a button, begins lowering when button is released."
 
+	categories :button
+
 	setting 'button_on', :button
 	setting 'number_on', :integer, :range => 1..100, :default => 1..100
 	setting 'off_time', :timespan

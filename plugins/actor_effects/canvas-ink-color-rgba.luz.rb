@@ -17,6 +17,8 @@
  ###############################################################################
 
 class ActorEffectCanvasInkColorRGBA < ActorEffectCanvas
+	virtual		# deprecated
+
 	title				"Canvas Ink Color RGBA"
 	description "Choose ink red, green, blue, and alpha manually."
 

@@ -17,6 +17,8 @@
  ###############################################################################
 
 class ActorEffectCanvasSpraypaint < ActorEffectCanvas
+	virtual		# deprecated
+
 	title				"Canvas Spraypaint"
 	description "Draws as dots randomly distributed within given radius."
 

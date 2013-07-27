@@ -20,6 +20,8 @@ class VariableInputButton < VariableInput
 	title				"Button"
 	description "Activation rises while button is pressed, lowers while button is not pressed."
 
+	categories :button
+
 	hint "All 'Button' type input plugins support keyboard keys, mouse buttons, Wiimote buttons, MIDI device buttons, and OpenSoundControl messages with a single integer parameter (0 or 1)."
 
 	setting 'button', :button, :summary => true

@@ -28,6 +28,16 @@ class Variable < ParentUserObject
 	setting 'combine_method', :select, :default => :sum, :options => [[:sum, 'Sum'],[:minimum, 'Minimum'],[:maximum, 'Maximum'],[:average, 'Average'],[:product, 'Multiply']]
 	setting 'damper_method', :select, :default => :none, :options => [[:none, 'None'],[:very_low, 'Very Low'],[:low, 'Low'],[:medium, 'Medium'],[:high, 'High'],[:very_high, 'Very High']]
 
+	#
+	# Class methods
+	#
+	def self.available_categories
+		[:button, :slider, :device, :special]
+	end
+
+	#
+	# Instance methods
+	#
 	def default_title
 		'New Variable'
 	end

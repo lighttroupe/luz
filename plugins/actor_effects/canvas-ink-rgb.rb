@@ -17,6 +17,8 @@
  ###############################################################################
 
 class ActorEffectCanvasInkRGB < ActorEffectCanvas
+	virtual		# deprecated
+
 	title				"Canvas Ink RGB"
 	description ""
 

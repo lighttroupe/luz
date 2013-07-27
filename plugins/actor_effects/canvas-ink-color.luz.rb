@@ -17,6 +17,8 @@
  ###############################################################################
 
 class ActorEffectCanvasInkColor < ActorEffectCanvas
+	virtual		# deprecated
+
 	title				"Canvas Ink Color"
 	description "Sets color of ink."
 

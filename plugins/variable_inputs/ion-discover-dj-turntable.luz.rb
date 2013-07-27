@@ -20,6 +20,8 @@ class VariableInputIonDiscoverDJTurntable < VariableInput
 	title				"Ion Discover DJ Turntable"
 	description "Reports rotational speed of turntable in a variety of ways."
 
+	categories :device
+
 	hint 'This plugin is written to handle the unique data patterns sent by a specific device, and may not be useful for other purposes.'
 
 	setting('slider', :slider, {:summary => true})

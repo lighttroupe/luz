@@ -20,6 +20,8 @@ class VariableInputTime < VariableInput
 	title				"Time"
 	description "Fills once from 0% to 100% over a chosen time period."
 
+	categories :special
+
 	hint "Useful as the progress for music videos."
 
 	setting 'time', :timespan, :summary => true

@@ -20,6 +20,8 @@ class VariableInputButtonPairPress < VariableInput
 	title				"Button Pair Press"
 	description "Activation rises with each press of one button, lowers with each press of a different button."
 
+	categories :button
+
 	setting 'button_on', :button, :summary => '% on'
 	setting 'number_on', :integer, :range => 1..100, :default => 1..100
 	setting 'button_off', :button, :summary => '% off'

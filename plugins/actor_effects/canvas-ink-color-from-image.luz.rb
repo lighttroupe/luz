@@ -17,6 +17,8 @@
  ###############################################################################
 
 class ActorEffectCanvasInkColorFromImage < ActorEffectCanvas
+	virtual		# deprecated
+
 	title				"Canvas Ink Color from Image"
 	description "Picks an ink color from a chosen X,Y position within a chosen image."
 

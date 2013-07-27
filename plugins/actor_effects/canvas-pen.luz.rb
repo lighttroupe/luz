@@ -17,6 +17,8 @@
  ###############################################################################
 
 class ActorEffectCanvasPen < ActorEffectCanvas
+	virtual		# deprecated
+
 	title				"Canvas Pen"
 	description "Draws as lines of varying width."
 

@@ -17,6 +17,8 @@
  ###############################################################################
 
 class ActorEffectCanvasErasePartial < ActorEffectCanvas
+	virtual		# deprecated
+
 	title				"Canvas Erase Partial"
 	description "Clears the canvas a given amount."
 

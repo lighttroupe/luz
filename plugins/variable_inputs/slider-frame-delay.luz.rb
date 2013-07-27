@@ -20,6 +20,8 @@ class VariableInputSliderFrameDelay < VariableInput
 	title				"Slider Frame Delay"
 	description "Saves slider values, and replays them a chosen number of frames in the future."
 
+	categories :slider
+
 	setting 'slider', :slider, :summary => true
 	setting 'frames', :integer, :range => 0..100, :default => 30..60, :summary => '% frames'
 
@@ -36,6 +38,6 @@ class VariableInputSliderFrameDelay < VariableInput
 		to_remove = @samples.size - (frames)		# this will be 1 most of the time
 		to_remove.times { @samples.shift }
 
-		return v
+		v
 	end
 end

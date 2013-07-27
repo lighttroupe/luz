@@ -20,6 +20,8 @@ class VariableInputButtonToggle < VariableInput
 	title				"Button Toggle"
 	description "Activation begins rising when button is pressed once, lowers when button is pressed a second time."
 
+	categories :button
+
 	setting 'button', :button, :summary => true
 	setting 'on_time', :timespan, :summary => '% on'
 	setting 'off_time', :timespan, :summary => '% off'

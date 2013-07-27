@@ -17,6 +17,8 @@
  ###############################################################################
 
 class ActorEffectCanvasEraser < ActorEffectCanvas
+	virtual		# deprecated
+
 	title				"Canvas Eraser"
 	description "A spot eraser, like on the back of a pencil."
 
