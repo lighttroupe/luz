@@ -310,14 +310,18 @@ class GuiDefault < GuiInterface
 	#
 	def select_next_actor!
 		return unless chosen_director && chosen_director.actors.size > 0
-		index = ((chosen_actor_index || -1) + 1) % chosen_director.actors.size
-		build_editor_for(chosen_director.actors[index])
+		index = chosen_director.actors.index(@user_object) || -1
+		index = (index + 1) % chosen_director.actors.size
+		actor = chosen_director.actors[index]
+		build_editor_for(actor) unless @user_object == actor
 	end
 
 	def select_previous_actor!
 		return unless chosen_director && chosen_director.actors.size > 0
-		index = ((chosen_actor_index || 1) - 1) % chosen_director.actors.size
-		build_editor_for(chosen_director.actors[index])
+		index = chosen_director.actors.index(@user_object) || -1
+		index = (index - 1) % chosen_director.actors.size
+		actor = chosen_director.actors[index]
+		build_editor_for(actor) unless @user_object == actor
 	end
 
 	def chosen_actor_index
@@ -365,13 +369,8 @@ class GuiDefault < GuiInterface
 					@variables_flyout.grab_keyboard_focus!
 				end
 			when 'up'
-				if @directors_menu.open?
-					@directors_menu.close!
-					default_focus!
-				else
-					@directors_menu.open!
-					@directors_menu.grab_keyboard_focus!
-				end
+				@directors_menu.open!
+				@directors_menu.grab_keyboard_focus!
 			when 'down'
 				unless hide_something!
 					build_editor_for(@user_object, :grab_keyboard_focus => true) if @user_object
