@@ -108,7 +108,15 @@ class UserObject
 	end
 
 	def clone_selected
-		$gui.positive_message 'Clone...not implemented.'
+		$gui.positive_message "Clone...not implemented."
+		#if (original = @gui_effects_list.selection.first)
+			#duplicate = original.deep_clone { |obj| !(obj.is_a?(ParentUserObject)) }
+			#duplicate.parent = nil
+			#duplicate.reset_pointer_behavior!
+			# more needed
+			#@gui_effects_list.add_after_selection(duplicate)
+			#@gui_effects_list.set_selection(duplicate)
+		#end
 	end
 
 	def gui_fill_settings_list(user_object)
