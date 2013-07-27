@@ -20,6 +20,8 @@ class EventInputButtonToggleRepeater < EventInput
 	title				"Button Toggle Repeater"
 	description "When toggled on, repeats periodically."
 
+	categories :button
+
 	setting 'button', :button, :summary => true
 	setting 'period', :timespan, :summary => true
 

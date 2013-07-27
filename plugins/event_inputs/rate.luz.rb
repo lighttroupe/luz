@@ -20,6 +20,8 @@ class EventInputRate < EventInput
 	title				"Rate"
 	description "Activates repeatedly with controllable rate."
 
+	categories :special
+
 	setting 'fastest', :timespan
 	setting 'slowest', :timespan
 	setting 'speed', :slider

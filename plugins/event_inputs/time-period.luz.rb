@@ -20,6 +20,8 @@ class EventInputTimePeriod < EventInput
 	title				"Time Period"
 	description "Activates periodically."
 
+	categories :special
+
 	setting 'period', :timespan, :summary => true
 
 	def value

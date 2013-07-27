@@ -20,6 +20,8 @@ class EventInputSliderSegmentedUp < EventInput
 	title				"Slider Segmented Up"
 	description "Activates each time slider crosses a boundary of one of a chosen number of segments going up."
 
+	categories :slider
+
 	setting 'slider', :slider, :summary => true
 	setting 'count', :integer, :range => 1..10000, :summary => '% segments'
 

@@ -20,6 +20,8 @@ class EventInputSliderGoesAbove < EventInput
 	title				"Slider Goes Above"
 	description "Activates when slider goes from below to above a chosen cutoff."
 
+	categories :slider
+
 	setting 'slider', :slider, :summary => true
 	setting 'cutoff', :float, :range => 0.0..1.0
 

@@ -20,6 +20,8 @@ class EventInputBeatOffset < EventInput
 	title				"Beat Offset"
 	description "Activates once per beat, at a chosen offset into the beat."
 
+	categories :special
+
 	setting 'offset', :float, :range => 0.0..1.0, :default => 0.0..1.0
 
 	def value

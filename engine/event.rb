@@ -23,6 +23,16 @@ class Event < ParentUserObject
 
 	#setting :combine_method, :select, :default => :sum, :options => [[:sum, 'Sum'],[:minimum, 'Minimum'],[:maximum, 'Maximum'],[:average, 'Average'],[:product, 'Multiply']]
 
+	#
+	# Class methods
+	#
+	def self.available_categories
+		[:button, :slider, :special]
+	end
+
+	#
+	# Instance methods
+	#
 	def default_title
 		'New Event'
 	end

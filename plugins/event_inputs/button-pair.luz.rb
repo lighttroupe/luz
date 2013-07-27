@@ -20,6 +20,8 @@ class EventInputButtonPair < EventInput
 	title				"Button Pair"
 	description "Activation turns on with one button press, turns off with a different button press."
 
+	categories :button
+
 	setting 'button_on', :button, :summary => true
 	setting 'button_off', :button, :summary => true
 

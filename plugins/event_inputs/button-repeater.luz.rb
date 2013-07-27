@@ -20,6 +20,8 @@ class EventInputButtonRepeater < EventInput
 	title				"Button Repeater"
 	description "Activates on press, then at a set interval until released."
 
+	categories :button
+
 	setting 'button', :button, :summary => true
 	setting 'period', :timespan, :summary => true
 

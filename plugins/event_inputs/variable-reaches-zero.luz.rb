@@ -20,6 +20,8 @@ class EventInputVariableReachesZero < EventInput
 	title				"Variable Reaches Zero"
 	description ""
 
+	categories :slider		# for now
+
 	setting 'variable', :variable, :summary => true
 
 	def value
