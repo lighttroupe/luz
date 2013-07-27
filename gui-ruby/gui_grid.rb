@@ -36,7 +36,7 @@ class GuiGrid < GuiBox
 
 	def select_next!(number=1)
 		if (index = selected_index)
-			if (index + number) > @contents.size
+			if (index + number) >= @contents.size
 				set_selection(@contents.last)
 				return
 			end
