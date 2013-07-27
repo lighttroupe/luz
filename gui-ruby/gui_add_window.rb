@@ -10,6 +10,7 @@ class GuiAddWindow < GuiBox
 	def initialize(user_object, options={})
 		@user_object, @options = user_object, options
 		@categories = @user_object.class.respond_to?(:available_categories) ? @user_object.class.available_categories : []
+		@search = ''
 		super(contents=[])		# added in create!
 		create!
 		add_state(:open,   {:offset_x => 0.0, :offset_y => -0.05, :scale_x => 0.90, :scale_y => 0.9, :opacity => 1.0, :hidden => false})
