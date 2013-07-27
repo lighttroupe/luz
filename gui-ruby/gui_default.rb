@@ -257,13 +257,20 @@ class GuiDefault < GuiInterface
 	def hide_something!
 		if @directors_menu.visible?
 			close_directors_menu!
+			default_focus!
+			true
 		elsif @variables_flyout.visible? or @actors_flyout.visible?
 			close_inputs_flyout!
 			close_actors_flyout!
-		else
+			default_focus!
+			true
+		elsif @user_object_editor && @user_object_editor.visible?
 			clear_editors!
+			default_focus!
+			true
+		else
+			false
 		end
-		default_focus!
 	end
 
 	def close_actors_flyout!
@@ -366,7 +373,9 @@ class GuiDefault < GuiInterface
 					@directors_menu.grab_keyboard_focus!
 				end
 			when 'down'
-				hide_something!
+				unless hide_something!
+					build_editor_for(@user_object, :grab_keyboard_focus => true) if @user_object
+				end
 			when 'b'
 				toggle_beat_monitor!
 			when ','
