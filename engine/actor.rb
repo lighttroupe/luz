@@ -27,18 +27,18 @@ class Actor < ParentUserObject
 	WIDTH, HEIGHT = 1.0, 1.0
 	RADIUS = 0.5 		# (used by children)
 
-	###################################################################
-	# Class-level functions
-	###################################################################
+	#
+	# Class methods
+	#
 	dsl_flag :cache_rendering
 
 	def self.available_categories
 		[:transform,:color,:child_producer,:child_consumer,:canvas,:special]
 	end
 
-	###################################################################
-	# Object-level functions
-	###################################################################
+	#
+	# Instance methods
+	#
 	empty_method :render
 
 	attr_accessor :x, :y
