@@ -40,14 +40,25 @@ class GuiDirectorMenu < GuiWindow
 		switch_state({:open => :closed}, duration=0.5)
 	end
 
-	def on_key_press(key)
-		return super if key.control?		# ignore
+	def close!
+		super
+		$gui.default_focus!
+	end
 
+	def on_key_press(key)
 		case key
 		when 'escape'
 			close!
 		when 'up', 'down', 'left', 'right'
-			@grid.on_key_press(key)
+			if key.control?
+				close! if key == 'up'
+				# swallow other ctrl-arrow keys
+			else
+				@grid.on_key_press(key)
+			end
+		when 'n'
+			add_new_director! if key.control?
+
 		when 'return'
 			selected = @grid.selection.first
 			$gui.build_editor_for(selected) if selected
