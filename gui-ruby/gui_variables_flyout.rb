@@ -56,42 +56,46 @@ class GuiVariablesFlyout < GuiWindow
 	end
 
 	def on_key_press(key)
-		case key
-		when 'n'
-			if key.control?
-				if @events_list.keyboard_focus?
-					new_event!
-					#close!
-				elsif @variables_list.keyboard_focus?
-					new_variable!
-					#close!
+		if key.control?
+			case key
+			when 'n'
+				if key.control?
+					if @events_list.keyboard_focus?
+						new_event!
+						#close!
+					elsif @variables_list.keyboard_focus?
+						new_variable!
+						#close!
+					end
 				end
+			else
+				super
 			end
-		when 'up'
-			@events_list.grab_keyboard_focus!
-			return
-		when 'down'
-			@variables_list.grab_keyboard_focus!
-			return
-		when 'left'
-			self.grab_keyboard_focus!
-			return
-		when 'right'
-			if @events_list.keyboard_focus?
+		else
+			case key
+			when 'up'
+				@events_list.grab_keyboard_focus!
+			when 'down'
 				@variables_list.grab_keyboard_focus!
-			elsif @variables_list.keyboard_focus?
-				@events_list.grab_keyboard_focus!
-			elsif self.keyboard_focus?
-				@events_list.grab_keyboard_focus!
-			end
-			return
-		when 'return'
-			if @events_list.keyboard_focus?
-				$gui.build_editor_for(@events_list.selection.first)
-			elsif @variables_list.keyboard_focus?
-				$gui.build_editor_for(@variables_list.selection.first)
+			when 'left'
+				self.grab_keyboard_focus!
+			when 'right'
+				if @events_list.keyboard_focus?
+					@variables_list.grab_keyboard_focus!
+				elsif @variables_list.keyboard_focus?
+					@events_list.grab_keyboard_focus!
+				elsif self.keyboard_focus?
+					@events_list.grab_keyboard_focus!
+				end
+			when 'return'
+				if @events_list.keyboard_focus?
+					$gui.build_editor_for(@events_list.selection.first)
+				elsif @variables_list.keyboard_focus?
+					$gui.build_editor_for(@variables_list.selection.first)
+				end
+			else
+				super
 			end
 		end
-		super
 	end
 end
