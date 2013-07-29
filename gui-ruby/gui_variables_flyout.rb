@@ -68,10 +68,22 @@ class GuiVariablesFlyout < GuiWindow
 				end
 			end
 		when 'up'
-			@variables_list.grab_keyboard_focus!
+			@events_list.grab_keyboard_focus!
 			return
 		when 'down'
-			@events_list.grab_keyboard_focus!
+			@variables_list.grab_keyboard_focus!
+			return
+		when 'left'
+			self.grab_keyboard_focus!
+			return
+		when 'right'
+			if @events_list.keyboard_focus?
+				@variables_list.grab_keyboard_focus!
+			elsif @variables_list.keyboard_focus?
+				@events_list.grab_keyboard_focus!
+			elsif self.keyboard_focus?
+				@events_list.grab_keyboard_focus!
+			end
 			return
 		when 'return'
 			if @events_list.keyboard_focus?
