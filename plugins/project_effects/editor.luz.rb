@@ -25,6 +25,8 @@ class ProjectEffectEditor < ProjectEffect
 	title				"Editor"
 	description ""
 
+	setting 'alpha', :float, :range => 0.1..1.0, :default => 1.0..1.0
+
 	def inhibit_hardware?		# TODO: rename hardwire
 		true
 	end
@@ -55,7 +57,7 @@ class ProjectEffectEditor < ProjectEffect
 	def tick
 		create_gui unless @gui
 
-		unless @gui.hidden?
+		unless @gui.hidden? or alpha == 0.0
 			@gui.gui_tick!
 
 			# TODO: only do hit testing when needed (NOTE: needed for hover as well as click response)
@@ -68,8 +70,12 @@ class ProjectEffectEditor < ProjectEffect
 	end
 
 	def render
-		@gui.render {
-			yield
+		with_alpha(alpha) {
+			@gui.render {
+				with_alpha(1.0) {
+					yield
+				}
+			}
 		}
 		render_pointers unless @gui.hidden?
 	end
