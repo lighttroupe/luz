@@ -16,11 +16,11 @@ class UserObject
 	end
 
 	def effects_list_grab_focus!
-		@gui_effects_list.grab_keyboard_focus!
+		@gui_effects_list.grab_keyboard_focus! if @gui_effects_list
 	end
 
 	def settings_list_grab_focus!
-		@gui_settings_list.grab_keyboard_focus!
+		@gui_settings_list.grab_keyboard_focus! if @gui_settings_list
 	end
 
 	def create_something!
@@ -127,7 +127,7 @@ class UserObject
 
 		@gui_settings_list.clear!
 		user_object.settings.each_with_index { |setting, index|
-			@gui_settings_list << setting.gui_build_editor.set(:opacity => 0.0).animate({:opacity => 1.0}, duration=index*0.2)
+			@gui_settings_list << setting.gui_build_editor.set(:opacity => 0.0).animate({:opacity => 1.0}, duration=index*0.1)
 		}
 	end
 

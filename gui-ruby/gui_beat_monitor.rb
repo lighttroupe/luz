@@ -20,7 +20,7 @@ class GuiBeatLight < GuiObject
 	end
 end
 
-class GuiBeatMonitor < GuiHBox
+class GuiBeatMonitor < GuiSpacedHBox
 	def initialize(beats_per_measure)
 		super()
 		self << (@halve_bpm_button = GuiButton.new.set(:scale_x => 1.0, :scale_y => 1.0, :offset_x => 0.0, :offset_y => 0.0, :background_image => $engine.load_image('images/buttons/halve.png')))

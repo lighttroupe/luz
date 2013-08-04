@@ -149,6 +149,11 @@ class GuiBox < GuiObject
 
 	attr_reader :selection
 
+	def selection_grab_focus!
+		selected = selection.first
+		selected.grab_keyboard_focus! if selected
+	end
+
 	#
 	# Positioning
 	#
