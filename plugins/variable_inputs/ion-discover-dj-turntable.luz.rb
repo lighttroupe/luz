@@ -48,7 +48,7 @@ class VariableInputIonDiscoverDJTurntable < VariableInput
 				((1.0 - slider) / 0.2)
 			end
 		else
-			throw 'unsupported mode'
+			raise NotImplementedError
 		end
 	end
 end
