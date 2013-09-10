@@ -3,6 +3,7 @@ require 'gui_selected_behavior'
 # HACK to render an object without reparenting it
 class GuiObjectRenderer < GuiObject
 	callback :clicked
+	callback :double_clicked
 
 	attr_reader :object
 
@@ -32,5 +33,9 @@ class GuiObjectRenderer < GuiObject
 
 	def click(pointer)
 		clicked_notify(pointer)
+	end
+
+	def double_click(pointer)
+		double_clicked_notify(pointer)
 	end
 end
