@@ -5,8 +5,7 @@ class UserObject
 	include MethodsForGuiObject
 
 	LABEL_COLOR_CRASHY = [1,0,0,0.5]
-	LABEL_COLOR_ENABLED = [1,1,1,1]
-	LABEL_COLOR_DISABLED = [1.0, 1.0, 1.0, 0.25]
+	LABEL_COLOR = [1,1,1,1]
 	USER_OBJECT_TITLE_HEIGHT = 0.65
 
 	SHAKE_DISTANCE = 0.007
@@ -35,10 +34,10 @@ class UserObject
 	# Creates and returns a GuiObject to serve as an editor for this object
 	def gui_build_editor
 		if respond_to? :effects
-			box = GuiBox.new
+			@box = box = GuiBox.new
 
 			# Effects list
-			@gui_effects_list = GuiList.new(effects).set({:spacing_y => -0.8, :scale_x => 0.334, :offset_x => -0.33, :offset_y => -0.03, :scale_y => 0.73, :item_aspect_ratio => 4.5})
+			@gui_effects_list = GuiList.new(effects).set(:spacing_y => -0.8, :scale_x => 0.334, :offset_x => -0.33, :offset_y => -0.03, :scale_y => 0.73, :item_aspect_ratio => 4.5)
 			box << @gui_effects_list
 			@gui_effects_list.on_selection_change {
 				selection = @gui_effects_list.selection.first
@@ -46,7 +45,7 @@ class UserObject
 			}
 
 			# ...scrollbar
-			@gui_effects_list_scrollbar = GuiScrollbar.new(@gui_effects_list).set({:scale_x => 0.025, :offset_x => -0.152, :offset_y => -0.03, :scale_y => 0.75})
+			@gui_effects_list_scrollbar = GuiScrollbar.new(@gui_effects_list).set(:scale_x => 0.025, :offset_x => -0.152, :offset_y => -0.03, :scale_y => 0.75)
 			box << @gui_effects_list_scrollbar
 
 			# Add Child Popup Button
@@ -69,12 +68,12 @@ class UserObject
 			}
 
 			# Settings list
-			@gui_settings_list = GuiList.new.set({:spacing_y => -1.0, :scale_x => 0.55, :offset_x => 0.195, :offset_y => -0.03, :scale_y => 0.73, :item_aspect_ratio => 5.0})
+			@gui_settings_list = GuiList.new.set(:spacing_y => -1.0, :scale_x => 0.55, :offset_x => 0.195, :offset_y => -0.03, :scale_y => 0.73, :item_aspect_ratio => 5.0)
 			box << @gui_settings_list
 			gui_fill_settings_list(self)		# show this object's settings
 
 			# ...scrollbar
-			@gui_settings_list_scrollbar = GuiScrollbar.new(@gui_settings_list).set({:scale_x => 0.03, :offset_x => -0.104, :offset_y => -0.03, :scale_y => 0.75})
+			@gui_settings_list_scrollbar = GuiScrollbar.new(@gui_settings_list).set(:scale_x => 0.03, :offset_x => -0.104, :offset_y => -0.03, :scale_y => 0.75)
 			box << @gui_settings_list_scrollbar
 
 			# Add Child Popup
@@ -122,8 +121,21 @@ class UserObject
 	def gui_fill_settings_list(user_object)
 		return unless @gui_settings_list
 
-		# UX: we're selecting the parent object, so no children should be selected
-		@gui_effects_list.clear_selection! if user_object == self
+		# UX: if we're selecting the parent object, no children should be selected
+		if user_object == self
+			@gui_effects_list.clear_selection!
+		else
+			@gui_child_conditions_enable_event.remove_from_parent! if @gui_child_conditions_enable_event
+			@gui_child_conditions_event.remove_from_parent! if @gui_child_conditions_event
+
+			# Build child conditions GUI
+			if user_object.respond_to? :conditions
+				@gui_child_conditions_enable_event = GuiToggle.new(user_object.conditions, :enable_event).set(:scale_x => 0.025, :scale_y => 0.05, :offset_x => 0.18, :offset_y => 0.40)
+				@gui_child_conditions_event = GuiEvent.new(user_object.conditions, :event).set(:scale_x => 0.2, :scale_y => 0.05, :offset_x => 0.3, :offset_y => 0.40)
+				@box << @gui_child_conditions_event
+				@box << @gui_child_conditions_enable_event
+			end
+		end
 
 		@gui_settings_list.clear!
 		user_object.settings.each_with_index { |setting, index|
@@ -183,7 +195,7 @@ class UserObject
 	end
 
 	def self.gui_render_label
-		with_color([1,1,1,1]) {
+		with_color(LABEL_COLOR) {
 			@@class_title_label ||= Hash.new { |hash, key| hash[key] = BitmapFont.new.set(:string => key, :scale_x => 0.95, :scale_y => USER_OBJECT_TITLE_HEIGHT) }
 			@@class_title_label[title].gui_render!
 		}
@@ -216,10 +228,8 @@ private
 	def label_color
 		if crashy?
 			LABEL_COLOR_CRASHY
-		elsif enabled?
-			LABEL_COLOR_ENABLED
 		else
-			LABEL_COLOR_DISABLED
+			LABEL_COLOR
 		end
 	end
 end

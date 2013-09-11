@@ -33,8 +33,8 @@ require 'conditions'
 =end
 
 class ChildConditions < Conditions
-	attr_accessor :enable_child_index, :child_index_min, :child_index_max
-	attr_accessor :enable_event, :event, :event_invert
+	attr_accessor :event, :child_index_min, :child_index_max
+	boolean_accessor :enable_child_index, :enable_event, :event_invert
 
 	def to_yaml_properties
 		['@enable_child_index', '@child_index_min', '@child_index_max', '@enable_event', '@event', '@event_invert'] + super
@@ -54,8 +54,6 @@ class ChildConditions < Conditions
 		# Apple each rule, if enabled and configured properly
 		return false if @enable_event and @event and (@event.now? == (@event_invert == true))		# to deal with possible nil (no after_creation method for non userobjects :/)
 		return false if @enable_child_index and ($env[:child_index] < @child_index_min || $env[:child_index] > @child_index_max)
-
-		# Default is passed
 		return true
 	end
 
