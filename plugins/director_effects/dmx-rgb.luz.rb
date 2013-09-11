@@ -18,7 +18,7 @@
 
 class DirectorEffectDMXRGB < DirectorEffect
 	title				"DMX RGB"
-	description "A 3-channel LED light with RGB."
+	description "A basic 3-channel RGB light."
 
 	setting 'channel', :integer, :range => 1..255, :simple => true, :summary => 'channel %'
 
