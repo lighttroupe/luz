@@ -123,6 +123,10 @@ class UserObject
 		@last_tick_frame_number = $env[:frame_number]
 	end
 
+	def ticked_recently?
+		@last_tick_frame_number && (@last_tick_frame_number > ($env[:frame_number] - 2))
+	end
+
 	def to_yaml_properties
 		['@title', '@enabled'] + self.class.settings.collect { |setting| "@#{setting.name}_setting" }
 	end
