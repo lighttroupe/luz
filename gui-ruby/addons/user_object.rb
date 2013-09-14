@@ -4,7 +4,9 @@
 class UserObject
 	include MethodsForGuiObject
 
-	LABEL_COLOR_CRASHY = [1,0,0,0.5]
+	LABEL_COLOR_CRASHY = [1,0,0,0.35]
+	LABEL_COLOR_CONDITIONS_UNMET = [1,1,0,0.35]
+	LABEL_COLOR_DISABLED = [1,1,1,0.35]
 	LABEL_COLOR = [1,1,1,1]
 	USER_OBJECT_TITLE_HEIGHT = 0.65
 
@@ -228,6 +230,8 @@ private
 	def label_color
 		if crashy?
 			LABEL_COLOR_CRASHY
+		elsif !usable?
+			LABEL_COLOR_UNUSABLE
 		else
 			LABEL_COLOR
 		end
