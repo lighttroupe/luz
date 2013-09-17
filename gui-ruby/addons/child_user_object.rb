@@ -16,6 +16,10 @@ class ChildUserObject < UserObject
 	def gui_render!
 		gui_render_background
 		gui_render_label
+		gui_render_enable_checkbox
+	end
+
+	def gui_render_enable_checkbox
 		enable_checkbox.gui_render!
 	end
 
