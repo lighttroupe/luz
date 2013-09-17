@@ -8,6 +8,8 @@ class UserObjectSettingFloatRenderer < UserObjectSettingRenderer
 	def initialize(setting)
 		super()
 		@setting = setting
+		@min = @setting.min
+		@max = @setting.max
 		create!
 	end
 
