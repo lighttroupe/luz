@@ -31,6 +31,9 @@ class UserObjectSettingFloat < UserObjectSettingNumeric
 
 	ACTIVATION_DIRECTION_OPTIONS = [[:to, 'to'], [:from, 'from']]
 
+	PARAMS = [:min, :max, :enter_value, :exit_value, :enable_enter_animation, :enter_curve, :enable_animation, :animation_curve, :animation_min, :animation_max, :animation_repeat_number, :animation_repeat_unit, :enable_exit_animation, :exit_curve, :enable_activation, :activation_direction, :activation_curve, :activation_value, :activation_variable]
+	attr_accessor *PARAMS
+
 	def to_yaml_properties
 		super + ['@min', '@max', '@enter_value', '@exit_value', '@enable_enter_animation', '@enter_curve', '@enable_animation', '@animation_curve', '@animation_min', '@animation_max', '@animation_repeat_number', '@animation_repeat_unit', '@enable_exit_animation', '@exit_curve', '@enable_activation', '@activation_direction', '@activation_curve', '@activation_value', '@activation_variable']
 	end

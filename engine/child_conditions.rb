@@ -57,6 +57,22 @@ class ChildConditions < Conditions
 		return true
 	end
 
+	def child_number_min
+		@child_index_min + 1
+	end
+	def child_number_min=(num)
+		@child_index_min = num - 1
+		@child_index_max = @child_index_min if @child_index_min > @child_index_max
+	end
+
+	def child_number_max
+		@child_index_max + 1
+	end
+	def child_number_max=(num)
+		@child_index_max = num - 1
+		@child_index_min = @child_index_max if @child_index_min > @child_index_max
+	end
+
 	def summary_in_pango_markup(highlight_tag = 'u')
 		lines = []
 		if @enable_event and @event
