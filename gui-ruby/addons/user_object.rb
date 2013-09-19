@@ -136,7 +136,7 @@ class UserObject
 			# Build child conditions GUI
 			if user_object.respond_to? :conditions
 				@gui_child_conditions_enable_event = GuiToggle.new(user_object.conditions, :enable_event).set(:scale_x => 0.025, :scale_y => 0.05, :offset_x => -0.25 + 0.22, :offset_y => 0.40)
-				@gui_child_conditions_event = GuiEvent.new(user_object.conditions, :event).set(:scale_x => 0.2, :scale_y => 0.05, :offset_x => -0.25 + 0.34, :offset_y => 0.40)
+				@gui_child_conditions_event = GuiEvent.new(user_object.conditions, :event).set(:scale_x => 0.2, :scale_y => 0.05, :offset_x => -0.25 + 0.34, :offset_y => 0.40, :item_aspect_ratio => 5.0)
 				@box << @gui_child_conditions_event
 				@box << @gui_child_conditions_enable_event
 
