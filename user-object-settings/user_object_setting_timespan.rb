@@ -19,6 +19,8 @@
 require 'user_object_setting'
 
 class UserObjectSettingTimespan < UserObjectSetting
+	attr_accessor :time_number, :time_unit
+
 	def to_yaml_properties
 		['@time_number', '@time_unit'] + super
 	end
