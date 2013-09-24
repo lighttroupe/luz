@@ -13,6 +13,10 @@ class GuiInteger < GuiNumeric
 		super.to_i
 	end
 
+	def purify_value(value)
+		value.to_i
+	end
+
 	def update_drag(pointer)
 		distance = pointer.drag_delta_x + pointer.drag_delta_y		# NOTE: cummulative, so up+right is fastest
 		change = change_for_distance(distance)
