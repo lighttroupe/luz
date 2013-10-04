@@ -11,6 +11,8 @@ class GuiVariablesFlyout < GuiWindow
 		# Background
 		self << (@background = GuiObject.new.set(:background_image => $engine.load_image('images/variables-flyout-background.png')))
 
+		self << @message_bus_monitor = GuiMessageBusMonitor.new.set(:scale_x => 0.91, :scale_y => 0.060, :offset_x => 0.0, :offset_y => 0.5 - 0.065/2.0, :background_image => $engine.load_image('images/message-bus-monitor-background.png'))
+
 		# Events list				TODO: don't use $engine here
 		self << @events_list = GuiList.new($engine.project.events).set(:scale_x => 0.91, :scale_y => 0.37, :offset_x => -0.036, :offset_y => 0.22, :item_aspect_ratio => 3.2, :spacing_y => -1.0)
 

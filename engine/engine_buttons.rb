@@ -27,6 +27,8 @@ module EngineButtons
 		return unless name		# don't allow nil
 		return if $engine.frame_number <= 1		# HACK: this seems to prevent a segfault when we receive input immediately
 
+		$env[:last_message_bus_activity_at] = $env[:frame_time]
+
 		new_button_notify_if_needed(name)
 
 		# Some input devices don't send "button up" events, so we force it here (NOTE: of course user can still only use the button-down moment)
@@ -52,6 +54,9 @@ module EngineButtons
 
 	def on_button_up(name, frame_offset=0)
 		return unless @button_down[name]		# ignore calls when button is not down
+
+		$env[:last_message_bus_activity_at] = $env[:frame_time]
+
 		new_button_notify_if_needed(name)
 		@button_up_frame_number[name] = @frame_number + frame_offset
 		@button_down[name] = false

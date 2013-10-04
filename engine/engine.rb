@@ -503,6 +503,9 @@ private
 		# Because of the nature of with_x { } blocks, we only need to set some things once
 		# NOTE: an editor GUI *can* mess with these values, though, and this is intentional!
 
+		$env[:last_message_bus_activity_at] = nil					# set by message bus
+		$env[:time_since_message_bus_activity] = 999.0		# like fo'eva
+
 		# Default enter/exit is right in the middle (fully on stage)
 		$env[:enter] = 1.0
 		$env[:exit] = 0.0
@@ -554,6 +557,8 @@ private
 
 		$env[:child_index] = 0
 		$env[:total_children] = 1
+
+		$env[:time_since_message_bus_activity] = ($env[:frame_time] - $env[:last_message_bus_activity_at]) if $env[:last_message_bus_activity_at]
 	end
 
 	if optional_require 'rb-inotify'

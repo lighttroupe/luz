@@ -28,6 +28,8 @@ module EngineSliders
 	def on_slider_change(name, value, delayed=false)
 		return if $engine.frame_number <= 1		# HACK: this seems to prevent a segfault when we receive input immediately
 
+		$env[:last_message_bus_activity_at] = $env[:frame_time]
+
 		new_slider_notify_if_needed(name)
 
 		# special-case one type of change:
