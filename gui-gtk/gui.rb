@@ -229,4 +229,11 @@ class GUI
 			positive_message "Opening #{File.basename(path)} ..."
 		end
 	end
+
+	#
+	# 2.0 compatibility
+	#
+	def has_keyboard_focus?(object)
+		false
+	end
 end
