@@ -93,16 +93,16 @@ private
 		#
 		# Category selector
 		#
-		self << (@category_selector = GuiRadioButtons.new(self, :category, categories_for_radio_buttons).set(:offset_x => 0.005, :offset_y => 0.44, :scale_x => 0.16 * @categories.size, :scale_y => 0.11, :spacing_x => 1.0))
-			.add_state(:closed, {:opacity => 0.0, :hidden => true})
-			.set_state(:open, {:opacity => 1.0, :hidden => false})
+		self << (@category_selector = GuiRadioButtons.new(self, :category, categories_for_radio_buttons).set(:offset_x => 0.005, :offset_y => 0.44, :scale_x => 0.16 * @categories.size, :scale_y => 0.11, :spacing_x => 1.0)).
+			add_state(:closed, {:opacity => 0.0, :hidden => true}).
+			set_state(:open, {:opacity => 1.0, :hidden => false})
 		@category_selector.on_selection_change {
 			fill_from_category!
 		}
 
-		self << (@search_label = GuiString.new(self, :search).set(:offset_x => @category_selector.offset_x, :offset_y => @category_selector.offset_y, :scale_x => @category_selector.scale_x, :scale_y => @category_selector.scale_y))
-			.add_state(:open, {:opacity => 1.0, :hidden => false})
-			.set_state(:closed, {:opacity => 0.0, :hidden => true})
+		self << (@search_label = GuiString.new(self, :search).set(:offset_x => @category_selector.offset_x, :offset_y => @category_selector.offset_y, :scale_x => @category_selector.scale_x, :scale_y => @category_selector.scale_y)).
+			add_state(:open, {:opacity => 1.0, :hidden => false}).
+			set_state(:closed, {:opacity => 0.0, :hidden => true})
 
 		#
 		# Effects list and scrollbar
