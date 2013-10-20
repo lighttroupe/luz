@@ -4,7 +4,8 @@
 class Pointer
 	easy_accessor :number, :background_image, :color, :size
 	DEFAULT_COLOR = [1,1,1,0.7]
-	HOLD_COLOR = [1,1,1,0.4]
+	HOLD_COLOR = [1,0.5,0,0.6]
+	DRAG_LINE_COLOR = [1,0.75,0,0.3]
 
 	LONG_CLICK_HOLD_TIME = 0.6
 	SMALL_DISTANCE = 0.02
@@ -129,8 +130,15 @@ class Pointer
 	end
 
 	def render!
-		background_image.using {
-			with_color(color) {
+		if @drag_object
+			with_color(DRAG_LINE_COLOR) {
+				with_line_width(4.0) {
+					draw_line(x,y,@click_x,@click_y)
+				}
+			}
+		end
+		with_color(color) {
+			background_image.using {
 				with_translation(x, y) {
 					with_scale(size) {
 						unit_square
