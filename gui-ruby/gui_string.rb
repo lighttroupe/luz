@@ -5,7 +5,7 @@ require 'gui_object'
 #
 class GuiString < GuiObject
 	FOCUS_COLOR = [1,0.9,0.3]
-	FOCUS_BACKGROUND_COLOR = [0.0,0.0,0.5]
+	FOCUS_BACKGROUND_COLOR = [0.2,0.2,0.8]
 	COLOR = [1,1,1]
 
 	def initialize(object, method)
