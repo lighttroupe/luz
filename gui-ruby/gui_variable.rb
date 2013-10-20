@@ -11,6 +11,6 @@ class GuiVariable < GuiListSelect
 	end
 
 	def set_value(value)
-		super(value.object)
+		super(value.object) if value
 	end
 end
