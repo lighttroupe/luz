@@ -7,7 +7,7 @@ class UserObjectSettingInteger
 		@minus_button.on_clicked { decrement! }
 		@minus_button.on_holding { decrement! if $env[:is_beat] }
 		box << @minus_button
-		@plus_button = GuiButton.new.set(:scale_x => 0.07, :scale_y => 0.32, :offset_x => -0.5 + 0.15 + 0.035 + 0.07, :offset_y => 0.15, :background_image => $engine.load_image('images/buttons/add.png'))
+		@plus_button = GuiButton.new.set(:scale_x => 0.07, :scale_y => 0.32, :offset_x => -0.5 + 0.15 + 0.035 + 0.07, :offset_y => 0.15, :background_image => $engine.load_image('images/buttons/plus.png'))
 		@plus_button.on_clicked { increment! }
 		@plus_button.on_holding { increment! if $env[:is_beat] }
 		box << @plus_button
