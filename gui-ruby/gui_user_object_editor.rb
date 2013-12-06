@@ -23,6 +23,12 @@ class GuiUserObjectEditor < GuiWindow
 			@user_object.effects_list_grab_focus!
 		elsif key == 'right' && !key.control?
 			@user_object.settings_list_grab_focus!
+		elsif key == 'tab'
+			if key.shift?
+				@user_object.effects_list_grab_focus!
+			else
+				@user_object.select_next_setting!
+			end
 		else
 			super
 		end
