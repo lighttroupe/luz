@@ -1,5 +1,5 @@
  ###############################################################################
- #  Copyright 2006 Ian McIntosh <ian@openanswers.org>
+ #  Copyright 2013 Ian McIntosh <ian@openanswers.org>
  #
  #  This program is free software; you can redistribute it and/or modify
  #  it under the terms of the GNU General Public License as published by
@@ -16,44 +16,39 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-class ActorEffectActorEffectsCycle < ActorEffect
+class ActorEffectChildCycle < ActorEffect
 	require 'cycle-logic'
 	include CycleLogic
 
-	title				'Actor Effects Cycle'
-	description ""
+	title				"Child Cycle"
+	description "Causes children to enter and exit, where at most two are visible at a time."
 
-	categories :special
-
-	setting 'actors', :actors, :summary => 'tagged %'
+	categories :child_consumer
 
 	setting 'forwards', :event, :summary => '% forward'
 	setting 'backwards', :event, :summary => '% backward'
-
 	setting 'crossfade_time', :timespan, :summary => true
 
-	def render
+	hint "Future effects should respond to enter and exit."
+
+	def tick
 		@current_spot = cycle_update(@current_spot, (forwards.count - backwards.count), crossfade_time)
-		low_index = @current_spot.floor
-		first, second, progress = actors.one(low_index), actors.one(low_index+1), (@current_spot - low_index)
-		use_first = (first && (progress != 1.0))
-		use_second = (second && (progress != 0.0))
-		if use_first
+	end
+
+	def render
+		low_index = @current_spot.floor % total_children
+		high_index = (low_index + 1) % total_children
+		progress = (@current_spot - @current_spot.floor)
+		if (child_index == low_index) && (progress != 1.0)
 			with_enter_and_exit(1.0, progress) {
-				first.render_recursive {
-					if use_second
-						with_enter_and_exit(progress, 0.0) {
-							second.render_recursive { yield }
-						}
-					else
-						yield
-					end
-				}
+				yield
 			}
-		elsif use_second
+		end
+
+		if (child_index == high_index) && (progress != 0.0)
 			with_enter_and_exit(progress, 0.0) {
-				second.render_recursive { yield }
+				yield
 			}
-		end 
+		end
 	end
 end

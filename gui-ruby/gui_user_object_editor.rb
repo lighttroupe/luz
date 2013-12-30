@@ -23,6 +23,12 @@ class GuiUserObjectEditor < GuiWindow
 			@user_object.effects_list_grab_focus!
 		elsif key == 'right' && !key.control?
 			@user_object.settings_list_grab_focus!
+		elsif key == 'tab'
+			if key.shift?
+				@user_object.effects_list_grab_focus!
+			else
+				@user_object.select_next_setting!
+			end
 		else
 			super
 		end
@@ -76,7 +82,7 @@ class GuiUserObjectEditor < GuiWindow
 		#
 		# Delete Button
 		#
-		self << (@delete_button = GuiButton.new.set(:scale_x => 0.05, :scale_y => 0.05, :offset_x => 0.475, :offset_y => -0.475, :background_image => $engine.load_image('images/buttons/menu.png')))
+		self << (@delete_button = GuiDeleteButton.new.set(:scale_x => 0.10, :scale_y => 0.07, :offset_x => 0.45, :offset_y => -0.5 + 0.035, :background_image => $engine.load_image('images/buttons/delete-background.png')))
 		@delete_button.on_clicked { |pointer|
 			$gui.trash!(@user_object)
 		}
@@ -84,7 +90,7 @@ class GuiUserObjectEditor < GuiWindow
 		#
 		# Close Button
 		#
-		self << (@close_button=GuiButton.new.set(:scale_x => 0.04, :scale_y => 0.08, :offset_x => 0.46, :offset_y => 0.43, :background_image => $engine.load_image('images/buttons/close.png')))
+		self << (@close_button=GuiButton.new.set(:scale_x => 0.15, :scale_y => 0.07, :offset_x => 0.0, :offset_y => -0.5 + 0.035, :background_image => $engine.load_image('images/buttons/close.png')))
 		@close_button.on_clicked { $gui.clear_editors! }
 	end
 
