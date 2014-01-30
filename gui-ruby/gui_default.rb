@@ -102,6 +102,11 @@ class GuiDefault < GuiInterface
 			positive_message 'Saved successfully.'
 		}
 
+		#@main_menu.on_open {
+			#$engine.open
+			#positive_message 'Opened successfully.'
+		#}
+
 		# Director Grid popup
 		self << @directors_menu = GuiDirectorMenu.new($engine.project.directors).
 			add_state(:open, {:scale_x => 1.0, :scale_y => 1.0, :opacity => 1.0, :hidden => false}).
