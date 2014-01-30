@@ -24,6 +24,20 @@ class UserObject
 		@gui_settings_list.grab_keyboard_focus! if @gui_settings_list
 	end
 
+	def select_next_setting!
+		if @gui_settings_list
+			@gui_settings_list.grab_keyboard_focus!
+			@gui_settings_list.select_next!
+		end
+	end
+
+	def select_previous_setting!
+		if @gui_settings_list
+			@gui_settings_list.grab_keyboard_focus!
+			@gui_settings_list.select_previous!
+		end
+	end
+
 	def create_something!
 		open_add_child_window!
 	end
