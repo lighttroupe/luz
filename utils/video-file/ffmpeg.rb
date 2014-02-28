@@ -10,42 +10,38 @@ rescue LoadError => e
 	require "#{direc}/ffmpeg.#{dlext}"
 end
 
+#
+# Provides caching and a cleaner interface on top of the basic read and seek C backend
+#
 module FFmpeg
 	class File
-		attr_reader :frame_index
 		def with_frame(index=0)
 			@image ||= Image.new
+			@index ||= 0
 
 			# loop index around on both sides
 			index = index % self.frame_count if self.frame_count > 0		# sometimes it's 0?!
 
-			if(index == @last_frame_index || @last_frame_load == $env[:frame_number])
-				#puts 'not moving forward'
+			delta = (index - @index)
+			#puts "delta = #{delta}"
+			if index == 0 || delta < 0 || delta > 10
+				seek_to_frame(index) or puts 'video-file: seek failed'
 			else
-				# loop around?		TODO: this assumes video is moving forward
-				if(index == 0 && @last_frame_index && @last_frame_index != 0)
-					#puts 'seeking to 0'
-					if self.seek_to_frame(0)
-						#puts 'video-file: seeked to 0'
-					else
-						puts 'video-file: seek failed'
-					end
-				end
-
-				if(new_data = self.read_next_frame)
-					#puts "got frame #{index}"
-					@image.from_rgb8(new_data, self.width, self.height)
-				else
-					puts "video-file: read_next_frame failed"
-				end
-
-				@last_frame_index = index
-				@last_frame_load = $env[:frame_number]
+				# Reading and decoding multiple frames-- is there a more effecient way?
+				delta.times { read_next_frame_into_image(@image) }		# (possibly 0)
 			end
+			@index = index
 
 			@image.using {
 				yield
 			}
+		end
+
+		def read_next_frame_into_image(image)
+			#puts "reading next frame" 
+			new_data = read_next_frame
+			#puts "video-file: read_next_frame failed" unless new_data
+			image.from_rgb8(new_data, self.width, self.height) if new_data
 		end
 	end
 end
