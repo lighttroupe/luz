@@ -1,6 +1,7 @@
 # Copyright 2012 Ian McIntosh
 
 $video_files ||= {}
+require 'video-file/ffmpeg'
 
 class ActorEffectVideoFile < ActorEffect
 	title				"Video File"
@@ -9,20 +10,20 @@ class ActorEffectVideoFile < ActorEffect
 	categories :color
 
 	setting 'file_name', :string
-	setting 'speed', :float, :range => 0.0..1.0, :default => 1.0..1.0
+	setting 'speed', :float, :range => 0.0..10.0, :default => 1.0..1.0
 
 	setting 'jump_frames', :integer, :range => 10..10000
 	setting 'jump_forward', :event
 	setting 'jump_backward', :event
 
 	def after_load
-		require 'video-file/ffmpeg'
 		@frame_index = 0.0		# NOTE: float
 		super
 	end
 
 	def tick
 		reload_if_needed
+		@frame_index ||= 0
 		@frame_index += (speed)
 
 		#@skip_frames += jump_frames if jump_forward.now?
