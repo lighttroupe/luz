@@ -1,3 +1,0 @@
-[submodule "utils/ruby-git"]
-	path = utils/ruby-git
-	url = https://github.com/schacon/ruby-git.git
