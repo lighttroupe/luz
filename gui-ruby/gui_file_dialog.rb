@@ -3,7 +3,7 @@ require 'pathname'
 class GuiFileDialog < GuiBox
 	attr_reader :path
 
-	callback :selected
+	callback :selected, :closed
 
 	DIRECTORY_COLOR = [0.5,0.5,1.0,1.0]
 	FILE_COLOR = [1,1,1,1]
@@ -38,7 +38,7 @@ private
 		@up_button.on_clicked { show_for_path(File.join(@path, '..')) }
 
 		self << (@close_button=GuiButton.new.set(:scale_x => 0.15, :scale_y => 0.07, :offset_x => 0.0, :offset_y => -0.5 + 0.035, :background_image => $engine.load_image('images/buttons/close.png')))
-		@close_button.on_clicked { hidden! }
+		@close_button.on_clicked { closed_notify }
 
 		show_for_path(File.dirname($engine.project.path))
 	end

@@ -24,6 +24,22 @@ class GuiDefault < GuiInterface
 	end
 
 	#
+	# File Utils
+	#
+	def choose_image
+		dialog = GuiFileDialog.new.set(:scale_x => 0.8, :scale_y => 0.8)
+		@dialog_container << dialog
+		dialog.on_selected { |path|
+			dialog.remove_from_parent!
+			yield path
+		}
+		dialog.on_closed {
+			dialog.remove_from_parent!
+		}
+	end
+
+
+	#
 	# Building the GUI
 	#
 	# Minimal start for a new object: self << GuiObject.new.set(:scale_x => 0.1, :scale_y => 0.1)
@@ -122,10 +138,7 @@ class GuiDefault < GuiInterface
 
 		self << @directors_list = GuiList.new([]).set(:hidden => true)
 
-		#self << @file_dialog = GuiFileDialog.new.set(:scale_x => 0.8, :scale_y => 0.8)
-		#@file_dialog.on_selected { |path|
-			#$gui.positive_message path
-		#}
+		self << @dialog_container = GuiBox.new
 
 		#
 		# 
