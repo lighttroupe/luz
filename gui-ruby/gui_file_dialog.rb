@@ -13,9 +13,9 @@ class GuiFileDialog < GuiBox
 		create!
 	end
 
-	def show_for_path(path, pattern='*.*')
+	def show_for_path(path, extensions=nil)
 		@path = path
-		@directories, @files = load_directories, load_files(pattern)
+		@directories, @files = load_directories, load_files(extensions)
 		@directory_list.clear!
 		@directories.each { |filename|
 			@directory_list << (renderer = GuiTextRenderer.new(filename).set(:label_color => DIRECTORY_COLOR))
@@ -30,17 +30,16 @@ class GuiFileDialog < GuiBox
 private
 
 	def create!
-		self << GuiObject.new.set(:background_image => $engine.load_image('images/overlay.png'))		# background
+		self << GuiObject.new.set(:background_image => $engine.load_image('images/black.png'))		# background
+
 		self << (@path_string = GuiString.new(self, :path).set(:scale_y => 0.05, :offset_y => 0.5 - 0.025))
-		self << (@directory_list = GuiList.new.set(:scale_y => 0.85, :offset_x => -0.04, :offset_y => -0.03, :spacing_y => -1.0, :item_aspect_ratio => 16.5))
+		self << (@directory_list = GuiList.new.set(:scale_y => 0.85, :offset_x => 0.0, :offset_y => -0.03, :spacing_y => -1.0, :item_aspect_ratio => 16.5))
 
 		self << (@up_button=GuiButton.new.set(:scale_x => 0.15, :scale_y => -0.07, :offset_x => -0.40, :offset_y => 0.5 - 0.035, :background_image => $engine.load_image('images/buttons/close.png')))
 		@up_button.on_clicked { show_for_path(File.join(@path, '..')) }
 
-		self << (@close_button=GuiButton.new.set(:scale_x => 0.15, :scale_y => 0.07, :offset_x => 0.0, :offset_y => -0.5 + 0.035, :background_image => $engine.load_image('images/buttons/close.png')))
+		self << (@close_button=GuiButton.new.set(:scale_x => 0.3, :scale_y => 0.05, :offset_x => 0.0, :offset_y => -0.5 + 0.025, :background_image => $engine.load_image('images/buttons/close.png')))
 		@close_button.on_clicked { closed_notify }
-
-		show_for_path(File.dirname($engine.project.path))
 	end
 
 	def load_directories
@@ -53,10 +52,10 @@ private
 		directories.sort
 	end
 
-	def load_files(pattern)
+	def load_files(extensions)
 		files = []
-		Dir.new(@path).each_matching(pattern) { |filename|
-			files << File.basename(filename) unless File.directory?(File.join(@path, filename))
+		Dir.new(@path).each_with_extensions(extensions) { |filename|
+			files << File.basename(filename) unless File.directory?(filename)
 		}
 		files
 	end

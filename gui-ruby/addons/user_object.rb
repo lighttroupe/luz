@@ -167,7 +167,7 @@ class UserObject
 
 		@gui_settings_list.clear!
 		user_object.settings.each_with_index { |setting, index|
-			@gui_settings_list << setting.gui_build_editor.set(:opacity => 0.0).animate({:opacity => 1.0}, duration=index*0.1)
+			@gui_settings_list << setting.gui_build_editor.set(:opacity => 0.0, :scale_y => 0.8).animate({:opacity => 1.0}, duration=index*0.1)
 		}
 	end
 

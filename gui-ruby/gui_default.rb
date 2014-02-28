@@ -27,17 +27,26 @@ class GuiDefault < GuiInterface
 	# File Utils
 	#
 	def choose_image
-		dialog = GuiFileDialog.new.set(:scale_x => 0.8, :scale_y => 0.8)
+		dialog = GuiFileDialog.new.set(:scale_x => 0.8, :scale_y => 0.8, :offset_y => -0.1)
 		@dialog_container << dialog
 		dialog.on_selected { |path|
 			dialog.remove_from_parent!
 			yield path
 		}
-		dialog.on_closed {
-			dialog.remove_from_parent!
-		}
+		dialog.on_closed { dialog.remove_from_parent! }
+		dialog.show_for_path(File.dirname($engine.project.path), ['png','gif','jpg','jpeg'])
 	end
 
+	def choose_project_file
+		dialog = GuiFileDialog.new.set(:scale_x => 0.8, :scale_y => 0.8, :offset_y => -0.1)
+		@dialog_container << dialog
+		dialog.on_selected { |path|
+			dialog.remove_from_parent!
+			yield path
+		}
+		dialog.on_closed { dialog.remove_from_parent! }
+		dialog.show_for_path(File.dirname($engine.project.path), ['luz'])
+	end
 
 	#
 	# Building the GUI
@@ -118,10 +127,11 @@ class GuiDefault < GuiInterface
 			positive_message 'Saved successfully.'
 		}
 
-		#@main_menu.on_open {
-			#$engine.open
-			#positive_message 'Opened successfully.'
-		#}
+		@main_menu.on_open {
+			choose_project_file { |path|
+				$switch_to_project_path = path
+			}
+		}
 
 		# Director Grid popup
 		self << @directors_menu = GuiDirectorMenu.new($engine.project.directors).

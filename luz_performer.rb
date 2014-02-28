@@ -211,6 +211,17 @@ class LuzPerformer
 			end
 
 			frame_number += 1
+
+			if $switch_to_project_path
+				begin
+					$engine.load_from_path($switch_to_project_path)
+					$gui.positive_message 'Opened successfully.'
+				rescue Exception => e
+					e.report('loading project')
+					$gui.negative_message 'Open failed.'
+				end
+				$switch_to_project_path = nil
+			end
 		end
 		SDL.quit
 
