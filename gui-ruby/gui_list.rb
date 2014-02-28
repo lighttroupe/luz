@@ -149,13 +149,15 @@ class GuiList < GuiBox
 	# Reordering
 	#
 	def move_child_up(child)
-		if (index = @contents.index(child)) > 0
+		return unless (index = @contents.index(child))
+		if index > 0
 			@contents[index], @contents[index-1] = @contents[index-1], @contents[index]
 		end
 	end
 
 	def move_child_down(child)
-		if (index = @contents.index(child)) < (@contents.size - 1)
+		return unless (index = @contents.index(child))
+		if index < (@contents.size - 1)
 			@contents[index], @contents[index+1] = @contents[index+1], @contents[index]
 		end
 	end
