@@ -13,7 +13,7 @@ class GuiAddWindow < GuiBox
 		@search = ''
 		super(contents=[])		# added in create!
 		create!
-		add_state(:open,   {:offset_x => 0.0, :offset_y => -0.05, :scale_x => 0.90, :scale_y => 0.9, :opacity => 1.0, :hidden => false})
+		add_state(:open,   {:offset_x => 0.0, :offset_y => -0.05, :scale_x => 1.0, :scale_y => 0.9, :opacity => 1.0, :hidden => false})
 		set_state(:closed, {:offset_x => 0.0, :offset_y => -0.10, :scale_x => 0.85, :scale_y => 0.9, :opacity => 0.9, :hidden => true})
 		set(options)
 	end
@@ -112,9 +112,8 @@ private
 		@list.on_selection_change { on_list_selection_change }
 
 		self << (@title = BitmapFont.new.set({:string => '', :offset_x => 0.19, :offset_y => 0.3, :scale_x => 0.58, :scale_y => 0.1}))
-		self << (@hint = BitmapFont.new.set({:string => '', :color => [0.7,0.7,0.7], :offset_x => 0.19, :offset_y => 0.2, :scale_x => 0.58, :scale_y => 0.06}))
-
-		self << (@hint = BitmapFont.new.set({:string => '', :color => [0.7,0.7,0.7], :offset_x => 0.19, :offset_y => 0.2, :scale_x => 0.58, :scale_y => 0.06}))
+		self << (@description = BitmapFont.new.set({:string => '', :color => [1.0,1.0,1.0], :offset_x => 0.19, :offset_y => 0.2, :scale_x => 0.58, :scale_y => 0.06}))
+		self << (@hint = BitmapFont.new.set({:string => '', :color => [0.7,0.7,0.7], :offset_x => 0.19, :offset_y => 0.1, :scale_x => 0.58, :scale_y => 0.06}))
 
 		#
 		# Close
@@ -128,6 +127,7 @@ private
 	def clear_list!
 		@list.clear!
 		@title.set_string('')
+		@description.set_string('')
 		@hint.set_string('')
 	end
 
@@ -182,6 +182,7 @@ private
 
 	def create_for_object(object)
 		@title.set_string(object.title)
+		@description.set_string(object.description)
 		@hint.set_string(object.hint)
 	end
 
