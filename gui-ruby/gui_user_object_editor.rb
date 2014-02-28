@@ -60,11 +60,6 @@ class GuiUserObjectEditor < GuiWindow
 		self << (@background=GuiObject.new.set(:background_image => $engine.load_image('images/user-object-editor-background.png')))
 
 		#
-		# Let object build its own content (eg. lists of effects and settings: gui-ruby/addons/user_object.rb)
-		#
-		self << @user_object.gui_build_editor		# find gui_build_editor implementations in gui-ruby/addons
-
-		#
 		# Icon and Title
 		#
 		if @user_object.is_a? Actor
@@ -92,6 +87,11 @@ class GuiUserObjectEditor < GuiWindow
 		#
 		self << (@close_button=GuiButton.new.set(:scale_x => 0.15, :scale_y => 0.07, :offset_x => 0.0, :offset_y => -0.5 + 0.035, :background_image => $engine.load_image('images/buttons/close.png')))
 		@close_button.on_clicked { $gui.clear_editors! }
+
+		#
+		# Let object build its own content (eg. lists of effects and settings: gui-ruby/addons/user_object.rb)
+		#
+		self << @user_object.gui_build_editor		# find gui_build_editor implementations in gui-ruby/addons
 	end
 
 	def close!
