@@ -220,7 +220,7 @@ class GuiDefault < GuiInterface
 		editor_visible = (editor && !editor.hidden?)
 
 		if user_object.is_a?(Director)
-			close_directors_menu! if self.chosen_director == user_object
+			close_directors_menu! #if self.chosen_director == user_object
 
 			self.chosen_director = user_object
 

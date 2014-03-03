@@ -9,11 +9,48 @@ class Director
 					unit_square
 				}
 			}
+			if pointer_hovering? && @gui_enter_exit_progress != 0.0
+				with_translation(0.0, -0.5 + 0.02) {
+					with_scale(0.95,0.01) {
+						render_bar(@gui_enter_exit_progress)
+					}
+				}
+			end
 		}
 	end
 
+	VALUE_COLOR = [1.0,1.0,0.0,0.8]
+
+	def render_bar(value)
+		if value > 0.0
+			with_translation(-0.5 + value/2.0, 0.0) {
+				with_scale_unsafe(value, 1.0) {
+					with_color_listsafe(VALUE_COLOR) {
+						unit_square
+					}
+				}
+			}
+		end
+	end
+
+	easy_accessor :gui_enter_exit_progress
+
 	def click(pointer)
-		@parent.set_selection(self)
+		if selected?
+			super
+		else
+			@parent.set_selection(self)
+			animate(:gui_enter_exit_progress, 0.5, 5.0)
+		end
+	end
+
+	def scroll_down!(pointer)
+		#clear_animations_for_field!(:gui_enter_exit_progress)
+		@gui_enter_exit_progress = (@gui_enter_exit_progress - 0.1).clamp(0.0,1.0)
+	end
+	def scroll_up!(pointer)
+		#clear_animations_for_field!(:gui_enter_exit_progress)
+		@gui_enter_exit_progress = (@gui_enter_exit_progress + 0.1).clamp(0.0,1.0)
 	end
 
 	def gui_tick!
@@ -38,6 +75,7 @@ class Director
 	end
 
 	def init_offscreen_buffer
+		@gui_enter_exit_progress ||= 0.5
 		@offscreen_buffer ||= get_offscreen_buffer(framebuffer_image_size)
 	end
 
@@ -51,6 +89,8 @@ class Director
 
 	def update_offscreen_buffer!
 		#p "#{self} updating on frame #{$env[:frame_number]}"
-		@offscreen_buffer.using { with_scale(0.625,1.0) { render! } }		# TODO: aspect ratio
+		with_enter_exit_progress(@gui_enter_exit_progress) {
+			@offscreen_buffer.using { with_scale(0.625,1.0) { render! } }		# TODO: aspect ratio
+		}
 	end
 end
