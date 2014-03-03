@@ -9,7 +9,7 @@ class Director
 					unit_square
 				}
 			}
-			if pointer_hovering? && @gui_enter_exit_progress != 0.0
+			if (pointer_hovering? || selected?) && @gui_enter_exit_progress != 0.0
 				with_translation(0.0, -0.5 + 0.02) {
 					with_scale(0.95,0.01) {
 						render_bar(@gui_enter_exit_progress)
