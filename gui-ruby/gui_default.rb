@@ -1,4 +1,4 @@
-multi_require 'gui_pointer_behavior', 'gui_object', 'gui_box', 'gui_hbox', 'gui_vbox', 'gui_list', 'gui_scrollbar', 'gui_grid', 'gui_message_bar', 'gui_beat_monitor', 'gui_button', 'gui_float', 'gui_toggle', 'gui_curve', 'gui_curve_increasing', 'gui_theme', 'gui_integer', 'gui_select', 'gui_actor', 'gui_event', 'gui_variable', 'gui_engine_button', 'gui_engine_slider', 'gui_radio_buttons', 'gui_object_renderer', 'gui_text_renderer', 'gui-ruby/fonts/bitmap-font', 'gui_main_menu', 'gui_window'
+multi_require 'gui_pointer_behavior', 'gui_object', 'gui_box', 'gui_hbox', 'gui_vbox', 'gui_list', 'gui_scrollbar', 'gui_grid', 'gui_message_bar', 'gui_beat_monitor', 'gui_time_control', 'gui_button', 'gui_float', 'gui_toggle', 'gui_curve', 'gui_curve_increasing', 'gui_theme', 'gui_integer', 'gui_select', 'gui_actor', 'gui_event', 'gui_variable', 'gui_engine_button', 'gui_engine_slider', 'gui_radio_buttons', 'gui_object_renderer', 'gui_text_renderer', 'gui-ruby/fonts/bitmap-font', 'gui_main_menu', 'gui_window'
 load_directory(Dir.pwd + '/gui-ruby/addons/', '**.rb')		# Addons to existing objects
 multi_require 'gui_actor_view', 'gui_director_view', 'gui_preferences_box', 'gui_user_object_editor', 'gui_delete_button', 'gui_enter_exit_button', 'gui_enter_exit_popup', 'gui_add_window', 'gui_interface', 'gui_actor_class_button', 'gui_director_menu', 'gui_actors_flyout', 'gui_variables_flyout', 'gui_message_bus_monitor', 'gui_file_dialog', 'keyboard'
 
@@ -145,6 +145,11 @@ class GuiDefault < GuiInterface
 		self << @beat_monitor = GuiBeatMonitor.new(beats_per_measure=4).set(:scale_x => 0.10, :scale_y => 0.02, :background_scale_x => 1.2, :background_scale_y => 1.2, :background_image => $engine.load_image('images/drawer-n.png')).
 			add_state(:closed, {:offset_x => 0.0, :offset_y => 0.55, :hidden => true}).
 			set_state(:open, {:offset_x => 0.0, :offset_y => 0.49, :hidden => false})
+
+		# Time Control
+		self << @time_control = GuiTimeControl.new.set(:scale_x => 0.02, :scale_y => 0.01, :background_scale_x => 1.2, :background_scale_y => 1.2, :background_image => $engine.load_image('images/drawer-n.png')).
+			add_state(:open, {:offset_x => 0.0, :offset_y => 0.495, :hidden => false}).
+			set_state(:closed, {:offset_x => 0.0, :offset_y => 0.55, :hidden => true})
 
 		self << @directors_list = GuiList.new([]).set(:hidden => true)
 
@@ -338,6 +343,10 @@ class GuiDefault < GuiInterface
 		@beat_monitor.switch_state({:open => :closed, :closed => :open}, duration=0.2)
 	end
 
+	def toggle_time_control!
+		@time_control.switch_state({:open => :closed, :closed => :open}, duration=0.2)
+	end
+
 	#
 	# Next/Previous actor selection
 	#
@@ -410,6 +419,8 @@ class GuiDefault < GuiInterface
 				end
 			when 'b'
 				toggle_beat_monitor!
+			when 't'
+				toggle_time_control!
 			when ','
 				$engine.beat_half_time!
 			when '.'
