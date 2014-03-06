@@ -27,7 +27,7 @@ class GuiDefault < GuiInterface
 	# File Utils
 	#
 	def choose_image
-		dialog = GuiFileDialog.new.set(:scale_x => 0.8, :scale_y => 0.8, :offset_y => -0.1)
+		dialog = GuiFileDialog.new('Choose Image').set(:scale_x => 0.8, :scale_y => 0.8, :offset_y => -0.1)
 		@dialog_container << dialog
 		dialog.on_selected { |path|
 			dialog.remove_from_parent!
@@ -38,7 +38,7 @@ class GuiDefault < GuiInterface
 	end
 
 	def choose_project_file
-		dialog = GuiFileDialog.new.set(:scale_x => 0.8, :scale_y => 0.8, :offset_y => -0.1)
+		dialog = GuiFileDialog.new('Open Project').set(:scale_x => 0.8, :scale_y => 0.8, :offset_y => -0.1)
 		@dialog_container << dialog
 		dialog.on_selected { |path|
 			dialog.remove_from_parent!

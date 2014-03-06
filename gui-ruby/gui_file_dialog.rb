@@ -8,8 +8,9 @@ class GuiFileDialog < GuiBox
 	DIRECTORY_COLOR = [0.5,0.5,1.0,1.0]
 	FILE_COLOR = [1,1,1,1]
 
-	def initialize
-		super
+	def initialize(title)
+		super()
+		@title = title
 		create!
 	end
 
@@ -32,7 +33,7 @@ private
 	def create!
 		self << GuiObject.new.set(:background_image => $engine.load_image('images/overlay.png'))		# background
 
-		self << (@title = BitmapFont.new.set({:color => [0.6,0.6,1.0], :string => 'Open Project', :offset_x => -0.03, :offset_y => 0.47, :scale_x => 0.1, :scale_y => 0.05}))
+		self << (@title_label = BitmapFont.new.set({:color => [0.6,0.6,1.0], :string => @title, :offset_x => -0.03, :offset_y => 0.47, :scale_x => 0.1, :scale_y => 0.05}))
 
 		self << (@path_string = GuiString.new(self, :path).set(:scale_y => 0.05, :offset_y => 0.5 - 0.025))
 		self << (@directory_list = GuiList.new.set(:scale_y => 0.85, :offset_x => 0.0, :offset_y => -0.03, :spacing_y => -1.0, :item_aspect_ratio => 16.5))
