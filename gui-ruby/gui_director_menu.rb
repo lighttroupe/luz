@@ -29,7 +29,7 @@ class GuiDirectorMenu < GuiWindow
 
 		self << @cancel_button = GuiButton.new.set(:scale => 0.05, :offset_x => 0.475, :offset_y => 0.475, :background_image => $engine.load_image('images/buttons/director-view-close.png'))
 		@cancel_button.on_clicked {
-			$gui.build_editor_for($gui.chosen_director)
+			close!
 		}
 	end
 

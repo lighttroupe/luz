@@ -220,13 +220,17 @@ class GuiDefault < GuiInterface
 		editor_visible = (editor && !editor.hidden?)
 
 		if user_object.is_a?(Director)
-			close_directors_menu! #if self.chosen_director == user_object
+			if self.chosen_director == user_object
+				self.mode = :director
+			else
+				self.chosen_director = user_object
+				clear_editors!
+				close_directors_menu! #if self.chosen_director == user_object
+				return
+			end
+		end
 
-			self.chosen_director = user_object
-
-			return nil
-
-		elsif user_object.is_a?(ParentUserObject) || user_object.is_a?(Project)		# TODO: responds_to? :effects ?
+		if user_object.is_a?(ParentUserObject) || user_object.is_a?(Project)		# TODO: responds_to? :effects ?
 			case user_object
 			when Actor
 				if editor_visible
