@@ -49,7 +49,7 @@ private
 		# Row 2
 		row = GuiHBox.new	#.set(:scale_y => 0.5, :offset_y => -0.25)
 		unless @setting.options[:simple]
-			row << (@enable_enter_exit_button=GuiEnterExitButton.new(@setting).set(:scale_x => 0.10, :scale_y => 0.65, :offset_x => -0.425, :offset_y => 0.1))
+			row << (@enable_enter_exit_button=GuiEnterExitButton.new(@setting).set(:scale_x => 0.15, :scale_y => 0.9, :offset_x => -0.425, :offset_y => -0.08))
 
 			@enable_enter_exit_button.on_clicked { |pointer|
 				if @enter_exit_popup
