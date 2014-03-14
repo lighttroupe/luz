@@ -23,17 +23,6 @@ class UserObjectSettingDirector < UserObjectSetting
 		super + ['@director']
 	end
 
-	def widget
-		combobox = create_director_combobox(:director)
-		new_button = create_new_object_button
-		new_button.signal_connect('clicked') {
-			$gui.create_parent_user_object(:director) { |director|
-				combobox.set_active_object(@director = director)
-			}
-		}
-		return Gtk::hbox_for_widgets([combobox, new_button])
-	end
-
 	def one
 		yield @director if @director
 	end

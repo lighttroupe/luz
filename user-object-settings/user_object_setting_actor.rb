@@ -35,30 +35,6 @@ class UserObjectSettingActor < UserObjectSetting
 		super
 	end
 
-	def widget
-		combobox = create_actor_combobox(:actor)
-		new_button = create_new_object_button
-		clear_button = create_clear_button
-
-		new_button.signal_connect('clicked') {
-			$gui.create_parent_user_object(:actor) { |actor|
-				combobox.set_active_object(@actor = actor)
-			}
-		}
-
-		clear_button.signal_connect('clicked') {
-			set(:actor, nil)
-			combobox.select_none
-			clear_button.sensitive = false
-		}
-
-		combobox.on_change_with_init {
-			clear_button.sensitive = (!@actor.nil?)
-		}
-
-		return Gtk::hbox_for_widgets([combobox, new_button, clear_button])
-	end
-
 	HANDLE_POSITION = 1
 	def handle_drag_scroll_up(handle_id)
 		@z = ((@z - 0.1) * 10.0).round / 10.0

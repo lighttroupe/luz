@@ -28,10 +28,6 @@ class UserObjectSettingThemes < UserObjectSetting
 		super + ['@tag']
 	end
 
-	def widget
-		create_theme_tag_combobox(:tag)
-	end
-
 	#
 	# API for plugins
 	#

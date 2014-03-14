@@ -23,10 +23,6 @@ class UserObjectSettingDirectors < UserObjectSetting
 		super + ['@tag']
 	end
 
-	def widget
-		create_director_tag_combobox(:tag)
-	end
-
 	def one(index=0)
 		list = get_directors
 		return nil if list.empty?		# NOTE: return without yielding

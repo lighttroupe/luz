@@ -33,10 +33,6 @@ class UserObjectSettingActors < UserObjectSetting
 		super
 	end
 
-	def widget
-		create_actor_tag_combobox(:tag)
-	end
-
 	#
 	# API for plugins
 	#

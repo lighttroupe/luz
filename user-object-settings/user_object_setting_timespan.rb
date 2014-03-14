@@ -30,13 +30,6 @@ class UserObjectSettingTimespan < UserObjectSetting
 		@time_unit ||= (@options[:default] ? @options[:default][1] : (:seconds))
 	end
 
-	def widget
-		time_number = create_spinbutton(:time_number, 0.0..999.0, 1, 10, 3)
-		time_unit = create_combobox(:time_unit, TIME_UNIT_OPTIONS)
-
-		return Gtk.hbox_for_widgets([time_number, time_unit])
-	end
-
 	attr_reader :time_number, :time_unit
 
 	def instant?

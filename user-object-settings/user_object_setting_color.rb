@@ -37,23 +37,6 @@ class UserObjectSettingColor < UserObjectSetting
 		super
 	end
 
-	def widget
-		colorselection = Gtk::ColorSelection.new
-		colorselection.has_opacity_control = @use_alpha
-		colorselection.has_palette = false
-		colorselection.current_alpha = @color.gdk_alpha
-		colorselection.previous_alpha = @color.gdk_alpha
-		colorselection.current_color = @color.gdk_color
-		colorselection.previous_color = @color.gdk_color
-
-		# not supported in ruby-gnome2?
-		#colorselection.set_update_policy(Gtk::UPDATE_DISCONTINUOUS)
-		#...nor... colorselection.set_property('update-policy', Gtk::UPDATE_DISCONTINUOUS)
-
-		colorselection.signal_connect('color-changed') { @color.gl_color = colorselection.gl_color ; change_notify }
-		return colorselection
-	end
-
 	def immediate_value
 		@color
 	end

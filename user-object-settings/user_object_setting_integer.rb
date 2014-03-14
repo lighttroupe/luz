@@ -40,10 +40,6 @@ class UserObjectSettingInteger < UserObjectSettingNumeric
 		super
 	end
 
-	def widget
-		create_spinbutton(:animation_min, @options[:range], 1, 10, 0)
-	end
-
 	def immediate_value
 		@last_value = @animation_min
 	end

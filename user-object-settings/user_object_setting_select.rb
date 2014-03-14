@@ -27,10 +27,6 @@ class UserObjectSettingSelect < UserObjectSetting
 		@selected = @options[:default] unless @options[:options].find { |o| o.first == @selected }
 	end
 
-	def widget
-		return create_combobox(:selected, @options[:options])
-	end
-
 	def immediate_value
 		@selected
 	end

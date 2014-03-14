@@ -23,18 +23,6 @@ class UserObjectSettingVariable < UserObjectSetting
 		['@variable'] + super
 	end
 
-	def widget
-		combobox = create_variable_combobox(:variable)
-
-		new_button = create_new_object_button
-		new_button.signal_connect('clicked') {
-			$gui.create_parent_user_object(:variable) { |variable|
-				combobox.set_active_object(@variable = variable)
-			}
-		}
-		return Gtk::hbox_for_widgets([combobox, new_button])
-	end
-
 	def immediate_value
 		(@variable) ? @variable.do_value : 0.0		# NOTE: important that we ask the variable (not the engine), in case it hasn't been updated yet this frame
 	end

@@ -26,27 +26,6 @@ class UserObjectSettingButton < UserObjectSetting
 	LABEL_NORMAL = 'Record '
 	LABEL_RECORDING = 'Recording - press desired button'
 
-	def widget
-		combobox = create_button_name_combobox(:button)
-
-		record_button = Gtk::Button.new.set_label(LABEL_NORMAL).set_image(Gtk::Image.new(Gtk::Stock::MEDIA_RECORD, Gtk::IconSize::BUTTON))
-		record_button.signal_connect('clicked') {
-			# Change button appearance
-			record_button.set_label(LABEL_RECORDING)
-
-			$engine.button_grab { |button|
-				@button = button
-
-				# Show new button
-				combobox.set_active_object(@button)
-
-				# Restore normal label
-				record_button.set_label(LABEL_NORMAL)
-			}
-		}
-		return Gtk.hbox_for_widgets([combobox, record_button])
-	end
-
 	def immediate_value
 		@button
 	end

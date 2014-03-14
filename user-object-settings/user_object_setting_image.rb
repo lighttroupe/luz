@@ -47,37 +47,6 @@ class UserObjectSettingImage < UserObjectSetting
 	DEFAULT_BUTTON_TEXT = 'Choose'
 	IMAGE_MIME_TYPE_FILTER = 'image/*'
 
-	def widget
-		# TODO: use options here to limit what type of file to load, what to do to it
-		choose_button = Gtk::Button.new.set_label(@image_name || DEFAULT_BUTTON_TEXT)
-		clear_button = Gtk::Button.new.set_label('Clear')
-
-		clear_button.sensitive = (!@image_name.nil?)
-
-		choose_button.signal_connect('clicked') {
-			$gui.choose_file(:filter_mime_type => IMAGE_MIME_TYPE_FILTER) { |relative_file_path|
-				@image_list = nil
-				set(:image_name, relative_file_path)
-				choose_button.set_label(relative_file_path || DEFAULT_BUTTON_TEXT)
-				clear_button.sensitive = (!@image_name.nil?)
-
-				$gui.long_process('Loading...') { load_images }
-			}
-		}
-		clear_button.signal_connect('clicked') {
-			clear
-			choose_button.set_label(DEFAULT_BUTTON_TEXT)
-			clear_button.sensitive = false
-		}
-
-		edit_button = create_edit_button
-		edit_button.signal_connect('clicked') {
-			$gui.safe_open_image(File.join($engine.project.file_path, @image_name))
-		}
-
-		Gtk::hbox_for_widgets([choose_button, clear_button, edit_button])
-	end
-
 	def clear
 		set(:image_name, nil)
 		@image_list = nil

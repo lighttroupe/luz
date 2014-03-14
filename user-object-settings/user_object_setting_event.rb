@@ -25,30 +25,6 @@ class UserObjectSettingEvent < UserObjectSetting
 
 	attr_reader :event
 
-	def widget
-		combobox = create_event_combobox(:event)
-
-		new_button = create_new_object_button
-		new_button.signal_connect('clicked') {
-			$gui.create_parent_user_object(:event) { |event|
-				combobox.set_active_object(@event = event)
-			}
-		}
-
-		clear_button = create_clear_button
-		clear_button.signal_connect('clicked') {
-			set(:event, nil)
-			combobox.select_none
-			clear_button.sensitive = false
-		}
-
-		combobox.on_change_with_init {
-			clear_button.sensitive = (!@event.nil?)
-		}
-
-		return Gtk::hbox_for_widgets([combobox, new_button, clear_button])
-	end
-
 	#
 	#
 	#

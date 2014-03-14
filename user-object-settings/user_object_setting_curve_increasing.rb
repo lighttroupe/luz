@@ -28,10 +28,6 @@ class UserObjectSettingCurveIncreasing < UserObjectSetting
 		super
 	end
 
-	def widget
-		create_curve_combobox_increasing(:curve)
-	end
-
 	# enter and exit times are in engine-time (seconds, float)
 	def immediate_value
 		@curve

@@ -434,22 +434,6 @@ class UserObjectSettingTimeline < UserObjectSetting
 		super
 	end
 
-	def widget
-		timeline = TimelineWidget.new(self).show
-
-#		timeline.points = @points
-#		timeline.on_change { @points = timeline.points }
-
-#		timeline.width_request = 200
-		timeline.height_request = 200
-
-		return timeline
-	end
-
-	def widget_expands?
-		true
-	end
-
 	def immediate_value
 		self
 	end

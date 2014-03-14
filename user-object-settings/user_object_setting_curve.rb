@@ -28,10 +28,6 @@ class UserObjectSettingCurve < UserObjectSetting
 		super
 	end
 
-	def widget
-		create_curve_combobox(:curve)
-	end
-
 	def immediate_value
 		@curve
 	end

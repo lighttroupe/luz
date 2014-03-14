@@ -23,24 +23,6 @@ class UserObjectSettingFont < UserObjectSetting
 		['@font'] + super
 	end
 
-	def widget
-		font_button = Gtk::FontButton.new(@font ? "#{@font} 16" : nil)
-		font_button.set_show_size(false)
-
-		font_button.signal_connect('font-set') {
-			name = font_button.font_name.strip
-
-			# remove font size
-			name = name.gsub(/ \d*$/, '')
-
-			# remove odd useless appendages
-			name = name.without_suffix(' Normal')
-
-			set(:font, name)
-		}
-		return font_button
-	end
-
 	def immediate_value
 		@font
 	end

@@ -29,18 +29,6 @@ class UserObjectSettingTheme < UserObjectSetting
 		super
 	end
 
-	def widget
-		combobox = create_theme_combobox(:theme)
-
-		new_button = create_new_object_button
-		new_button.signal_connect('clicked') {
-			$gui.create_parent_user_object(:theme) { |theme|
-				combobox.set_active_object(@theme = theme)
-			}
-		}
-		return Gtk::hbox_for_widgets([combobox, new_button])
-	end
-
 	# enter and exit times are in engine-time (seconds, float)
 	def immediate_value
 		@theme
