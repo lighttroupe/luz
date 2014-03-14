@@ -118,8 +118,7 @@ class GuiDefault < GuiInterface
 			set_state(:closed, {:scale_x => 2.0, :opacity => 0.0, :hidden => true})
 
 		@main_menu.on_close {
-			@main_menu.switch_state({:open => :closed}, duration=0.1)
-			@overlay.switch_state({:open => :closed}, duration=0.2)
+			close_main_menu!
 		}
 
 		@main_menu.on_save {
@@ -315,6 +314,11 @@ class GuiDefault < GuiInterface
 		end
 	end
 
+	def close_main_menu!
+		@main_menu.switch_state({:open => :closed}, duration=0.1)
+		@overlay.switch_state({:open => :closed}, duration=0.2)
+	end
+
 	def close_actors_flyout!
 		@actors_flyout.switch_state({:open => :closed}, duration=0.2)
 	end
@@ -467,7 +471,9 @@ class GuiDefault < GuiInterface
 		else
 			case key
 			when 'escape'
-				if @directors_menu.visible?
+				if @main_menu.visible?
+					close_main_menu!
+				elsif @directors_menu.visible?
 					close_directors_menu!
 				else
 					toggle!
