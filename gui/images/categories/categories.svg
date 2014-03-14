@@ -17,7 +17,7 @@
    version="1.1"
    inkscape:version="0.48.3.1 r9886"
    sodipodi:docname="categories.svg"
-   inkscape:export-filename="/home/joshfitzart/luz-2.0/gui-ruby/images/categories/categories.png"
+   inkscape:export-filename="/home/joshfitzart/luz-2.0/gui/images/categories/categories.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
   <defs
@@ -1153,7 +1153,7 @@
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90"
        inkscape:label="#g4968"
-       inkscape:export-filename="/home/joshfitzart/luz-2.0/gui-ruby/images/categories/canvas.png"
+       inkscape:export-filename="/home/joshfitzart/luz-2.0/gui/images/categories/canvas.png"
        transform="matrix(4.1479625,0,0,4.1479625,-3684.941,-614.83029)">
       <rect
          inkscape:export-ydpi="90"

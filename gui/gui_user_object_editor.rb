@@ -89,9 +89,9 @@ class GuiUserObjectEditor < GuiWindow
 		@close_button.on_clicked { $gui.clear_editors! }
 
 		#
-		# Let object build its own content (eg. lists of effects and settings: gui-ruby/addons/user_object.rb)
+		# Let object build its own content (eg. lists of effects and settings: gui/addons/user_object.rb)
 		#
-		self << @user_object.gui_build_editor		# find gui_build_editor implementations in gui-ruby/addons
+		self << @user_object.gui_build_editor		# find gui_build_editor implementations in gui/addons
 	end
 
 	def close!

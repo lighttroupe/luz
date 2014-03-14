@@ -946,7 +946,7 @@ square</desc>
     <g
        id="quit-roll"
        inkscape:label="#g3990"
-       inkscape:export-filename="/home/joshfitzart/luz-2.0/gui-ruby/images/buttons/quit.png"
+       inkscape:export-filename="/home/joshfitzart/luz-2.0/gui/images/buttons/quit.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90"
        transform="translate(517.27611,-389.98098)">
@@ -992,7 +992,7 @@ square</desc>
     <g
        inkscape:export-ydpi="90"
        inkscape:export-xdpi="90"
-       inkscape:export-filename="/home/joshfitzart/luz-2.0/gui-ruby/images/buttons/delete.png"
+       inkscape:export-filename="/home/joshfitzart/luz-2.0/gui/images/buttons/delete.png"
        inkscape:label="#g3971"
        transform="translate(-1262.7878,-271.31952)"
        id="quit-null" />
@@ -1320,7 +1320,7 @@ square</desc>
     </g>
     <g
        id="g5001"
-       inkscape:export-filename="/home/joshfitzart/luz-2.0/gui-ruby/images/buttons/minus.png"
+       inkscape:export-filename="/home/joshfitzart/luz-2.0/gui/images/buttons/minus.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90"
        transform="translate(-199.91921,99.925777)">
@@ -1358,7 +1358,7 @@ square</desc>
     </g>
     <g
        id="g4993"
-       inkscape:export-filename="/home/joshfitzart/luz-2.0/gui-ruby/images/buttons/plus.png"
+       inkscape:export-filename="/home/joshfitzart/luz-2.0/gui/images/buttons/plus.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90"
        transform="translate(-204.06602,104.00224)">
@@ -1835,7 +1835,7 @@ square</desc>
        inkscape:label="#g4671"
        id="quit"
        transform="translate(537.05269,-317.73989)"
-       inkscape:export-filename="/home/joshfitzart/luz-2.0/gui-ruby/images/buttons/g4387.png">
+       inkscape:export-filename="/home/joshfitzart/luz-2.0/gui/images/buttons/g4387.png">
       <path
          sodipodi:nodetypes="ccccccccccc"
          inkscape:connector-curvature="0"
@@ -2932,7 +2932,7 @@ square</desc>
     <g
        inkscape:export-ydpi="90"
        inkscape:export-xdpi="90"
-       inkscape:export-filename="/home/joshfitzart/luz-2.0/gui-ruby/images/buttons/delete.png"
+       inkscape:export-filename="/home/joshfitzart/luz-2.0/gui/images/buttons/delete.png"
        id="g4602"
        transform="translate(89.722535,-691.32997)">
       <rect
@@ -3094,7 +3094,7 @@ square</desc>
     </g>
     <g
        id="close"
-       inkscape:export-filename="/home/joshfitzart/luz-2.0/gui-ruby/images/buttons/close.png"
+       inkscape:export-filename="/home/joshfitzart/luz-2.0/gui/images/buttons/close.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90"
        inkscape:label="#g4445"
@@ -3276,7 +3276,7 @@ square</desc>
        transform="translate(-92.879833,222.94722)"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90"
-       inkscape:export-filename="/home/joshfitzart/luz-2.0/gui-ruby/images/buttons/project-effects.png"
+       inkscape:export-filename="/home/joshfitzart/luz-2.0/gui/images/buttons/project-effects.png"
        inkscape:label="#g5539">
       <path
          style="fill:#0f0f0f;fill-opacity:1;stroke:none"
@@ -3494,7 +3494,7 @@ square</desc>
     </g>
     <g
        id="main-menu-save"
-       inkscape:export-filename="/home/joshfitzart/luz-2.0/gui-ruby/images/buttons/save.png"
+       inkscape:export-filename="/home/joshfitzart/luz-2.0/gui/images/buttons/save.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90"
        transform="matrix(1,0,0,-1,188.34252,129.21294)"
@@ -3502,7 +3502,7 @@ square</desc>
       <g
          transform="matrix(-1,0,0,1,1710.4761,-265.22654)"
          id="g5905"
-         inkscape:export-filename="/home/joshfitzart/luz-2.0/gui-ruby/images/save.png"
+         inkscape:export-filename="/home/joshfitzart/luz-2.0/gui/images/save.png"
          inkscape:export-xdpi="90"
          inkscape:export-ydpi="90">
         <path
@@ -3576,7 +3576,7 @@ square</desc>
     </g>
     <g
        id="main-menu-quit"
-       inkscape:export-filename="/home/joshfitzart/luz-2.0/gui-ruby/images/buttons/quit.png"
+       inkscape:export-filename="/home/joshfitzart/luz-2.0/gui/images/buttons/quit.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90"
        transform="translate(308.82909,124.79482)"
@@ -4014,7 +4014,7 @@ square</desc>
        inkscape:label="#g4445"
        inkscape:export-ydpi="90"
        inkscape:export-xdpi="90"
-       inkscape:export-filename="/home/joshfitzart/luz-2.0/gui-ruby/images/buttons/close.png"
+       inkscape:export-filename="/home/joshfitzart/luz-2.0/gui/images/buttons/close.png"
        id="g7132" />
     <g
        inkscape:export-ydpi="89.095436"
@@ -4022,7 +4022,7 @@ square</desc>
        inkscape:label="#g7042"
        transform="matrix(0.95154196,0,0,0.95154196,68.83047,128.88291)"
        id="director-view-close"
-       inkscape:export-filename="/home/joshfitzart/luz-2.0/gui-ruby/images/buttons/director-view-cancel.png">
+       inkscape:export-filename="/home/joshfitzart/luz-2.0/gui/images/buttons/director-view-cancel.png">
       <path
          sodipodi:nodetypes="cccccccc"
          inkscape:connector-curvature="0"
@@ -4126,7 +4126,7 @@ square</desc>
        transform="matrix(-1,0,0,1,2497.3407,111.08867)"
        inkscape:label="#g5679"
        id="g7325"
-       inkscape:export-filename="/home/joshfitzart/luz-2.0/gui-ruby/images/buttons/director-view-close.png">
+       inkscape:export-filename="/home/joshfitzart/luz-2.0/gui/images/buttons/director-view-close.png">
       <g
          style="fill:#1a1a1a;fill-opacity:1"
          id="g7327"
@@ -4243,12 +4243,12 @@ square</desc>
        transform="matrix(1,0,0,-1,-3.8713229,110.24411)"
        inkscape:export-ydpi="90"
        inkscape:export-xdpi="90"
-       inkscape:export-filename="/home/joshfitzart/luz-2.0/gui-ruby/images/buttons/save.png"
+       inkscape:export-filename="/home/joshfitzart/luz-2.0/gui/images/buttons/save.png"
        id="g7421">
       <g
          inkscape:export-ydpi="90"
          inkscape:export-xdpi="90"
-         inkscape:export-filename="/home/joshfitzart/luz-2.0/gui-ruby/images/main-menu-save.png"
+         inkscape:export-filename="/home/joshfitzart/luz-2.0/gui/images/main-menu-save.png"
          id="g7423"
          transform="matrix(-0.70710678,0.70710678,0.70710678,0.70710678,1092.4895,-1184.3168)">
         <path

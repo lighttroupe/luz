@@ -5,7 +5,7 @@ module EngineImages
 	def image_directories
 		[
 			@project.file_path,
-			'gui-ruby'
+			'gui'
 		].compact
 	end
 
