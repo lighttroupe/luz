@@ -21,8 +21,8 @@ $LOAD_PATH << '/usr/lib/ruby/1.9.1/i486-linux/'
 
 Dir.chdir(File.dirname(__FILE__))	# So that this file can be run from anywhere
 $LOAD_PATH.unshift('./utils').unshift('.')
-$LOAD_PATH << './user-object-settings'
 $LOAD_PATH << './engine'
+$LOAD_PATH << './engine/user-object-settings'
 
 ###################################################################
 # Constants
