@@ -93,7 +93,7 @@ private
 		#
 		# Category selector
 		#
-		self << (@category_selector = GuiRadioButtons.new(self, :category, categories_for_radio_buttons).set(:offset_x => 0.005, :offset_y => 0.44, :scale_x => 0.16 * @categories.size, :scale_y => 0.11, :spacing_x => 1.0)).
+		self << (@category_selector = GuiRadioButtons.new(self, :category, categories_for_radio_buttons).set(:offset_x => -0.5 + (0.08 * @categories.size), :offset_y => 0.44, :scale_x => 0.16 * @categories.size, :scale_y => 0.11, :spacing_x => 1.0)).
 			add_state(:closed, {:opacity => 0.0, :hidden => true}).
 			set_state(:open, {:opacity => 1.0, :hidden => false})
 		@category_selector.on_selection_change {
