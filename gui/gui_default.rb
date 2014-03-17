@@ -132,6 +132,16 @@ class GuiDefault < GuiInterface
 			}
 		}
 
+		@main_menu.on_new {
+			#save_changes_before {
+				#choose_project_path { |path|
+					# TODO: copy base-2.0.luz to that directory
+					# TODO: open it
+				#}
+			#}
+			$engine.project.load_from_path('base-2.0.luz')
+		}
+
 		# Director Grid popup
 		self << @directors_menu = GuiDirectorMenu.new($engine.project.directors).
 			add_state(:open, {:scale_x => 1.0, :scale_y => 1.0, :opacity => 1.0, :hidden => false}).
