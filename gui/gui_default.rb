@@ -164,6 +164,12 @@ class GuiDefault < GuiInterface
 
 		self << @dialog_container = GuiBox.new
 
+		self << (@reopen_button=GuiButton.new.set(:scale_x => 0.1, :scale_y => 0.022, :offset_x => 0.0, :background_image => $engine.load_image('images/buttons/reopen-user-object-editor.png'))).
+			add_state(:open, {:offset_y => -0.5 + 0.011, :hidden => false}).
+			set_state(:closed, {:offset_y => -0.5 - 0.011, :hidden => true})
+
+		@reopen_button.on_clicked { reshow_latest! }
+
 		#
 		# 
 		#
@@ -227,6 +233,8 @@ class GuiDefault < GuiInterface
 		pointer = options[:pointer]
 		editor = @user_object_editor if @user_object == user_object
 		editor_visible = (editor && !editor.hidden?)
+
+		hide_reopen_button!
 
 		if user_object.is_a?(Director)
 			if self.chosen_director == user_object
@@ -300,6 +308,7 @@ class GuiDefault < GuiInterface
 			editor = @user_object_editor		# local cache (closures!)
 			@user_object_editor.animate({:opacity => 0.0, :offset_y => @user_object_editor.offset_y - 0.05}, duration=0.1) {
 				editor.remove_from_parent!
+				show_reopen_button! unless @user_object_editor
 			}
 		end
 		@user_object_editor = nil
@@ -365,6 +374,13 @@ class GuiDefault < GuiInterface
 		@time_control.switch_state({:open => :closed, :closed => :open}, duration=0.2)
 	end
 
+	def show_reopen_button!
+		@reopen_button.switch_state({:closed => :open}, duration=0.2)
+	end
+	def hide_reopen_button!
+		@reopen_button.switch_state({:open => :closed}, duration=0.1)
+	end
+
 	#
 	# Next/Previous actor selection
 	#
@@ -402,6 +418,10 @@ class GuiDefault < GuiInterface
 		end
 	end
 
+	def reshow_latest!
+		build_editor_for(@user_object, :grab_keyboard_focus => true) if @user_object
+	end
+
 	def on_key_press(key)
 		#
 		# Ctrl key
@@ -433,7 +453,7 @@ class GuiDefault < GuiInterface
 				@directors_menu.grab_keyboard_focus!
 			when 'down'
 				unless hide_something!
-					build_editor_for(@user_object, :grab_keyboard_focus => true) if @user_object
+					reshow_latest!
 				end
 			when 'b'
 				toggle_beat_monitor!

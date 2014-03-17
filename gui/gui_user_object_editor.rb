@@ -96,5 +96,6 @@ class GuiUserObjectEditor < GuiWindow
 
 	def close!
 		animate({:opacity => 0.0, :offset_y => offset_y - 0.2, :scale_x => scale_x * 1.1}, duration=0.2) { set_hidden(true) }
+		$gui.show_reopen_button!
 	end
 end
