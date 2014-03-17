@@ -35,8 +35,12 @@ class GuiActorsFlyout < GuiWindow
 		}
 
 		# Actor list				# TODO: item_aspect_ratio is related to screen ratio
-		self << @actors_list = GuiList.new([]).set(:scroll_wrap => true, :scale_x => 0.91, :scale_y => 0.82, :offset_x => 0.036, :offset_y => 0.0, :spacing_y => -1.0, :item_aspect_ratio => 0.75)
+		self << @actors_list = GuiList.new([]).set(:scroll_wrap => false, :scale_x => 0.88, :scale_y => 0.82, :offset_x => 0.05, :offset_y => 0.0, :spacing_y => -1.0, :item_aspect_ratio => 0.75)
 		@actors_list.on_selection_change { on_list_selection_change }
+
+		# ...scrollbar
+		@gui_actors_list_scrollbar = GuiScrollbar.new(@actors_list).set(:scale_x => 0.08, :scale_y => 0.82, :offset_x => -0.43, :offset_y => 0.0)
+		self << @gui_actors_list_scrollbar
 
 #			klass = ActorStarFlower
 #			@actors_list.add_after_selection(actor = klass.new)
