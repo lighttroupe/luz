@@ -6,6 +6,8 @@ class GuiButton < GuiObject
 	callback :clicked
 	callback :holding
 	easy_accessor :background_image
+	easy_accessor :background_image_hover
+	easy_accessor :background_image_click
 
 	def click(pointer)
 		clicked_notify(pointer)
@@ -22,6 +24,20 @@ class GuiButton < GuiObject
 				gui_render_background
 			}
 		}
+	end
+
+	def gui_render_background
+		if pointer_clicking? && background_image_click
+			background_image_click.using {
+				unit_square
+			}
+		elsif pointer_hovering? && background_image_hover
+			background_image_hover.using {
+				unit_square
+			}
+		else
+			super
+		end
 	end
 
 private
