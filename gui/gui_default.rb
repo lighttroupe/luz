@@ -105,6 +105,11 @@ class GuiDefault < GuiInterface
 		#
 		self << @user_object_editor_container = GuiBox.new
 
+		self << (@reopen_button=GuiButton.new.set(:scale_x => 0.1, :scale_y => 0.022, :offset_x => 0.0, :background_image => $engine.load_image('images/buttons/reopen-user-object-editor.png'))).
+			add_state(:open, {:offset_y => -0.5 + 0.011, :hidden => false}).
+			set_state(:closed, {:offset_y => -0.5 - 0.011, :hidden => true})
+		@reopen_button.on_clicked { reshow_latest! }
+
 		#
 		# OVERLAY LEVEL (things above this line are obscured while overlay is showing)
 		#
@@ -163,12 +168,6 @@ class GuiDefault < GuiInterface
 		self << @directors_list = GuiList.new([]).set(:hidden => true)
 
 		self << @dialog_container = GuiBox.new
-
-		self << (@reopen_button=GuiButton.new.set(:scale_x => 0.1, :scale_y => 0.022, :offset_x => 0.0, :background_image => $engine.load_image('images/buttons/reopen-user-object-editor.png'))).
-			add_state(:open, {:offset_y => -0.5 + 0.011, :hidden => false}).
-			set_state(:closed, {:offset_y => -0.5 - 0.011, :hidden => true})
-
-		@reopen_button.on_clicked { reshow_latest! }
 
 		#
 		# 
