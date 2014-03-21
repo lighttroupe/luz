@@ -28,10 +28,16 @@ class GuiActorsFlyout < GuiWindow
 		# Background
 		self << (@background=GuiObject.new.set(:background_image => $engine.load_image('images/actor-flyout-background.png')))
 
-		# View directors button
-		self << @director_view_button = GuiButton.new.set(:offset_y => 0.5 - 0.025, :scale_y => 0.05, :background_image => $engine.load_image('images/buttons/director-view.png'))
-		@director_view_button.on_clicked {
+		# Edit director button
+		self << @director_edit_button = GuiButton.new.set(:offset_y => 0.5 - 0.025, :scale_y => 0.05, :background_image => $engine.load_image('images/buttons/director-view.png'))
+		@director_edit_button.on_clicked {
 			$gui.build_editor_for($gui.chosen_director)
+		}
+
+		# View directors button
+		self << @director_view_button = GuiButton.new.set(:offset_y => 0.5 - 0.067, :scale_y => 0.03, :background_image => $engine.load_image('images/buttons/director-view.png'))
+		@director_view_button.on_clicked {
+			$gui.mode = :director
 		}
 
 		# Actor list				# TODO: item_aspect_ratio is related to screen ratio
