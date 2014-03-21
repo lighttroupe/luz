@@ -298,14 +298,14 @@ class GuiDefault < GuiInterface
 	#
 	def create_user_object_editor_for_pointer(user_object, pointer, options)
 		GuiUserObjectEditor.new(user_object, {:scale_x => 0.3, :scale_y => 0.05}.merge(options)).
-			set({:offset_x => pointer.x + (0.0 - pointer.x) * 0.95, :offset_y => -0.25, :opacity => 0.0, :scale_x => 0.65, :scale_y => 0.5, :hidden => false}).
-			animate({:offset_x => 0.0, :offset_y => -0.25, :scale_x => 0.65, :scale_y => 0.5, :opacity => 1.0}, duration=0.3)
+			set({:offset_x => 0.0, :offset_y => -0.5, :opacity => 0.0, :scale_x => 0.65, :scale_y => 0.5, :hidden => false}).
+			animate({:offset_x => 0.0, :offset_y => -0.25, :scale_x => 0.65, :scale_y => 0.5, :opacity => 1.0}, duration=0.2)
 	end
 
 	def clear_editors!
 		if @user_object_editor
 			editor = @user_object_editor		# local cache (closures!)
-			@user_object_editor.animate({:opacity => 0.0, :offset_y => @user_object_editor.offset_y - 0.05}, duration=0.1) {
+			@user_object_editor.animate({:offset_y => -1.0}, duration=0.3) {
 				editor.remove_from_parent!
 				show_reopen_button! unless @user_object_editor
 			}
