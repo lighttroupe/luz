@@ -16,6 +16,10 @@ module GuiPointerBehavior
 		pointers_hovering.find { |pointer| pointer.click? }
 	end
 
+	def pointer_holding?
+		pointers_hovering.find { |pointer| pointer.hold? }
+	end
+
 	def pointer_dragging?
 		pointers_hovering.find { |pointer| pointer.dragging? }
 	end
