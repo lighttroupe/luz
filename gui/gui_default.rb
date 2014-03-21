@@ -66,13 +66,13 @@ class GuiDefault < GuiInterface
 			set_state(:closed, {:offset_x => 0.56, :hidden => true})
 
 		# Actors corner button (bottom right)
-		self << (@actors_button = GuiButton.new.set(:scale_x => -0.04, :scale_y => -0.06, :offset_x => 0.48, :offset_y => -0.47, :background_image => $engine.load_image('images/corner.png'), :background_image_hover => $engine.load_image('images/corner-hover.png')))
+		self << (@actors_button = GuiButton.new.set(:scale_x => -0.04, :scale_y => -0.06, :offset_x => 0.48, :offset_y => -0.47, :background_image => $engine.load_image('images/corner.png'), :background_image_hover => $engine.load_image('images/corner-hover.png'), :background_image_click => $engine.load_image('images/corner-click.png')))
 		@actors_button.on_clicked {
 			toggle_actors_flyout!
 		}
 
 		# Directors corner button (top right)
-		self << (@directors_button = GuiButton.new.set(:scale_x => -0.04, :scale_y => 0.06, :offset_x => 0.48, :offset_y => 0.47, :background_image => $engine.load_image('images/corner.png'), :background_image_hover => $engine.load_image('images/corner-hover.png')))
+		self << (@directors_button = GuiButton.new.set(:scale_x => -0.04, :scale_y => 0.06, :offset_x => 0.48, :offset_y => 0.47, :background_image => $engine.load_image('images/corner.png'), :background_image_hover => $engine.load_image('images/corner-hover.png'), :background_image_click => $engine.load_image('images/corner-click.png')))
 		@directors_button.on_clicked {
 			open_directors_menu!
 		}
@@ -85,7 +85,7 @@ class GuiDefault < GuiInterface
 			set_state(:closed, {:hidden => true, :offset_x => -0.56})
 
 		# Events/Variables corner button (bottom left)
-		self << @events_button = GuiButton.new.set(:scale_x => 0.04, :scale_y => -0.06, :background_image => $engine.load_image('images/corner.png'), :background_image_hover => $engine.load_image('images/corner-hover.png')).
+		self << @events_button = GuiButton.new.set(:scale_x => 0.04, :scale_y => -0.06, :background_image => $engine.load_image('images/corner.png'), :background_image_hover => $engine.load_image('images/corner-hover.png'), :background_image_click => $engine.load_image('images/corner-click.png')).
 			add_state(:closed, {:hidden => true, :offset_x => -0.55, :offset_y => -0.53}).
 			set_state(:open, {:hidden => false, :offset_x => -0.48, :offset_y => -0.47})
 
@@ -94,7 +94,7 @@ class GuiDefault < GuiInterface
 		}
 
 		# Project corner button (upper left)
-		self << @project_menu_button = GuiButton.new.set(:scale_x => 0.04, :scale_y => 0.06, :offset_x => -0.48, :offset_y => 0.47, :background_image => $engine.load_image('images/corner.png'), :background_image_hover => $engine.load_image('images/corner-hover.png'))
+		self << @project_menu_button = GuiButton.new.set(:scale_x => 0.04, :scale_y => 0.06, :offset_x => -0.48, :offset_y => 0.47, :background_image => $engine.load_image('images/corner.png'), :background_image_hover => $engine.load_image('images/corner-hover.png'), :background_image_click => $engine.load_image('images/corner-click.png'))
 		@project_menu_button.on_clicked {
 			@overlay.switch_state({:closed => :open}, duration=0.4)
 			@main_menu.switch_state({:closed => :open}, duration=0.2)
