@@ -11,8 +11,8 @@ $visual_output = true unless ARGV[0] == '--headless'
 
 Dir.chdir('..')
 $LOAD_PATH.unshift('./utils').unshift('.')
-$LOAD_PATH << './user-object-settings'
 $LOAD_PATH << './engine'
+$LOAD_PATH << './engine/user-object-settings'
 
 require 'reloadable_require'
 multi_require 'addons_ruby', 'method_piping', 'boolean_accessor'

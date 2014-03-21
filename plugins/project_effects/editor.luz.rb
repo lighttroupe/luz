@@ -18,7 +18,7 @@
 
 multi_require 'easy_accessor', 'value_animation', 'value_animation_states'
 
-$LOAD_PATH << './gui-ruby'
+$LOAD_PATH << './gui'
 multi_require 'pointer', 'pointer_mouse', 'gui_default'
 
 class ProjectEffectEditor < ProjectEffect

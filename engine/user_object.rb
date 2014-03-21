@@ -16,7 +16,7 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-load_directory(File.join(Dir.pwd, 'user-object-settings'), '**.rb')
+load_directory(File.join(Dir.pwd, 'engine', 'user-object-settings'), '**.rb')
 
 class UserObject
 	Setting = Struct.new('Setting', :name, :klass, :options)
