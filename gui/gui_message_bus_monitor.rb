@@ -3,7 +3,7 @@
 #
 class GuiMessageBusMonitor < GuiButton
 	FULL_ON_RANGE = 0.0..0.2
-	TRANSITION_RANGE = 0.2..0.3
+	TRANSITION_RANGE = 0.2..0.4
 	TRANSITION_TIME = TRANSITION_RANGE.last - TRANSITION_RANGE.first
 
 	def calculate_alpha
