@@ -12,6 +12,10 @@ class GuiEngineSliderRenderer < GuiObject
 		@text = text
 	end
 
+	def to_s
+		@text
+	end
+
 	def click(pointer)
 		clicked_notify(pointer)
 	end
