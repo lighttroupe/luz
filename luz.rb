@@ -67,5 +67,5 @@ options.parse!
 
 $application.create
 $engine.load_from_path(project_path)
-$engine.hardwire! unless $engine.project.effects.find { |effect| effect.inhibit_hardware? }
+# no hardwiring in 2.0? ... $engine.hardwire! unless $engine.project.effects.find { |effect| effect.inhibit_hardware? }
 $application.run
