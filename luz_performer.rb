@@ -144,17 +144,13 @@ class LuzPerformer
 				#toggle_fullscreen!
 				finished!
 			else
-				$engine.on_button_down(sdl_to_luz_button_name((key_name=SDL::Key.get_key_name(event.sym))), frame_offset=1)
-				if $gui
-					key_name.shift = ((event.mod & SDL::Key::MOD_SHIFT) > 0)
-					key_name.control = ((event.mod & SDL::Key::MOD_CTRL) > 0)
-					key_name.alt = ((event.mod & SDL::Key::MOD_ALT) > 0)
-					$gui.raw_keyboard_input(key_name)
-				end
+				key_name = SDL::Key.get_key_name(event.sym)
+				$engine.on_button_down(sdl_to_luz_button_name(key_name), 1)	# 1 is frame_offset: use it on the coming frame
+				$gui.raw_keyboard_input(sdl_to_gui_key(key_name, event)) if $gui
 			end
 
 		when SDL::Event2::KeyUp
-			$engine.on_button_up(sdl_to_luz_button_name(SDL::Key.get_key_name(event.sym)), frame_offset=1)
+			$engine.on_button_up(sdl_to_luz_button_name(SDL::Key.get_key_name(event.sym)), 1)	# 1 is frame_offset: use it on the coming frame
 
 		when SDL::Event2::Quit
 			finished!
@@ -230,13 +226,19 @@ class LuzPerformer
 	end
 
 	def on_user_object_exception(object, exception)
-		# TODO: this shouldn't be printed if our stdout is going to luz_editor, as it can hang when the buffer fills!? :/
 		puts sprintf(Engine::USER_OBJECT_EXCEPTION_FORMAT, exception.report_format, object.title)
 	end
 
 	@@sdl_to_luz_button_names = Hash.new { |hash, key| hash[key] = sprintf('Keyboard / %s', SDL_TO_LUZ_BUTTON_NAMES[key] || key.humanize) }
 	def sdl_to_luz_button_name(name)
 		@@sdl_to_luz_button_names[name]
+	end
+
+	def sdl_to_gui_key(key_name, sdl_event)		# actually decorates the existing String ;P
+		key_name.shift = ((sdl_event.mod & SDL::Key::MOD_SHIFT) > 0)
+		key_name.control = ((sdl_event.mod & SDL::Key::MOD_CTRL) > 0)
+		key_name.alt = ((sdl_event.mod & SDL::Key::MOD_ALT) > 0)
+		key_name
 	end
 
 	#
@@ -308,53 +310,4 @@ options.parse!
 $application.create
 $engine.load_from_path(project_path)
 $engine.hardwire! unless $engine.project.effects.find { |effect| effect.inhibit_hardware? }
-
-if @record_video
-	#
-	# Loop, stepping time forward while rendering frames
-	#
-	fps = $application.frames_per_second
-	ms_per_frame = 1000.0 / fps
-	ms = 0
-	sample_index = 0
-	frame_count = 0
-	quit_at_time = nil
-	time_to_quit = false
-
-	#
-	# Run Performer (non-interactively)
-	#
-	loop {
-		time_in_seconds = (ms / 1000.0)
-
-		# reached the end?
-		exit if (quit_at_time and (time_in_seconds > quit_at_time))
-
-		# Render a frame at specific time
-		$engine.do_frame(time_in_seconds)
-
-		# Check for ESC
-		while event = SDL::Event2.poll
-			time_to_quit = true if event.is_a? SDL::Event2::Quit or (event.is_a? SDL::Event2::KeyDown and event.sym == SDL::Key::ESCAPE)
-		end
-
-		# Also quit if application wants to (eg. Quit Performer plugin told it to)
-		time_to_quit = true if $application.finished?
-
-		$application.save_framebuffer_to_file('frame-%06d.bmp' % frame_count)
-
-		if time_to_quit
-			# delete the next frame here, in case there are frames left over from a previous recording
-			# this gap in frames will cause the encoder to stop here
-			File.rm_f('frame-%06d.bmp' % (frame_count + 1))
-			exit
-		end
-
-		# Frame Done
-		SDL.GL_swap_buffers
-		frame_count += 1
-		ms += ms_per_frame
-	}
-else
-	$application.run
-end
+$application.run
