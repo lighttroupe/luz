@@ -37,18 +37,12 @@ class ProjectEffectEditor < ProjectEffect
 		$engine.project.each_user_object { |user_object| user_object.clear_selection! if user_object.respond_to? :clear_selection! }
 	end
 
-	def luz_2?
-		!defined?(GUI)		# the 1.0 Gui manager
-	end
-
 	def create_gui
 		@gui = GuiDefault.new
 
-		if luz_2?
-			$gui = @gui																		# HACK: allows GuiObject and others to send events to the gui, but not in Luz 1.0, while we transition
-			$gui.positive_message('Welcome to Luz 2.0')		# and for happy welcome :)
-			$application.escape_quits = false
-		end
+		$gui = @gui																		# HACK: allows GuiObject and others to send events to the gui, but not in Luz 1.0, while we transition
+		$gui.positive_message('Welcome to Luz 2.0')		# and for happy welcome :)
+		$application.escape_quits = false
 
 		# TODO: how to configure the mices?
 		@pointers = [PointerMouse.new.set_background_image($engine.load_image('images/pointer.png'))]
