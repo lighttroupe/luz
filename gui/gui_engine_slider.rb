@@ -15,7 +15,7 @@ class GuiEngineSlider < GuiListSelect
 	end
 
 	def set_value(value)
-		super(value.text)
+		super(value.to_s)
 		@selected_label.set_string(get_value)
 	end
 

@@ -236,12 +236,12 @@ class GuiDefault < GuiInterface
 		hide_reopen_button!
 
 		if user_object.is_a?(Director)
+			close_directors_menu! #if self.chosen_director == user_object
 			if self.chosen_director == user_object
 				self.mode = :director
 			else
 				self.chosen_director = user_object
 				clear_editors!
-				close_directors_menu! #if self.chosen_director == user_object
 				return
 			end
 		end
