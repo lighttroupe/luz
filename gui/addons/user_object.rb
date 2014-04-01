@@ -65,20 +65,20 @@ class UserObject
 			box << @gui_effects_list_scrollbar
 
 			# Add Child Popup Button
-			@add_child_button = GuiButton.new.set(:scale_x => 0.05, :scale_y => 0.07, :offset_x => -0.46, :offset_y => -0.5 + 0.035, :background_image => $engine.load_image('images/buttons/add.png'))
+			@add_child_button = GuiButton.new.set(:scale_x => 0.1, :scale_y => 0.07, :offset_x => -0.435, :offset_y => -0.5 + 0.035, :background_image => $engine.load_image('images/buttons/add.png'))
 			@add_child_button.on_clicked { |pointer|
 				open_add_child_window!
 			}
 			box << @add_child_button
 
 			# Clone button
-			box << (@clone_button=GuiButton.new.set(:opacity => 0.5, :scale_x => 0.05, :scale_y => 0.07, :offset_x => -0.41, :offset_y => -0.5 + 0.035, :background_image => $engine.load_image('images/buttons/clone.png')))
+			box << (@clone_button=GuiButton.new.set(:opacity => 0.5, :scale_x => 0.05, :scale_y => 0.07, :offset_x => -0.36, :offset_y => -0.5 + 0.035, :background_image => $engine.load_image('images/buttons/clone.png')))
 			@clone_button.on_clicked { |pointer|
 				clone_selected
 			}
 
 			# Remove button
-			box << (@remove_child_button=GuiButton.new.set(:scale_x => 0.05, :scale_y => 0.07, :offset_x => -0.36, :offset_y => -0.5 + 0.035, :background_image => $engine.load_image('images/buttons/remove.png')))
+			box << (@remove_child_button=GuiButton.new.set(:scale_x => 0.05, :scale_y => 0.07, :offset_x => -0.31, :offset_y => -0.5 + 0.035, :background_image => $engine.load_image('images/buttons/remove.png')))
 			@remove_child_button.on_clicked { |pointer|
 				remove_selected
 			}
