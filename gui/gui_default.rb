@@ -342,7 +342,7 @@ class GuiDefault < GuiInterface
 	end
 
 	def open_directors_menu!
-		@directors_menu.switch_state({:closed => :open},durection=0.4)
+		@directors_menu.switch_state({:closed => :open},durection=0.2)
 	end
 
 	def close_directors_menu!
