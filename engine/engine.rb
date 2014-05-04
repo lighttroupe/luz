@@ -360,13 +360,13 @@ class Engine
 	###################################################################
 
 	def render(enable_frame_saving)
-		#if first_frame?		# should only need to do these once since all changes use: with_setting { yield } but perhaps also when GL context is lost?
+		if first_frame?		# only need to do these once since all changes use: with_setting { yield } -- TODO: is GL context ever lost with SDL?
 			render_settings
 			projection
 			view
-		#end
+		end
 
-		if (enable_frame_saving and frame_saving_requested?)
+		if enable_frame_saving && frame_saving_requested?
 			with_frame_saving { |target_buffer|
 				target_buffer.using(:clear => true) {
 					render_recursively(@project.effects) {
@@ -374,7 +374,7 @@ class Engine
 					}
 				}
 
-				# draw screen rendered
+				# draw created image to screen
 				target_buffer.with_image {
 					fullscreen_rectangle
 				}
@@ -391,17 +391,16 @@ class Engine
 		uo = user_objects[index]
 		return proc.call unless uo
 
-		if !uo.usable?
-			render_recursively(user_objects, index+1, &proc)
-		else
+		if uo.usable?
 			$engine.user_object_try(uo) {
 				uo.resolve_settings
 				uo.tick!
 				uo.render {
-					# when it yields, continue down the chain
-					render_recursively(user_objects, index+1, &proc)
+					render_recursively(user_objects, index+1, &proc)		# continue (potentially multiple times-- this is how Grid and other child-creating plugins work)
 				}
 			}
+		else
+			render_recursively(user_objects, index+1, &proc)				# skip
 		end
 	end
 
