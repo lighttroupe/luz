@@ -7,6 +7,10 @@ class GuiActor < GuiListSelect
 	end
 
 	def set_value(value)
-		super(value.object)
+		if value
+			super(value.object)
+		else
+			super(nil)
+		end
 	end
 end
