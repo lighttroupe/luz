@@ -97,6 +97,7 @@ class UserObjectSettingActor < UserObjectSetting
 		with_scaffolding { yield @actor } if @actor
 	end
 
+	# TODO: remove one of these
 	def render
 		with_scaffolding { @actor.render! } if @actor
 	end
