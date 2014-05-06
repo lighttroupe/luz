@@ -29,7 +29,7 @@ class GuiActorsFlyout < GuiWindow
 		self << (@background=GuiObject.new.set(:background_image => $engine.load_image('images/actor-flyout-background.png')))
 
 		# Edit director button
-		self << @director_edit_button = GuiButton.new.set(:offset_y => 0.5 - 0.025, :scale_y => 0.05, :background_image => $engine.load_image('images/buttons/director-view.png'))
+		self << @director_edit_button = GuiButton.new.set(:offset_y => 0.5 - 0.025, :scale_y => 0.05, :background_image => $engine.load_image('images/buttons/director-settings.png'))
 		@director_edit_button.on_clicked {
 			$gui.build_editor_for($gui.chosen_director)
 		}
