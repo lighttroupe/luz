@@ -116,16 +116,6 @@ class UserObjectSettingFloat < UserObjectSettingNumeric
 		return (@current_value = result.clamp(@min, @max))	# Never return anything outside (@min to @max)
 	end
 
-	# This is just a hack to speed up constant settings
-	def hardwire!
-		#
-		# Setting can be treated as 'simple' (for speed) if it won't ever change value
-		#
-
-		# this seems to be causing false positives, remove for now
-		#@options[:simple] = true unless (@enable_animation or @enable_activation or @enable_enter_animation or @enable_exit_animation)
-	end
-
 	def uses_enter?
 		(@enable_enter_animation and @enter_curve)
 	end

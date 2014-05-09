@@ -323,9 +323,6 @@ class Engine
 		@project.each_user_object { |obj| obj.crashy = false }
 	end
 
-	# hardwire! instructs objects to optimize themselves (in non-reversable ways)
-	pipe :hardwire!, :project
-
 	###################################################################
 	# Exception Handling
 	###################################################################

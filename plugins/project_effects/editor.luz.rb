@@ -27,10 +27,6 @@ class ProjectEffectEditor < ProjectEffect
 
 	setting 'alpha', :float, :range => 0.1..1.0, :default => 1.0..1.0
 
-	def inhibit_hardware?		# TODO: rename hardwire
-		true
-	end
-
 	def after_load
 		super
 		@gui = nil

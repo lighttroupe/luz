@@ -29,7 +29,6 @@ class ProjectEffectReloadProject < ProjectEffect
 			puts 'Reloading project!'
 			path = $engine.project.path
 			$engine.load_from_path(path)
-			$engine.hardwire!
 
 			# does not yield -- no point in continuing this frame
 		else

@@ -29,9 +29,4 @@ class ParentUserObject < UserObject
 		set_default_instance_variables(:effects => [])
 		super
 	end
-
-	def hardwire!
-		super
-		@effects.delete_if { |uo| !uo.is_enabled? }
-	end
 end

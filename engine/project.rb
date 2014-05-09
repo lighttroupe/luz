@@ -153,15 +153,6 @@ class Project < UserObject
 		return false
 	end
 
-	def hardwire!
-		# Remove all user objects that aren't enabled-- why bother processing them forever?
-		each_user_object_array { |array|
-			array.delete_if { |uo| !uo.is_enabled? }
-		}
-		# Let remaining objects hardwire themselves
-		each_user_object { |uo| uo.hardwire! }
-	end
-
 	def each_user_object_array
 		OBJECT_SYMBOLS.each { |obj_type|
 			yield instance_variable_get("@#{obj_type}")

@@ -57,7 +57,7 @@ class UserObjectSetting
 		after_load
 	end
 
-	empty_method :after_load, :hardwire!, :value			# NOTE: default value returns nil
+	empty_method :after_load, :value			# NOTE: default value returns nil
 
 	def widget(options)
 		Gtk::Label.new('Missing controls for editing this setting.')

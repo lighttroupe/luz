@@ -164,10 +164,6 @@ class UserObject
 		create_user_object_settings
 	end
 
-	def hardwire!
-		settings.each { |setting| setting.hardwire! }
-	end
-
 	empty_method :before_delete
 
 	# Create instance variables based on the list of settings
