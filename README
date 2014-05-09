@@ -1,31 +1,12 @@
 #
-# Luz Project
-# ===========
+# Satisfy Dependencies
+# ====================
 #
-# The Luz Project consists of:
-#
-# - Luz Studio: a live motion graphics editor (Ruby, Gtk+, OpenGL)
-# - Luz Performer: plays Luz projects fullscreen (Ruby, SDL, OpenGL)
-# - Luz Video Recorder: renders smooth HD video of Luz projects (Ruby, SDL, OpenGL, ffmpeg)
-# - Luz Audio Player: plays music and sends song progress percentage to Luz (Ruby, GStreamer)
-# - Luz Input Manager: sends live input device data to Luz (C++, Gtk+, XOrg API, libwiimote, SDL Input)
-# - Luz Spectrum Analyzer: sends audio information to Luz (C++, OpenGL, FFTW)
-# - Luz Body Tracker: sends motion-tracked human data to Luz (C++, OpenGL, OpenNI+NITE)
-#
-# All applications communicate by OpenSoundControl.
-#
+# TODO
 
 #
-# Dependencies
-# ============
-#
-# To satisfy Luz dependencies on Ubuntu use:
-
-sudo apt-get install ruby libgtk2-ruby libglade2-ruby libgtkglext1-ruby librmagick-ruby libcairo-ruby libsdl-ruby libinline-ruby imagemagick libopengl-ruby1.8 libserialport-ruby1.8 libvte-ruby1.8 ffmpeg libavcodec-extra-52 libgst-ruby1.8
-
-#
-# Compiling Helper Applications
-# =============================
+# Compile Helper Applications
+# ===========================
 #
 # To build both Input Manager and Spectrum Analyzer on Ubuntu use:
 
@@ -33,14 +14,11 @@ sudo apt-get install build-essential libasound2-dev libfftw3-dev liblo0-dev libg
 make
 
 #
-# You can now start Luz Studio:
-
-./luz_editor.rb
-
+# Start Luz:
 #
-# Enjoy!
-#
-# See the examples/ directory.
+
+ruby1.9.1 luz.rb gui/editor.luz
+
 #
 # Find tutorials online => http://lighttroupe.com/luz
 #

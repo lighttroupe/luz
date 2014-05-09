@@ -1,4 +1,4 @@
-# Luz Studio
+# Luz 2.0
 
 A live motion graphics editor and performer.
 
@@ -10,9 +10,7 @@ A live motion graphics editor and performer.
 
 ## The Luz Project consists of:
 
-- **Luz Studio**: a live motion graphics editor (Ruby, Gtk+, OpenGL)
-- **Luz Performer**: plays Luz projects fullscreen (Ruby, SDL, OpenGL)
-- **Luz Video Recorder**: renders smooth HD video of Luz projects (Ruby, SDL, OpenGL, ffmpeg)
+- **Luz 2.0**: fullscreen motion graphics editor and performer (Ruby, OpenGL)
 - **Luz Audio Player**: plays music and sends song progress percentage to Luz (Ruby, GStreamer)
 - **Luz Input Manager**: sends live input device data to Luz (C++, Gtk+, XOrg API, libwiimote, SDL Input)
 - **Luz Spectrum Analyzer**: sends audio information to Luz (C++, OpenGL, FFTW)
@@ -22,14 +20,12 @@ A live motion graphics editor and performer.
 
 Luz currently only runs on Linux.  Help is wanted porting it to OSX.
 
-Luz currently works best on Ubuntu 11.10.  It runs on Ubuntu 12.04 if you provide the Ruby GTK+ OpenGL bindings, either compiled from source or downloaded here and placed in the base Luz directory:
-
-<http://openanswers.org/gtkglext.so> (32-bit version)
-
 1. Clone this repository.
 
 2. Install dependencies as described in README.
 
-3. Run 'make' in the root directory to build Input Manager and Spectrum Analyzer
+3. Optionally run 'make' in the root directory to build Input Manager and Spectrum Analyzer
 
 4. Optionally run the ./build scripts in utils/webcam, utils/video-file, and utils/chipmunk.
+
+5. ruby1.9.1 luz.rb gui/editor.luz
