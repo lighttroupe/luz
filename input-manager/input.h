@@ -2,6 +2,7 @@
 #define __INPUT_H__
 
 #include <pthread.h>
+#include <unistd.h>
 
 typedef struct
 {
