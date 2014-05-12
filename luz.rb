@@ -46,15 +46,6 @@ options = OptionParser.new do |opts|
 	opts.on("--borderless", "Borderless") do
 		$application.border = false
 	end
-	opts.on("--relay <number>", Integer, 'Relay all received input to this local UDP port number') do |port|
-		$application.relay_port = port.to_i
-	end
-	opts.on("--record", "Record Mode") do
-		@record_video = true
-	end
-	opts.on("--inputs <path>", String, "Specify Inputs File (required when using --record)") do |path|
-		@inputs_path = path
-	end
 end
 
 # Last argument is project name
@@ -66,5 +57,17 @@ end
 options.parse!
 
 $application.create
+
+# Create Luz Engine
+require 'engine'
+$engine = Engine.new
+$engine.post_initialize
+$engine.load_plugins
+
+# Engine callbacks
+$engine.on_user_object_exception { |object, exception| puts sprintf(Engine::USER_OBJECT_EXCEPTION_FORMAT, exception.report_format, object.title) }
+$engine.on_render_settings_changed { $engine.render_settings }	# TODO: remove 'render_settings_changed' concept
+$engine.on_render { $engine.render(enable_frame_saving=true) }		# NOTE: We just have one global context, so this renders to it
+
 $engine.load_from_path(project_path)
 $application.run

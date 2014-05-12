@@ -41,17 +41,6 @@ class LuzPerformer
 		SDL::Mouse.setCursor(SDL::Surface.new(SDL::HWSURFACE,8,8,8,0,0,0,0),1,1,0,1,0,0)
 
 		SDL::Key.disable_key_repeat		# We want one Down and one Up message per key press
-
-		# Create Luz Engine
-		require 'engine'
-		$engine = Engine.new(:relay_port => @relay_port)
-		$engine.post_initialize
-		$engine.load_plugins
-
-		# Engine callbacks
-		$engine.on_user_object_exception { |obj, e| on_user_object_exception(obj,e) }
-		$engine.on_render_settings_changed { $engine.render_settings }	# TODO: remove 'render_settings_changed' concept
-		$engine.on_render { $engine.render(enable_frame_saving=true) }		# NOTE: We just have one global context, so this renders to it
 	end
 
 	def sdl_video_mode_flags
@@ -183,10 +172,6 @@ class LuzPerformer
 
 		secs = (SDL.getTicks - start_time) / 1000.0
 		puts sprintf('%d frames in %0.1f seconds = %dfps (~%dfps render loop)', $env[:frame_number], secs, $env[:frame_number] / secs, 1.0 / $engine.average_frame_time)
-	end
-
-	def on_user_object_exception(object, exception)
-		puts sprintf(Engine::USER_OBJECT_EXCEPTION_FORMAT, exception.report_format, object.title)
 	end
 
 	@@sdl_to_luz_button_names = Hash.new { |hash, key| hash[key] = sprintf('Keyboard / %s', SDL_TO_LUZ_BUTTON_NAMES[key] || key.humanize) }
