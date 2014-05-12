@@ -21,12 +21,6 @@ class LuzPerformer
 		@frames_per_second = 60
 	end
 
-	def toggle_fullscreen!
-		@fullscreen = !@fullscreen
-		set_video_mode
-		init_gl_viewport
-	end
-
 	def create
 		init_sdl
 		set_video_mode
@@ -70,6 +64,12 @@ class LuzPerformer
 	def init_gl_viewport
 		GL.Viewport(0, 0, @width, @height)
 		clear_screen([0.0, 0.0, 0.0, 0.0])
+	end
+
+	def toggle_fullscreen!
+		@fullscreen = !@fullscreen
+		set_video_mode
+		init_gl_viewport
 	end
 
 	#
@@ -147,12 +147,11 @@ class LuzPerformer
 			frame_end_ms = SDL.getTicks
 			frame_duration_ms = (frame_end_ms - frame_start_ms)
 
+			# sleep a bit...
 			sleep_time_ms = desired_ms_per_frame - frame_duration_ms
 			SDL.delay(sleep_time_ms) if sleep_time_ms > 3		# for tiny amounts it doesn't make sense
 
 			frames_per_second = 1000.0 / frame_duration_ms
-#			current_frames_per_second ||= frames_per_second
-#			current_frames_per_second = (current_frames_per_second + frames_per_second * 9.0) / 10.0		# ...
 
 			if frame_number % TIMING_COUNT == 0
 				timing_duration_ms = (frame_end_ms - timing_start_ms)		# we've been timing for many frames

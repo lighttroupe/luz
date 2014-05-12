@@ -16,8 +16,7 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-multi_require 'director', 'actor', 'curve', 'theme', 'variable', 'event', 'user_object', 'user_object_setting', 'project', 'image'
-multi_require 'actor_shape', 'actor_canvas'
+multi_require 'director', 'actor', 'curve', 'theme', 'variable', 'event', 'user_object', 'user_object_setting', 'project', 'image', 'actor_shape', 'actor_canvas'
 
 optional_require 'beat_detector'
 optional_require 'message_bus'
@@ -29,52 +28,6 @@ rescue LoadError
 	puts "ruby-inline is unavailable: you are missing out on a possible performance increase"
 rescue Exception => e
 	puts "error loading ruby-inline: #{e}"
-end
-
-#
-# Lookup UserObjects by name
-#
-def find_event_by_name(name)
-	$event_cache ||= {}
-	if $gui
-		$engine.project.events.find { |e| e.title == name }
-	else
-		$event_cache[name] || ($event_cache[name] = $engine.project.events.find { |e| e.title == name })
-	end
-end
-
-def find_variable_by_name(name)
-	$variable_cache ||= {}
-	if $gui
-		$engine.project.variables.find { |e| e.title == name }
-	else
-		$variable_cache[name] || ($variable_cache[name] = $engine.project.variables.find { |e| e.title == name })
-	end
-end
-
-def find_actor_by_name(name)
-	$actor_cache ||= {}
-	if $gui
-		$engine.project.actors.find { |e| e.title == name }
-	else
-		$actor_cache[name] || ($actor_cache[name] = $engine.project.actors.find { |e| e.title == name })
-	end
-end
-
-def find_director_by_name(name)
-	$director_cache ||= {}
-	if $gui
-		$engine.project.directors.find { |e| e.title == name }
-	else
-		$director_cache[name] || ($director_cache[name] = $engine.project.directors.find { |e| e.title == name })
-	end
-end
-
-def clear_engine_caches
-	$event_cache ||= {}
-	$variable_cache ||= {}
-	$actor_cache ||= {}
-	$director_cache ||= {}
 end
 
 class Engine
