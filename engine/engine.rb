@@ -96,9 +96,6 @@ class Engine
 		include EngineDMX
 	end
 
-	require 'engine_sound'
-	include EngineSound
-
 	module MethodsForUserObject
 		def first_frame?
 			$env[:frame_number] == 1
@@ -154,7 +151,7 @@ class Engine
 
 	include MethodsForUserObject		# engine gets 'em, too.
 
-	PLUGIN_DIRECTORY_PATH = Dir.pwd + '/plugins/'
+	PLUGIN_DIRECTORY_PATH = File.join(Dir.pwd, 'engine', 'plugins')
 	BASE_SET_PATH = 'base.luz'
 
 	attr_accessor :director, :theme, :simulation_speed, :frame_number
