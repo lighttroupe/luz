@@ -12,18 +12,15 @@ $LOAD_PATH.unshift('./utils').unshift('.')
 $LOAD_PATH << './engine'
 $LOAD_PATH << './engine/user-object-settings'
 
+require 'optparse'
 require 'reloadable_require'
-multi_require 'addons_ruby', 'method_piping', 'boolean_accessor', 'constants', 'sdl', 'opengl', 'addons_gl', 'drawing', 'luz_performer'
+multi_require 'addons_ruby', 'method_piping', 'boolean_accessor', 'constants', 'sdl', 'opengl', 'addons_gl', 'drawing', 'luz_performer', 'engine', 'settings'
 
-require 'settings'
-settings_path = File.join(Dir.home, SETTINGS_DIRECTORY, SETTINGS_FILENAME)
-$settings = Settings.new.load(settings_path)
-
+$settings = Settings.new.load(File.join(Dir.home, SETTINGS_DIRECTORY, SETTINGS_FILENAME))
 $application = LuzPerformer.new
 
-require 'optparse'
 options = OptionParser.new do |opts|
-	opts.banner = "Usage: luz_performer.rb [options] <project.luz>"
+	opts.banner = "Usage: luz.rb [options] <project.luz>"
 
 	opts.on("--width <width>", Integer, "Resolution width (eg. 800)") do |w|
 		$application.width = w
@@ -59,13 +56,13 @@ options.parse!
 $application.create
 
 # Create Luz Engine
-require 'engine'
 $engine = Engine.new
 $engine.post_initialize
 $engine.load_plugins
 
 # Engine callbacks
 $engine.on_user_object_exception { |object, exception| puts sprintf(Engine::USER_OBJECT_EXCEPTION_FORMAT, exception.report_format, object.title) }
-$engine.load_from_path(project_path)
 
+# Go!
+$engine.load_from_path(project_path)
 $application.run
