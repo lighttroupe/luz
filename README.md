@@ -23,7 +23,6 @@ Some Luz 1.0 videos:
 ## The Luz Project consists of:
 
 - **Luz 2.0**: fullscreen motion graphics editor and performer (Ruby, OpenGL, SDL)
-- **Luz Audio Player**: plays music and sends song progress percentage to Luz (Ruby, GStreamer)
 - **Luz Input Manager**: sends live input device data to Luz (C++, Gtk+, XOrg API, libwiimote, SDL Input)
 - **Luz Spectrum Analyzer**: sends audio information to Luz (C++, OpenGL, FFTW)
 
@@ -37,6 +36,6 @@ Luz currently only runs on Linux.  Help is wanted porting it to OSX.
 
 3. Optionally run 'make' in the root directory to build Input Manager and Spectrum Analyzer
 
-4. Optionally run the ./build scripts in utils/webcam, utils/video-file, and utils/chipmunk.
+4. Optionally run the ./build scripts in utils/webcam, and utils/video-file.
 
 5. ruby1.9.1 luz.rb gui/editor.luz
