@@ -1,20 +1,31 @@
 # Luz 2.0
 
-A live motion graphics editor and performer.
+Fullscreen interactive motion graphics toy builder.  Luz is pure Ruby and built on the shoulders of SDL, OpenGL, among others.
 
-<http://createdigitalmotion.com/2011/03/luz-live-motion-graphics-controlled-by-anything-free-on-linux-and-now-with-dmx>
+Luz supports vector shapes, animated gifs, sprites, video files.
+
+Luz takes input from wiimotes, MIDI, Wacom tablets, joysticks, gamepads, and OSC.
+
+Luz has run hundreds of live venue shows.
+
+## Shader Snippets
+
+Luz builds custom OpenGL shader programs on the fly.
 
 ## Video Tutorials
+
+There are no videos yet of the new fullscreen OpenGL interface in Luz 2.0.
+
+Some Luz 1.0 videos:
 
 <http://lighttroupe.com/luz>
 
 ## The Luz Project consists of:
 
-- **Luz 2.0**: fullscreen motion graphics editor and performer (Ruby, OpenGL)
+- **Luz 2.0**: fullscreen motion graphics editor and performer (Ruby, OpenGL, SDL)
 - **Luz Audio Player**: plays music and sends song progress percentage to Luz (Ruby, GStreamer)
 - **Luz Input Manager**: sends live input device data to Luz (C++, Gtk+, XOrg API, libwiimote, SDL Input)
 - **Luz Spectrum Analyzer**: sends audio information to Luz (C++, OpenGL, FFTW)
-- **Luz Body Tracker**: sends motion-tracked human data to Luz (C++, OpenGL, OpenNI+NITE)
 
 # Getting Luz
 
