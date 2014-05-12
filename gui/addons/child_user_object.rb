@@ -56,7 +56,7 @@ class ChildUserObject < UserObject
 			LABEL_COLOR_CRASHY
 		elsif !enabled?
 			LABEL_COLOR_DISABLED
-		elsif conditions.enable_event? && !conditions.event.now?
+		elsif !conditions.satisfied?
 			LABEL_COLOR_CONDITIONS_UNMET
 		else
 			LABEL_COLOR
