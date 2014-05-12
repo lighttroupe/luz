@@ -27,7 +27,7 @@ class ActorStar < ActorShape
 	cache_rendering
 
 	def shape
-		shape = [MyGL.VariableCircle(arms, 2) { |fuzzy| (radius * RADIUS) + (fuzzy_cosine(fuzzy) * (RADIUS - (radius * RADIUS))) }]
+		shape = [Shapes.VariableCircle(arms, 2) { |fuzzy| (radius * RADIUS) + (fuzzy_cosine(fuzzy) * (RADIUS - (radius * RADIUS))) }]
 		shape << shape.first.dup.multiply_each(cutout_size) unless cutout_size == 0.0
 		yield :shape => shape
 	end

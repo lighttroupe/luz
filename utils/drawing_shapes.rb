@@ -16,6 +16,8 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
+require 'gl_shapes'
+
 module DrawingShapes
 	def unit_square
 		@unit_square_list = GL.RenderCached(@unit_square_list) {

@@ -27,7 +27,7 @@ class ActorStarFlower < ActorShape
 	cache_rendering
 
 	def shape
-		yield :shape => MyGL.VariableCircle(arms, detail + 1) {
+		yield :shape => Shapes.VariableCircle(arms, detail + 1) {
 				|fuzzy| (radius * RADIUS) + (fuzzy_cosine(fuzzy) * (RADIUS - (radius * RADIUS)))
 			}
 	end

@@ -27,6 +27,6 @@ class ActorRoundedRectangle < ActorShape
 	cache_rendering
 
 	def shape
-		yield :shape => MyGL.RoundedRectangle(RADIUS, RADIUS, knob_x, knob_y, detail)
+		yield :shape => Shapes.RoundedRectangle(RADIUS, RADIUS, knob_x, knob_y, detail)
 	end
 end

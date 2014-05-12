@@ -26,7 +26,7 @@ class ActorPolygon < ActorShape
 	cache_rendering
 
 	def shape
-		shape = [MyGL.Ring(RADIUS, sides)]
+		shape = [Shapes.Ring(RADIUS, sides)]
 		shape << shape.first.dup.multiply_each(cutout_size) unless cutout_size == 0.0
 		yield :shape => shape
 	end
