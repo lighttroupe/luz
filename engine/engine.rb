@@ -46,27 +46,18 @@ class Engine
 
 	attr_accessor :director, :theme, :simulation_speed, :frame_number
 	attr_reader :project, :background_color
-	boolean_accessor :paused
 
-	def paused=(pause)
-		project.effects.each { |effect| effect.pause if effect.respond_to? :pause } if pause and !@paused
-		@paused = pause
-	end
-
-	def beat!
-		@beat_detector.beat!(@frame_time)
-	end
-
-	pipe :beat_zero!, :beat_detector
-	pipe :next_beat_is_zero!, :beat_detector
-	pipe :beat_double_time!, :beat_detector
-	pipe :beat_half_time!, :beat_detector
-	pipe :beats_per_minute, :beat_detector
-	pipe :beats_per_minute=, :beat_detector
-
-	callback :crash
-	callback :update_user_objects
+	#
+	# Callbacks
+	#
+	callback :new_project
+	callback :frame_end
+	callback :new_user_object_class
 	callback :reload
+	callback :update_user_objects
+	callback :user_object_changed
+	callback :user_object_exception
+	callback :crash
 
 	###################################################################
 	# Init / Shutdown
@@ -95,23 +86,17 @@ class Engine
 		end
 	end
 
+	#
+	# Time
+	#
 	def reset_time!
 		@time = 0.0
-	end
-
-	def add_message_bus(ip, port)
-		message_bus = MessageBus.new.listen(ip, port)
-		message_bus.on_button_down(&method(:on_button_down))
-		message_bus.on_button_up(&method(:on_button_up))
-		message_bus.on_slider_change(&method(:on_slider_change))
-		@message_buses << message_bus
 	end
 
 	def add_to_engine_time(amount)
 		@add_to_engine_time += amount
 	end
 
-	callback :new_user_object_class
 	def notify_of_new_user_object_classes
 		# call the notify callback for just new ones
 		@num_known_user_object_classes.upto(UserObject.inherited_classes.size - 1) { |index|
@@ -148,9 +133,6 @@ class Engine
 		@project.clear
 	end
 
-	callback :new_project
-	callback :frame_end
-
 	def do_frame(time)
 		return if @paused
 
@@ -161,6 +143,29 @@ class Engine
 
 		frame_end_notify
 		@total_frame_times += (Time.now - frame_start)
+	end
+
+	#
+	# Beats
+	#
+	def beat!
+		@beat_detector.beat!(@frame_time)
+	end
+
+	pipe :beat_zero!, :beat_detector
+	pipe :next_beat_is_zero!, :beat_detector
+	pipe :beat_double_time!, :beat_detector
+	pipe :beat_half_time!, :beat_detector
+	pipe :beats_per_minute, :beat_detector
+	pipe :beats_per_minute=, :beat_detector
+
+	#
+	# Pausing
+	#
+	boolean_accessor :paused
+	def paused=(pause)
+		project.effects.each { |effect| effect.pause if effect.respond_to? :pause } if pause and !@paused
+		@paused = pause
 	end
 
 	###################################################################
@@ -200,9 +205,6 @@ class Engine
 	###################################################################
 	# Exception Handling
 	###################################################################
-	callback :user_object_changed
-	callback :user_object_exception
-
 	def user_object_try(obj)
 		begin
 			return yield if obj.usable?		# NOTE: doesn't yield for "crashed" UOs
@@ -353,6 +355,17 @@ private
 	#
 	def resolve_events
 		@project.events.each { |event| event.do_value }
+	end
+
+	#
+	# Message bus
+	#
+	def add_message_bus(ip, port)
+		message_bus = MessageBus.new.listen(ip, port)
+		message_bus.on_button_down(&method(:on_button_down))
+		message_bus.on_button_up(&method(:on_button_up))
+		message_bus.on_slider_change(&method(:on_slider_change))
+		@message_buses << message_bus
 	end
 
 	#
