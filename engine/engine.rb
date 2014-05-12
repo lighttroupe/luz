@@ -81,6 +81,9 @@ class Engine
 	USER_OBJECT_EXCEPTION_FORMAT = "#{'#' * 80}\nOops! The plugin shown below has caused an error and has stopped functioning:\n\n%s\nObject:%s\n#{'#' * 80}\n"
 	OBJECT_CLASS_TO_SYMBOL = {Actor => :actors, Director => :directors, Theme => :themes, Curve => :curves, Variable => :variables, Event => :events, ProjectEffect => :effects}
 
+	PLUGIN_DIRECTORY_PATH = File.join(Dir.pwd, 'engine', 'plugins')
+	BASE_SET_PATH = 'base.luz'
+
 	include Drawing
 
 	require 'engine_buttons'
@@ -151,9 +154,6 @@ class Engine
 
 	include MethodsForUserObject		# engine gets 'em, too.
 
-	PLUGIN_DIRECTORY_PATH = File.join(Dir.pwd, 'engine', 'plugins')
-	BASE_SET_PATH = 'base.luz'
-
 	attr_accessor :director, :theme, :simulation_speed, :frame_number
 	attr_reader :project, :background_color
 	boolean_accessor :paused
@@ -176,7 +176,6 @@ class Engine
 
 	callback :crash
 	callback :update_user_objects
-
 	callback :reload
 
 	###################################################################
