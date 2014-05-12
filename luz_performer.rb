@@ -96,17 +96,15 @@ class LuzPerformer
 
 		# Keyboard input
 		when SDL::Event2::KeyDown
-			if event.sym == SDL::Key::ESCAPE and escape_quits?
-				#toggle_fullscreen!
-				finished!
-			else
-				key_name = SDL::Key.get_key_name(event.sym)
-				$engine.on_button_down(sdl_to_luz_button_name(key_name), 1)	# 1 is frame_offset: use it on the coming frame
-				$gui.raw_keyboard_input(sdl_to_gui_key(key_name, event)) if $gui
-			end
+			key_name = SDL::Key.get_key_name(event.sym)
+			button_name = sdl_to_luz_button_name(key_name)
+			$engine.on_button_down(button_name, 1)	# 1 is frame_offset: use it on the coming frame
+			$gui.raw_keyboard_input(sdl_to_gui_key(key_name, event)) if $gui
 
 		when SDL::Event2::KeyUp
-			$engine.on_button_up(sdl_to_luz_button_name(SDL::Key.get_key_name(event.sym)), 1)	# 1 is frame_offset: use it on the coming frame
+			key_name = SDL::Key.get_key_name(event.sym)
+			button_name = sdl_to_luz_button_name(key_name)
+			$engine.on_button_up(button_name, 1)		# 1 is frame_offset: use it on the coming frame
 
 		when SDL::Event2::Quit
 			finished!

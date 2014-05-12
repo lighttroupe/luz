@@ -38,7 +38,6 @@ class ProjectEffectEditor < ProjectEffect
 
 		$gui = @gui																		# HACK: allows GuiObject and others to send events to the gui, but not in Luz 1.0, while we transition
 		$gui.positive_message('Welcome to Luz 2.0')		# and for happy welcome :)
-		$application.escape_quits = false
 
 		# TODO: how to configure the mices?
 		@pointers = [PointerMouse.new.set_background_image($engine.load_image('images/pointer.png'))]
