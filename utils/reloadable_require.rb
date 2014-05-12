@@ -16,11 +16,21 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-require 'exception_addons'
+require 'addons/exception'
+require 'addons/dir'
 
 module Kernel
 	@@source_file_modification_times ||= {}
 	@@loading_file_path = nil
+
+	def optional_require(file)
+		begin
+			require file
+			return true
+		rescue LoadError
+			return false
+		end
+	end
 
 	# a new 'require' supporting multiple files
 	#alias_method :single_require, :require
@@ -67,6 +77,14 @@ module Kernel
 			@@loading_file_path = nil
 			return false
 		end
+	end
+
+	def load_directory(path, filter_pattern='*rb')
+		count = 0
+		paths = []		# collect and then sort to make load order consistent
+		Dir.new(path).each_matching_recursive(filter_pattern) { |filepath| paths << filepath }
+		paths.sort!.each { |filepath| count += 1 if reload_if_newer(filepath) }
+		return count
 	end
 
 	def reload_modified_source_files

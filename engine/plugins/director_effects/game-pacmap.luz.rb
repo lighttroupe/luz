@@ -18,7 +18,7 @@ class PacMap
 	class MapObject
 		attr_accessor :position, :node, :destination_node, :path, :angle
 
-		include Engine::MethodsForUserObject
+		include MethodsForUserObject
 
 		def initialize(x, y, node)
 			@position = Vector3.new(x, y, 0.0)

@@ -28,6 +28,21 @@ class Engine
 	PLUGIN_DIRECTORY_PATH = File.join(Dir.pwd, 'engine', 'plugins')
 	BASE_SET_PATH = 'base.luz'
 
+	attr_accessor :director, :theme, :simulation_speed, :frame_number
+	attr_reader :project, :background_color
+
+	#
+	# Callbacks
+	#
+	callback :new_project
+	callback :frame_end
+	callback :new_user_object_class
+	callback :reload
+	callback :update_user_objects
+	callback :user_object_changed
+	callback :user_object_exception
+	callback :crash
+
 	include Drawing
 	include MethodsForUserObject		# engine gets 'em, too.
 
@@ -43,21 +58,6 @@ class Engine
 	if optional_require 'engine_dmx'
 		include EngineDMX
 	end
-
-	attr_accessor :director, :theme, :simulation_speed, :frame_number
-	attr_reader :project, :background_color
-
-	#
-	# Callbacks
-	#
-	callback :new_project
-	callback :frame_end
-	callback :new_user_object_class
-	callback :reload
-	callback :update_user_objects
-	callback :user_object_changed
-	callback :user_object_exception
-	callback :crash
 
 	###################################################################
 	# Init / Shutdown
@@ -439,9 +439,9 @@ private
 	end
 
 	if optional_require 'rb-inotify'
-		puts '=== iNotify live reloading of changed images enabled ==='
+		puts 'Using iNotify for live reloading of changed images'
 
-		$notifier ||= INotify::Notifier.new
+		$notifier ||= INotify::Notifier.new		# seems we only need one
 
 		def with_watch(file_path)
 			# Load file

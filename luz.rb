@@ -13,7 +13,9 @@ $LOAD_PATH << './engine'
 $LOAD_PATH << './engine/user-object-settings'
 
 require 'reloadable_require'
-multi_require 'addons_ruby', 'method_piping', 'boolean_accessor', 'constants', 'optparse', 'sdl', 'opengl', 'addons/gl', 'drawing', 'luz_performer', 'engine', 'settings'
+multi_require 'optparse', 'sdl', 'opengl', 'addons/dir'
+load_directory(File.join(Dir.pwd, 'utils', 'addons'), '**.rb')
+multi_require 'method_piping', 'boolean_accessor', 'constants', 'drawing', 'luz_performer', 'engine', 'settings'
 
 $settings = Settings.new.load(File.join(Dir.home, SETTINGS_DIRECTORY, SETTINGS_FILENAME))
 $application = LuzPerformer.new

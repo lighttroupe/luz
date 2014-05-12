@@ -16,6 +16,7 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
+=begin
 require 'plugins/project_effects/screen-capture.luz.rb'
 
 class ProjectEffectScreenCaptureWithThemeStorage < ProjectEffectScreenCapture
@@ -34,14 +35,11 @@ class ProjectEffectScreenCaptureWithThemeStorage < ProjectEffectScreenCapture
 	end
 
 	def tick
-		if (event.now? and $gui.nil?)	# NOTE: only operates in performer
-			output_filepath = generate_output_filepath
+		return unless event.now?
 
-			# Get pixels and write them to temporary file
-			return if (pixels = get_framebuffer_rgb8).nil?
-
-			save_to_theme(pixels)
-			save_pixels_to_path(pixels, output_filepath)
-		end
+		return if (pixels = get_framebuffer_rgb8).nil?
+		save_to_theme(pixels)
+		save_pixels_to_path(pixels, generate_output_filepath)
 	end
 end
+=end

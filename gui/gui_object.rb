@@ -205,6 +205,6 @@ end
 # Gui base class
 #
 class GuiObject
-	include Engine::MethodsForUserObject
+	include MethodsForUserObject
 	include MethodsForGuiObject
 end
