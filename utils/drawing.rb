@@ -18,8 +18,6 @@
 
 # Mixin: Drawing.
 #
-# A typical and safe use is as follows:
-#
 #  class MyClass
 #    include Drawing
 #    ...
@@ -60,54 +58,54 @@ module Drawing
 	###################################################################
 
 	# Fuzzy Math
-	require 'drawing_fuzzy_math'
+	require 'drawing/drawing_fuzzy_math'
 	include DrawingFuzzyMath
 
 	# Screen
-	require 'drawing_screen'
+	require 'drawing/drawing_screen'
 	include DrawingScreen
 
 	# Color
-	require 'drawing_color'
+	require 'drawing/drawing_color'
 	include DrawingColor
 
 	# Texture
-	require 'drawing_texture'
+	require 'drawing/drawing_texture'
 	include DrawingTexture
 
 	# Shapes
-	require 'drawing_shapes'
+	require 'drawing/drawing_shapes'
 	include DrawingShapes
 
 	# Lines
-	require 'drawing_lines'
+	require 'drawing/drawing_lines'
 	include DrawingLines
 
 	# Transformations
-	require 'drawing_transformations'
+	require 'drawing/drawing_transformations'
 	include DrawingTransformations
 
 	# Clipping
-	require 'drawing_clipping'
+	require 'drawing/drawing_clipping'
 	include DrawingClipping
 
 	# Stencil Buffer
-	require 'drawing_stencil_buffer'
+	require 'drawing/drawing_stencil_buffer'
 	include DrawingStencilBuffer
 
 	# Framebuffer Objects
-	require 'drawing_framebuffer_objects'
+	require 'drawing/drawing_framebuffer_objects'
 	include DrawingFramebufferObjects
 
 	# Shader Snippets
-	require 'drawing_shader_snippets'
+	require 'drawing/drawing_shader_snippets'
 	include DrawingShaderSnippets
 
 	# Frame Saving
-	require 'drawing_frame_saving'
+	require 'drawing/drawing_frame_saving'
 	include DrawingFrameSaving
 
 	# Hit Testing
-	require 'drawing_hit_testing'
+	require 'drawing/drawing_hit_testing'
 	include DrawingHitTesting
 end
