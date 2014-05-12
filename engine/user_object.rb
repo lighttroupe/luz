@@ -19,6 +19,8 @@
 load_directory(File.join(Dir.pwd, 'engine', 'user-object-settings'), '**.rb')
 
 class UserObject
+	include MethodsForUserObject
+
 	Setting = Struct.new('Setting', :name, :klass, :options)
 
 	ICON_WIDTH, ICON_HEIGHT = 24, 24
