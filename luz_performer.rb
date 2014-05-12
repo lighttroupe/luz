@@ -28,27 +28,24 @@ class LuzPerformer
 	end
 
 	def create
-		SDL.init(SDL::INIT_VIDEO | SDL::INIT_TIMER)
-		puts "Using SDL version #{SDL::VERSION}"
-
+		init_sdl
 		set_video_mode
 		init_gl_viewport
-		puts "Running at #{@screen.w}x#{@screen.h} @ #{@bits_per_pixel}bpp, #{@frames_per_second}fps (max)"
-
-		SDL::WM.set_caption(APP_NAME, '')
-
-		#SDL::Mouse.hide		NOTE: using a blank cursor works better with Wacom pads
-		SDL::Mouse.setCursor(SDL::Surface.new(SDL::HWSURFACE,8,8,8,0,0,0,0),1,1,0,1,0,0)
-
-		SDL::Key.disable_key_repeat		# We want one Down and one Up message per key press
 	end
 
-	def sdl_video_mode_flags
-		flags = SDL::HWSURFACE | SDL::OPENGL
-		flags |= SDL::FULLSCREEN if @fullscreen
-		flags |= SDL::RESIZABLE if !@fullscreen
-		flags |= SDL::NOFRAME unless @border
-		flags
+	def init_sdl
+		puts "Using SDL version #{SDL::VERSION}"
+		SDL.init(SDL::INIT_VIDEO | SDL::INIT_TIMER)
+
+		# Window
+		SDL::WM.set_caption(APP_NAME, '')
+
+		# Keyboard
+		SDL::Key.disable_key_repeat		# We want one Down and one Up message per key press
+
+		# Mouse
+		# NOTE: using a blank cursor works better than SDL::Mouse.hide with Wacom pads
+		SDL::Mouse.setCursor(SDL::Surface.new(SDL::HWSURFACE,8,8,8,0,0,0,0),1,1,0,1,0,0)
 	end
 
 	def set_video_mode
@@ -58,6 +55,16 @@ class LuzPerformer
 		# Save
 		@width, @height = @screen.w, @screen.h
 		@bits_per_pixel = @screen.bpp if @bits_per_pixel == 0
+
+		puts "Running at #{@screen.w}x#{@screen.h} @ #{@bits_per_pixel}bpp, #{@frames_per_second}fps (max)"
+	end
+
+	def sdl_video_mode_flags
+		flags = SDL::HWSURFACE | SDL::OPENGL
+		flags |= SDL::FULLSCREEN if @fullscreen
+		flags |= SDL::RESIZABLE if !@fullscreen
+		flags |= SDL::NOFRAME unless @border
+		flags
 	end
 
 	def init_gl_viewport
@@ -72,7 +79,7 @@ class LuzPerformer
 	MOUSE_1_Y = "Mouse 01 / Y"
 
 	MOUSE_BUTTON_FORMAT = "Mouse %02d / Button %02d"
-	@@mouse_1_button_formatter = Hash.new { |hash, key| hash[key] = sprintf(MOUSE_BUTTON_FORMAT, 1, key) }
+	Mouse_1_button_formatter = Hash.new { |hash, key| hash[key] = sprintf(MOUSE_BUTTON_FORMAT, 1, key) }
 
 	def parse_event(event)
 		case event
@@ -82,10 +89,10 @@ class LuzPerformer
 			$engine.on_slider_change(MOUSE_1_Y, (1.0 - (event.y / (@height - 1).to_f)))
 
 		when SDL::Event2::MouseButtonDown
-			$engine.on_button_down(@@mouse_1_button_formatter[event.button], frame_offset=1)
+			$engine.on_button_down(Mouse_1_button_formatter[event.button], frame_offset=1)
 
 		when SDL::Event2::MouseButtonUp
-			$engine.on_button_up(@@mouse_1_button_formatter[event.button], frame_offset=1)
+			$engine.on_button_up(Mouse_1_button_formatter[event.button], frame_offset=1)
 
 		# Keyboard input
 		when SDL::Event2::KeyDown
@@ -107,7 +114,7 @@ class LuzPerformer
 	end
 
 	#
-	# Run Performer (interactive)
+	# Main Loop
 	#
 	def run
 		start_time = SDL.getTicks
@@ -187,7 +194,7 @@ class LuzPerformer
 	end
 
 	#
-	#
+	# Screenshots
 	#
 	def get_framebuffer_rgb
 		GL.Flush
