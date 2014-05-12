@@ -239,6 +239,10 @@ class Engine
 		button_init
 		slider_init
 
+		opengl_settings
+		projection
+		view
+
 		@project = Project.new
 		@frame_number -= 1 ; tick(@last_frame_time)		# set up the environment HACK: without counting it
 	end
@@ -251,38 +255,23 @@ class Engine
 		@frame_number / @total_frame_times
 	end
 
-	callback :clear_objects
 	def clear_objects
-		clear_objects_notify		# NOTE: project (and others) can listen to this and do the work
+		@project.clear
 	end
 
 	callback :new_project
-	def add_default_objects
-		@project.append_from_path(BASE_SET_PATH)
-		new_project_notify
-		@project.not_changed!
-	end
-
-	callback :render
-	callback :render_settings_changed
-	callback :frame_start
 	callback :frame_end
+
 	def do_frame(time)
-		unless @paused
-			frame_start = Time.now
+		return if @paused
 
-			#
-			# render at given real-world (or a carefully controlled time when non-realtime-recording) on which engine time is based
-			#
-			tick(time)
+		frame_start = Time.now
 
-			frame_start_notify
-			render_settings_changed_notify if @frame_number == 1
-			render_notify
-			frame_end_notify
+		tick(time)
+		render(enable_frame_saving=true)
 
-			@total_frame_times += (Time.now - frame_start)
-		end
+		frame_end_notify
+		@total_frame_times += (Time.now - frame_start)
 	end
 
 	###################################################################
@@ -353,12 +342,6 @@ class Engine
 	###################################################################
 
 	def render(enable_frame_saving)
-		if first_frame?		# only need to do these once since all changes use: with_setting { yield } -- TODO: is GL context ever lost with SDL?
-			render_settings
-			projection
-			view
-		end
-
 		if enable_frame_saving && frame_saving_requested?
 			with_frame_saving { |target_buffer|
 				target_buffer.using(:clear => true) {
@@ -400,7 +383,26 @@ class Engine
 	#
 	# OpenGL
 	#
-	def render_settings
+	def projection
+		@camera_distance_from_origin = 0.5
+
+		# TODO: comment formula below
+		angle = 2.0 * Math.atan(0.5 / @camera_distance_from_origin) * RADIANS_TO_DEGREES
+
+		GL.MatrixMode(GL::PROJECTION)
+		GL.LoadIdentity
+
+		# 1.0 = output ratio
+		GLU.Perspective(angle, 1.0, 0.001, 1024.0) # NOTE: near/far clip plane numbers are somewhat arbitrary.
+	end
+
+	def view
+		GL.MatrixMode(GL::MODELVIEW)
+		GL.LoadIdentity
+		GL.Translate(0,0,-@camera_distance_from_origin) # NOTE: makes a 1x1 object at the origin visible/fullscreen
+	end
+
+	def opengl_settings
 		GL.Enable(GL::BLEND)
 		GL.BlendFunc(GL::SRC_ALPHA, GL::ONE_MINUS_SRC_ALPHA)
 
@@ -419,25 +421,6 @@ class Engine
 		GL.PolygonMode(GL::BACK, GL::FILL)
 
 		GL.Enable(GL::TEXTURE_2D)
-	end
-
-	def projection
-		@camera_distance_from_origin = 0.5
-
-		# TODO: comment formula below
-		angle = 2.0 * Math.atan(0.5 / @camera_distance_from_origin) * RADIANS_TO_DEGREES
-
-		GL.MatrixMode(GL::PROJECTION)
-		GL.LoadIdentity
-
-		# 1.0 = output ratio
-		GLU.Perspective(angle, 1.0, 0.001, 1024.0) # NOTE: near/far clip plane numbers are somewhat arbitrary.
-	end
-
-	def view
-		GL.MatrixMode(GL::MODELVIEW)
-		GL.LoadIdentity
-		GL.Translate(0,0,-@camera_distance_from_origin) # NOTE: makes a 1x1 object at the origin visible/fullscreen
 	end
 
 private

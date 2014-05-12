@@ -62,8 +62,6 @@ class Project < UserObject
 		@last_save_time = Time.now
 		clear
 		@missing_plugin_names = []
-
-		$engine.on_clear_objects { clear }
 	end
 
 	# For use by editor

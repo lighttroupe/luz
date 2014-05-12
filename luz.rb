@@ -66,8 +66,6 @@ $engine.load_plugins
 
 # Engine callbacks
 $engine.on_user_object_exception { |object, exception| puts sprintf(Engine::USER_OBJECT_EXCEPTION_FORMAT, exception.report_format, object.title) }
-$engine.on_render_settings_changed { $engine.render_settings }	# TODO: remove 'render_settings_changed' concept
-$engine.on_render { $engine.render(enable_frame_saving=true) }		# NOTE: We just have one global context, so this renders to it
-
 $engine.load_from_path(project_path)
+
 $application.run
