@@ -1,13 +1,6 @@
-direc = File.dirname(__FILE__)
-dlext = Config::CONFIG['DLEXT']
 begin
-	if RUBY_VERSION && RUBY_VERSION =~ /1.9/
-		require "#{direc}/1.9/ffmpeg.#{dlext}"
-	else
-		require "#{direc}/1.8/ffmpeg.#{dlext}"
-	end
+	require_relative "1.9/ffmpeg.#{RbConfig::CONFIG['DLEXT']}"
 rescue LoadError => e
-	require "#{direc}/ffmpeg.#{dlext}"
 end
 
 #
