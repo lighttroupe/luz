@@ -79,7 +79,7 @@ class LuzPerformer
 	MOUSE_1_Y = "Mouse 01 / Y"
 
 	MOUSE_BUTTON_FORMAT = "Mouse %02d / Button %02d"
-	Mouse_1_button_formatter = Hash.new { |hash, key| hash[key] = sprintf(MOUSE_BUTTON_FORMAT, 1, key) }
+	MOUSE_1_BUTTON_FORMATTER = Hash.new { |hash, key| hash[key] = sprintf(MOUSE_BUTTON_FORMAT, 1, key) }
 
 	def parse_event(event)
 		case event
@@ -89,10 +89,10 @@ class LuzPerformer
 			$engine.on_slider_change(MOUSE_1_Y, (1.0 - (event.y / (@height - 1).to_f)))
 
 		when SDL::Event2::MouseButtonDown
-			$engine.on_button_down(Mouse_1_button_formatter[event.button], frame_offset=1)
+			$engine.on_button_down(MOUSE_1_BUTTON_FORMATTER[event.button], frame_offset=1)
 
 		when SDL::Event2::MouseButtonUp
-			$engine.on_button_up(Mouse_1_button_formatter[event.button], frame_offset=1)
+			$engine.on_button_up(MOUSE_1_BUTTON_FORMATTER[event.button], frame_offset=1)
 
 		# Keyboard input
 		when SDL::Event2::KeyDown
@@ -181,9 +181,9 @@ class LuzPerformer
 		puts sprintf('%d frames in %0.1f seconds = %dfps (~%dfps render loop)', $env[:frame_number], secs, $env[:frame_number] / secs, 1.0 / $engine.average_frame_time)
 	end
 
-	@@sdl_to_luz_button_names = Hash.new { |hash, key| hash[key] = sprintf('Keyboard / %s', SDL_TO_LUZ_BUTTON_NAMES[key] || key.humanize) }
 	def sdl_to_luz_button_name(name)
-		@@sdl_to_luz_button_names[name]
+		@sdl_to_luz_button_names ||= Hash.new { |hash, key| hash[key] = sprintf('Keyboard / %s', SDL_TO_LUZ_BUTTON_NAMES[key] || key.humanize) }
+		@sdl_to_luz_button_names[name]
 	end
 
 	def sdl_to_gui_key(key_name, sdl_event)		# actually decorates the existing String ;P
