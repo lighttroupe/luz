@@ -1,6 +1,6 @@
 # Luz 2.0
 
-Fullscreen interactive motion graphics toy builder.  Luz is pure Ruby and built on the shoulders of SDL, OpenGL, among others.
+Fullscreen interactive motion graphics toy builder.
 
 Luz supports vector shapes, animated gifs, sprites, video files.
 
@@ -8,9 +8,7 @@ Luz takes input from wiimotes, MIDI, Wacom tablets, joysticks, gamepads, and OSC
 
 Luz has run hundreds of live venue shows.
 
-## Shader Snippets
-
-Luz builds custom OpenGL shader programs on the fly.
+Luz is written in Ruby and built on the shoulders of SDL, OpenGL, ffmpeg.
 
 ## Video Tutorials
 
