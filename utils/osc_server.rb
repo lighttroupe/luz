@@ -31,7 +31,6 @@ class OSCServer
 	READ_LIMIT = 1024*8   # any big number (NOTE: too big and read_nonblock sometimes takes a really long time...)
 
 	attr_reader :ignored_message_count, :error_count
-	attr_accessor :relay_port
 
 	def initialize
 		@socket = UDPSocket.new.set_reuse_address_flag
@@ -56,9 +55,6 @@ class OSCServer
 
 				OSC::Packet.decode(data) { |address, args| on_new_message(address, args) }
 				max_packets -= 1 if max_packets
-
-				# Relaying of received data to work around single-UDP-receiver-at-a-time problem when running both editor and performer on same pc
-				@socket.send(data, 0, "127.0.0.1", @relay_port) if @relay_port
 
 				return if max_packets == 0
 			}

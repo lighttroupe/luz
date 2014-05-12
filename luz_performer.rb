@@ -3,7 +3,7 @@ class LuzPerformer
 
 	SDL_TO_LUZ_BUTTON_NAMES = {'`' => 'Grave', '\\' => 'Backslash', '[' => 'Left Bracket', ']' => 'Right Bracket', ';' => 'Semicolon', "'" => 'Apostrophe', '/' => 'Slash', '.' => 'Period', ',' => 'Comma', '-' => 'Minus', '=' => 'Equal', 'left ctrl' => 'Left Control', 'right ctrl' => 'Right Control'}
 
-	attr_accessor :width, :height, :fullscreen, :border, :bits_per_pixel, :frames_per_second, :relay_port
+	attr_accessor :width, :height, :fullscreen, :border, :bits_per_pixel, :frames_per_second
 	boolean_accessor :finished, :escape_quits
 
 	TIMING_COUNT = 10

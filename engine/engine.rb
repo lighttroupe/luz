@@ -203,7 +203,6 @@ class Engine
 		@message_buses = []
 		if defined? MessageBus
 			add_message_bus(options[:listen_ip] || MESSAGE_BUS_IP, options[:listen_port] || MESSAGE_BUS_PORT)
-			@message_buses.last.relay_port = options[:relay_port] if options[:relay_port]
 		end
 	end
 
