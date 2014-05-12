@@ -1,3 +1,10 @@
+#
+# easy_accessor :background_color, :default => []
+#
+# like attr_accessor but with default values (cached so as to not generate garbage with each call, for complex defaults like rgb colors)
+#
+# also adds eg. set_background_color(...) method which is chainable.
+#
 class Module
 	def easy_accessor(*signals)
 		# easy_accessor :value, :default => 0.5
