@@ -21,15 +21,6 @@ multi_require 'director', 'actor', 'curve', 'theme', 'variable', 'event', 'user_
 optional_require 'beat_detector'
 optional_require 'message_bus'
 
-begin
-	require 'inline'
-	require 'addons_inline'
-rescue LoadError
-	puts "ruby-inline is unavailable: you are missing out on a possible performance increase"
-rescue Exception => e
-	puts "error loading ruby-inline: #{e}"
-end
-
 class Engine
 	USER_OBJECT_EXCEPTION_FORMAT = "#{'#' * 80}\nOops! The plugin shown below has caused an error and has stopped functioning:\n\n%s\nObject:%s\n#{'#' * 80}\n"
 	OBJECT_CLASS_TO_SYMBOL = {Actor => :actors, Director => :directors, Theme => :themes, Curve => :curves, Variable => :variables, Event => :events, ProjectEffect => :effects}
