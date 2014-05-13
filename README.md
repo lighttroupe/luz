@@ -20,9 +20,9 @@ Some Luz 1.0 videos:
 
 ## The Luz Project consists of:
 
-- **Luz 2.0**: fullscreen motion graphics editor and performer (Ruby, OpenGL, SDL)
-- **Luz Input Manager**: sends live input device data to Luz (C++, Gtk+, XOrg API, libwiimote, SDL Input)
-- **Luz Spectrum Analyzer**: sends live audio information to Luz (C++, OpenGL, FFTW)
+- **Luz 2.0**: fullscreen motion graphics editor and performer (Ruby, OpenGL, SDL, OpenSoundControl input)
+- **Luz Input Manager**: sends live input device data to Luz (C++, Gtk, XOrg API, libwiimote, SDL Input, OpenSoundControl output)
+- **Luz Spectrum Analyzer**: sends live audio information to Luz (C++, Gtk, OpenGL, FFTW, OpenSoundControl output)
 
 # Getting Luz
 
