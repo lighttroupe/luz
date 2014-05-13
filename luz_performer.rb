@@ -1,75 +1,10 @@
-class LuzPerformer
-	include Drawing
+require 'sdl_application'
 
+class LuzPerformer < SDLApplication
 	SDL_TO_LUZ_BUTTON_NAMES = {'`' => 'Grave', '\\' => 'Backslash', '[' => 'Left Bracket', ']' => 'Right Bracket', ';' => 'Semicolon', "'" => 'Apostrophe', '/' => 'Slash', '.' => 'Period', ',' => 'Comma', '-' => 'Minus', '=' => 'Equal', 'left ctrl' => 'Left Control', 'right ctrl' => 'Right Control'}
 
-	attr_accessor :width, :height, :fullscreen, :border, :bits_per_pixel, :frames_per_second
-	boolean_accessor :finished, :escape_quits
-
-	TIMING_COUNT = 10
-
-	def initialize
-		@width, @height, @bits_per_pixel = 0, 0, 0		# NOTE: setting bpp to 0 means "current" in SDL
-		@fullscreen = true
-		@stencil_buffer = true
-		@border = true
-
-		self.escape_quits = true
-
-		# Frame rate should, ideally, match that of LCD, projector, etc.
-		# TODO: add an option for syncing to output device refresh rate, as a way to limit refresh rate.
-		@frames_per_second = 60
-	end
-
-	def create
-		init_sdl
-		set_video_mode
-		init_gl_viewport
-	end
-
-	def init_sdl
-		puts "Using SDL version #{SDL::VERSION}"
-		SDL.init(SDL::INIT_VIDEO | SDL::INIT_TIMER)
-
-		# Window
-		SDL::WM.set_caption(APP_NAME, '')
-
-		# Keyboard
-		SDL::Key.disable_key_repeat		# We want one Down and one Up message per key press
-
-		# Mouse
-		# NOTE: using a blank cursor works better than SDL::Mouse.hide with Wacom pads
-		SDL::Mouse.setCursor(SDL::Surface.new(SDL::HWSURFACE,8,8,8,0,0,0,0),1,1,0,1,0,0)
-	end
-
-	def set_video_mode
-		SDL.setGLAttr(SDL::GL_STENCIL_SIZE, 8) if @stencil_buffer
-		@screen = SDL.set_video_mode(@width, @height, @bits_per_pixel, sdl_video_mode_flags)
-
-		# Save
-		@width, @height = @screen.w, @screen.h
-		@bits_per_pixel = @screen.bpp if @bits_per_pixel == 0
-
-		puts "Running at #{@screen.w}x#{@screen.h} @ #{@bits_per_pixel}bpp, #{@frames_per_second}fps (max)"
-	end
-
-	def sdl_video_mode_flags
-		flags = SDL::HWSURFACE | SDL::OPENGL
-		flags |= SDL::FULLSCREEN if @fullscreen
-		flags |= SDL::RESIZABLE if !@fullscreen
-		flags |= SDL::NOFRAME unless @border
-		flags
-	end
-
-	def init_gl_viewport
-		GL.Viewport(0, 0, @width, @height)
-		clear_screen([0.0, 0.0, 0.0, 0.0])
-	end
-
-	def toggle_fullscreen!
-		@fullscreen = !@fullscreen
-		set_video_mode
-		init_gl_viewport
+	def render(time)
+		$engine.do_frame(time)
 	end
 
 	#
@@ -81,7 +16,7 @@ class LuzPerformer
 	MOUSE_BUTTON_FORMAT = "Mouse %02d / Button %02d"
 	MOUSE_1_BUTTON_FORMATTER = Hash.new { |hash, key| hash[key] = sprintf(MOUSE_BUTTON_FORMAT, 1, key) }
 
-	def parse_event(event)
+	def handle_sdl_event(event)
 		case event
 		# Mouse input
 		when SDL::Event2::MouseMotion
@@ -111,73 +46,6 @@ class LuzPerformer
 		end
 	end
 
-	#
-	# Main Loop
-	#
-	def run
-		start_time = SDL.getTicks
-		current_frames_per_second = nil
-		frame_number = 1
-		timing_start_ms = start_time
-
-		while not finished?
-			desired_ms_per_frame = (1000 / @frames_per_second)		# NOTE: desired FPS can change at any time
-
-			frame_start_ms = SDL.getTicks
-			timing_start_ms ||= frame_start_ms
-
-			while event = SDL::Event2.poll
-				parse_event(event)
-			end
-
-			#
-			# Render then sleep until time for next frame
-			#
-			$engine.do_frame((frame_start_ms - start_time) / 1000.0)
-
-			frame_end_ms = SDL.getTicks
-			frame_duration_ms = (frame_end_ms - frame_start_ms)
-
-			SDL.GL_swap_buffers		# note trying to not include swap in fps timing
-			swap_time_ms = SDL.getTicks - frame_end_ms
-
-			# HACK: recalculate so as not to sleep too much
-			frame_end_ms = SDL.getTicks
-			frame_duration_ms = (frame_end_ms - frame_start_ms)
-
-			# sleep a bit...
-			sleep_time_ms = desired_ms_per_frame - frame_duration_ms
-			SDL.delay(sleep_time_ms) if sleep_time_ms > 3		# for tiny amounts it doesn't make sense
-
-			frames_per_second = 1000.0 / frame_duration_ms
-
-			if frame_number % TIMING_COUNT == 0
-				timing_duration_ms = (frame_end_ms - timing_start_ms)		# we've been timing for many frames
-				timing_duration_in_seconds = timing_duration_ms / 1000.0
-				seconds_per_frame = timing_duration_in_seconds / TIMING_COUNT
-				$env[:current_frames_per_second] = (1.0 / seconds_per_frame).ceil
-				timing_start_ms = frame_end_ms
-			end
-
-			frame_number += 1
-
-			if $switch_to_project_path
-				begin
-					$engine.load_from_path($switch_to_project_path)
-					$gui.positive_message 'Opened successfully.'
-				rescue Exception => e
-					e.report('loading project')
-					$gui.negative_message 'Open failed.'
-				end
-				$switch_to_project_path = nil
-			end
-		end
-		SDL.quit
-
-		secs = (SDL.getTicks - start_time) / 1000.0
-		puts sprintf('%d frames in %0.1f seconds = %dfps (~%dfps render loop)', $env[:frame_number], secs, $env[:frame_number] / secs, 1.0 / $engine.average_frame_time)
-	end
-
 	def sdl_to_luz_button_name(name)
 		@sdl_to_luz_button_names ||= Hash.new { |hash, key| hash[key] = sprintf('Keyboard / %s', SDL_TO_LUZ_BUTTON_NAMES[key] || key.humanize) }
 		@sdl_to_luz_button_names[name]
@@ -190,18 +58,21 @@ class LuzPerformer
 		key_name
 	end
 
-	#
-	# Screenshots
-	#
-	def get_framebuffer_rgb
-		GL.Flush
-		GL.ReadPixels(0, 0, @width, @height, GL::RGB, GL::UNSIGNED_BYTE)
+	def after_update
+		# TODO: move this elsewhere?
+		if $switch_to_project_path
+			begin
+				$engine.load_from_path($switch_to_project_path)
+				$gui.positive_message 'Opened successfully.'
+			rescue Exception => e
+				e.report('loading project')
+				$gui.negative_message 'Open failed.'
+			end
+			$switch_to_project_path = nil
+		end
 	end
 
-	def save_framebuffer_to_file(path)
-		image = Magick::Image.new(width, height)
-		image.import_pixels(0, 0, width, height, "RGB", get_framebuffer_rgb, Magick::CharPixel)
-		image.flip!			# data comes at us upside down
-		image.write(path)
+	def after_run(seconds)
+		puts sprintf('%d frames in %0.1f seconds = %dfps (~%dfps render loop)', $env[:frame_number], seconds, $env[:frame_number] / seconds, 1.0 / $engine.average_frame_time)
 	end
 end
