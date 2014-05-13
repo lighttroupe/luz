@@ -30,10 +30,18 @@ module EngineRendering
 		}
 	end
 
+	def with_content_aspect_ratio
+		with_scale(0.62, 1.0) {
+			yield
+		}
+	end
+
 	def render_with_frame_saving
 		with_frame_saving { |target_buffer|
 			target_buffer.using(:clear => true) {
-				render_without_frame_saving
+				with_content_aspect_ratio {		# TODO: properly set aspect ratio
+					render_without_frame_saving
+				}
 			}
 			# draw created image to screen
 			target_buffer.with_image {
