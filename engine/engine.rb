@@ -131,10 +131,6 @@ class Engine
 		return change_count
 	end
 
-	def clear_objects
-		@project.clear
-	end
-
 	def do_frame(time)
 		return if @paused
 

@@ -12,6 +12,7 @@ module EngineProject
 	pipe :save_to_path, :project
 	pipe :project_changed!, :project, :method => :changed!
 	pipe :project_changed?, :project, :method => :changed?
+	pipe :clear_objects, :project, :method => :clear
 
 	def reinitialize_user_objects
 		@project.each_user_object { |obj| safe { obj.after_load } }
