@@ -2,7 +2,7 @@ class SDLApplication
 	include Drawing
 
 	attr_accessor :width, :height, :fullscreen, :border, :bits_per_pixel, :frames_per_second
-	boolean_accessor :finished, :escape_quits
+	boolean_accessor :finished
 
 	TIMING_COUNT = 10
 
@@ -11,8 +11,6 @@ class SDLApplication
 		@fullscreen = true
 		@stencil_buffer = true
 		@border = true
-
-		self.escape_quits = true
 
 		# Frame rate should, ideally, match that of LCD, projector, etc.
 		# TODO: add an option for syncing to output device refresh rate, as a way to limit refresh rate.
