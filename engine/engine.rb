@@ -18,7 +18,6 @@
 
 multi_require 'engine/engine_methods_for_user_object', 'director', 'actor', 'curve', 'theme', 'variable', 'event', 'user_object', 'user_object_setting', 'project', 'image', 'actor_shape', 'actor_canvas'
 
-optional_require 'beat_detector'
 optional_require 'message_bus'
 
 class Engine
@@ -48,6 +47,9 @@ class Engine
 
 	require 'engine/engine_time'
 	include EngineTime
+
+	require 'engine/engine_beats'
+	include EngineBeats
 
 	require 'engine/engine_buttons'
 	include EngineButtons
@@ -81,10 +83,10 @@ class Engine
 	# Init / Shutdown
 	###################################################################
 	def initialize(options = {})
-		@paused = false
 		@frame_number = 0
-		@beat_detector = BeatDetector.new if defined? BeatDetector
+		init_engine_pausing
 		init_engine_time
+		init_engine_beats
 
 		$env = Hash.new
 
@@ -151,20 +153,6 @@ class Engine
 		}
 	end
 
-	#
-	# Beats
-	#
-	def beat!
-		@beat_detector.beat!(@frame_time)
-	end
-
-	pipe :beat_zero!, :beat_detector
-	pipe :next_beat_is_zero!, :beat_detector
-	pipe :beat_double_time!, :beat_detector
-	pipe :beat_half_time!, :beat_detector
-	pipe :beats_per_minute, :beat_detector
-	pipe :beats_per_minute=, :beat_detector
-
 	###################################################################
 	# Save / Load
 	###################################################################
@@ -203,9 +191,9 @@ private
 		@project.effects.each { |effect| effect.tick! }
 
 		# Beat
-		@beat_detector.tick(@frame_time) if @beat_detector
+		update_beats(frame_time)
 
-		@last_frame_time = @frame_time
+		@last_frame_time = frame_time
 	end
 
 	#
