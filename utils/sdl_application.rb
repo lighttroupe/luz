@@ -72,14 +72,14 @@ class SDLApplication
 	# Main Loop
 	#
 	def run
-		@start_time_ms = SDL.getTicks
+		start_time_ms = SDL.getTicks
 		frame_number = 1
 
 		while not finished?
 			desired_ms_per_frame = (1000 / @frames_per_second)		# NOTE: desired FPS can change at any time
 
 			frame_start_ms = SDL.getTicks
-			age_in_seconds = (frame_start_ms - @start_time_ms) / 1000.0
+			age_in_seconds = (frame_start_ms - start_time_ms) / 1000.0
 
 			while event = SDL::Event2.poll
 				handle_sdl_event(event)
@@ -100,7 +100,7 @@ class SDLApplication
 			after_update
 		end
 		SDL.quit
-		after_run((SDL.getTicks - @start_time_ms) / 1000.0)
+		after_run((SDL.getTicks - start_time_ms) / 1000.0)
 	end
 
 	#
