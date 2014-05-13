@@ -1,0 +1,3 @@
+The goal with plugins is that their code is so simple and pure that no change in Luz will necessitate changes to plugins.
+
+Plugins mainly use the Drawing API, talk to the $engine, and read from $env

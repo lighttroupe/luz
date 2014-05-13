@@ -46,6 +46,9 @@ class Engine
 	include Drawing
 	include MethodsForUserObject		# engine gets 'em, too.
 
+	require 'engine/engine_time'
+	include EngineTime
+
 	require 'engine/engine_buttons'
 	include EngineButtons
 
@@ -64,6 +67,12 @@ class Engine
 	require 'engine/engine_environment'
 	include EngineEnvironment
 
+	require 'engine/engine_plugins'
+	include EnginePlugins
+
+	require 'engine/engine_pausing'
+	include EnginePausing
+
 	if optional_require 'engine/engine_dmx'
 		include EngineDMX
 	end
@@ -72,21 +81,14 @@ class Engine
 	# Init / Shutdown
 	###################################################################
 	def initialize(options = {})
-		@simulation_speed = 1.0
 		@paused = false
-		@frame_number, @time = 0, 0.0
-		@last_frame_time = 0.0
-		@total_frame_times = 0.0
-		@add_to_engine_time = 0.0
-
+		@frame_number = 0
 		@beat_detector = BeatDetector.new if defined? BeatDetector
-
-		@event_values = Hash.new
+		init_engine_time
 
 		$env = Hash.new
 
 		@num_known_user_object_classes = 0
-
 		@perspective = [-0.5, 0.5, -0.5, 0.5]
 
 		@message_buses = []
@@ -95,15 +97,19 @@ class Engine
 		end
 	end
 
-	#
-	# Time
-	#
-	def reset_time!
-		@time = 0.0
+	def reload
+		change_count = reload_modified_source_files		# Kernel add-on method
+		change_count += load_plugins		# Pick up any new plugins
+		reinitialize_user_objects				# Ensures UOs are properly init'd
+		update_user_objects_notify			# Let everyone know that UOs changed
+		reload_notify
+		return change_count
 	end
 
-	def add_to_engine_time(amount)
-		@add_to_engine_time += amount
+	def reinitialize_user_objects
+		@project.each_user_object { |obj| safe { obj.after_load } }
+		@project.each_user_object { |obj| safe { obj.resolve_settings } }
+		@project.each_user_object { |obj| obj.crashy = false }
 	end
 
 	def notify_of_new_user_object_classes
@@ -130,14 +136,6 @@ class Engine
 		@frame_number -= 1 ; tick(@last_frame_time)		# set up the environment HACK: without counting it
 	end
 
-	def average_frame_time
-		@total_frame_times / @frame_number
-	end
-
-	def average_frames_per_second
-		@frame_number / @total_frame_times
-	end
-
 	def clear_objects
 		@project.clear
 	end
@@ -145,13 +143,12 @@ class Engine
 	def do_frame(time)
 		return if @paused
 
-		frame_start = Time.now
+		record_frame_time {
+			tick(time)
+			render(enable_frame_saving=true)
 
-		tick(time)
-		render(enable_frame_saving=true)
-
-		frame_end_notify
-		@total_frame_times += (Time.now - frame_start)
+			frame_end_notify
+		}
 	end
 
 	#
@@ -168,15 +165,6 @@ class Engine
 	pipe :beats_per_minute, :beat_detector
 	pipe :beats_per_minute=, :beat_detector
 
-	#
-	# Pausing
-	#
-	boolean_accessor :paused
-	def paused=(pause)
-		project.effects.each { |effect| effect.pause if effect.respond_to? :pause } if pause and !@paused
-		@paused = pause
-	end
-
 	###################################################################
 	# Save / Load
 	###################################################################
@@ -190,27 +178,6 @@ class Engine
 	pipe :project_changed!, :project, :method => :changed!
 	pipe :project_changed?, :project, :method => :changed?
 
-	def load_plugins
-		count = load_directory(PLUGIN_DIRECTORY_PATH, '*.luz.rb')
-		notify_of_new_user_object_classes
-		return count
-	end
-
-	def reload
-		change_count = reload_modified_source_files		# Kernel add-on method
-		change_count += load_plugins		# Pick up any new plugins
-		reinitialize_user_objects				# Ensures UOs are properly init'd
-		update_user_objects_notify			# Let everyone know that UOs changed
-		reload_notify
-		return change_count
-	end
-
-	def reinitialize_user_objects
-		@project.each_user_object { |obj| safe { obj.after_load } }
-		@project.each_user_object { |obj| safe { obj.resolve_settings } }
-		@project.each_user_object { |obj| obj.crashy = false }
-	end
-
 private
 
 	def tick(frame_time)
@@ -222,14 +189,7 @@ private
 		# Project PreTick		NOTE: at this point $env is from previous frame
 		@project.effects.each { |effect| user_object_try(effect) { effect.pretick } }
 
-		# Real-World Time
-		@frame_time = frame_time
-		@frame_time_delta = @frame_time - @last_frame_time
-
-		# Engine time (modified by simulation speed)
-		@time_delta = (@simulation_speed * (@frame_time_delta)) + @add_to_engine_time
-		@time += @time_delta
-		@add_to_engine_time = 0.0
+		update_time(frame_time)
 
 		# Update inputs
 		@message_buses.each { |bus| bus.update }
