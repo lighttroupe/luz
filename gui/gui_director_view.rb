@@ -34,6 +34,7 @@ private
 				}
 			}
 		}
+		GL.Disable(GL::DEPTH_TEST)
 	end
 
 	def draw_origin_cross(distance=5.0)
