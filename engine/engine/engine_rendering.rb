@@ -1,4 +1,20 @@
 module EngineRendering
+	def tick(frame_time)
+		slider_tick								# TODO: does this really need to come first?
+
+		@frame_number += 1				# ; printf("Frame: %05d ==================================\n", @frame_number)
+
+		project_pretick						# NOTE: at this point $env is from previous frame
+		update_time(frame_time)
+		read_from_message_bus
+		update_environment
+		resolve_events
+		project_tick
+		update_beats(frame_time)
+
+		@last_frame_time = frame_time
+	end
+
 	def render(enable_frame_saving)
 		if enable_frame_saving && frame_saving_requested?
 			with_frame_saving { |target_buffer|
