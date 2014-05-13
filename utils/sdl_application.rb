@@ -49,7 +49,7 @@ class SDLApplication
 				handle_sdl_event(event)
 			end
 
-			render(age_in_seconds)
+			do_frame(age_in_seconds)
 
 			SDL.GL_swap_buffers
 

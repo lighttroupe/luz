@@ -19,7 +19,7 @@ class LuzPerformer < SDLApplication
 
 private
 
-	def render(time)
+	def do_frame(time)
 		$engine.do_frame(time)
 	end
 
