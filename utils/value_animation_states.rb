@@ -1,3 +1,8 @@
+#
+# ValueAnimationStates provides named hashes of settings => values, such as "open" or "closed", and the abilty to transition between them
+#
+# a Ruby version of jQuery's switchClass()
+#
 module ValueAnimationStates
 	def animation_states
 		@animation_states ||= {}

@@ -1,5 +1,7 @@
+#
+# Settings provides a YAML-backed key value store of application-wide settings
+#
 require 'yaml'
-#require 'pp'
 
 class Settings
 	def initialize

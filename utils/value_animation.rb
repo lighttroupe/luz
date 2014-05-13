@@ -1,3 +1,8 @@
+#
+# ValueAnimation is a generic utility for animating an object's instance variables over time, with optional callback at the end
+#
+# a Ruby version of jQuery's animate()
+#
 module ValueAnimation
 	Animation = Struct.new(:get_method, :set_method, :begin_value, :end_value, :begin_time, :end_time, :proc)
 

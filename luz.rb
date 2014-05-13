@@ -18,7 +18,7 @@ load_directory(File.join(Dir.pwd, 'utils', 'addons'), '**.rb')
 multi_require 'method_piping', 'boolean_accessor', 'constants', 'drawing', 'luz_performer', 'engine', 'settings'
 
 $settings = Settings.new.load(File.join(Dir.home, SETTINGS_DIRECTORY, SETTINGS_FILENAME))
-$application = LuzPerformer.new
+$application = LuzPerformer.new(APP_NAME)
 
 options = OptionParser.new do |opts|
 	opts.banner = "Usage: luz.rb [options] <project.luz>"

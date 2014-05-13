@@ -1,13 +1,14 @@
+#
+# Basic SDL application
+#
 class SDLApplication
 	include Drawing
 
 	attr_accessor :width, :height, :fullscreen, :border, :bits_per_pixel, :frames_per_second
 	boolean_accessor :finished
 
-	TIMING_COUNT = 10
-
-	def initialize
-		@width, @height, @bits_per_pixel = 0, 0, 0		# NOTE: setting bpp to 0 means "current" in SDL
+	def initialize(name)
+		@name, @width, @height, @bits_per_pixel = name, 0, 0, 0		# NOTE: setting bpp to 0 means "current" in SDL
 		@fullscreen = true
 		@stencil_buffer = true
 		@border = true
