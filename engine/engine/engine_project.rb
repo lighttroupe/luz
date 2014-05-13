@@ -26,4 +26,12 @@ module EngineProject
 		}
 		@num_known_user_object_classes = UserObject.inherited_classes.size
 	end
+
+	def project_pretick
+		@project.effects.each { |effect| user_object_try(effect) { effect.pretick } }
+	end
+
+	def project_tick
+		@project.effects.each { |effect| effect.tick! }
+	end
 end

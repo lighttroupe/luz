@@ -54,6 +54,9 @@ class Engine
 	require 'engine/engine_beats'
 	include EngineBeats
 
+	require 'engine/engine_message_bus'
+	include EngineMessageBus
+
 	require 'engine/engine_buttons'
 	include EngineButtons
 
@@ -145,31 +148,23 @@ class Engine
 private
 
 	def tick(frame_time)
-		slider_tick
+		slider_tick								# TODO: does this really need to come first?
 
-		@frame_number += 1
-		#printf("Frame: %05d ==================================\n", @frame_number)
+		@frame_number += 1				# ; printf("Frame: %05d ==================================\n", @frame_number)
 
-		# Project PreTick		NOTE: at this point $env is from previous frame
-		@project.effects.each { |effect| user_object_try(effect) { effect.pretick } }
-
+		project_pretick						# NOTE: at this point $env is from previous frame
 		update_time(frame_time)
-
-		# Update inputs
-		@message_buses.each { |bus| bus.update }
-
+		read_from_message_bus
 		update_environment
-
-		# Resolve Events
-		@project.events.each { |event| event.do_value }
-
-		# Project Tick
-		@project.effects.each { |effect| effect.tick! }
-
-		# Beat
+		resolve_events
+		project_tick
 		update_beats(frame_time)
 
 		@last_frame_time = frame_time
+	end
+
+	def resolve_events
+		@project.events.each { |event| event.do_value }
 	end
 
 	#
