@@ -94,7 +94,9 @@ module MethodsForGuiObject
 
 	def gui_render_keyboard_focus
 		with_keyboard_focus_image {
-			unit_square
+			with_color($gui.view_color) {
+				unit_square
+			}
 		}
 	end
 

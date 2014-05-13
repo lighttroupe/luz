@@ -205,6 +205,17 @@ class GuiDefault < GuiInterface
 	#
 	# Rendering: render is called every frame, gui_render! only when the Editor plugin thinks it's visible 
 	#
+	def view_color
+		case @mode
+		when :actor
+			[1,0.5,0.5,1]
+		when :director
+			[0.5,0.5,1,1]
+		else
+			[1,1,1,1]
+		end
+	end
+
 	def render
 		case @mode
 		when :actor
