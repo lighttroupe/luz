@@ -89,7 +89,7 @@ private
 		SDL.init(SDL::INIT_VIDEO | SDL::INIT_TIMER)
 
 		# Window
-		SDL::WM.set_caption(APP_NAME, '')
+		SDL::WM.set_caption(@name, '')
 
 		# Keyboard
 		SDL::Key.disable_key_repeat		# We want one Down and one Up message per key press
