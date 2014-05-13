@@ -1,6 +1,4 @@
 module EngineRendering
-	SCREEN_BACKGROUND_COLOR = [0,0,0,0]
-
 	def tick(frame_time)
 		slider_tick								# TODO: does this really need to come first?
 
@@ -20,7 +18,6 @@ module EngineRendering
 	end
 
 	def render(enable_frame_saving)
-		clear_screen(SCREEN_BACKGROUND_COLOR)
 		$gui.render {
 			if enable_frame_saving && frame_saving_requested?
 				render_with_frame_saving

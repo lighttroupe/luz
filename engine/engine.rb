@@ -118,8 +118,11 @@ class Engine
 		tick(@last_frame_time)
 	end
 
+	SCREEN_BACKGROUND_COLOR = [0,0,0,0]
 	def do_frame(time)
 		return if @paused
+
+		clear_screen(SCREEN_BACKGROUND_COLOR)
 
 		record_frame_time {
 			tick(time)
