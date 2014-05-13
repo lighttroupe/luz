@@ -170,9 +170,6 @@ class GuiDefault < GuiInterface
 
 		self << @dialog_container = GuiBox.new
 
-		#
-		# 
-		#
 		set_initial_state
 	end
 

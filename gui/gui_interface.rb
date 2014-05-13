@@ -8,12 +8,13 @@ class GuiInterface < GuiBox
 	end
 
 	def gui_render!
+		return if hidden?
 		super
 		render_pointers
 	end
 
 	def gui_tick!
-		return if hidden?		# or alpha == 0.0
+		return if hidden?
 		super
 		with_hit_testing {
 			hit_test_render!

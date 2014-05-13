@@ -23,21 +23,27 @@ module EngineRendering
 		clear_screen(SCREEN_BACKGROUND_COLOR)
 		$gui.render {
 			if enable_frame_saving && frame_saving_requested?
-				with_frame_saving { |target_buffer|
-					target_buffer.using(:clear => true) {
-						render_recursively(@project.effects) {
-							# Nothing to do when reaching the end of the effects chain
-						}
-					}
-					# draw created image to screen
-					target_buffer.with_image {
-						fullscreen_rectangle
-					}
-				}
+				render_with_frame_saving
 			else
-				render_recursively(@project.effects) { }
+				render_without_frame_saving
 			end
 		}
+	end
+
+	def render_with_frame_saving
+		with_frame_saving { |target_buffer|
+			target_buffer.using(:clear => true) {
+				render_without_frame_saving
+			}
+			# draw created image to screen
+			target_buffer.with_image {
+				fullscreen_rectangle
+			}
+		}
+	end
+
+	def render_without_frame_saving
+		render_recursively(@project.effects) { }
 	end
 
 	#

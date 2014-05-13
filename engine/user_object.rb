@@ -116,14 +116,13 @@ class UserObject
 		@settings ||= create_user_object_settings				# ensure settings have been created (imported projects haven't had their settings created yet)
 	end
 
-	# nothing
-	empty_method :tick
-
 	def tick!
 		return if @last_tick_frame_number == $env[:frame_number]
 		user_object_try { tick }
 		@last_tick_frame_number = $env[:frame_number]
 	end
+
+	empty_method :tick		# override
 
 	def ticked_recently?
 		@last_tick_frame_number && (@last_tick_frame_number > ($env[:frame_number] - 2))
