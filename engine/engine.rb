@@ -22,7 +22,6 @@ optional_require 'message_bus'
 
 class Engine
 	USER_OBJECT_EXCEPTION_FORMAT = "#{'#' * 80}\nOops! The plugin shown below has caused an error and has stopped functioning:\n\n%s\nObject:%s\n#{'#' * 80}\n"
-	OBJECT_CLASS_TO_SYMBOL = {Actor => :actors, Director => :directors, Theme => :themes, Curve => :curves, Variable => :variables, Event => :events, ProjectEffect => :effects}
 
 	PLUGIN_DIRECTORY_PATH = File.join(Dir.pwd, 'engine', 'plugins')
 	BASE_SET_PATH = 'base.luz'
@@ -88,9 +87,9 @@ class Engine
 		include EngineDMX
 	end
 
-	###################################################################
-	# Init / Shutdown
-	###################################################################
+	#
+	# Init
+	#
 	def initialize(options = {})
 		@frame_number = 0
 		@num_known_user_object_classes = 0
@@ -104,7 +103,7 @@ class Engine
 		add_message_bus(options[:listen_ip] || MESSAGE_BUS_IP, options[:listen_port] || MESSAGE_BUS_PORT)
 	end
 
-	# Some init has to be done after we have the $engine variable set (so after initialize returns)
+	# NOTE: some init has to be done after we have the $engine variable set (so after initialize returns)
 	def post_initialize
 		init_environment
 		update_environment
@@ -118,16 +117,9 @@ class Engine
 		projection
 		view
 
-		@frame_number -= 1 ; tick(@last_frame_time)		# set up the environment HACK: without counting it
-	end
-
-	def reload
-		change_count = reload_modified_source_files		# Kernel add-on method
-		change_count += load_plugins		# Pick up any new plugins
-		reinitialize_user_objects				# Ensures UOs are properly init'd
-		update_user_objects_notify			# Let everyone know that UOs changed
-		reload_notify
-		return change_count
+		# set up the environment
+		@frame_number -= 1			# HACK: without counting it
+		tick(@last_frame_time)
 	end
 
 	def do_frame(time)
@@ -140,9 +132,18 @@ class Engine
 		}
 	end
 
+	def reload
+		change_count = reload_modified_source_files		# Kernel add-on method
+		change_count += load_plugins		# Pick up any new plugins
+		reinitialize_user_objects				# Ensures UOs are properly init'd
+		update_user_objects_notify			# Let everyone know that UOs changed
+		reload_notify
+		return change_count
+	end
+
 private
 
 	def resolve_events
-		@project.events.each { |event| event.do_value }			# unlike sliders, events would love "presses" if not updated every frame
+		@project.events.each { |event| event.do_value }			# unlike sliders, events would lose "presses" if not updated every frame
 	end
 end
