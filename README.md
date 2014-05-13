@@ -4,7 +4,7 @@ Fullscreen interactive motion graphics toy builder.
 
 Luz supports vector shapes, animated gifs, sprites, video files.
 
-Luz takes input from wiimotes, MIDI, Wacom tablets, joysticks, gamepads, and OSC.
+Luz takes input from wiimotes, MIDI, Wacom tablets, joysticks, gamepads, and generic OpenSoundControl input.
 
 Luz has run hundreds of live venue shows.
 
@@ -20,9 +20,9 @@ Some Luz 1.0 videos:
 
 ## The Luz Project consists of:
 
-- **Luz 2.0**: fullscreen motion graphics editor and performer (Ruby, OpenGL, SDL, OpenSoundControl input)
-- **Luz Input Manager**: sends live input device data to Luz (C++, Gtk, XOrg API, libwiimote, SDL Input, OpenSoundControl output)
-- **Luz Spectrum Analyzer**: sends live audio information to Luz (C++, Gtk, OpenGL, FFTW, OpenSoundControl output)
+- **Luz 2.0**: fullscreen motion graphics editor and performer (Ruby, OpenGL, SDL, OSC in)
+- **Luz Input Manager**: sends live input device data to Luz (C++, Gtk, libwiimote, SDL Input, OSC out)
+- **Luz Spectrum Analyzer**: sends live audio information to Luz (C++, Gtk, OpenGL, FFTW, OSC out)
 
 # Getting Luz
 
