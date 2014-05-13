@@ -16,7 +16,7 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-multi_require 'engine_methods_for_user_object', 'director', 'actor', 'curve', 'theme', 'variable', 'event', 'user_object', 'user_object_setting', 'project', 'image', 'actor_shape', 'actor_canvas'
+multi_require 'engine/engine_methods_for_user_object', 'director', 'actor', 'curve', 'theme', 'variable', 'event', 'user_object', 'user_object_setting', 'project', 'image', 'actor_shape', 'actor_canvas'
 
 optional_require 'beat_detector'
 optional_require 'message_bus'
@@ -46,16 +46,16 @@ class Engine
 	include Drawing
 	include MethodsForUserObject		# engine gets 'em, too.
 
-	require 'engine_buttons'
+	require 'engine/engine_buttons'
 	include EngineButtons
 
-	require 'engine_sliders'
+	require 'engine/engine_sliders'
 	include EngineSliders
 
-	require 'engine_images'
+	require 'engine/engine_images'
 	include EngineImages
 
-	if optional_require 'engine_dmx'
+	if optional_require 'engine/engine_dmx'
 		include EngineDMX
 	end
 
@@ -113,7 +113,7 @@ class Engine
 		button_init
 		slider_init
 
-		opengl_settings
+		set_opengl_defaults
 		projection
 		view
 
@@ -293,7 +293,7 @@ class Engine
 		GL.Translate(0,0,-@camera_distance_from_origin) # NOTE: makes a 1x1 object at the origin visible/fullscreen
 	end
 
-	def opengl_settings
+	def set_opengl_defaults
 		GL.Enable(GL::BLEND)
 		GL.BlendFunc(GL::SRC_ALPHA, GL::ONE_MINUS_SRC_ALPHA)
 
