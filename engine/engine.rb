@@ -112,11 +112,11 @@ class Engine
 		init_buttons
 		init_sliders
 
+		init_project
+
 		set_opengl_defaults
 		projection
 		view
-
-		init_project
 
 		@frame_number -= 1 ; tick(@last_frame_time)		# set up the environment HACK: without counting it
 	end
