@@ -93,9 +93,9 @@ module Drawing
 	require 'drawing/drawing_stencil_buffer'
 	include DrawingStencilBuffer
 
-	# Framebuffer Objects
-	require 'drawing/drawing_framebuffer_objects'
-	include DrawingFramebufferObjects
+	# FrameBuffer Objects
+	require 'drawing/drawing_frame_buffer_objects'
+	include DrawingFrameBufferObjects
 
 	# Shader Snippets
 	require 'drawing/drawing_shader_snippets'

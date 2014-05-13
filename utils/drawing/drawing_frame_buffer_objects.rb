@@ -16,9 +16,9 @@
  #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  ###############################################################################
 
-require 'framebuffer_object'
+require 'gl_frame_buffer_object'
 
-module DrawingFramebufferObjects
+module DrawingFrameBufferObjects
 	DEFAULT_FRAMEBUFFER_SIZE = :large
 	FRAMEBUFFER_SIZES = {:large => {:width => 1024, :height => 768}, :medium => {:width => 512, :height => 384}, :small => {:width => 256, :height => 192}}
 
@@ -28,7 +28,7 @@ module DrawingFramebufferObjects
 		@fbo_hash[size] ||= []
 
 		if @fbo_hash[size].empty?
-			fbo = FramebufferObject.new(FRAMEBUFFER_SIZES[size])
+			fbo = GLFrameBufferObject.new(FRAMEBUFFER_SIZES[size])
 			@fbo_to_size[fbo] = size		# record size of new framebuffer
 			fbo
 		else

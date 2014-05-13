@@ -1,6 +1,6 @@
 require 'drawing'
 
-class FramebufferObject		# TODO: capitalize Buffer... FBO
+class GLFrameBufferObject
 	include Drawing
 
 	attr_reader :image, :height, :width
