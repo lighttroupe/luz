@@ -26,7 +26,7 @@ Some Luz 1.0 videos:
 
 # Getting Luz
 
-Luz currently only runs on Linux.  Help is wanted porting it to OSX.
+Luz currently only runs on Linux.  (Help is wanted porting it to OSX.)
 
 1. Clone this repository.
 
@@ -34,6 +34,6 @@ Luz currently only runs on Linux.  Help is wanted porting it to OSX.
 
 3. Optionally run 'make' in the root directory to build Input Manager and Spectrum Analyzer
 
-4. Optionally run the ./build scripts in utils/webcam, and utils/video-file.
+4. Optionally run the ./build scripts in utils/webcam and utils/video-file.
 
 5. ruby1.9.1 luz.rb gui/editor.luz
