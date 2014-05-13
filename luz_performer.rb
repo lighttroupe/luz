@@ -1,3 +1,8 @@
+#
+# LuzPerformer connects a basic SDLApplication with the Luz $engine and $gui
+#
+# (This is the only file that should need to change when switching SDL to an alternative.)
+#
 require 'sdl_application'
 
 class LuzPerformer < SDLApplication
