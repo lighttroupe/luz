@@ -94,12 +94,12 @@ class Engine
 	def initialize(options = {})
 		@frame_number = 0
 		@num_known_user_object_classes = 0
-		@perspective = [-0.5, 0.5, -0.5, 0.5]
 		$env = Hash.new
 
 		init_pausing
 		init_time
 		init_beats
+
 		init_message_bus
 		add_message_bus(options[:listen_ip] || MESSAGE_BUS_IP, options[:listen_port] || MESSAGE_BUS_PORT)
 	end
