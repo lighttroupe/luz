@@ -58,7 +58,7 @@ $application.create
 
 # Create Luz Engine
 $engine = Engine.new
-$engine.post_initialize
+$engine.post_initialize		# TODO: add message bus ip/port params
 $engine.load_plugins
 
 # Engine callbacks

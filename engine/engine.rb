@@ -88,9 +88,9 @@ class Engine
 	end
 
 	#
-	# Init
+	# Init (happens after $engine variable is set, ie after initialize returns)
 	#
-	def initialize(options = {})
+	def post_initialize(options = {})
 		@frame_number = 0
 
 		init_pausing
@@ -99,10 +99,7 @@ class Engine
 
 		init_message_bus
 		add_message_bus(options[:listen_ip] || MESSAGE_BUS_IP, options[:listen_port] || MESSAGE_BUS_PORT)
-	end
 
-	# NOTE: some init has to be done after we have the $engine variable set (so after initialize returns)
-	def post_initialize
 		$env = Hash.new
 		init_environment
 		update_environment
