@@ -1,3 +1,6 @@
+#
+# GLFrameBufferObject is an off-screen chunk of video memory that we can render into, and use as a texture for further rendering.
+#
 require 'drawing'
 
 class GLFrameBufferObject

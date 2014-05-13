@@ -1,3 +1,6 @@
+#
+# MIDIFileReader parses .midi files into an array of Samples (see SamplePlayer)
+#
 require 'rubygems'
 require 'midilib/io/seqreader'
 require 'midilib/sequence'
@@ -12,7 +15,8 @@ class MIDIFileReader
 		@beats_per_minute = 120		# set for real when a file is loaded
 	end
 
-	$midi_key_channel_and_key_to_string ||= Hash.new { |channel_hash, channel_key| channel_hash[channel_key] = Hash.new { |note_hash, note_key| puts 'key' ; note_hash[note_key] = sprintf("MIDI / Channel %02d / Key %03d", channel_key, note_key) }}
+	# Factories for making input messages in a garbage friendly way
+	$midi_key_channel_and_key_to_string ||= Hash.new { |channel_hash, channel_key| channel_hash[channel_key] = Hash.new { |note_hash, note_key| note_hash[note_key] = sprintf("MIDI / Channel %02d / Key %03d", channel_key, note_key) }}
 	$midi_key_channel_and_slider_to_string ||= Hash.new { |channel_hash, channel_key| channel_hash[channel_key] = Hash.new { |slider_hash, slider_key| slider_hash[slider_key] = sprintf("MIDI / Channel %02d / Slider %03d", channel_key, slider_key) }}
 
 	def load_file(file_path)
@@ -21,7 +25,7 @@ class MIDIFileReader
 		start_time = Time.now.to_f
 
 		# Create a new, empty sequence.
-		seq = MIDI::Sequence.new()
+		seq = MIDI::Sequence.new
 
 		# Read the contents of a MIDI file into the sequence.
 		File.open(file_path, 'rb') { |file|
@@ -31,10 +35,10 @@ class MIDIFileReader
 		# Store this
 		@beats_per_minute = seq.beats_per_minute
 
-		samples_per_minute = (seq.beats_per_minute * seq.ppqn)
+		samples_per_minute = (@beats_per_minute * seq.ppqn)
 		samples_per_second = (samples_per_minute / 60.0)
 
-		puts "MIDI format: #{seq.format}, BPM:#{seq.beats_per_minute}, Tempo:#{seq.tempo}, QNotes: #{seq.qnotes}, PPQN: #{seq.ppqn}, #{seq.numer}/#{seq.denom}, samples per second: #{samples_per_second}"
+		puts "MIDI format: #{seq.format}, BPM:#{@beats_per_minute}, Tempo:#{seq.tempo}, QNotes: #{seq.qnotes}, PPQN: #{seq.ppqn}, #{seq.numer}/#{seq.denom}, samples per second: #{samples_per_second}"
 
 		sort_needed = false
 		seq.each_with_index { |track, index|
@@ -69,9 +73,13 @@ class MIDIFileReader
 				end
 			}
 		}
-		puts "Sorting Samples..." if sort_needed
-		@samples.sort! { |s1, s2| s1.time <=> s2.time } if sort_needed
-		puts "Loaded #{@samples.size} samples, first at #{@samples.empty? ? nil : @samples.first.time} in #{Time.now.to_f - start_time} seconds"
-		return true
+		sort! if sort_needed
+		puts "Loaded #{@samples.size} samples, first at #{@samples.empty? ? '(none)' : @samples.first.time} in #{Time.now.to_f - start_time} seconds"
+		true
+	end
+
+	def sort!
+		puts "Sorting Samples..."
+		@samples.sort! { |s1, s2| s1.time <=> s2.time }
 	end
 end

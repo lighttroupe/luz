@@ -1,21 +1,6 @@
- ###############################################################################
- #  Copyright 2006 Ian McIntosh <ian@openanswers.org>
- #
- #  This program is free software; you can redistribute it and/or modify
- #  it under the terms of the GNU General Public License as published by
- #  the Free Software Foundation; either version 2 of the License, or
- #  (at your option) any later version.
- #
- #  This program is distributed in the hope that it will be useful,
- #  but WITHOUT ANY WARRANTY; without even the implied warranty of
- #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- #  GNU Library General Public License for more details.
- #
- #  You should have received a copy of the GNU General Public License
- #  along with this program; if not, write to the Free Software
- #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- ###############################################################################
-
+#
+# Shapes holds methods for generating 2D tessellatable shapes.
+#
 require 'path'
 
 module Shapes
@@ -36,12 +21,10 @@ module Shapes
 		# Add first/final point to close the shape
 		vertices << (radius * Math.cos(first_radian))
 		vertices << (radius * Math.sin(first_radian))
-
-		# Draw it
-		return vertices
+		vertices
 	end
 
-	def self.Ring(radius,points)
+	def self.Ring(radius, points)
 		radians_step = ((Math::PI * 2.0) / points)		# Total radians / total points
 		radians = first_radian = Math::PI / 2		# Start at the 'top'
 
@@ -54,7 +37,7 @@ module Shapes
 		end
 		vertices << vertices[0]
 		vertices << vertices[1]
-		return vertices
+		vertices
 	end
 
 	def self.VariableCircle(arms, points_per_arm, &radius_proc)
@@ -84,7 +67,7 @@ module Shapes
 		vertices << (first_radius * Math.cos(first_radian))
 		vertices << (first_radius * Math.sin(first_radian))
 
-		return vertices
+		vertices
 	end
 
 	def self.RoundedRectangle(radius_x, radius_y, knob_x, knob_y, detail)
@@ -101,6 +84,6 @@ module Shapes
 		path.arc_to(-radius_x + (knob_x / 2), -radius_y + (knob_y / 2), radius_x * knob_x, radius_y * knob_y, (Math::PI / 2) * 3, Math::PI, detail)
 		path.line_to(-radius_x, radius_y * knob_y_inv)		# left bottom
 		path.arc_to(-radius_x + (knob_x / 2), radius_y - (knob_y / 2), radius_x * knob_x, radius_y * knob_y, (Math::PI), Math::PI / 2, detail)
-		return path
+		path
 	end
 end

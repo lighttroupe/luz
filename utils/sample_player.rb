@@ -1,3 +1,6 @@
+#
+# SamplePlayer calls provided proc once per name=value sample when passed-in time passes the sample time (like sheet music).
+#
 class SamplePlayer
 	Sample = Struct.new(:time, :name, :value)
 

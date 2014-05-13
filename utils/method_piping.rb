@@ -1,6 +1,9 @@
-class Module
-	# Creates methods in a class that sends all calls of method 'signal' to
-	# calls to a method of the given target instance variable
+#
+# This is the delegator pattern.
+#
+#  pipe :start_the_machine!, :machine, :method => :start!								# calls @machine.start!
+#
+class Module		# TODO: why?
 	def pipe(signal, target, original_options={})
 		(signal.respond_to?(:each) ? signal : [signal]).each { |signal|
 			options = {:method => signal}.merge(original_options)

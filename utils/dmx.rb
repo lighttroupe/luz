@@ -1,6 +1,8 @@
 #
 # DMX support, specifically targeting the "Enttec DMX USB Pro" device
 #
+#  https://en.wikipedia.org/wiki/DMX512
+#
 require 'serialport'
 
 class DMX

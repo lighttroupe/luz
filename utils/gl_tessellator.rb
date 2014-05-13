@@ -1,3 +1,8 @@
+#
+# GLTessellator takes arbitrary shapes (x,y pairs) and turns them into lists of OpenGL-renderable triangles.
+#
+#  GLTessellator.new.render_filled_path(vertices, :height => 0.1)		# height draws an extruded 3D shape from our 2D vertices
+#
 class GLTessellator
 	def initialize
 		@tessellator = GLU.NewTess

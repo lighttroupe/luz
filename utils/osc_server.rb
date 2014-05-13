@@ -1,28 +1,17 @@
- ###############################################################################
- #  Copyright 2006 Ian McIntosh <ian@openanswers.org>
- #
- #  This program is free software; you can redistribute it and/or modify
- #  it under the terms of the GNU General Public License as published by
- #  the Free Software Foundation; either version 2 of the License, or
- #  (at your option) any later version.
- #
- #  This program is distributed in the hope that it will be useful,
- #  but WITHOUT ANY WARRANTY; without even the implied warranty of
- #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- #  GNU Library General Public License for more details.
- #
- #  You should have received a copy of the GNU General Public License
- #  along with this program; if not, write to the Free Software
- #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- ###############################################################################
-
+#
+# OSCServer is a non-blocking UDP server that parses each packet as OpenSoundControl
+#
+# https://en.wikipedia.org/wiki/User_Datagram_Protocol
+#
+# https://en.wikipedia.org/wiki/Open_Sound_Control
+#
 require 'socket'
 require 'ipaddr'
 require 'osc'
 
 class IPSocket
 	def set_reuse_address_flag
-		setsockopt(Socket::SOL_SOCKET, Socket::SO_REUSEADDR, 1)
+		setsockopt(Socket::SOL_SOCKET, Socket::SO_REUSEADDR, 1)			# this allows us to run twice without the socket complaining (OS won't necessarily deliver packets to both sockets, though)
 		self
 	end
 end
@@ -36,6 +25,10 @@ class OSCServer
 		@socket = UDPSocket.new.set_reuse_address_flag
 		@socket_array = [@socket]
 		@ignored_message_count, @error_count = 0, 0
+	end
+
+	def on_new_message(address, args)
+		raise NotImplementedError		# override
 	end
 
 	def listen(address, port)

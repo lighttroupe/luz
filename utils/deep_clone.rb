@@ -1,5 +1,11 @@
+#
+# DeepClone makes a whole independent new Object, with new copies of internal data structures.
+#
+# Optionally filter what is cloned vs linked in new object with passed proc.
+#
+# new_object = object.deep_clone
+#
 module DeepClone
-	# This is the same as the above, except it only clones an object if is_cloneable_callback(obj) returns true, otherwise it uses a reference to obj (the root object is always cloned)
 	def deep_clone(list = {}, &is_cloneable_callback)
 		return list[self] if list[self]
 		case self

@@ -1,5 +1,7 @@
 #
-# Basic SDL application
+# SDL handles graphics system init, timing, and sleeping in a cross-platform way
+#
+# http://www.libsdl.org
 #
 class SDLApplication
 	include Drawing
