@@ -55,6 +55,9 @@ class Engine
 	require 'engine/engine_images'
 	include EngineImages
 
+	require 'engine/engine_exceptions'
+	include EngineExceptions
+
 	if optional_require 'engine/engine_dmx'
 		include EngineDMX
 	end
@@ -200,32 +203,6 @@ class Engine
 		@project.each_user_object { |obj| safe { obj.after_load } }
 		@project.each_user_object { |obj| safe { obj.resolve_settings } }
 		@project.each_user_object { |obj| obj.crashy = false }
-	end
-
-	###################################################################
-	# Exception Handling
-	###################################################################
-	def user_object_try(obj)
-		begin
-			return yield if obj.usable?		# NOTE: doesn't yield for "crashed" UOs
-		rescue Interrupt => e
-			raise e
-		rescue Exception => e
-			obj.crashy = true
-			obj.last_exception = e if $gui
-			user_object_exception_notify(obj, e)
-			user_object_changed_notify(obj)
-		end
-	end
-
-	def safe
-		begin
-			yield
-		rescue Interrupt => e
-			raise e
-		rescue Exception => e
-			e.report
-		end
 	end
 
 	###################################################################
