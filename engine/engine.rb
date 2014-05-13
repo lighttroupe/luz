@@ -45,6 +45,9 @@ class Engine
 	include Drawing
 	include MethodsForUserObject		# engine gets 'em, too.
 
+	require 'engine/engine_project'
+	include EngineProject
+
 	require 'engine/engine_time'
 	include EngineTime
 
@@ -99,29 +102,6 @@ class Engine
 		end
 	end
 
-	def reload
-		change_count = reload_modified_source_files		# Kernel add-on method
-		change_count += load_plugins		# Pick up any new plugins
-		reinitialize_user_objects				# Ensures UOs are properly init'd
-		update_user_objects_notify			# Let everyone know that UOs changed
-		reload_notify
-		return change_count
-	end
-
-	def reinitialize_user_objects
-		@project.each_user_object { |obj| safe { obj.after_load } }
-		@project.each_user_object { |obj| safe { obj.resolve_settings } }
-		@project.each_user_object { |obj| obj.crashy = false }
-	end
-
-	def notify_of_new_user_object_classes
-		# call the notify callback for just new ones
-		@num_known_user_object_classes.upto(UserObject.inherited_classes.size - 1) { |index|
-			new_user_object_class_notify(UserObject.inherited_classes[index])
-		}
-		@num_known_user_object_classes = UserObject.inherited_classes.size
-	end
-
 	# Some init has to be done after we have the $engine variable set (so after initialize returns)
 	def post_initialize
 		init_environment
@@ -134,8 +114,18 @@ class Engine
 		projection
 		view
 
-		@project = Project.new
+		init_engine_project
+
 		@frame_number -= 1 ; tick(@last_frame_time)		# set up the environment HACK: without counting it
+	end
+
+	def reload
+		change_count = reload_modified_source_files		# Kernel add-on method
+		change_count += load_plugins		# Pick up any new plugins
+		reinitialize_user_objects				# Ensures UOs are properly init'd
+		update_user_objects_notify			# Let everyone know that UOs changed
+		reload_notify
+		return change_count
 	end
 
 	def clear_objects
@@ -148,23 +138,9 @@ class Engine
 		record_frame_time {
 			tick(time)
 			render(enable_frame_saving=true)
-
 			frame_end_notify
 		}
 	end
-
-	###################################################################
-	# Save / Load
-	###################################################################
-	def load_from_path(path)
-		@project.load_from_path(path)
-		new_project_notify
-	end
-
-	pipe :save, :project
-	pipe :save_to_path, :project
-	pipe :project_changed!, :project, :method => :changed!
-	pipe :project_changed?, :project, :method => :changed?
 
 private
 
