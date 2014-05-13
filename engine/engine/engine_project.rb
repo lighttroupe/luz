@@ -1,5 +1,5 @@
 module EngineProject
-	def init_engine_project
+	def init_project
 		@project = Project.new
 	end
 

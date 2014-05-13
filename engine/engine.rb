@@ -93,19 +93,15 @@ class Engine
 	###################################################################
 	def initialize(options = {})
 		@frame_number = 0
-		init_engine_pausing
-		init_engine_time
-		init_engine_beats
-
-		$env = Hash.new
-
 		@num_known_user_object_classes = 0
 		@perspective = [-0.5, 0.5, -0.5, 0.5]
+		$env = Hash.new
 
-		@message_buses = []
-		if defined? MessageBus
-			add_message_bus(options[:listen_ip] || MESSAGE_BUS_IP, options[:listen_port] || MESSAGE_BUS_PORT)
-		end
+		init_pausing
+		init_time
+		init_beats
+		init_message_bus
+		add_message_bus(options[:listen_ip] || MESSAGE_BUS_IP, options[:listen_port] || MESSAGE_BUS_PORT)
 	end
 
 	# Some init has to be done after we have the $engine variable set (so after initialize returns)
@@ -113,14 +109,14 @@ class Engine
 		init_environment
 		update_environment
 
-		button_init
-		slider_init
+		init_buttons
+		init_sliders
 
 		set_opengl_defaults
 		projection
 		view
 
-		init_engine_project
+		init_project
 
 		@frame_number -= 1 ; tick(@last_frame_time)		# set up the environment HACK: without counting it
 	end

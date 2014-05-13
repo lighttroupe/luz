@@ -1,7 +1,7 @@
 module EnginePausing
 	boolean_accessor :paused
 
-	def init_engine_pausing
+	def init_pausing
 		@paused = false
 	end
 

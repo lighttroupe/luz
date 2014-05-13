@@ -3,7 +3,7 @@ module EngineSliders
 
 	callback :new_slider
 
-	def slider_init
+	def init_sliders
 		@slider_values = Hash.new
 		@slider_delayed_updates = Hash.new
 		@slider_values_last_update_frame = Hash.new

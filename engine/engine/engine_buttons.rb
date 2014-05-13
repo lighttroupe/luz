@@ -3,7 +3,7 @@ module EngineButtons
 
 	callback :new_button
 
-	def button_init
+	def init_buttons
 		@button_down = Hash.new
 		@button_down_frame_number = Hash.new
 		@button_up_frame_number = Hash.new

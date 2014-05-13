@@ -1,7 +1,7 @@
 require 'beat_detector'
 
 module EngineBeats
-	def init_engine_beats
+	def init_beats
 		@beat_detector = BeatDetector.new
 	end
 

@@ -1,5 +1,5 @@
 module EngineTime
-	def init_engine_time
+	def init_time
 		@simulation_speed = 1.0
 		@last_frame_time = 0.0
 		@total_frame_times = 0.0
