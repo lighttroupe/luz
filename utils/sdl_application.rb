@@ -26,45 +26,6 @@ class SDLApplication
 		init_gl_viewport
 	end
 
-	def init_sdl
-		puts "Using SDL version #{SDL::VERSION}"
-		SDL.init(SDL::INIT_VIDEO | SDL::INIT_TIMER)
-
-		# Window
-		SDL::WM.set_caption(APP_NAME, '')
-
-		# Keyboard
-		SDL::Key.disable_key_repeat		# We want one Down and one Up message per key press
-
-		# Mouse
-		# NOTE: using a blank cursor works better than SDL::Mouse.hide with Wacom pads
-		SDL::Mouse.setCursor(SDL::Surface.new(SDL::HWSURFACE,8,8,8,0,0,0,0),1,1,0,1,0,0)
-	end
-
-	def set_video_mode
-		SDL.setGLAttr(SDL::GL_STENCIL_SIZE, 8) if @stencil_buffer
-		@screen = SDL.set_video_mode(@width, @height, @bits_per_pixel, sdl_video_mode_flags)
-
-		# Save
-		@width, @height = @screen.w, @screen.h
-		@bits_per_pixel = @screen.bpp if @bits_per_pixel == 0
-
-		puts "Running at #{@screen.w}x#{@screen.h} @ #{@bits_per_pixel}bpp, #{@frames_per_second}fps (max)"
-	end
-
-	def sdl_video_mode_flags
-		flags = SDL::HWSURFACE | SDL::OPENGL
-		flags |= SDL::FULLSCREEN if @fullscreen
-		flags |= SDL::RESIZABLE if !@fullscreen
-		flags |= SDL::NOFRAME unless @border
-		flags
-	end
-
-	def init_gl_viewport
-		GL.Viewport(0, 0, @width, @height)
-		clear_screen([0.0, 0.0, 0.0, 0.0])
-	end
-
 	def toggle_fullscreen!
 		@fullscreen = !@fullscreen
 		set_video_mode
@@ -119,5 +80,46 @@ class SDLApplication
 		image.import_pixels(0, 0, width, height, "RGB", get_framebuffer_rgb, Magick::CharPixel)
 		image.flip!			# data comes at us upside down
 		image.write(path)
+	end
+
+private
+
+	def init_sdl
+		puts "Using SDL version #{SDL::VERSION}"
+		SDL.init(SDL::INIT_VIDEO | SDL::INIT_TIMER)
+
+		# Window
+		SDL::WM.set_caption(APP_NAME, '')
+
+		# Keyboard
+		SDL::Key.disable_key_repeat		# We want one Down and one Up message per key press
+
+		# Mouse
+		# NOTE: using a blank cursor works better than SDL::Mouse.hide with Wacom pads
+		SDL::Mouse.setCursor(SDL::Surface.new(SDL::HWSURFACE,8,8,8,0,0,0,0),1,1,0,1,0,0)
+	end
+
+	def set_video_mode
+		SDL.setGLAttr(SDL::GL_STENCIL_SIZE, 8) if @stencil_buffer
+		@screen = SDL.set_video_mode(@width, @height, @bits_per_pixel, sdl_video_mode_flags)
+
+		# Save
+		@width, @height = @screen.w, @screen.h
+		@bits_per_pixel = @screen.bpp if @bits_per_pixel == 0
+
+		puts "Running at #{@screen.w}x#{@screen.h} @ #{@bits_per_pixel}bpp, #{@frames_per_second}fps (max)"
+	end
+
+	def sdl_video_mode_flags
+		flags = SDL::HWSURFACE | SDL::OPENGL
+		flags |= SDL::FULLSCREEN if @fullscreen
+		flags |= SDL::RESIZABLE if !@fullscreen
+		flags |= SDL::NOFRAME unless @border
+		flags
+	end
+
+	def init_gl_viewport
+		GL.Viewport(0, 0, @width, @height)
+		clear_screen([0.0, 0.0, 0.0, 0.0])
 	end
 end

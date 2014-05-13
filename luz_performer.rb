@@ -8,18 +8,20 @@ require 'sdl_application'
 class LuzPerformer < SDLApplication
 	SDL_TO_LUZ_BUTTON_NAMES = {'`' => 'Grave', '\\' => 'Backslash', '[' => 'Left Bracket', ']' => 'Right Bracket', ';' => 'Semicolon', "'" => 'Apostrophe', '/' => 'Slash', '.' => 'Period', ',' => 'Comma', '-' => 'Minus', '=' => 'Equal', 'left ctrl' => 'Left Control', 'right ctrl' => 'Right Control'}
 
-	def render(time)
-		$engine.do_frame(time)
-	end
-
-	#
-	# Some hacks for reduced garbage / better performance
-	#
+	# (hacks for reduced garbage / better performance)
 	MOUSE_1_X = "Mouse 01 / X"
 	MOUSE_1_Y = "Mouse 01 / Y"
 
 	MOUSE_BUTTON_FORMAT = "Mouse %02d / Button %02d"
 	MOUSE_1_BUTTON_FORMATTER = Hash.new { |hash, key| hash[key] = sprintf(MOUSE_BUTTON_FORMAT, 1, key) }
+
+	# public API is in baseclass
+
+private
+
+	def render(time)
+		$engine.do_frame(time)
+	end
 
 	def handle_sdl_event(event)
 		case event
