@@ -92,8 +92,6 @@ class Engine
 	#
 	def initialize(options = {})
 		@frame_number = 0
-		@num_known_user_object_classes = 0
-		$env = Hash.new
 
 		init_pausing
 		init_time
@@ -105,6 +103,7 @@ class Engine
 
 	# NOTE: some init has to be done after we have the $engine variable set (so after initialize returns)
 	def post_initialize
+		$env = Hash.new
 		init_environment
 		update_environment
 
