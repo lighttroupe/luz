@@ -12,6 +12,7 @@ class GuiDefault < GuiInterface
 		create!
 		add_state(:closed, {:scale_x => 1.5, :scale_y => 1.5, :opacity => 0.0, :hidden => true})
 		set_state(:open, {:scale_x => 1.0, :scale_y => 1.0, :opacity => 1.0, :hidden => false})
+		positive_message('Welcome to Luz 2.0')
 	end
 
 	def toggle!
@@ -218,7 +219,6 @@ class GuiDefault < GuiInterface
 				yield
 			end
 		}
-
 		gui_render!
 	end
 

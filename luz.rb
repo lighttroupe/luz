@@ -64,6 +64,14 @@ $engine.load_plugins
 # Engine callbacks
 $engine.on_user_object_exception { |object, exception| puts sprintf(Engine::USER_OBJECT_EXCEPTION_FORMAT, exception.report_format, object.title) }
 
-# Go!
+# Load
 $engine.load_from_path(project_path)
+
+# GUI
+multi_require 'easy_accessor', 'value_animation', 'value_animation_states'
+$LOAD_PATH << './gui'
+multi_require 'pointer', 'pointer_mouse', 'gui_default'
+$gui = GuiDefault.new			# TODO plugable?
+
+# Go!
 $application.run

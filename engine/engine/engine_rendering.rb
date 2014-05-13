@@ -1,4 +1,6 @@
 module EngineRendering
+	SCREEN_BACKGROUND_COLOR = [0,0,0,0]
+
 	def tick(frame_time)
 		slider_tick								# TODO: does this really need to come first?
 
@@ -12,25 +14,30 @@ module EngineRendering
 		project_tick
 		update_beats(frame_time)
 
+		$gui.gui_tick! if $gui
+
 		@last_frame_time = frame_time
 	end
 
 	def render(enable_frame_saving)
-		if enable_frame_saving && frame_saving_requested?
-			with_frame_saving { |target_buffer|
-				target_buffer.using(:clear => true) {
-					render_recursively(@project.effects) {
-						# Nothing to do when reaching the end of the effects chain
+		clear_screen(SCREEN_BACKGROUND_COLOR)
+		$gui.render {
+			if enable_frame_saving && frame_saving_requested?
+				with_frame_saving { |target_buffer|
+					target_buffer.using(:clear => true) {
+						render_recursively(@project.effects) {
+							# Nothing to do when reaching the end of the effects chain
+						}
+					}
+					# draw created image to screen
+					target_buffer.with_image {
+						fullscreen_rectangle
 					}
 				}
-				# draw created image to screen
-				target_buffer.with_image {
-					fullscreen_rectangle
-				}
-			}
-		else
-			render_recursively(@project.effects) { }
-		end
+			else
+				render_recursively(@project.effects) { }
+			end
+		}
 	end
 
 	#
