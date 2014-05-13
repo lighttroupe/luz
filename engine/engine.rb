@@ -81,6 +81,9 @@ class Engine
 	require 'engine/engine_pausing'
 	include EnginePausing
 
+	require 'engine/engine_file_monitoring'
+	include EngineFileMonitoring
+
 	if optional_require 'engine/engine_dmx'
 		include EngineDMX
 	end
@@ -161,30 +164,5 @@ private
 
 	def resolve_events
 		@project.events.each { |event| event.do_value }
-	end
-
-	if optional_require 'rb-inotify'
-		puts 'Using iNotify for live reloading of changed images'
-
-		$notifier ||= INotify::Notifier.new		# seems we only need one
-
-		def with_watch(file_path)
-			# Load file
-			if yield
-				# Add a watch, and when it fires, yield again
-				$notifier.watch(file_path, :close_write) {
-					puts "Reloading #{file_path} ..."
-					yield
-				}
-
-				$notifier_io = [$notifier.to_io]
-				$engine.on_frame_end { $notifier.process if IO.select($notifier_io, nil, nil, 0) } unless $notifier_callback_set
-				$notifier_callback_set = true
-			end
-		end
-	else
-		def with_watch(file_path)		# stub
-			yield
-		end
 	end
 end
