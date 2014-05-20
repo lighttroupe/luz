@@ -86,7 +86,7 @@ class GuiUserObjectEditor < GuiWindow
 		# Close Button
 		#
 		self << (@close_button=GuiButton.new.set(:scale_x => 0.15, :scale_y => 0.07, :offset_x => 0.0, :offset_y => -0.5 + 0.035, :background_image => $engine.load_image('images/buttons/close.png')))
-		@close_button.on_clicked { $gui.clear_editors! }
+		@close_button.on_clicked { $gui.clear_user_object_editor }
 
 		#
 		# Let object build its own content (eg. lists of effects and settings: gui/addons/user_object.rb)
