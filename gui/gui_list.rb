@@ -26,9 +26,9 @@ class GuiList < GuiBox
 		when 'up'
 			select_previous!
 			scroll_to_selection!
-		when 'return'
-			selected = selection.first
-			selected.grab_keyboard_focus! if selected
+		#when 'return'		OOPS: this breaks variable flyout enter key behavior-- where is it needed??
+			#selected = selection.first
+			#selected.grab_keyboard_focus! if selected
 		else
 			super
 		end
