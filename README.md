@@ -47,13 +47,6 @@ Luz currently only runs on Linux.  (Help is wanted porting it to OSX.)
 
 Your touchpad will work like a mouse by default but you can get high definition absolutely-positioned data out of it.  (Tap on one side, get X=0.2, tap on the other, get X=0.8 instantly.)
 
-    https://help.ubuntu.com/community/SynapticsTouchpad#Enabling_SHMConfig_in_order_to_get_synclient_debug_output
+https://help.ubuntu.com/community/SynapticsTouchpad#Enabling_SHMConfig_in_order_to_get_synclient_debug_output
 
-When this has worked, after you've rebooted, Input Manager will show a "Touchpad" input and will send *Touchpad / X*, *Touchpad / Y* and *Touchpad / Pressure* automatically.
-
-Section "InputClass"
-        Identifier "enable synaptics SHMConfig"
-        MatchIsTouchpad "on"
-        MatchDevicePath "/dev/input/event*"
-        Option "SHMConfig" "on"
-EndSection
+After you've rebooted, Input Manager will show a "Touchpad" input and will send *Touchpad / X*, *Touchpad / Y* and *Touchpad / Pressure* automatically.
