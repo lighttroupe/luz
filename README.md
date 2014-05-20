@@ -24,7 +24,7 @@ Some Luz 1.0 video tutorials (all the same concepts apply, only the interface is
 - **Luz Input Manager**: sends live input device data to Luz (C++, Gtk, libwiimote, SDL Input, OSC out)
 - **Luz Spectrum Analyzer**: sends live audio information to Luz (C++, Gtk, OpenGL, FFTW, OSC out)
 
-# Getting Luz
+# Running Luz
 
 Luz currently only runs on Linux.  (Help is wanted porting it to OSX.)
 
@@ -34,19 +34,17 @@ Luz currently only runs on Linux.  (Help is wanted porting it to OSX.)
 
 3. Optionally run **make** in the root directory to build Input Manager and Spectrum Analyzer.
 
-4. Optionally run the ./build scripts in utils/webcam for the Webcam plugin.
+4. Optionally run the **./build** scripts in utils/webcam for the Webcam plugin.
 
-5. Optionally run the ./build scripts in utils/video-file for the Video plugin.
+5. Optionally run the **./build** scripts in utils/video-file for the Video plugin.
 
-6. Optionally enhance your touchpad with high definition data and absolute positioning (see below).
+6. Optionally enhance your laptop's touchpad (see below).
 
 7. **ruby1.9.1 luz.rb gui/editor.luz**
 
+# Enhance Your Touchpad
 
-
-# Enhance Your Synaptic Touchpad
-
-Your touchpad will work like a mouse by default but you can get high definition absolutely-positioned data out of it.  (Tap on one side, get X=0.2, tap on the other, get X=0.8 instantly.)
+Your touchpad will work like a mouse by default, but you can get high-definition absolute-positioned data out of it, which is ideal for "playing" your visual instrument.  (Absolute means you tap on one side, get X=0.2, tap on the other, get X=0.8 instantly.)
 
 <https://help.ubuntu.com/community/SynapticsTouchpad#Enabling_SHMConfig_in_order_to_get_synclient_debug_output>
 
