@@ -14,7 +14,7 @@ Luz is written in Ruby and built on the shoulders of SDL, OpenGL, ffmpeg.
 
 There are no videos yet of the new fullscreen OpenGL interface in Luz 2.0.
 
-Some Luz 1.0 videos:
+Some Luz 1.0 video tutorials (all the same concepts apply, only the interface is different):
 
 <http://lighttroupe.com/luz>
 
@@ -28,11 +28,11 @@ Some Luz 1.0 videos:
 
 Luz currently only runs on Linux.  (Help is wanted porting it to OSX.)
 
-1. Clone this repository.
+1. **git clone git@github.com:lighttroupe/luz-next.git**
 
-2. Install dependencies as described in README.
+2. Optionally install dependencies for Input Manager and Spectrum Analyzer: **sudo apt-get install build-essential libasound2-dev libfftw3-dev liblo0-dev libgtkmm-2.4-dev libgtkglextmm-x11-1.2-dev libgl1-mesa-dev libglu1-mesa-dev libx11-dev libxext-dev libxi-dev libsdl1.2-dev libcwiimote-dev libbluetooth-dev libportmidi-dev liblo-dev libunique-dev**
 
-3. Optionally run 'make' in the root directory to build Input Manager (input-manager/input-manager) and Spectrum Analyzer (spectrum-analyzer/spectrum-analyzer).
+3. Optionally run **make** in the root directory to build Input Manager and Spectrum Analyzer.
 
 4. Optionally run the ./build scripts in utils/webcam for the Webcam plugin.
 
@@ -43,10 +43,11 @@ Luz currently only runs on Linux.  (Help is wanted porting it to OSX.)
 7. **ruby1.9.1 luz.rb gui/editor.luz**
 
 
+
 # Enhance Your Synaptic Touchpad
 
 Your touchpad will work like a mouse by default but you can get high definition absolutely-positioned data out of it.  (Tap on one side, get X=0.2, tap on the other, get X=0.8 instantly.)
 
-https://help.ubuntu.com/community/SynapticsTouchpad#Enabling_SHMConfig_in_order_to_get_synclient_debug_output
+<https://help.ubuntu.com/community/SynapticsTouchpad#Enabling_SHMConfig_in_order_to_get_synclient_debug_output>
 
 After you've rebooted, Input Manager will show a "Touchpad" input and will send *Touchpad / X*, *Touchpad / Y* and *Touchpad / Pressure* automatically.
