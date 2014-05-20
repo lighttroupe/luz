@@ -1,0 +1,3 @@
+The utils/ directory is for "generic" code that doesn't require the Luz universe.
+
+Files in this directory shouldn't refer to $engine or $env or $gui.  (There are a few unfortunate rulebreakers that might belong in engine/ instead.)
