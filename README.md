@@ -10,19 +10,19 @@ Luz has run hundreds of live venue shows.
 
 Luz is written in Ruby and built on the shoulders of SDL, OpenGL, ffmpeg.
 
-## Video Tutorials
-
-There are no videos yet of the new fullscreen OpenGL interface in Luz 2.0.
-
-Some Luz 1.0 video tutorials (all the same concepts apply, only the interface is different):
-
-<http://lighttroupe.com/luz>
-
 ## The Luz Project consists of:
 
 - **Luz 2.0**: fullscreen motion graphics editor and performer (Ruby, OpenGL, SDL, OSC in)
 - **Luz Input Manager**: sends live input device data to Luz (C++, Gtk, libwiimote, SDL Input, OSC out)
 - **Luz Spectrum Analyzer**: sends live audio information to Luz (C++, Gtk, OpenGL, FFTW, OSC out)
+
+## Video Tutorials
+
+There are no videos yet of the new fullscreen OpenGL interface in Luz 2.0.
+
+Here are some Luz 1.0 video tutorials (all the same concepts apply, only the interface is different):
+
+<http://lighttroupe.com/luz>
 
 # Running Luz
 
@@ -48,4 +48,4 @@ Your touchpad will work like a mouse by default, but you can get high-definition
 
 <https://help.ubuntu.com/community/SynapticsTouchpad#Enabling_SHMConfig_in_order_to_get_synclient_debug_output>
 
-After you've rebooted, Input Manager will show a "Touchpad" input and will send *Touchpad / X*, *Touchpad / Y* and *Touchpad / Pressure* automatically.
+After you've rebooted, Input Manager will show a "Touchpad" input and will send *Touchpad / X*, *Touchpad / Y* and *Touchpad / Pressure* to Luz automatically.
