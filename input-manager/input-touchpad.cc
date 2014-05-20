@@ -1,6 +1,9 @@
 #include "input-touchpad.h"
 #include "utils.h"
 
+// Synaptics touchpad driver makes a shared memory area available to us, filled with juicy live data.
+// We poll it, notice changes, and send Luz inputs.
+
 InputTouchpad::InputTouchpad()
 {
 	// TODO: better way to init these
@@ -11,7 +14,6 @@ InputTouchpad::InputTouchpad()
 
 bool InputTouchpad::connect()
 {
-	// connect to the shared memory area
 	if ((m_shmid = shmget(SHM_SYNAPTICS, sizeof(SynapticsSHM), 0)) == -1) {
 		if ((m_shmid = shmget(SHM_SYNAPTICS, 0, 0)) == -1) {
 			fprintf(stderr, "input-touchpad: can't access shared memory area. (SHMConfig disabled?)\n");
@@ -22,7 +24,8 @@ bool InputTouchpad::connect()
 		}
 	}
 
-	if ((m_p_synshm = (SynapticsSHM*)shmat(m_shmid, NULL, 0)) == NULL) {
+	// Map shared memory to our address space
+	if ((m_p_synshm = (SynapticsSHM*)shmat(m_shmid, NULL, SHM_RDONLY)) == NULL) {
 		perror("input-touchpad: shmat");
 		return false;
 	}
@@ -66,7 +69,6 @@ bool InputTouchpad::update()
 
 			// Because of the special case for z==0 above, the minimum non-0 z value will be returned as 0.0.
 			if(pressure == 0.0) { pressure = 0.008; }	// NOTE: this value is arbitrary (but approx 1/128 which is probably the max)
-
 
 			//lo_send(t, "TouchPad / Pressure", "f", pressure);
 			send_float("Pressure", pressure);
