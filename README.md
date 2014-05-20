@@ -42,7 +42,7 @@ Luz currently only runs on Linux.  (Help is wanted porting it to OSX.)
 
 7. **ruby1.9.1 luz.rb gui/editor.luz**
 
-# Enhance Your Touchpad
+## Enhance Your Touchpad
 
 Your touchpad will work like a mouse by default, but you can get high-definition absolute-positioned data out of it, which is ideal for "playing" your visual instrument.  (Absolute means you tap on one side, get X=0.2, tap on the other, get X=0.8 instantly.)
 
