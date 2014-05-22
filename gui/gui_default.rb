@@ -199,7 +199,7 @@ class GuiDefault < GuiInterface
 		@director_view.director = director
 		@actors_flyout.actors = director.actors
 		self.mode = :director
-		clear_editors!
+		clear_user_object_editor
 	end
 
 	#
@@ -251,7 +251,7 @@ class GuiDefault < GuiInterface
 				self.mode = :director
 			else
 				self.chosen_director = user_object
-				clear_editors!
+				clear_user_object_editor
 				return
 			end
 		end
@@ -268,13 +268,13 @@ class GuiDefault < GuiInterface
 					@actor_view.actor = user_object if self.mode == :actor
 				end
 			when Variable, Event
-				clear_editors! and return if editor_visible
+				clear_user_object_editor and return if editor_visible
 			end
 
 			#
 			# Select / show object
 			#
-			clear_editors!		# only support one for now
+			clear_user_object_editor		# only support one for now
 
 			@user_object_editor = create_user_object_editor_for_pointer(user_object, pointer || Vector3.new(0.0,-0.5), options)
 			@user_object_editor.grab_keyboard_focus! if grab_keyboard_focus
@@ -300,7 +300,7 @@ class GuiDefault < GuiInterface
 
 		@variables_flyout.remove(user_object)
 
-		clear_editors! if user_object == @user_object
+		clear_user_object_editor if user_object == @user_object
 	end
 
 	#
@@ -312,7 +312,7 @@ class GuiDefault < GuiInterface
 			animate({:offset_x => 0.0, :offset_y => -0.25, :scale_x => 0.65, :scale_y => 0.5, :opacity => 1.0}, duration=0.2)
 	end
 
-	def clear_editors!
+	def clear_user_object_editor		# TODO: for pointer ?
 		if @user_object_editor
 			editor = @user_object_editor		# local cache (closures!)
 			@user_object_editor.animate({:offset_y => -1.0}, duration=0.3) {
@@ -334,7 +334,7 @@ class GuiDefault < GuiInterface
 			default_focus!
 			true
 		elsif @user_object_editor && @user_object_editor.visible?
-			clear_editors!
+			clear_user_object_editor
 			default_focus!
 			true
 		else

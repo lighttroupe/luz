@@ -54,6 +54,7 @@ class Float
 		return parts.join(', ')
 	end
 
+	# TODO: consider moving this elsewhere as it uses $env
 	def beats
 		self * $env[:seconds_per_beat]
 	end

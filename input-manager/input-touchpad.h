@@ -17,7 +17,7 @@ extern "C" {
 	// Touchpad Support
 	//
 	#include <X11/Xdefs.h>
-	#include "synaptics.h"
+	#include <synaptics.h>
 }
 
 #include "input.h"
@@ -45,7 +45,6 @@ private:
 	int m_shmid;
 	SynapticsSHM m_synshm_old;
 	TLimits x_limits, y_limits, z_limits;
-
 };
 
 #endif

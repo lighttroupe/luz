@@ -52,6 +52,11 @@ class UserObjectSettingFloat < UserObjectSettingNumeric
 		@animation_min ||= @options[:default].first.clamp(@min, @max)
 		@animation_max ||= @options[:default].last.clamp(@min, @max)
 
+		@enter_curve ||= $engine.project.curves.first
+		@exit_curve ||= $engine.project.curves.first
+		@animation_curve ||= $engine.project.curves.first
+		@activation_curve ||= $engine.project.curves.first
+
 		set_default_instance_variables(
 			:enable_enter_animation => false,
 			:enter_value => (0.0).clamp(@min, @max),

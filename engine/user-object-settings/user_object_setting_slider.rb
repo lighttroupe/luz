@@ -24,6 +24,7 @@ class UserObjectSettingSlider < UserObjectSetting
 	end
 
 	def after_load
+		@output_curve ||= $engine.project.curves.first
 		set_default_instance_variables(:input_min => 0.0, :input_max => 1.0, :output_min => 0.0, :output_max => 1.0, :dead_center_size => 0.0)
 		super
 	end
