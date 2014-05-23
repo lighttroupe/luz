@@ -52,7 +52,10 @@ class GuiDefault < GuiInterface
 	#
 	# Building the GUI
 	#
-	# Minimal start for a new object: self << GuiObject.new.set(:scale_x => 0.1, :scale_y => 0.1)
+	# Minimal start for a new object:
+	#
+	#  self << GuiObject.new.set(:scale_x => 0.1, :scale_y => 0.1, :offset_x => 0.0, :offset_y => 0.0)
+	#
 	def create!
 		# Remember: this is drawn first-to-last
 
@@ -89,7 +92,6 @@ class GuiDefault < GuiInterface
 		self << @events_button = GuiButton.new.set(:scale_x => 0.04, :scale_y => -0.06, :background_image => $engine.load_image('images/corner.png'), :background_image_hover => $engine.load_image('images/corner-hover.png'), :background_image_click => $engine.load_image('images/corner-click.png')).
 			add_state(:closed, {:hidden => true, :offset_x => -0.55, :offset_y => -0.53}).
 			set_state(:open, {:hidden => false, :offset_x => -0.48, :offset_y => -0.47})
-
 		@events_button.on_clicked {
 			toggle_inputs_flyout!
 		}
@@ -112,7 +114,7 @@ class GuiDefault < GuiInterface
 		@reopen_button.on_clicked { reshow_latest! }
 
 		#
-		# OVERLAY LEVEL (things above this line are obscured while overlay is showing)
+		# OVERLAY LEVEL (objects created below this line aren't obscured by overlay)
 		#
 		self << @overlay = GuiObject.new.set(:background_image => $engine.load_image('images/overlay.png')).
 			add_state(:open, {:opacity => 1.0, :hidden => false}).
@@ -122,22 +124,18 @@ class GuiDefault < GuiInterface
 		self << @main_menu = GuiMainMenu.new.set(:opacity => 0.0, :hidden => true).
 			add_state(:open, {:scale_x => 1.0, :opacity => 1.0, :hidden => false}).
 			set_state(:closed, {:scale_x => 2.0, :opacity => 0.0, :hidden => true})
-
 		@main_menu.on_close {
 			close_main_menu!
 		}
-
 		@main_menu.on_save {
 			$engine.save
-			positive_message 'Saved successfully.'
+			positive_message 'Project Saved'
 		}
-
 		@main_menu.on_open {
 			choose_project_file { |path|
 				$switch_to_project_path = path
 			}
 		}
-
 		@main_menu.on_new {
 			#save_changes_before {
 				#choose_project_path { |path|
