@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby
-$LOAD_PATH << '/usr/lib/ruby/1.9.1/i486-linux/'
+$LOAD_PATH << '/usr/lib/ruby/1.9.1/i486-linux/'			# TODO: remove this
 
  ###############################################################################
- #  Copyright 2014 Ian McIntosh <ian@openanswers.org>
+ #  Copyright 2016 Ian McIntosh <ian@openanswers.org>
  ###############################################################################
 
 APP_NAME = 'Luz 2.0'
@@ -17,11 +17,21 @@ multi_require 'optparse', 'sdl', 'opengl', 'addons/dir'
 load_directory(File.join(Dir.pwd, 'utils', 'addons'), '**.rb')
 multi_require 'method_piping', 'boolean_accessor', 'constants', 'drawing', 'luz_performer', 'engine', 'settings'
 
+if RUBY_VERSION[0,3] != '1.9'
+	puts "For Speed and Smoooth Flow, choose Ruby Version 1.9 (you are using #{RUBY_VERSION})"
+	exit
+else
+	puts "Using Ruby #{RUBY_VERSION}"
+end
+
+#
+# Begin App
+#
 $settings = Settings.new.load(File.join(Dir.home, SETTINGS_DIRECTORY, SETTINGS_FILENAME))
 $application = LuzPerformer.new(APP_NAME)
 
 options = OptionParser.new do |opts|
-	opts.banner = "Usage: luz.rb [options] <project.luz>"
+	opts.banner = "Usage: luz.rb [options] [project.luz]"
 
 	opts.on("--width <width>", Integer, "Resolution width (eg. 800)") do |w|
 		$application.width = w
@@ -46,13 +56,9 @@ options = OptionParser.new do |opts|
 	end
 end
 
-# Last argument is project name
-unless (project_path = ARGV.pop)
-	puts options
-	exit
-end
-
+# Parse command line arguments
 options.parse!
+project_path = ARGV.pop		# last argument is optional project name
 
 $application.create
 
@@ -64,14 +70,18 @@ $engine.load_plugins
 # Engine callbacks
 $engine.on_user_object_exception { |object, exception| puts sprintf(Engine::USER_OBJECT_EXCEPTION_FORMAT, exception.report_format, object.title) }
 
-# Load
-$engine.load_from_path(project_path)
-
 # GUI
 multi_require 'easy_accessor', 'value_animation', 'value_animation_states'
 $LOAD_PATH << './gui'
 multi_require 'pointer', 'pointer_mouse', 'gui_default'
-$gui = GuiDefault.new			# TODO plugable?
 
 # Go!
+if project_path
+	$engine.load_from_path(project_path)
+else
+	$engine.load_from_path('base-2.0.luz')
+end
+
+$gui = GuiDefault.new			# TODO plugable?
+
 $application.run
