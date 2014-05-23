@@ -71,5 +71,10 @@ $engine.load_plugins
 $engine.on_user_object_exception { |object, exception| puts sprintf(Engine::USER_OBJECT_EXCEPTION_FORMAT, exception.report_format, object.title) }
 
 # Go!
-$engine.load_from_path(project_path) if project_path
+if project_path
+	$engine.load_from_path(project_path)
+else
+	$engine.load_from_path('base-2.0.luz')
+end
+
 $application.run
