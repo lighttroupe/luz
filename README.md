@@ -28,7 +28,7 @@ Here are some Luz 1.0 video tutorials (all the same concepts apply, only the int
 
 Luz currently only runs on Linux.  (Help is wanted porting it to OSX.)
 
-1. **git clone git@github.com:lighttroupe/luz-next.git**
+1. **git clone https://github.com/lighttroupe/luz-next.git**
 
 2. Optionally install dependencies for Input Manager and Spectrum Analyzer: **sudo apt-get install build-essential libasound2-dev libfftw3-dev liblo0-dev libgtkmm-2.4-dev libgtkglextmm-x11-1.2-dev libgl1-mesa-dev libglu1-mesa-dev libx11-dev libxext-dev libxi-dev libsdl1.2-dev libcwiimote-dev libbluetooth-dev libportmidi-dev liblo-dev libunique-dev**
 
