@@ -52,7 +52,8 @@ class EventInput < ChildUserObject
 		resolve_settings
 
 		user_object_try {
-			@current_value = clean_value(self.value)
+			@current_value_raw = self.value
+			@current_value = clean_value(@current_value_raw)
 			@last_activation_time = $env[:time] if @current_value > 0
 			return @current_value
 		}
