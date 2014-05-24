@@ -8,6 +8,7 @@ class SDLApplication
 
 	attr_accessor :width, :height, :fullscreen, :border, :bits_per_pixel, :frames_per_second
 	boolean_accessor :finished
+	boolean_accessor :system_mouse
 
 	def initialize(name)
 		@name, @width, @height, @bits_per_pixel = name, 0, 0, 0		# NOTE: setting bpp to 0 means "current" in SDL
@@ -96,7 +97,7 @@ private
 
 		# Mouse
 		# NOTE: using a blank cursor works better than SDL::Mouse.hide with Wacom pads
-		SDL::Mouse.setCursor(SDL::Surface.new(SDL::HWSURFACE,8,8,8,0,0,0,0),1,1,0,1,0,0)
+		SDL::Mouse.setCursor(SDL::Surface.new(SDL::HWSURFACE,8,8,8,0,0,0,0),1,1,0,1,0,0) unless system_mouse?
 	end
 
 	def set_video_mode

@@ -51,6 +51,9 @@ options = OptionParser.new do |opts|
 	opts.on("--window", "Window") do
 		$application.fullscreen = false
 	end
+	opts.on("--system-mouse", "System Mouse") do
+		$application.system_mouse = true
+	end
 	opts.on("--borderless", "Borderless") do
 		$application.border = false
 	end

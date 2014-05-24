@@ -137,6 +137,9 @@ class Pointer
 				}
 			}
 		end
+
+		return if $application.system_mouse?
+
 		with_color(color) {
 			background_image.using {
 				with_translation(x, y) {
