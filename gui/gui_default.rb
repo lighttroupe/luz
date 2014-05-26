@@ -7,11 +7,11 @@ class GuiDefault < GuiInterface
 
 	attr_accessor :mode, :directors_menu
 
+	BASE_SET_PATH = 'base-2.0.luz'
+
 	def initialize
 		super
 		create!
-		add_state(:closed, {:scale_x => 1.5, :scale_y => 1.5, :opacity => 0.0, :hidden => true})
-		set_state(:open, {:scale_x => 1.0, :scale_y => 1.0, :opacity => 1.0, :hidden => false})
 		positive_message('Welcome to Luz 2.0')
 	end
 
@@ -143,7 +143,7 @@ class GuiDefault < GuiInterface
 					# TODO: open it
 				#}
 			#}
-			$engine.project.load_from_path('base-2.0.luz')
+			$engine.project.load_from_path(BASE_SET_PATH)
 		}
 
 		# Director Grid popup
@@ -167,6 +167,9 @@ class GuiDefault < GuiInterface
 		self << @directors_list = GuiList.new([]).set(:hidden => true)
 
 		self << @dialog_container = GuiBox.new
+
+		add_state(:closed, {:scale_x => 1.5, :scale_y => 1.5, :opacity => 0.0, :hidden => true})
+		set_state(:open, {:scale_x => 1.0, :scale_y => 1.0, :opacity => 1.0, :hidden => false})
 
 		set_initial_state
 	end

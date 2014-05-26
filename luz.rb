@@ -2,10 +2,10 @@
 $LOAD_PATH << '/usr/lib/ruby/1.9.1/i486-linux/'			# TODO: remove this
 
  ###############################################################################
- #  Copyright 2016 Ian McIntosh <ian@openanswers.org>
+ #  Copyright 2014 Ian McIntosh <ian@openanswers.org>
  ###############################################################################
 
-APP_NAME = 'Luz 2.0'
+APP_NAME = 'Luz 2'
 
 Dir.chdir(File.dirname(__FILE__))	# So that this file can be run from anywhere
 $LOAD_PATH.unshift('./utils').unshift('.')

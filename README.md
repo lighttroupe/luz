@@ -1,4 +1,4 @@
-# Luz 2.0
+# Luz 2
 
 Fullscreen interactive motion graphics toy builder.
 
@@ -12,15 +12,15 @@ Luz is written in Ruby and built on the shoulders of SDL, OpenGL, ffmpeg.
 
 ## The Luz Project consists of:
 
-- **Luz 2.0**: fullscreen motion graphics editor and performer (Ruby, OpenGL, SDL, OSC in)
+- **Luz 2**: fullscreen motion graphics editor and performer (Ruby, OpenGL, SDL, OSC in)
 - **Luz Input Manager**: sends live input device data to Luz (C++, Gtk, libwiimote, SDL Input, OSC out)
 - **Luz Spectrum Analyzer**: sends live audio information to Luz (C++, Gtk, OpenGL, FFTW, OSC out)
 
 ## Video Tutorials
 
-There are no videos yet of the new fullscreen OpenGL interface in Luz 2.0.
+There are no videos yet of the new fullscreen OpenGL interface in Luz 2.
 
-Here are some Luz 1.0 video tutorials (all the same concepts apply, only the interface is different):
+Here are some Luz 1 video tutorials (all the same concepts apply, only the interface is different):
 
 <http://lighttroupe.com/luz>
 
