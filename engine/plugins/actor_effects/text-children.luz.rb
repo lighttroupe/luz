@@ -90,10 +90,10 @@ class ActorEffectTextChildren < ActorEffect
 
 	def render
 		character = text[child_index]
-		return yield unless character
+		return unless character
 
 		image = $font_factory.character_image(font, character.chr)
-		return yield unless image
+		return unless image
 
 		image.using {
 			yield
