@@ -9,6 +9,9 @@ class GuiDefault < GuiInterface
 
 	BASE_SET_PATH = 'base-2.0.luz'
 
+	pipe :new_event!, :variables_flyout
+	pipe :new_variable!, :variables_flyout
+
 	def initialize
 		super
 		create!
@@ -475,6 +478,7 @@ class GuiDefault < GuiInterface
 				$engine.beat_double_time!
 			when 'r'
 				$engine.reload
+				$gui.positive_message "Reloaded"
 			when 's'
 				$engine.project.save
 				positive_message 'Project Saved'

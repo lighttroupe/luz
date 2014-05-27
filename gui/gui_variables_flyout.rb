@@ -57,12 +57,14 @@ class GuiVariablesFlyout < GuiWindow
 		@variables_list.add_after_selection(variable = Variable.new)
 		@variables_list.set_selection(variable)
 		$gui.build_editor_for(variable, :pointer => pointer)
+		variable
 	end
 
 	def new_event!(pointer=nil)
 		@events_list.add_after_selection(event = Event.new)
 		@events_list.set_selection(event)
 		$gui.build_editor_for(event, :pointer => pointer)
+		event
 	end
 
 	def on_key_press(key)

@@ -3,7 +3,7 @@ class UserObjectSettingButton
 		box = GuiBox.new
 		box << create_user_object_setting_name_label
 		box << button_widget=GuiEngineButton.new(self, :button).set(:scale_x => 0.5, :scale_y => 0.5, :float => :left)
-		box << record_button=GuiButton.new.set(:scale_x => 0.05, :float => :left, :background_image => $engine.load_image('images/buttons/menu.png'), :background_image_hover => $engine.load_image('images/buttons/menu.png'), :background_image_click => $engine.load_image('images/buttons/menu.png'))
+		box << record_button=GuiButton.new.set(:scale_x => 0.05, :scale_y => 0.7, :float => :left, :background_image => $engine.load_image('images/buttons/record.png'), :background_image_hover => $engine.load_image('images/buttons/record.png'), :background_image_click => $engine.load_image('images/buttons/record.png'))
 		record_button.on_clicked {
 			$engine.button_grab { |button|
 				button_widget.set_value(button)
