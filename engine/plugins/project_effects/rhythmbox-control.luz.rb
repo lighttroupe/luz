@@ -29,14 +29,14 @@ class ProjectEffectRhythmboxControl < ProjectEffect
 	setting 'volume', :float, :range => 0.0..1.0, :default => 1.0..1.0
 
 	def tick
-		`dbus-send --dest='org.gnome.Rhythmbox' /org/gnome/Rhythmbox/Player org.gnome.Rhythmbox.Player.playPause boolean:true` if play.now?
-		`dbus-send --dest='org.gnome.Rhythmbox' /org/gnome/Rhythmbox/Player org.gnome.Rhythmbox.Player.playPause boolean:false` if stop.now?
+		`rhythmbox-client --play` if play.now?
+		`rhythmbox-client --pause` if stop.now?
 
-		`dbus-send --dest='org.gnome.Rhythmbox' /org/gnome/Rhythmbox/Player org.gnome.Rhythmbox.Player.next` if next_track.now?
-		`dbus-send --dest='org.gnome.Rhythmbox' /org/gnome/Rhythmbox/Player org.gnome.Rhythmbox.Player.previous` if previous_track.now?
+		`rhythmbox-client --next` if next_track.now?
+		`rhythmbox-client --previous` if previous_track.now?
 
 		if volume != @previous_volume
-			`dbus-send --dest='org.gnome.Rhythmbox' /org/gnome/Rhythmbox/Player org.gnome.Rhythmbox.Player.setVolume double:#{volume}`
+			`rhythmbox-client --set-volume #{volume}`
 			@previous_volume = volume
 		end
 	end
