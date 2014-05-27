@@ -96,19 +96,23 @@ private
 		SDL::Key.disable_key_repeat		# We want one Down and one Up message per key press
 
 		# Mouse
-		# NOTE: using a blank cursor works better than SDL::Mouse.hide with Wacom pads
-		SDL::Mouse.setCursor(SDL::Surface.new(SDL::HWSURFACE,8,8,8,0,0,0,0),1,1,0,1,0,0) unless system_mouse?
+		hide_mouse unless system_mouse?
+	end
+
+	def hide_mouse
+		# NOTE: using a blank cursor works better than SDL::Mouse.hide with Wacom tablets
+		SDL::Mouse.setCursor(SDL::Surface.new(SDL::HWSURFACE,8,8,8,0,0,0,0),1,1,0,1,0,0)
 	end
 
 	def set_video_mode
 		SDL.setGLAttr(SDL::GL_STENCIL_SIZE, 8) if @stencil_buffer
 		@screen = SDL.set_video_mode(@width, @height, @bits_per_pixel, sdl_video_mode_flags)
 
-		# Save
+		# See what we got
 		@width, @height = @screen.w, @screen.h
 		@bits_per_pixel = @screen.bpp if @bits_per_pixel == 0
 
-		puts "Running at #{@screen.w}x#{@screen.h} @ #{@bits_per_pixel}bpp, #{@frames_per_second}fps (max)"
+		puts "Running at #{@width}x#{@height} @ #{@bits_per_pixel}bpp, #{@frames_per_second}fps (max)"
 	end
 
 	def sdl_video_mode_flags
