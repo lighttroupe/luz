@@ -1,5 +1,5 @@
 $video_files ||= {}
-require 'video-file/ffmpeg'
+require 'video_file/ffmpeg'
 
 class ActorEffectVideoFile < ActorEffect
 	title				"Video File"

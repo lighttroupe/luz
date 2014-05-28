@@ -34,7 +34,7 @@ Luz currently only runs on Linux.  (Help is wanted porting it to OSX and Windows
 
 3. Optionally run **./build** in utils/webcam for the Webcam plugin.
 
-4. Optionally run **./build** in utils/video-file for the Video plugin.
+4. Optionally run **./build** in utils/video_file for the Video plugin.
 
 5. Optionally enhance your laptop's touchpad (see below).
 
