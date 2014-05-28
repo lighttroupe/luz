@@ -7,6 +7,7 @@
 $LOAD_PATH << '/usr/lib/ruby/1.9.1/i486-linux/'			# TODO: remove this
 
 APP_NAME = 'Luz 2'
+BASE_SET_PATH = 'base.luz'
 
 Dir.chdir(File.dirname(__FILE__))	# So that this file can be run from anywhere
 $LOAD_PATH.unshift('./utils').unshift('.')
@@ -83,7 +84,7 @@ multi_require 'pointer', 'pointer_mouse', 'gui_default'
 if project_path
 	$engine.load_from_path(project_path)
 else
-	$engine.load_from_path('base-2.0.luz')
+	$engine.load_from_path(BASE_SET_PATH)
 end
 
 $gui = GuiDefault.new			# TODO plugable?

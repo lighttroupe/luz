@@ -1,9 +1,8 @@
 --- 
-  :directors: 
-    - &id001 !ruby/object:Director
-      tags: 
+  :events: 
+    - &id005 !ruby/object:Event
       effects: 
-        - !ruby/object:DirectorEffectAllActors
+        - !ruby/object:EventInputButtonPress
           conditions: !ruby/object:ChildConditions
             enable_child_index: false
             child_index_min: 0
@@ -17,157 +16,16 @@
             enable_event: false
             event: 
             event_invert: false
-          title: All Actors
+          title: Button Press
           enabled: true
-      title: Director One
+          button_setting: !ruby/object:UserObjectSettingButton
+            button: Keyboard / Space
+            name: button
+            options: 
+              :summary: true
+            breaks_cache: 
+      title: beat tap!
       enabled: true
-  :effects: 
-    - !ruby/object:ProjectEffectBeatTapping
-      conditions: !ruby/object:ChildConditions
-        enable_child_index: false
-        child_index_min: 0
-        child_index_max: 0
-        enable_event: false
-        event: 
-        event_invert: false
-        child_index_max: 0
-        child_index_min: 0
-        enable_child_index: false
-        enable_event: false
-        event: 
-        event_invert: false
-      title: Beat Tapping
-      enabled: true
-      event_setting: !ruby/object:UserObjectSettingEvent
-        event: &id006 !ruby/object:Event
-          effects: 
-            - !ruby/object:EventInputButtonPress
-              title: Button Press
-              enabled: true
-              button_setting: !ruby/object:UserObjectSettingButton
-                button: Keyboard / Space
-                name: button
-                options: {}
-                breaks_cache: 
-          title: beat tap!
-          enabled: true
-        name: event
-        options: {}
-        breaks_cache: 
-    - !ruby/object:ProjectEffectScreenClear
-      conditions: !ruby/object:ChildConditions
-        enable_child_index: 
-        child_index_min: 0
-        child_index_max: 
-        enable_event: false
-        event: 
-        event_invert: 
-        child_index_max: 
-        child_index_min: 0
-        enable_child_index: 
-        enable_event: false
-        event: 
-        event_invert: 
-      title: Screen Clear
-      enabled: true
-      color_setting: !ruby/object:UserObjectSettingColor
-        source_type: 
-        color: !ruby/object:Color
-          alpha: 1.0
-          blue: 0.0
-          green: 0.0
-          red: 0.0
-        name: color
-        options: 
-          :default: 
-            - 0.0
-            - 0.0
-            - 0.0
-        breaks_cache: 
-      amount_setting: !ruby/object:UserObjectSettingFloat
-        name: amount
-        options: 
-          :range: !ruby/range
-            begin: 0.0
-            end: 1.0
-            excl: false
-          :default: !ruby/range
-            begin: 1.0
-            end: 0.0
-            excl: false
-        breaks_cache: 
-        min: 0.0
-        max: 1.0
-        enter_value: 0.0
-        exit_value: 0.0
-        enable_enter_animation: false
-        enter_curve: 
-        enable_animation: false
-        animation_curve: 
-        animation_min: 1.0
-        animation_max: 0.0
-        animation_repeat_number: 4
-        animation_repeat_unit: :beats
-        enable_exit_animation: false
-        exit_curve: 
-        enable_activation: false
-        activation_direction: :to
-        activation_curve: 
-        activation_value: 1.0
-        activation_variable: 
-    - !ruby/object:ProjectEffectDirector
-      conditions: !ruby/object:ChildConditions
-        enable_child_index: false
-        child_index_min: 0
-        child_index_max: 0
-        enable_event: false
-        event: 
-        event_invert: false
-        child_index_max: 0
-        child_index_min: 0
-        enable_child_index: false
-        enable_event: false
-        event: 
-        event_invert: false
-      title: Director
-      enabled: true
-      director_setting: !ruby/object:UserObjectSettingDirector
-        name: director
-        options: {}
-        breaks_cache: 
-        director: *id001
-      lifetime_setting: !ruby/object:UserObjectSettingFloat
-        name: lifetime
-        options: 
-          :range: !ruby/range
-            begin: 0.0
-            end: 1.0
-            excl: false
-          :default: !ruby/range
-            begin: 0.0
-            end: 1.0
-            excl: false
-        breaks_cache: 
-        min: 0.0
-        max: 1.0
-        enter_value: 0.0
-        exit_value: 0.0
-        enable_enter_animation: false
-        enter_curve: 
-        enable_animation: false
-        animation_curve: 
-        animation_min: 0.0
-        animation_max: 1.0
-        animation_repeat_number: 4
-        animation_repeat_unit: :beats
-        enable_exit_animation: false
-        exit_curve: 
-        enable_activation: false
-        activation_direction: :to
-        activation_curve: 
-        activation_value: 1.0
-        activation_variable: 
-  :variables: []
   :themes: 
     - !ruby/object:Theme
       tags: 
@@ -176,14 +34,13 @@
           title: ""
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
-            source_type: 
             color: !ruby/object:Color
               alpha: 1.0
               blue: 0.0
               green: 0.474509803921569
               red: 0.96078431372549
-            name: &id002 color
-            options: &id003
+            name: &id001 color
+            options: &id002
               
               :only_literal: true
               :default: 
@@ -194,140 +51,132 @@
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: &id004 image
-            options: &id005
+            name: &id003 image
+            options: &id004
               {}
             breaks_cache: 
         - !ruby/object:Style
           title: ""
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
-            source_type: 
             color: !ruby/object:Color
               alpha: 1.0
               blue: 0.0
               green: 0.831372549019608
               red: 0.929411764705882
-            name: *id002
-            options: *id003
+            name: *id001
+            options: *id002
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id004
-            options: *id005
+            name: *id003
+            options: *id004
             breaks_cache: 
         - !ruby/object:Style
           title: ""
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
-            source_type: 
             color: !ruby/object:Color
               alpha: 1.0
               blue: 0.0862745098039216
               green: 0.823529411764706
               red: 0.450980392156863
-            name: *id002
-            options: *id003
+            name: *id001
+            options: *id002
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id004
-            options: *id005
+            name: *id003
+            options: *id004
             breaks_cache: 
         - !ruby/object:Style
           title: ""
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
-            source_type: 
             color: !ruby/object:Color
               alpha: 1.0
               blue: 0.811764705882353
               green: 0.623529411764706
               red: 0.447058823529412
-            name: *id002
-            options: *id003
+            name: *id001
+            options: *id002
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id004
-            options: *id005
+            name: *id003
+            options: *id004
             breaks_cache: 
         - !ruby/object:Style
           title: ""
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
-            source_type: 
             color: !ruby/object:Color
               alpha: 1.0
               blue: 0.643137254901961
               green: 0.396078431372549
               red: 0.203921568627451
-            name: *id002
-            options: *id003
+            name: *id001
+            options: *id002
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id004
-            options: *id005
+            name: *id003
+            options: *id004
             breaks_cache: 
         - !ruby/object:Style
           title: ""
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
-            source_type: 
             color: !ruby/object:Color
               alpha: 1.0
               blue: 0.630212863355459
               green: 0.149553673609522
               red: 0.563134203097581
-            name: *id002
-            options: *id003
+            name: *id001
+            options: *id002
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id004
-            options: *id005
+            name: *id003
+            options: *id004
             breaks_cache: 
         - !ruby/object:Style
           title: ""
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
-            source_type: 
             color: !ruby/object:Color
               alpha: 1.0
               blue: 0.0392156862745098
               green: 0.0392156862745098
               red: 0.866666666666667
-            name: *id002
-            options: *id003
+            name: *id001
+            options: *id002
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id004
-            options: *id005
+            name: *id003
+            options: *id004
             breaks_cache: 
         - !ruby/object:Style
           title: ""
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
-            source_type: 
             color: !ruby/object:Color
               alpha: 1.0
               blue: 0.353490501258869
               green: 0.353490501258869
               red: 0.936827649347677
-            name: *id002
-            options: *id003
+            name: *id001
+            options: *id002
             breaks_cache: 
           image_setting: !ruby/object:UserObjectSettingImage
             image_name: 
-            name: *id004
-            options: *id005
+            name: *id003
+            options: *id004
             breaks_cache: 
       title: Tango
       enabled: true
       background_color_setting: !ruby/object:UserObjectSettingColor
-        source_type: 
         color: !ruby/object:Color
           alpha: 1.0
           blue: 0.0
@@ -342,12 +191,9 @@
             - 0.0
             - 1.0
         breaks_cache: 
-  :actors: []
   :version: 1
-  :events: 
-    - *id006
   :curves: 
-    - !ruby/object:Curve
+    - &id006 !ruby/object:Curve
       vector: 
         - 0.0
         - 0.125
@@ -3589,3 +3435,208 @@
       effects: []
       title: Lob
       enabled: true
+  :actors: []
+  :effects: 
+    - !ruby/object:ProjectEffectBeatTapping
+      conditions: !ruby/object:ChildConditions
+        enable_child_index: false
+        child_index_min: 0
+        child_index_max: 0
+        enable_event: false
+        event: 
+        event_invert: false
+        child_index_max: 0
+        child_index_min: 0
+        enable_child_index: false
+        enable_event: false
+        event: 
+        event_invert: false
+      title: Beat Tapping
+      enabled: true
+      event_setting: !ruby/object:UserObjectSettingEvent
+        event: *id005
+        name: event
+        options: 
+          :summary: true
+        breaks_cache: 
+    - !ruby/object:ProjectEffectScreenClear
+      conditions: !ruby/object:ChildConditions
+        enable_child_index: 
+        child_index_min: 0
+        child_index_max: 
+        enable_event: false
+        event: 
+        event_invert: 
+        child_index_max: 
+        child_index_min: 0
+        enable_child_index: 
+        enable_event: false
+        event: 
+        event_invert: 
+      title: Screen Clear
+      enabled: true
+      color_setting: !ruby/object:UserObjectSettingColor
+        color: !ruby/object:Color
+          alpha: 1.0
+          blue: 0.0
+          green: 0.0
+          red: 0.0
+        name: color
+        options: 
+          :default: 
+            - 0.0
+            - 0.0
+            - 0.0
+        breaks_cache: 
+      amount_setting: !ruby/object:UserObjectSettingFloat
+        name: amount
+        options: 
+          :range: !ruby/range
+            begin: 0.0
+            end: 1.0
+            excl: false
+          :default: !ruby/range
+            begin: 1.0
+            end: 0.0
+            excl: false
+        breaks_cache: 
+        min: 0.0
+        max: 1.0
+        enter_value: 0.0
+        exit_value: 0.0
+        enable_enter_animation: false
+        enter_curve: *id006
+        enable_animation: false
+        animation_curve: *id006
+        animation_min: 1.0
+        animation_max: 0.0
+        animation_repeat_number: 4
+        animation_repeat_unit: :beats
+        enable_exit_animation: false
+        exit_curve: *id006
+        enable_activation: false
+        activation_direction: :to
+        activation_curve: *id006
+        activation_value: 1.0
+        activation_variable: 
+    - !ruby/object:ProjectEffectEditor
+      conditions: !ruby/object:ChildConditions
+        enable_child_index: false
+        child_index_min: 0
+        child_index_max: 0
+        enable_event: false
+        event: 
+        event_invert: false
+        child_index_max: 0
+        child_index_min: 0
+        enable_child_index: false
+        enable_event: false
+        event: 
+        event_invert: false
+      title: Editor
+      enabled: true
+      alpha_setting: !ruby/object:UserObjectSettingFloat
+        name: alpha
+        options: 
+          :range: !ruby/range
+            begin: 0.1
+            end: 1.0
+            excl: false
+          :default: !ruby/range
+            begin: 1.0
+            end: 1.0
+            excl: false
+        breaks_cache: 
+        min: 0.1
+        max: 1.0
+        enter_value: 0.1
+        exit_value: 0.1
+        enable_enter_animation: false
+        enter_curve: *id006
+        enable_animation: false
+        animation_curve: *id006
+        animation_min: 0.95
+        animation_max: 1.0
+        animation_repeat_number: 4
+        animation_repeat_unit: :beats
+        enable_exit_animation: false
+        exit_curve: *id006
+        enable_activation: false
+        activation_direction: :to
+        activation_curve: *id006
+        activation_value: 1.0
+        activation_variable: 
+    - !ruby/object:ProjectEffectDirectorCycle
+      conditions: !ruby/object:ChildConditions
+        enable_child_index: false
+        child_index_min: 0
+        child_index_max: 0
+        enable_event: false
+        event: 
+        event_invert: false
+        child_index_max: 0
+        child_index_min: 0
+        enable_child_index: false
+        enable_event: false
+        event: 
+        event_invert: false
+      title: Director Cycle
+      enabled: true
+      directors_setting: !ruby/object:UserObjectSettingDirectors
+        name: directors
+        options: 
+          :summary: true
+        breaks_cache: 
+        tag: 
+      backwards_setting: !ruby/object:UserObjectSettingEvent
+        event: 
+        name: backwards
+        options: 
+          :summary: % back
+        breaks_cache: 
+      forwards_setting: !ruby/object:UserObjectSettingEvent
+        event: 
+        name: forwards
+        options: 
+          :summary: % forward
+        breaks_cache: 
+      crossfade_time_setting: !ruby/object:UserObjectSettingTimespan
+        time_number: 8.0
+        time_unit: :beats
+        name: crossfade_time
+        options: 
+          :summary: true
+        breaks_cache: 
+  :variables: []
+  :directors: 
+    - !ruby/object:Director
+      actors: []
+      tags: 
+      effects: 
+        - !ruby/object:DirectorEffectAllActors
+          conditions: !ruby/object:ChildConditions
+            enable_child_index: false
+            child_index_min: 0
+            child_index_max: 0
+            enable_event: false
+            event: 
+            event_invert: false
+            child_index_max: 0
+            child_index_min: 0
+            enable_child_index: false
+            enable_event: false
+            event: 
+            event_invert: false
+          title: All Actors
+          enabled: true
+      title: Director One
+      enabled: true
+      offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
+        name: offscreen_render_actor
+        options: 
+          :summary: renders on %
+        breaks_cache: 
+        actor: 
+        x: 0.0
+        y: 0.0
+        z: 0.0

@@ -7,8 +7,6 @@ class GuiDefault < GuiInterface
 
 	attr_accessor :mode, :directors_menu
 
-	BASE_SET_PATH = 'base-2.0.luz'
-
 	pipe :new_event!, :variables_flyout
 	pipe :new_variable!, :variables_flyout
 
@@ -142,7 +140,7 @@ class GuiDefault < GuiInterface
 		@main_menu.on_new {
 			#save_changes_before {
 				#choose_project_path { |path|
-					# TODO: copy base-2.0.luz to that directory
+					# TODO: copy base.luz to that directory
 					# TODO: open it
 				#}
 			#}
