@@ -66,37 +66,3 @@ bool MyDrawingArea::on_configure_event(GdkEventConfigure* event)
 
 	return true;
 }
-
-/*
-void MyDrawingArea::on_realize()
-{
-	Gtk::GL::DrawingArea::on_realize();
-
-	Glib::RefPtr<Gdk::GL::Window> glwindow = get_gl_window();
-	glwindow->gl_begin(get_gl_context());
-	glwindow->gl_end();
-}
-
-bool MyDrawingArea::on_configure_event(GdkEventConfigure* event)
-{
-	Glib::RefPtr<Gdk::GL::Window> glwindow = get_gl_window();
-	glwindow->gl_begin(get_gl_context());
-	glwindow->gl_end();
-
-	return true;
-}
-
-bool MyDrawingArea::on_expose_event(GdkEventExpose* event)
-{
-	Glib::RefPtr<Gdk::GL::Window> glwindow = get_gl_window();
-
-	glwindow->gl_begin(get_gl_context());
-	glClear(GL_COLOR_BUFFER_BIT);
-
-	//main loop
-	glwindow->gl_end();
-	glwindow->swap_buffers ();
-
-	return true;
-}
-*/
