@@ -1,5 +1,6 @@
+require 'cycle_logic'
+
 class ActorEffectChildCycle < ActorEffect
-	require 'cycle-logic'
 	include CycleLogic
 
 	title				"Child Cycle"

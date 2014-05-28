@@ -1,4 +1,4 @@
-require 'cycle-logic'
+require 'cycle_logic'
 
 class ProjectEffectDirectorCycle < ProjectEffect
 	include CycleLogic
