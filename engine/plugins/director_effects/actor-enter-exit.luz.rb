@@ -1,8 +1,6 @@
- ###############################################################################
- #  Copyright 2012 Ian McIntosh <ian@openanswers.org>
- ###############################################################################
-
 class DirectorEffectActorEnterExit < DirectorEffect
+	virtual
+
 	title				"Actor Enter/Exit"
 	description "Puts a single actor on stage with enter and exit events."
 

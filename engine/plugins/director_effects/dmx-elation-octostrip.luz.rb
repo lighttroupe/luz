@@ -1,7 +1,3 @@
- ###############################################################################
- #  Copyright 2012 Ian McIntosh <ian@openanswers.org>
- ###############################################################################
-
 class DirectorEffectDMXElationOctostrip < DirectorEffect
 	title				"DMX Elation Octostrip"
 	description "A 6-channel DMX bar available in groups of 8, driven by a PixelDrive."

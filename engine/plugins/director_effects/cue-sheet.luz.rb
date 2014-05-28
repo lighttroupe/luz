@@ -1,10 +1,8 @@
- ###############################################################################
- #  Copyright 2012 Ian McIntosh <ian@openanswers.org>
- ###############################################################################
-
 require 'sample_player'
 
 class DirectorEffectCueSheet < DirectorEffect
+	virtual
+
 	title				"Cue Sheet"
 	description ""
 

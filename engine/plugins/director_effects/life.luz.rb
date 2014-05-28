@@ -1,7 +1,3 @@
-###############################################################################
-#  Copyright 2011 Ian McIntosh <ian@openanswers.org>
-###############################################################################
-
 # Helpers to render solid / wire spheres of radius 0.5 and reasonable detail
 def render_solid_sphere
 	$solid_sphere_list ||= GL.RenderToList { GLUT.SolidSphere(0.5, 10, 10) }
@@ -128,6 +124,8 @@ end
 =end
 
 class DirectorEffectLife < DirectorEffect
+	virtual
+
 	title 'Life'
 	description 'In Ruby form.'
 

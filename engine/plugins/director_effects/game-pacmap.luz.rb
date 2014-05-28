@@ -11,6 +11,7 @@ require 'fileutils'
 # PacMap: base game login class, handles character, network layout, game logic, hit testing and character input
 #
 class PacMap
+	virtual
 
 	#
 	# MapObject: base class for all movable objects (e.g. objects that live on Nodes and Paths)

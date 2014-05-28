@@ -1,7 +1,3 @@
- ###############################################################################
- #  Copyright 2012 Ian McIntosh <ian@openanswers.org>
- ###############################################################################
-
 class DirectorEffectDMXActorEffects < DirectorEffect
 	title				"DMX Actor Effects"
 	description "Combines a Director full of DMX light plugins with an Actor that sets colors."
