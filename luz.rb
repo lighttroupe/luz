@@ -1,9 +1,10 @@
 #!/usr/bin/env ruby
-$LOAD_PATH << '/usr/lib/ruby/1.9.1/i486-linux/'			# TODO: remove this
 
- ###############################################################################
- #  Copyright 2014 Ian McIntosh <ian@openanswers.org>
- ###############################################################################
+######################################################################################
+# Copyright 2014 Ian McIntosh <ian@openanswers.org> released until the GPL version 2 #
+######################################################################################
+
+$LOAD_PATH << '/usr/lib/ruby/1.9.1/i486-linux/'			# TODO: remove this
 
 APP_NAME = 'Luz 2'
 
