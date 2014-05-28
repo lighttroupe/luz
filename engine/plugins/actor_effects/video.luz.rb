@@ -1,5 +1,3 @@
-# Copyright 2012 Ian McIntosh
-
 $video_files ||= {}
 require 'video-file/ffmpeg'
 

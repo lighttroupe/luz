@@ -1,7 +1,3 @@
- ###############################################################################
- #  Copyright 2012 Ian McIntosh <ian@openanswers.org>
- ###############################################################################
-
 class ActorEffectPixelWarp < ActorEffect
 	title				"Pixel Warp"
 	description "Squishes, warps, bends pixels in a variety of algorithmic ways."

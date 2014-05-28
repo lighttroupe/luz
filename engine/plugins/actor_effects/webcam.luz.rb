@@ -1,5 +1,3 @@
-# Copyright 2012 Ian McIntosh
-
 $webcams ||= {}
 
 class ActorEffectWebcam < ActorEffect
