@@ -479,8 +479,7 @@ class GuiDefault < GuiInterface
 			when '.'
 				$engine.beat_double_time!
 			when 'r'
-				$engine.reload
-				$gui.positive_message "Reloaded"
+				$application.reload_code!
 			when 's'
 				$engine.project.save
 				positive_message 'Project Saved'

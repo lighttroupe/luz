@@ -15,6 +15,16 @@ class LuzPerformer < SDLApplication
 	MOUSE_BUTTON_FORMAT = "Mouse %02d / Button %02d"
 	MOUSE_1_BUTTON_FORMATTER = Hash.new { |hash, key| hash[key] = sprintf(MOUSE_BUTTON_FORMAT, 1, key) }
 
+	def reload_code!
+		change_count = $engine.reload
+		$gui.reload_notify
+		if change_count > 0
+			$gui.positive_message "Reloaded #{change_count.plural('file', 'files')}."
+		else
+			$gui.positive_message "No modified source files found."
+		end
+	end
+
 	# public API is in baseclass
 
 private

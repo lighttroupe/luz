@@ -23,14 +23,6 @@ class ProjectEffectReloadCode < ProjectEffect
 	setting 'reload', :event, :summary => 'on %'
 
 	def tick
-		if reload.on_this_frame?
-			change_count = $engine.reload
-			$gui.reload_notify
-			if change_count > 0
-				$gui.positive_message "Reloaded #{change_count.plural('file', 'files')}."
-			else
-				$gui.positive_message "No modified source files found."
-			end
-		end
+		$application.reload_code! if reload.on_this_frame?
 	end
 end
