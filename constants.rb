@@ -2,8 +2,8 @@
 MESSAGE_BUS_IP			= "255.255.255.255"		# Broadcast address
 MESSAGE_BUS_PORT		= 10007								# LOOOZ ! :D
 
-SETTINGS_DIRECTORY = '.luz'
-SETTINGS_FILENAME = 'settings.yaml'
+SETTINGS_DIRECTORY	= '.luz'
+SETTINGS_FILENAME		= 'settings.yaml'
 
 # Time
 SECONDS_PER_MINUTE	= 60
