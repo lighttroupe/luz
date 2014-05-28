@@ -1,6 +1,8 @@
 #Class.new(ActorEffect).class_eval begin
 
 class ActorEffectTranslateZ < ActorEffect
+	virtual		# deprecated in favor of Translate having a Z
+
 	title				"Translate Z"
 	description "Translates (moves) actor a chosen amount on its Z axis."
 
