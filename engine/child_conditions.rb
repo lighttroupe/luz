@@ -50,11 +50,19 @@ class ChildConditions < Conditions
 		@event_invert = false
 	end
 
+	#
+	# When conditions are satisfied, object can be used normally.
+	#
 	def satisfied?
-		# Apple each rule, if enabled and configured properly
-		return false if @enable_event and @event and (@event.now? == (@event_invert == true))		# to deal with possible nil (no after_creation method for non userobjects :/)
-		return false if @enable_child_index and ($env[:child_index] < @child_index_min || $env[:child_index] > @child_index_max)
-		return true
+		event_satisfied? && child_index_satisfied?
+	end
+
+	def child_index_satisfied?
+		@enable_child_index == false || ($env[:child_index] >= @child_index_min && $env[:child_index] <= @child_index_max)
+	end
+
+	def event_satisfied?
+		@enable_event == false || @event.nil? || (@event.now? == (@event_invert ? false : true))		# to deal with possible nil (no after_creation method for non userobjects :/)
 	end
 
 	def child_number_min
