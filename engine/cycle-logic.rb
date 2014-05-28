@@ -16,7 +16,7 @@ module CycleLogic
 			end
 		end
 
-		return current_spot
+		current_spot
 	end
 
 	def crossfade_render(first, second, progress)

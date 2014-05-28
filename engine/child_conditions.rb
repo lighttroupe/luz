@@ -19,7 +19,7 @@ class ChildConditions < Conditions
 	boolean_accessor :enable_child_index, :enable_event, :event_invert
 
 	def to_yaml_properties
-		['@enable_child_index', '@child_index_min', '@child_index_max', '@enable_event', '@event', '@event_invert'] + super
+		super + ['@enable_child_index', '@child_index_min', '@child_index_max', '@enable_event', '@event', '@event_invert']
 	end
 
 	def initialize
@@ -61,26 +61,5 @@ class ChildConditions < Conditions
 	def child_number_max=(num)
 		@child_index_max = num - 1
 		@child_index_min = @child_index_max if @child_index_min > @child_index_max
-	end
-
-	def summary_in_pango_markup(highlight_tag = 'u')
-		lines = []
-		if @enable_event and @event
-			lines << ("only while #{@event.title.with_pango_tag(highlight_tag)}" + (@event_invert ? " is off" : " is on"))
-		end
-
-		if @enable_child_index
-			if @child_index_min == @child_index_max
-				lines << ("only child #{@child_index_min + 1}")
-			else
-				lines << ("only children #{@child_index_min + 1} to #{@child_index_max + 1}")
-			end
-		end
-
-		if lines.empty?
-			''
-		else
-			'  ' + lines.join("\n  ")
-		end
 	end
 end
