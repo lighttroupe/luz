@@ -11,7 +11,7 @@ APP_NAME = 'Luz 2'
 Dir.chdir(File.dirname(__FILE__))	# So that this file can be run from anywhere
 $LOAD_PATH.unshift('./utils').unshift('.')
 $LOAD_PATH << './engine'
-$LOAD_PATH << './engine/user-object-settings'
+$LOAD_PATH << './engine/user_object_settings'
 
 require 'reloadable_require'
 multi_require 'optparse', 'sdl', 'opengl', 'addons/dir'

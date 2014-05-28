@@ -1,4 +1,4 @@
-load_directory(File.join(Dir.pwd, 'engine', 'user-object-settings'), '**.rb')
+load_directory(File.join(Dir.pwd, 'engine', 'user_object_settings'), '**.rb')
 
 class UserObject
 	include MethodsForUserObject
