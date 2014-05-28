@@ -284,11 +284,6 @@ void SpectrumAnalyzerWindow::on_broadcast_changed()
 	g_message_bus->set_broadcast(m_broadcast_button.get_active());
 }
 
-//void SpectrumAnalyzerWindow::on_input_device_number_spinbox_changed(Gtk::SpinButton* spin_button, void* _unused)
-//{
-//	m_spectrum_analyzer_number = spin_button->get_value_as_int();
-//}
-
 bool SpectrumAnalyzerWindow::on_delete_event(GdkEventAny *event)
 {
 	m_quit_dialog->show();

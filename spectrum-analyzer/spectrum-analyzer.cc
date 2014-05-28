@@ -22,9 +22,6 @@ using namespace std;    // saves us typing std:: before vector
 #define UDP_PORT ("10007")		// LOOOZ :D
 #define UDP_ADDRESS (NULL)		// ("255.255.255.255")
 
-#define ADDRESS_BUFFER_SIZE 1000
-char address_buffer[ADDRESS_BUFFER_SIZE + 1];
-
 bool g_time_to_quit = false;
 
 #include <gtkmm.h>

@@ -1,6 +1,5 @@
 #include <gtkmm.h>
 #include <math.h>
-
 #include <GL/gl.h>
 
 float average_of_floats(const float* floats, int count)
