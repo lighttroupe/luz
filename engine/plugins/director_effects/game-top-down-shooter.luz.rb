@@ -1,4 +1,5 @@
 include Drawing
+require 'struct_stack'
 
 class DirectorEffectGameTopDownShooter < DirectorEffect
 	virtual
@@ -95,7 +96,6 @@ class DirectorEffectGameTopDownShooter < DirectorEffect
 	Enemy = Struct.new(:x, :y, :health, :damage_modifier, :actor, :state, :child_index, :state_start_time, :movement_proc)
 	Explosion = Struct.new(:x, :y, :start_time, :life_time, :actor)
 
-	require 'struct-stack'
 	def after_load
 		@bullets, @bullet_stack = [], StructStack.new(Bullet)
 		@enemies, @enemy_stack = [], StructStack.new(Enemy)
