@@ -6,19 +6,19 @@ class UserObjectSettingSelect < UserObjectSetting
 	end
 
 	def after_load
-		@selected = @options[:default] unless selected_option
+		@selected = @options[:default] unless find_selected_option
 	end
 
 	def immediate_value
 		@selected
 	end
 
-	def selected_option
+	def find_selected_option
 		@options[:options].find { |o| o.first == @selected }		# format: [[:sym, 'name'], ...]
 	end
 
 	def summary
-		option = selected_option
+		option = find_selected_option
 		summary_format((option ? option.last : @selected).to_s)
 	end
 end

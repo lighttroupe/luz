@@ -1,4 +1,4 @@
-require 'user_object_setting'	#, 'variable_combobox'
+require 'user_object_setting'
 
 class UserObjectSettingSlider < UserObjectSetting
 	def to_yaml_properties
@@ -66,7 +66,7 @@ class UserObjectSettingSlider < UserObjectSetting
 		v = v.scale(@output_min, @output_max)
 
 		@current_value = v
-		return v
+		v
 	end
 
 	def summary

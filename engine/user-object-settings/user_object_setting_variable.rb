@@ -1,4 +1,4 @@
-require 'user_object_setting' #, 'variable_combobox'
+require 'user_object_setting'
 
 class UserObjectSettingVariable < UserObjectSetting
 	attr_reader :variable
