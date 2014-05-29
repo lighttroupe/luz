@@ -25,12 +25,18 @@ class LuzPerformer < SDLApplication
 		end
 	end
 
+	def open_project(project_path)
+		@switch_to_project_path = project_path
+	end
+
 	# public API is in baseclass
 
 private
 
 	def do_frame(time)
 		$engine.do_frame(time)
+		$engine.load_from_path(@switch_to_project_path) if @switch_to_project_path
+		@switch_to_project_path = nil
 	end
 
 	def handle_sdl_event(event)

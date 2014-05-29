@@ -83,10 +83,11 @@ multi_require 'pointer', 'pointer_mouse', 'gui_default'
 # Load
 $engine.load_from_path(project_path || BASE_SET_PATH)
 
-def recreate_gui!
-	$gui = GuiDefault.new			# TODO plugable?
-end
-recreate_gui!
+$gui = GuiDefault.new
+
+$engine.on_new_project {
+	$gui = GuiDefault.new
+}
 
 # Go!
 $application.run

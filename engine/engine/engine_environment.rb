@@ -14,6 +14,8 @@ module EngineEnvironment
 		# Default enter/exit is right in the middle (fully on stage)
 		$env[:enter] = 1.0
 		$env[:exit] = 0.0
+
+		update_environment
 	end
 
 	def update_environment

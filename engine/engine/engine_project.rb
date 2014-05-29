@@ -7,7 +7,6 @@ module EngineProject
 	def load_from_path(path)
 		begin
 			@project.load_from_path(path)
-			recreate_gui!
 			new_project_notify
 			true
 		rescue Exception => e
