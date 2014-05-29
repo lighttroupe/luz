@@ -3,6 +3,8 @@
 #
 # a Ruby version of jQuery's animate()
 #
+multi_require 'struct_stack'
+
 module ValueAnimation
 	Animation = Struct.new(:get_method, :set_method, :begin_value, :end_value, :begin_time, :end_time, :proc)
 
