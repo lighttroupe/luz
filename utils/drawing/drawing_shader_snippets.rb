@@ -7,7 +7,7 @@ multi_require 'gl_fragment_shader', 'gl_vertex_shader', 'gl_shader_program'
 
 module DrawingShaderSnippets
 	#
-	# The default fragment shader fill-in, for when we have no fragment snippets.
+	# The default shader programs, for when we have no fragment snippets.
 	#
 	FRAGMENT_SHADER_STUB = "
 		uniform sampler2D texture0;
@@ -38,7 +38,7 @@ module DrawingShaderSnippets
 	$vertex_shader_snippet_stack = []		# clears when reloading this file
 	$vertex_shader_object_stack = []
 	$vertex_shader_uniform_stack = []
-	$vertex_shader_snippet_cache = {}
+	$vertex_shader_snippet_cache ||= {}
 
 	$shader_program_cache ||= Hash.new { |hash, key| hash[key] = {} }
 
