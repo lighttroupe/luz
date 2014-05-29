@@ -13,16 +13,6 @@ module DrawingShapes
 	end
 	alias :fullscreen_rectangle :unit_square
 
-	# Hack for problem seen on nvidia box with unit_square nested display lists (??) (GL invalid value)
-	def unit_square_immediate
-		GL.Begin(GL::TRIANGLE_FAN)
-			GL.TexCoord(0.0, 0.0) ; GL.Vertex(-0.5, 0.5)
-			GL.TexCoord(1.0, 0.0) ; GL.Vertex(0.5, 0.5)
-			GL.TexCoord(1.0, 1.0) ; GL.Vertex(0.5, -0.5)
-			GL.TexCoord(0.0, 1.0) ; GL.Vertex(-0.5, -0.5)
-		GL.End
-	end
-
 	def unit_square_outline
 		@unit_square_outline_list = GL.RenderCached(@unit_square_outline_list) {
 			GL.Begin(GL::LINE_LOOP)
