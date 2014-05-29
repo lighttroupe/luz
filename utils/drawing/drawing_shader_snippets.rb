@@ -5,9 +5,21 @@
 #
 multi_require 'gl_fragment_shader', 'gl_vertex_shader', 'gl_shader_program'
 
+$fragment_shader_snippet_stack = []		# NOTE: clears when reloading this file
+$fragment_shader_object_stack = []
+$fragment_shader_uniform_stack = []
+$fragment_shader_snippet_cache ||= {}
+
+$vertex_shader_snippet_stack = []
+$vertex_shader_object_stack = []
+$vertex_shader_uniform_stack = []
+$vertex_shader_snippet_cache ||= {}
+
+$shader_program_cache ||= Hash.new { |hash, key| hash[key] = {} }
+
 module DrawingShaderSnippets
 	#
-	# The default shader programs, for when we have no fragment snippets.
+	# The default shader programs, for when we have no snippets.
 	#
 	FRAGMENT_SHADER_STUB = "
 		uniform sampler2D texture0;
@@ -30,25 +42,8 @@ module DrawingShaderSnippets
 		}
 		"
 
-	$fragment_shader_snippet_stack = []		# clears when reloading this file
-	$fragment_shader_object_stack = []
-	$fragment_shader_uniform_stack = []
-	$fragment_shader_snippet_cache ||= {}
-
-	$vertex_shader_snippet_stack = []		# clears when reloading this file
-	$vertex_shader_object_stack = []
-	$vertex_shader_uniform_stack = []
-	$vertex_shader_snippet_cache ||= {}
-
-	$shader_program_cache ||= Hash.new { |hash, key| hash[key] = {} }
-
-	def enable_shaders?
-		return $enable_shaders unless $enable_shaders.nil?		# no decision yet?
-		$enable_shaders = !(($settings['no-shaders'] == true) || (($settings['no-shaders-in-1.8'] == true) && RUBY_VERSION <= '1.9.0'))		# respect no-shader request only in 1.8, where we have known shader compilation crashes on Intel 3100-ish cards
-	end
-
 	def with_fragment_shader_snippet(snippet, object)
-		return yield unless (snippet and enable_shaders?)		# allow nil
+		return yield unless snippet		# allow nil
 
 		index = $fragment_shader_object_stack.count
 
@@ -75,7 +70,7 @@ module DrawingShaderSnippets
 	end
 
 	def with_vertex_shader_snippet(snippet, object)
-		return yield unless (snippet and enable_shaders?) 		# allow nil
+		return yield unless snippet 		# allow nil
 
 		index = $vertex_shader_object_stack.count
 
@@ -102,8 +97,6 @@ module DrawingShaderSnippets
 	end
 
 	def with_compiled_shader
-		return yield unless enable_shaders?
-
 		return yield if $fragment_shader_snippet_stack.empty? and $vertex_shader_snippet_stack.empty?
 		$next_texture_number ||= 0
 
