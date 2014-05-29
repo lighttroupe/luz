@@ -17,7 +17,7 @@ $LOAD_PATH << './engine/user_object_settings'
 require 'reloadable_require'
 multi_require 'optparse', 'sdl', 'opengl', 'addons/dir'
 load_directory(File.join(Dir.pwd, 'utils', 'addons'), '**.rb')
-multi_require 'method_piping', 'boolean_accessor', 'constants', 'drawing', 'luz_performer', 'engine', 'settings'
+multi_require 'method_piping', 'boolean_accessor', 'constants', 'drawing', 'luz_performer', 'engine', 'settings', 'vector3'
 
 if RUBY_VERSION[0,3] != '1.9'
 	puts "For Speed and Smoooth Flow, choose Ruby Version 1.9 (you are using #{RUBY_VERSION})"
