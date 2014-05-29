@@ -1,5 +1,3 @@
-[![Code Climate](https://codeclimate.com/github/lighttroupe/luz-next.png)](https://codeclimate.com/github/lighttroupe/luz-next)
-
 # Luz 2
 
 Fullscreen interactive motion graphics toy builder.
@@ -11,6 +9,8 @@ Luz takes input from wiimotes, MIDI, Wacom tablets, joysticks, gamepads, and gen
 Luz has run hundreds of live venue shows.
 
 Luz is written in Ruby and built on the shoulders of SDL, OpenGL, ffmpeg.
+
+[![Code Climate](https://codeclimate.com/github/lighttroupe/luz-next.png)](https://codeclimate.com/github/lighttroupe/luz-next)
 
 ## The Luz Project consists of:
 
