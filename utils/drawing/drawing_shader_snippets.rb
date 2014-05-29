@@ -1,16 +1,16 @@
+#
+# Shader Snippets allow for mixing shader effects by joining fragments of shader code and compiling them on the fly.
+#
+# Compiled programs are cached in a hash, keyed by an array of the snippet strings.
+#
 multi_require 'gl_fragment_shader', 'gl_vertex_shader', 'gl_shader_program'
 
 module DrawingShaderSnippets
 	#
-	# Shader Snippets Stitching
+	# The default fragment shader fill-in, for when we have no fragment snippets.
 	#
 	FRAGMENT_SHADER_STUB = "
 		uniform sampler2D texture0;
-
-		float rand(vec2 co)
-		{
-			return fract(sin(dot(co.xy, vec2(12.9898,78.233))) * 43758.5453);
-		}
 
 		void main(void)
 		{
