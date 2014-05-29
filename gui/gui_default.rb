@@ -3,6 +3,9 @@ load_directory(Dir.pwd + '/gui/addons/', '**.rb')		# Addons to existing objects
 multi_require 'gui_actor_view', 'gui_director_view', 'gui_preferences_box', 'gui_user_object_editor', 'gui_delete_button', 'gui_enter_exit_button', 'gui_enter_exit_popup', 'gui_add_window', 'gui_interface', 'gui_actor_class_button', 'gui_director_menu', 'gui_actors_flyout', 'gui_variables_flyout', 'gui_message_bus_monitor', 'gui_file_dialog', 'keyboard'
 
 class GuiDefault < GuiInterface
+	ACTOR_BACKGROUND_COLOR    = [0,0,0,0]
+	DIRECTOR_BACKGROUND_COLOR = [0,0,0,0]
+
 	pipe [:positive_message, :negative_message], :message_bar
 
 	attr_accessor :mode, :directors_menu
@@ -216,19 +219,21 @@ class GuiDefault < GuiInterface
 		when :actor
 			[1,0.5,0.5,1]
 		when :director
-			[0.5,0.5,1,1]
+			[0.5,1,0.5,1]
 		else
-			[1,1,1,1]
+			[0.5,0.5,1,1]
 		end
 	end
 
 	def render
 		case @mode
 		when :actor
+			clear_screen(ACTOR_BACKGROUND_COLOR)
 			$engine.with_content_aspect_ratio {
 				@actor_view.gui_render!
 			}
 		when :director
+			clear_screen(DIRECTOR_BACKGROUND_COLOR)
 			$engine.with_content_aspect_ratio {
 				@director_view.gui_render!
 			}
