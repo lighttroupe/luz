@@ -1,3 +1,5 @@
+[![Code Climate](https://codeclimate.com/github/lighttroupe/luz-next.png)](https://codeclimate.com/github/lighttroupe/luz-next)
+
 # Luz 2
 
 Fullscreen interactive motion graphics toy builder.
