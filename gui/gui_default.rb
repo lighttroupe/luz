@@ -6,6 +6,10 @@ class GuiDefault < GuiInterface
 	ACTOR_BACKGROUND_COLOR    = [0,0,0,0]
 	DIRECTOR_BACKGROUND_COLOR = [0,0,0,0]
 
+	ACTOR_VIEW_COLOR = [1,0.5,0.5,1]
+	DIRECTOR_VIEW_COLOR = [0.5,1,0.5,1]
+	OUTPUT_VIEW_COLOR = [0.5,0.5,1,1]
+
 	pipe [:positive_message, :negative_message], :message_bar
 
 	attr_accessor :mode, :directors_menu
@@ -217,11 +221,11 @@ class GuiDefault < GuiInterface
 	def view_color
 		case @mode
 		when :actor
-			[1,0.5,0.5,1]
+			ACTOR_VIEW_COLOR
 		when :director
-			[0.5,1,0.5,1]
+			DIRECTOR_VIEW_COLOR
 		else
-			[0.5,0.5,1,1]
+			OUTPUT_VIEW_COLOR
 		end
 	end
 
