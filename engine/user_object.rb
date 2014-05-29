@@ -85,7 +85,7 @@ class UserObject
 	end
 
 	def self.virtual?
-		defined?(@virtual_class) && @virtual_class == self.class.name
+		@virtual_class == self.class.name
 	end
 
 	###################################################################
@@ -95,7 +95,7 @@ class UserObject
 	attr_accessor :last_exception
 
 	def settings
-		@settings ||= create_user_object_settings				# ensure settings have been created (imported projects haven't had their settings created yet)
+		@settings ||= create_user_object_settings
 	end
 
 	def tick!
@@ -126,7 +126,7 @@ class UserObject
 	boolean_accessor :enabled
 
 	def usable?
-		!@crashy and @enabled
+		!@crashy && @enabled
 	end
 
 	# All user objects have a 'title', the user-settable name.
@@ -182,7 +182,7 @@ class UserObject
 
 		breaks_cache = false
 		settings.each { |setting|
-			breaks_cache = true if ((setting.last_value != self.send(@setting_name_to_resolve_method_hash[setting.name])) and setting.breaks_cache?)
+			breaks_cache = true if ((setting.last_value != self.send(@setting_name_to_resolve_method_hash[setting.name])) && setting.breaks_cache?)
 		}
 		return breaks_cache
 	end
