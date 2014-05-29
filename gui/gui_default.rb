@@ -134,7 +134,11 @@ class GuiDefault < GuiInterface
 		}
 		@main_menu.on_open {
 			choose_project_file { |path|
-				$switch_to_project_path = path
+				if $engine.load_from_path(path)
+					$gui.positive_message 'Opened successfully.'
+				else
+					$gui.negative_message 'Open failed.'
+				end
 			}
 		}
 		@main_menu.on_new {
@@ -144,7 +148,8 @@ class GuiDefault < GuiInterface
 					# TODO: open it
 				#}
 			#}
-			$engine.project.load_from_path(BASE_SET_PATH)
+			$engine.load_from_path(BASE_SET_PATH)
+			recreate_gui!
 		}
 
 		# Director Grid popup

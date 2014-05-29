@@ -89,7 +89,7 @@ class Project < UserObject
 		append_from_path(path)
 		@path = path
 		not_changed!		# A freshly loaded project should not be marked 'changed'
-		self
+		true
 	end
 
 	def append_from_path(path)

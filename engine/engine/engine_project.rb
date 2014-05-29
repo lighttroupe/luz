@@ -5,8 +5,15 @@ module EngineProject
 	end
 
 	def load_from_path(path)
-		@project.load_from_path(path)
-		new_project_notify
+		begin
+			@project.load_from_path(path)
+			recreate_gui!
+			new_project_notify
+			true
+		rescue Exception => e
+			e.report('loading project')
+			false
+		end
 	end
 
 	pipe :save, :project

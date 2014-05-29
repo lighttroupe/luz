@@ -80,13 +80,13 @@ multi_require 'easy_accessor', 'value_animation', 'value_animation_states'
 $LOAD_PATH << './gui'
 multi_require 'pointer', 'pointer_mouse', 'gui_default'
 
-# Go!
-if project_path
-	$engine.load_from_path(project_path)
-else
-	$engine.load_from_path(BASE_SET_PATH)
+# Load
+$engine.load_from_path(project_path || BASE_SET_PATH)
+
+def recreate_gui!
+	$gui = GuiDefault.new			# TODO plugable?
 end
+recreate_gui!
 
-$gui = GuiDefault.new			# TODO plugable?
-
+# Go!
 $application.run
