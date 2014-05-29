@@ -3,6 +3,9 @@
 
 class Pointer
 	easy_accessor :number, :background_image, :color, :size
+
+	include Drawing
+
 	DEFAULT_COLOR = [1,1,1,0.7]
 	HOLD_COLOR = [1,0.5,0,0.9]
 	DRAG_LINE_COLOR = [1,0.75,0,0.3]
