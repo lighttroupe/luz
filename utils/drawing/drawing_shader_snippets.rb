@@ -1,16 +1,28 @@
+#
+# Shader Snippets allow for mixing shader effects by joining fragments of shader code and compiling them on the fly.
+#
+# Compiled programs are cached in a hash, keyed by an array of the snippet strings.
+#
 multi_require 'gl_fragment_shader', 'gl_vertex_shader', 'gl_shader_program'
+
+$fragment_shader_snippet_stack = []		# NOTE: clears when reloading this file
+$fragment_shader_object_stack = []
+$fragment_shader_uniform_stack = []
+$fragment_shader_snippet_cache ||= {}
+
+$vertex_shader_snippet_stack = []
+$vertex_shader_object_stack = []
+$vertex_shader_uniform_stack = []
+$vertex_shader_snippet_cache ||= {}
+
+$shader_program_cache ||= Hash.new { |hash, key| hash[key] = {} }
 
 module DrawingShaderSnippets
 	#
-	# Shader Snippets Stitching
+	# The default shader programs, for when we have no snippets.
 	#
 	FRAGMENT_SHADER_STUB = "
 		uniform sampler2D texture0;
-
-		float rand(vec2 co)
-		{
-			return fract(sin(dot(co.xy, vec2(12.9898,78.233))) * 43758.5453);
-		}
 
 		void main(void)
 		{
@@ -30,25 +42,17 @@ module DrawingShaderSnippets
 		}
 		"
 
-	$fragment_shader_snippet_stack = []		# clears when reloading this file
-	$fragment_shader_object_stack = []
-	$fragment_shader_uniform_stack = []
-	$fragment_shader_snippet_cache ||= {}
+	SHADER_HELPER_METHODS = "
+		float rand(vec2 co)
+		{
+			return fract(sin(dot(co.xy, vec2(12.9898,78.233))) * 43758.5453);
+		}"
 
-	$vertex_shader_snippet_stack = []		# clears when reloading this file
-	$vertex_shader_object_stack = []
-	$vertex_shader_uniform_stack = []
-	$vertex_shader_snippet_cache = {}
-
-	$shader_program_cache ||= Hash.new { |hash, key| hash[key] = {} }
-
-	def enable_shaders?
-		return $enable_shaders unless $enable_shaders.nil?		# no decision yet?
-		$enable_shaders = !(($settings['no-shaders'] == true) || (($settings['no-shaders-in-1.8'] == true) && RUBY_VERSION <= '1.9.0'))		# respect no-shader request only in 1.8, where we have known shader compilation crashes on Intel 3100-ish cards
-	end
-
+	#
+	# API for accumulating snippets
+	#
 	def with_fragment_shader_snippet(snippet, object)
-		return yield unless (snippet and enable_shaders?)		# allow nil
+		return yield unless snippet		# allow nil
 
 		index = $fragment_shader_object_stack.count
 
@@ -57,12 +61,12 @@ module DrawingShaderSnippets
 
 		uniform_count = 0
 		object.settings.each { |setting|
-			if setting.shader?
-				name = "fragment_snippet_#{index}_#{setting.name}"
-				value = setting.immediate_value
-				$fragment_shader_uniform_stack.push([name, value])
-				uniform_count += 1
-			end
+			next unless setting.shader?
+
+			name = "fragment_snippet_#{index}_#{setting.name}"
+			value = setting.immediate_value
+			$fragment_shader_uniform_stack.push([name, value])
+			uniform_count += 1
 		}
 
 		yield
@@ -75,7 +79,7 @@ module DrawingShaderSnippets
 	end
 
 	def with_vertex_shader_snippet(snippet, object)
-		return yield unless (snippet and enable_shaders?) 		# allow nil
+		return yield unless snippet 		# allow nil
 
 		index = $vertex_shader_object_stack.count
 
@@ -84,12 +88,12 @@ module DrawingShaderSnippets
 
 		uniform_count = 0
 		object.settings.each { |setting|
-			if setting.shader?
-				name = "vertex_snippet_#{index}_#{setting.name}"
-				value = setting.immediate_value
-				$vertex_shader_uniform_stack.push([name, value])
-				uniform_count += 1
-			end
+			next unless setting.shader?
+
+			name = "vertex_snippet_#{index}_#{setting.name}"
+			value = setting.immediate_value
+			$vertex_shader_uniform_stack.push([name, value])
+			uniform_count += 1
 		}
 
 		yield
@@ -101,9 +105,10 @@ module DrawingShaderSnippets
 		$vertex_shader_snippet_stack.pop
 	end
 
+	#
+	# with_compiled_shader { render }
+	#
 	def with_compiled_shader
-		return yield unless enable_shaders?
-
 		return yield if $fragment_shader_snippet_stack.empty? and $vertex_shader_snippet_stack.empty?
 		$next_texture_number ||= 0
 
@@ -126,51 +131,49 @@ module DrawingShaderSnippets
 			$shader_program_cache[fragment_shader_source][vertex_shader_source] = program
 		end
 
-		if program.ok?
-			program.using { |program|
-				uniform_sampler_count = 0
+		return yield unless program.ok?
 
-				# texture0 is always the first texture unit (0)
-				program.set_int('texture0', 0)
+		program.using { |program|
+			uniform_sampler_count = 0
 
-				#
-				# Set collected uniform values
-				#
-				($fragment_shader_uniform_stack + $vertex_shader_uniform_stack).each { |name_and_value|
-					case name_and_value[1]
-					when Float
-						program.set_f(name_and_value[0], name_and_value[1])
-					when Integer
-						program.set_int(name_and_value[0], name_and_value[1])
-					when UserObjectSettingImage
-						image = name_and_value[1].one		# get one Image from the UserObjectSettingImage
-						texture_id = ((image) ? (image.texture_id) : 0)
-						next if texture_id == 0
+			# texture0 is always the first texture unit (0)
+			program.set_int('texture0', 0)
 
-						# Choose next texture unit and put texture in it
-						$next_texture_number += 1
+			#
+			# Set collected uniform values
+			#
+			($fragment_shader_uniform_stack + $vertex_shader_uniform_stack).each { |name_and_value|
+				case name_and_value[1]
+				when Float
+					program.set_f(name_and_value[0], name_and_value[1])
+				when Integer
+					program.set_int(name_and_value[0], name_and_value[1])
+				when UserObjectSettingImage
+					image = name_and_value[1].one		# get one Image from the UserObjectSettingImage
+					texture_id = ((image) ? (image.texture_id) : 0)
+					next if texture_id == 0
 
-						#puts "setting unit #{$next_texture_number} to #{texture_id}"
+					# Choose next texture unit and put texture in it
+					$next_texture_number += 1
 
-						GL.ActiveTexture(GL_TEXTURE0 + $next_texture_number)
-						GL.BindTexture(GL::TEXTURE_2D, texture_id)
-						program.set_int(name_and_value[0], $next_texture_number)
-						uniform_sampler_count += 1
-					end
-				}
+					#puts "setting unit #{$next_texture_number} to #{texture_id}"
 
-				yield
-
-				# The only thing that needs to be undone is the selected texture unit
-				if uniform_sampler_count > 0
-					$next_texture_number -= uniform_sampler_count
 					GL.ActiveTexture(GL_TEXTURE0 + $next_texture_number)
-					#puts "setting texture unit #{$next_texture_number}"
+					GL.BindTexture(GL::TEXTURE_2D, texture_id)
+					program.set_int(name_and_value[0], $next_texture_number)
+					uniform_sampler_count += 1
 				end
 			}
-		else
+
 			yield
-		end
+
+			# The only thing that needs to be undone is the selected texture unit
+			if uniform_sampler_count > 0
+				$next_texture_number -= uniform_sampler_count
+				GL.ActiveTexture(GL_TEXTURE0 + $next_texture_number)
+				#puts "setting texture unit #{$next_texture_number}"
+			end
+		}
 	end
 
 	def join_fragment_shader_snippet_stack(uniforms, snippets, objects)
@@ -196,11 +199,7 @@ module DrawingShaderSnippets
 		header = "
 		uniform sampler2D texture0;
 		#{uniforms}
-
-		float rand(vec2 co)
-		{
-			return fract(sin(dot(co.xy, vec2(12.9898,78.233))) * 43758.5453);
-		}
+		#{SHADER_HELPER_METHODS}
 
 		void main(void)
 		{
@@ -211,7 +210,7 @@ module DrawingShaderSnippets
 		"
 
 		#
-		# Replace uses of setting/uniform 'name' with 'snippet_0_name'
+		# Replace uses of setting/uniform 'name' with 'vertex_snippet_0_name'
 		#
 		snippets_with_variables = snippets.collect_with_index { |snippet, index|
 			object = objects[index]
@@ -237,7 +236,7 @@ module DrawingShaderSnippets
 		}
 		"
 
-		return [header, snippets_with_variables, forced_texture_sample, footer].join
+		[header, snippets_with_variables, forced_texture_sample, footer].join
 	end
 
 	def join_vertex_shader_snippet_stack(uniforms, snippets, objects)
@@ -262,11 +261,7 @@ module DrawingShaderSnippets
 		#
 		header = "
 		#{uniforms}
-
-		float rand(vec2 co)
-		{
-			return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
-		}
+		#{SHADER_HELPER_METHODS}
 
 		void main(void)
 		{
@@ -275,7 +270,7 @@ module DrawingShaderSnippets
 		"
 
 		#
-		# Replace uses of setting/uniform 'name' with 'snippet_0_name'
+		# Replace uses of setting/uniform 'name' with 'vertex_snippet_0_name'
 		#
 		snippets_with_variables = snippets.collect_with_index { |snippet, index|
 			object = objects[index]
@@ -299,6 +294,6 @@ module DrawingShaderSnippets
 		}
 		"
 
-		return [header, snippets_with_variables, footer].join
+		[header, snippets_with_variables, footer].join
 	end
 end
