@@ -42,6 +42,12 @@ module DrawingShaderSnippets
 		}
 		"
 
+	SHADER_HELPER_METHODS = "
+		float rand(vec2 co)
+		{
+			return fract(sin(dot(co.xy, vec2(12.9898,78.233))) * 43758.5453);
+		}"
+
 	#
 	# API for accumulating snippets
 	#
@@ -193,11 +199,7 @@ module DrawingShaderSnippets
 		header = "
 		uniform sampler2D texture0;
 		#{uniforms}
-
-		float rand(vec2 co)
-		{
-			return fract(sin(dot(co.xy, vec2(12.9898,78.233))) * 43758.5453);
-		}
+		#{SHADER_HELPER_METHODS}
 
 		void main(void)
 		{
@@ -259,11 +261,7 @@ module DrawingShaderSnippets
 		#
 		header = "
 		#{uniforms}
-
-		float rand(vec2 co)
-		{
-			return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
-		}
+		#{SHADER_HELPER_METHODS}
 
 		void main(void)
 		{
