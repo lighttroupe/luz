@@ -220,27 +220,4 @@ class Array
 	def each_enabled
 		each { |obj| yield obj if obj.enabled? }
 	end
-
-	def binary_search_closest_lower_index(value)
-		first=0
-		last=self.size - 1
-
-		while first <= last
-			mid = (first + last) / 2
-			return mid if value == self[mid]
-
-			if value > self[mid]
-				# Quick check if this is the index
-				return mid if (mid < last) and (value < self[mid+1])
-
-				first = mid + 1
-			else
-				# Quick check if previous is the index
-				return mid-1 if (mid > first) and (value > self[mid-1])
-
-				last = mid - 1
-			end
-		end
-		return nil
-	end
 end

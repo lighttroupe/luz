@@ -252,7 +252,8 @@ class GuiDefault < GuiInterface
 
 		hide_reopen_button!
 
-		if user_object.is_a?(Director)
+		case user_object
+		when Director
 			close_directors_menu! #if self.chosen_director == user_object
 			if self.chosen_director == user_object
 				self.mode = :director
@@ -261,26 +262,21 @@ class GuiDefault < GuiInterface
 				clear_user_object_editor
 				return
 			end
+		when Actor
+			if editor_visible
+				@actor_view.actor = user_object
+				#self.mode = :actor
+				return
+			else
+				# Rule: cannot edit one actor while viewing a different one (so show this actor while editing)
+				@actor_view.actor = user_object if self.mode == :actor
+			end
+		when Variable, Event
+			clear_user_object_editor and return if editor_visible
 		end
 
 		if user_object.is_a?(ParentUserObject) || user_object.is_a?(Project)		# TODO: responds_to? :effects ?
-			case user_object
-			when Actor
-				if editor_visible
-					@actor_view.actor = user_object
-					self.mode = :actor
-					return
-				else
-					# Rule: cannot edit one actor while viewing a different one (so show this actor while editing)
-					@actor_view.actor = user_object if self.mode == :actor
-				end
-			when Variable, Event
-				clear_user_object_editor and return if editor_visible
-			end
-
-			#
-			# Select / show object
-			#
+			# show editor for user_object
 			clear_user_object_editor		# only support one for now
 
 			@user_object_editor = create_user_object_editor_for_pointer(user_object, pointer || Vector3.new(0.0,-0.5), options)
