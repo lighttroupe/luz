@@ -70,6 +70,12 @@ class GuiUserObjectEditor < GuiWindow
 				@user_object.gui_fill_settings_list(@user_object)
 				@title_text.cancel_keyboard_focus!
 			}
+
+			self << (@view_button=GuiButton.new.set(:offset_x => 0.50 - 0.05, :offset_y => 0.5 - 0.07, :scale_x => 0.05, :scale_y => 0.1, :background_image => $engine.load_image('images/actor-view-background.png')))
+			@view_button.on_clicked { |pointer|
+				$gui.chosen_actor = @user_object
+				$gui.mode = :actor
+			}
 		end
 
 		self << (@title_text=GuiString.new(@user_object, :title).set(:offset_x => -0.30 + 0.07, :offset_y => 0.5 - 0.07, :scale_x => 0.35, :scale_y => 0.1))		#.set(:background_image => $engine.load_image('images/buttons/menu.png'))
