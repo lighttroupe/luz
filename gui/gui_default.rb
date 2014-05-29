@@ -194,7 +194,7 @@ class GuiDefault < GuiInterface
 		director = $engine.project.directors.first
 
 		# Hack to load project file format 1
-		director.actors = $engine.project.actors if director.actors.empty? and not $engine.project.actors.empty?
+		director.actors = $engine.project.actors if director.actors.empty? && !$engine.project.actors.empty?
 
 		self.chosen_actor = nil
 		self.chosen_director = director
