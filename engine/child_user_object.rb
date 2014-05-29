@@ -9,6 +9,7 @@ class ChildUserObject < UserObject
 
 	def after_load
 		set_default_instance_variables(:conditions => ChildConditions.new)
+		@conditions.after_load
 		super
 	end
 

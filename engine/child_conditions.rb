@@ -23,13 +23,11 @@ class ChildConditions < Conditions
 	end
 
 	def initialize
-		@enable_child_index = false
-		@child_index_min = 0
-		@child_index_max = 0
+		after_load
+	end
 
-		@enable_event = false
-		@event = nil
-		@event_invert = false
+	def after_load
+		set_default_instance_variables(:enable_child_index => false, :child_index_min => 0, :child_index_max => 0, :enable_event => false, :event => nil, :event_invert => false)
 	end
 
 	#
