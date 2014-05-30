@@ -545,6 +545,31 @@ class GuiDefault < GuiInterface
 		build_editor_for(@user_object, :grab_keyboard_focus => true) if @user_object
 	end
 
+	def active_view
+		if mode == :actor
+			@actor_view
+		elsif mode == :director
+			@director_view
+		end
+	end
+
+	def scroll_up!(pointer)
+		return unless (view = active_view)
+		view.scroll_up!(pointer)
+	end
+	def scroll_down!(pointer)
+		return unless (view = active_view)
+		view.scroll_down!(pointer)
+	end
+	def scroll_left!(pointer)
+		return unless (view = active_view)
+		view.scroll_left!(pointer)
+	end
+	def scroll_right!(pointer)
+		return unless (view = active_view)
+		view.scroll_right!(pointer)
+	end
+
 	#
 	# Keyboard interaction
 	#
