@@ -14,7 +14,7 @@ class Variable < ParentUserObject
 	# Class methods
 	#
 	def self.available_categories
-		[:slider, :button, :device, :special]
+		[:slider, :button, :special]
 	end
 
 	#
