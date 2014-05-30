@@ -1,6 +1,6 @@
 class GLCamera
 	POSITION_ANIMATION_TIME = 0.2
-	PROGRESS_PER_FRAME = 0.08
+	PROGRESS_PER_FRAME = 0.12
 	MIN_DISTANCE = 0.001
 
 	include Drawing
@@ -32,7 +32,7 @@ class GLCamera
 	# Vector helpers
 	#
 	def left_vector
-		Vector3.new(-1,0,0)		# TODO
+		@up_vector.cross(@look_vector)
 	end
 
 	#
