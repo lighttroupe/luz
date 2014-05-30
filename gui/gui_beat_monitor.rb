@@ -13,7 +13,9 @@ class GuiBeatLight < GuiObject
 		with_color(on? ? $gui.view_color : BEAT_OFF_COLOR) {
 			with_scale(on? ? ($env[:beat_scale].scale(1.1, 1.0)) : 1.0) {
 				with_multiplied_alpha(on? ? ($env[:beat_scale].scale(1.0, 0.5)) : 0.0) {
-					unit_square
+					background_image.using {
+						unit_square
+					}
 				}
 			}
 		}
@@ -25,7 +27,7 @@ class GuiBeatMonitor < GuiSpacedHBox
 		super()
 		self << (@halve_bpm_button = GuiButton.new.set(:scale_x => 1.0, :scale_y => 1.0, :offset_x => 0.0, :offset_y => 0.0, :background_image => $engine.load_image('images/buttons/halve.png')))
 		@halve_bpm_button.on_clicked { $engine.beat_half_time! }
-		beats_per_measure.times { |i| self << GuiBeatLight.new.set_beat_index(i).set_beats_per_measure(beats_per_measure) }
+		beats_per_measure.times { |i| self << GuiBeatLight.new.set(:background_image => $engine.load_image('images/beat-light.png')).set_beat_index(i).set_beats_per_measure(beats_per_measure) }
 		self << (@double_bpm_button = GuiButton.new.set(:scale_x => 1.0, :scale_y => 1.0, :offset_x => 0.0, :offset_y => 0.0, :background_image => $engine.load_image('images/buttons/double.png')))
 		@double_bpm_button.on_clicked { $engine.beat_double_time! }
 	end
