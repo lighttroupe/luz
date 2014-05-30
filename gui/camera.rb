@@ -29,15 +29,18 @@ class GLCamera
 	# Movement
 	#
 	def move_forward(amount)
+		v = look_vector
 		@position = @position + (look_vector * amount)
-		@look_at = @look_at + (look_vector * amount)
+		@look_at = @position + v
 	end
 	def move_left(amount)
+		v = look_vector
 		@position = @position + (left_vector * amount)
-		@look_at = @look_at + (left_vector * amount)
+		@look_at = @position + v
 	end
 	def move_up(amount)
+		v = look_vector
 		@position = @position + (@up_vector * amount)
-		@look_at = @look_at + (@up_vector * amount)
+		@look_at = @position + v
 	end
 end
