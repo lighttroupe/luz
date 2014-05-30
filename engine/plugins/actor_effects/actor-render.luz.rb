@@ -1,4 +1,6 @@
 class ActorEffectActorRender < ActorEffect
+	virtual		# deprecated / unsure for 2.0
+
 	title				'Actor Render'
 	description "Renders chosen actor once, immediate, live."
 
