@@ -3,6 +3,7 @@
 #
 class UserObject
 	include MethodsForGuiObject
+	include Drawing
 
 	LABEL_COLOR_CRASHY = [1,0,0,0.35]
 	LABEL_COLOR_EVENT_OFF = [1,1,0,0.35]
@@ -222,6 +223,7 @@ class UserObject
 		}
 	end
 
+	extend Drawing
 	def self.gui_render_label
 		with_color(LABEL_COLOR) {
 			@@class_title_label ||= Hash.new { |hash, key| hash[key] = BitmapFont.new.set(:string => key, :scale_x => 0.95, :scale_y => USER_OBJECT_TITLE_HEIGHT) }
