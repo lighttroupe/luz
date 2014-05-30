@@ -13,25 +13,26 @@ class GuiDirectorView < GuiBox
 	#
 	# Scrollwheel behavior
 	#
+	SCROLL_AMOUNT = 0.1
 	def scroll_up!(pointer)
 		if pointer.hold?
-			camera.move_up(0.1)
+			camera.move_up(SCROLL_AMOUNT)
 		else
-			camera.move_forward(0.1)
+			camera.move_forward(SCROLL_AMOUNT)
 		end
 	end
 	def scroll_down!(pointer)
 		if pointer.hold?
-			camera.move_up(-0.1)
+			camera.move_up(-SCROLL_AMOUNT)
 		else
-			camera.move_forward(-0.1)
+			camera.move_forward(-SCROLL_AMOUNT)
 		end
 	end
 	def scroll_left!(pointer)
-		camera.move_left(0.1)
+		camera.move_left(SCROLL_AMOUNT)
 	end
 	def scroll_right!(pointer)
-		camera.move_left(-0.1)
+		camera.move_left(-SCROLL_AMOUNT)
 	end
 
 private
