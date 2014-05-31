@@ -2,7 +2,7 @@ class ActorEffectHide < ActorEffect
 	title				"Hide"
 	description "Hides actor completely."
 
-	category :transform
+	categories :special
 
 	hint "Useful with conditions."
 

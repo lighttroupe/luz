@@ -2,7 +2,7 @@ class ActorEffectVertexShaderText < ActorEffect
 	title				"Vertex Shader Test"
 	description ""
 
-	categories :transform
+	categories :special
 
 	setting 'amount', :float, :default => 0.0..1.0, :shader => true
 

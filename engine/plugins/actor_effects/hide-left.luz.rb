@@ -2,7 +2,7 @@ class ActorEffectHideLeft < ActorEffect
 	title				"Hide from Left"
 	description "Hides actor starting from the left."
 
-	categories :transform
+	categories :special
 
 	setting 'amount', :float, :range => 0.0..1.0, :default => 0.0..1.0
 
