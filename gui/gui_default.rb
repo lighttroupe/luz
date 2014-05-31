@@ -448,6 +448,16 @@ class GuiDefault < GuiInterface
 		#
 		if key.control?
 			case key
+			when 'f9'
+				$gui.positive_message "Launching Input Manager"
+				cmd = 'input-manager/input-manager'
+				open("|#{cmd}")
+
+			when 'f10'
+				$gui.positive_message "Launching Spectrum Analyzer"
+				cmd = 'spectrum-analyzer/spectrum-analyzer'
+				open("|#{cmd}")
+
 			when 'right'
 				if @actors_flyout.keyboard_focus?
 					@actors_flyout.close!
