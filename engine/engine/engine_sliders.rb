@@ -57,7 +57,7 @@ module EngineSliders
 			@slider_values[name] = v = 0.0		# Otherwise we'll new_slider_notify endlessly...
 			new_slider_notify(name)		# this lets us notify (fill GUI lists) after loading a set from disk
 		end
-		return v
+		v
 	end
 
 	def new_slider_notify_if_needed(name)
