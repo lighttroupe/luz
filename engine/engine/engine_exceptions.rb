@@ -1,7 +1,7 @@
 module EngineExceptions
 	def user_object_try(obj)
 		begin
-			return yield if obj.usable?		# NOTE: doesn't yield for "crashed" UOs
+			yield if obj.usable?		# NOTE: doesn't yield for "crashed" UOs
 		rescue Interrupt => e
 			raise e
 		rescue Exception => e
