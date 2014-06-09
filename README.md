@@ -26,6 +26,10 @@ Here are some Luz 1 video tutorials (all the same concepts apply, only the inter
 
 <http://lighttroupe.com/luz>
 
+Luz 2 screenshots:
+
+<http://lighttroupe.tumblr.com>
+
 # Running Luz
 
 Luz currently only runs on Linux.  (Help is wanted porting it to OSX and Windows.)
