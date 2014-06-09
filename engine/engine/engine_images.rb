@@ -1,4 +1,8 @@
+multi_require 'image_thumbnailer'
+
 module EngineImages
+	SUPPORTED_IMAGE_EXTENSIONS = ['png','jpg','jpeg','bmp','gif']
+
 	#
 	# Image loading, caching, and reloading upon changes (using inotify)
 	#
@@ -60,5 +64,19 @@ module EngineImages
 		if (images=load_images(path))
 			images.first
 		end
+	end
+
+	def load_image_thumbnail(path, &proc)
+		thumbnailer.add(path) { |thumbnail_path|
+			if (image=load_image(thumbnail_path))
+				proc.call(image)
+			end
+		}
+	end
+
+private
+
+	def thumbnailer
+		@thumbnailer ||= ImageThumbnailer.new
 	end
 end

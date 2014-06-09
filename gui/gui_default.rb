@@ -30,13 +30,14 @@ class GuiDefault < GuiInterface
 	def reload_notify
 		clear!
 		create!
+		choose_image
 	end
 
 	#
 	# File Utils
 	#
 	def choose_image
-		dialog = GuiFileDialog.new('Choose Image').set(:scale_x => 0.8, :scale_y => 0.8, :offset_y => -0.1)
+		dialog = GuiImageDialog.new('Choose Image').set(:scale_x => 0.8, :scale_y => 0.8, :offset_y => -0.1)
 		@dialog_container << dialog
 		dialog.on_selected { |path|
 			dialog.remove_from_parent!
