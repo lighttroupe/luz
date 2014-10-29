@@ -17,7 +17,6 @@ class Engine
 	callback :new_project
 	callback :frame_end
 	callback :reload
-	callback :update_user_objects
 	callback :user_object_changed
 	callback :user_object_exception
 	callback :crash
@@ -112,7 +111,6 @@ class Engine
 		change_count = reload_modified_source_files		# Kernel add-on method
 		change_count += load_plugins		# Pick up any new plugins
 		reinitialize_user_objects				# Ensures UOs are properly init'd
-		update_user_objects_notify			# Let everyone know that UOs changed
 		reload_notify
 		return change_count
 	end
