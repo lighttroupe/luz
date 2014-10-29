@@ -1,7 +1,6 @@
 module EngineProject
 	def init_project
 		@project = Project.new
-		@num_known_user_object_classes = 0
 	end
 
 	def load_from_path(path)
