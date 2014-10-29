@@ -4,7 +4,6 @@ optional_require 'message_bus'
 
 class Engine
 	PLUGIN_DIRECTORY_PATH = File.join(Dir.pwd, 'engine', 'plugins')
-	BASE_SET_PATH = 'base.luz'
 
 	attr_accessor :director, :theme, :simulation_speed, :frame_number
 	attr_reader :project, :background_color
