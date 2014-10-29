@@ -18,7 +18,6 @@ class Engine
 	callback :frame_end
 	callback :reload
 	callback :user_object_exception
-	callback :crash
 
 	include Drawing
 	include MethodsForUserObject		# engine gets 'em, too.
