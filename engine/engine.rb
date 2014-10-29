@@ -16,7 +16,6 @@ class Engine
 	#
 	callback :new_project
 	callback :frame_end
-	callback :new_user_object_class
 	callback :reload
 	callback :update_user_objects
 	callback :user_object_changed

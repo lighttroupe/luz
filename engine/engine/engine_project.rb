@@ -27,14 +27,6 @@ module EngineProject
 		@project.each_user_object { |obj| obj.crashy = false }
 	end
 
-	def notify_of_new_user_object_classes
-		# call the notify callback for just new ones
-		@num_known_user_object_classes.upto(UserObject.inherited_classes.size - 1) { |index|
-			new_user_object_class_notify(UserObject.inherited_classes[index])
-		}
-		@num_known_user_object_classes = UserObject.inherited_classes.size
-	end
-
 	def project_pretick
 		@project.effects.each { |effect| user_object_try(effect) { effect.pretick } }
 	end
