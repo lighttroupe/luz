@@ -108,7 +108,7 @@ class Engine
 	def reload
 		change_count = reload_modified_source_files		# Kernel add-on method
 		change_count += load_plugins		# Pick up any new plugins
-		reinitialize_user_objects				# Ensures UOs are properly init'd
+		reinitialize_user_objects
 		reload_notify
 		return change_count
 	end
