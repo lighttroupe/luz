@@ -92,11 +92,17 @@ class UserObject
 	# Object-level functions
 	###################################################################
 
+	def to_yaml_properties
+		['@title', '@enabled'] + self.class.settings.collect { |setting| "@#{setting.name}_setting" }
+	end
+
 	attr_accessor :last_exception
 
 	def settings
 		@settings ||= create_user_object_settings
 	end
+
+	empty_method :tick		# override
 
 	def tick!
 		return if @last_tick_frame_number == $env[:frame_number]
@@ -104,14 +110,8 @@ class UserObject
 		@last_tick_frame_number = $env[:frame_number]
 	end
 
-	empty_method :tick		# override
-
 	def ticked_recently?
 		@last_tick_frame_number && (@last_tick_frame_number > ($env[:frame_number] - 2))
-	end
-
-	def to_yaml_properties
-		['@title', '@enabled'] + self.class.settings.collect { |setting| "@#{setting.name}_setting" }
 	end
 
 	def user_object_try
@@ -133,7 +133,7 @@ class UserObject
 	attr_accessor :title
 
 	def default_title
-		self.class.title		# default name for a Rectangle is "Rectangle"
+		self.class.title		# eg. default name for a Rectangle is "Rectangle"
 	end
 
 	def initialize
