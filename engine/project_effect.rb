@@ -5,6 +5,10 @@ class ProjectEffect < ChildUserObject
 
 	empty_method :pretick, :tick
 
+	def pretick!
+		user_object_try { pretick }
+	end
+
 	def render
 		yield
 	end

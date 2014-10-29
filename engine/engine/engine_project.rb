@@ -27,7 +27,7 @@ module EngineProject
 	end
 
 	def project_pretick
-		@project.effects.each { |effect| user_object_try(effect) { effect.pretick } }
+		@project.effects.each { |effect| effect.pretick! }
 	end
 
 	def project_tick
