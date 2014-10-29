@@ -46,10 +46,10 @@ module EngineButtons
 		if @button_grab_proc
 			@button_grab_proc.call(name)
 			@button_grab_proc = nil		# TODO: should we only remove handler if proc returns true/false ?
-			return true		# eaten
+			true		# eaten
+		else
+			false		# not eaten
 		end
-
-		return false		# not eaten
 	end
 
 	def on_button_up(name, frame_offset=0)

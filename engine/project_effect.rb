@@ -13,4 +13,3 @@ class ProjectEffect < ChildUserObject
 		yield
 	end
 end
-
