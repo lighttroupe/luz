@@ -17,7 +17,6 @@ class Engine
 	callback :new_project
 	callback :frame_end
 	callback :reload
-	callback :user_object_changed
 	callback :user_object_exception
 	callback :crash
 

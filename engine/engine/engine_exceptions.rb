@@ -8,7 +8,6 @@ module EngineExceptions
 			obj.crashy = true
 			obj.last_exception = e if $gui
 			user_object_exception_notify(obj, e)
-			user_object_changed_notify(obj)
 		end
 	end
 
