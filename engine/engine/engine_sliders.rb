@@ -1,3 +1,6 @@
+#
+# Sliders (also knobs, and any other 0.0 -> 1.0 inputs)
+#
 module EngineSliders
 	include Callbacks
 
@@ -14,9 +17,6 @@ module EngineSliders
 		@slider_delayed_updates.clear
 	end
 
-	#
-	# Sliders (also knobs, and any other 0.0 -> 1.0 inputs)
-	#
 	def slider_grab(&proc)
 		@slider_grab_proc = proc
 	end
@@ -35,7 +35,7 @@ module EngineSliders
 		# special-case one type of change:
 		# - 2+ slider changes in one frame
 		# - second value goes to 0.0
-		# this prevents a quick "a=1,a=0" from being immediately overridden
+		# this prevents a quick "a=1,a=0" from being lost
 		frame_number = $env[:frame_number]
 		if (delayed == false) and (@slider_values_last_update_frame[name] == frame_number) and (value == 0.0)
 			@slider_delayed_updates[name] = value
