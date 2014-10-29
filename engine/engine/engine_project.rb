@@ -21,7 +21,7 @@ module EngineProject
 	pipe :clear_objects, :project, :method => :clear
 
 	def reinitialize_user_objects
-		@project.each_user_object { |obj| safe { obj.after_load } }
+		@project.each_user_object { |obj| safe { obj.after_load } }					# NOTE: use of user_object_try here would be silly, since we're about to set it non-crashy, but protection is still needed
 		@project.each_user_object { |obj| safe { obj.resolve_settings } }
 		@project.each_user_object { |obj| obj.crashy = false }
 	end
