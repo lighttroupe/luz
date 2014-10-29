@@ -3,8 +3,6 @@ multi_require 'engine/engine_methods_for_user_object', 'director', 'actor', 'cur
 optional_require 'message_bus'
 
 class Engine
-	USER_OBJECT_EXCEPTION_FORMAT = "#{'#' * 80}\nOops! The plugin shown below has caused an error and has stopped functioning:\n\n%s\nObject:%s\n#{'#' * 80}\n"
-
 	PLUGIN_DIRECTORY_PATH = File.join(Dir.pwd, 'engine', 'plugins')
 	BASE_SET_PATH = 'base.luz'
 

@@ -73,7 +73,8 @@ $engine.post_initialize		# TODO: add message bus ip/port params
 $engine.load_plugins
 
 # Engine callbacks
-$engine.on_user_object_exception { |object, exception| puts sprintf(Engine::USER_OBJECT_EXCEPTION_FORMAT, exception.report_format, object.title) }
+USER_OBJECT_EXCEPTION_FORMAT = "#{'#' * 80}\nOops! The plugin shown below has caused an error and has stopped functioning:\n\n%s\nObject:%s\n#{'#' * 80}\n"
+$engine.on_user_object_exception { |object, exception| puts sprintf(USER_OBJECT_EXCEPTION_FORMAT, exception.report_format, object.title) }
 
 # GUI
 multi_require 'easy_accessor', 'value_animation', 'value_animation_states'
