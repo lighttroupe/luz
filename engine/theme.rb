@@ -1,9 +1,7 @@
-multi_require 'parent_user_object', 'taggable', 'style'
+multi_require 'parent_user_object', 'style'
 
 class Theme < ParentUserObject
 	title 'Theme'
-
-	include Taggable
 
 	def to_yaml_properties
 		tag_instance_variables + super
@@ -13,17 +11,6 @@ class Theme < ParentUserObject
 
 	def default_title
 		'New Theme'
-	end
-
-	def after_load
-		#set_default_instance_variables(:titile => '')
-		super
-		after_load_tag_class_registration
-	end
-
-	def before_delete
-		clear_tags
-		super
 	end
 
 	def empty?

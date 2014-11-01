@@ -1,7 +1,6 @@
-multi_require 'user_object', 'actor_effect', 'color', 'taggable', 'drawing'
+multi_require 'user_object', 'actor_effect', 'color', 'drawing'
 
 class Actor < ParentUserObject
-	include Taggable
 	include Drawing
 
 	DEFAULT_X, DEFAULT_Y = 0.0, 0.0
@@ -36,13 +35,7 @@ class Actor < ParentUserObject
 	def after_load
 		set_default_instance_variables(:x => DEFAULT_X, :y => DEFAULT_Y, :width => DEFAULT_WIDTH, :height => DEFAULT_HEIGHT, :enabled => true)
 		super
-		after_load_tag_class_registration
 		clear_cache
-	end
-
-	def before_delete
-		clear_tags
-		super
 	end
 
 	def deep_clone(*args)

@@ -5,9 +5,6 @@ class Director < ParentUserObject
 
 	setting 'offscreen_render_actor', :actor, :summary => 'renders on %'
 
-	require 'taggable'
-	include Taggable
-
 	require 'drawing'
 	include Drawing
 
@@ -33,12 +30,6 @@ class Director < ParentUserObject
 
 	def after_load
 		set_default_instance_variables(:actors => [], :x => 0.0, :y => 0.0)
-		super
-		after_load_tag_class_registration
-	end
-
-	def before_delete
-		clear_tags
 		super
 	end
 

@@ -63,11 +63,6 @@ class Project < UserObject
 	end
 
 	def clear
-		# remove tags from all objects
-		OBJECT_SYMBOLS.each { |obj_type|
-			array = instance_variable_get("@#{obj_type}")
-			array.each { |obj| obj.clear_tags if obj.respond_to? :clear_tags } if array
-		}
 		# set all to []
 		OBJECT_SYMBOLS.each { |obj_type| instance_variable_set("@#{obj_type}", []) }
 		@change_count = 0
