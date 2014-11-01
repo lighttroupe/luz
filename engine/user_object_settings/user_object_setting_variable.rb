@@ -16,8 +16,7 @@ class UserObjectSettingVariable < UserObjectSetting
 	end
 
 	def with_value(value, &proc)
-		return yield unless @variable
-		@variable.with_value(value, &proc)
+		@variable ? @variable.with_value(value, &proc) : yield
 	end
 
 	def summary
