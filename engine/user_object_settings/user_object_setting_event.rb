@@ -7,28 +7,25 @@ class UserObjectSettingEvent < UserObjectSetting
 
 	attr_reader :event
 
-	#
-	#
-	#
 	def now?
-		@event && (@event.do_value == true)
+		@event ? (@event.do_value == true) : false
 	end
 
 	def on_this_frame?
-		@event && @event.on_this_frame?
+		@event ? @event.on_this_frame? : false
 	end
 
 	def previous_frame?
-		@event && @event.previous_frame?
+		@event ? @event.previous_frame? : false
 	end
 
 	def count
 		@event ? @event.count : 0
 	end
 
+	# 
 	def with_value(value, &proc)
-		return yield unless @event
-		@event.with_value(value, &proc)
+		@event ? @event.with_value(value, &proc) : yield
 	end
 
 	def summary
