@@ -1,16 +1,26 @@
+#
+# Image loading, caching, and reloading upon changes (using inotify)
+#
 multi_require 'image_thumbnailer'
 
 module EngineImages
 	SUPPORTED_IMAGE_EXTENSIONS = ['png','jpg','jpeg','bmp','gif']
 
 	#
-	# Image loading, caching, and reloading upon changes (using inotify)
+	# API
 	#
-	def image_directories
-		[
-			@project.file_path,
-			'gui'
-		].compact
+	def load_image(path)
+		if (images=load_images(path))
+			images.first
+		end
+	end
+
+	def load_image_thumbnail(path, &proc)
+		thumbnailer.add(path) { |thumbnail_path|
+			if (image=load_image(thumbnail_path))
+				proc.call(image)
+			end
+		}
 	end
 
 	def load_images(path)
@@ -59,22 +69,14 @@ module EngineImages
 		return ret
 	end
 
-	# Helper when we know it's just one image
-	def load_image(path)
-		if (images=load_images(path))
-			images.first
-		end
-	end
-
-	def load_image_thumbnail(path, &proc)
-		thumbnailer.add(path) { |thumbnail_path|
-			if (image=load_image(thumbnail_path))
-				proc.call(image)
-			end
-		}
-	end
-
 private
+
+	def image_directories
+		[
+			@project.file_path,
+			'gui'
+		].compact
+	end
 
 	def thumbnailer
 		@thumbnailer ||= ImageThumbnailer.new

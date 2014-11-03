@@ -19,7 +19,7 @@ class GuiMainMenu < GuiBox
 		self << (@text1 = BitmapFont.new.set({:string => 'Luz 2.0', :offset_x => -0.01, :offset_y => 0.335, :scale_x => 0.1, :scale_y => 0.07}))
 		self << (@text2 = BitmapFont.new.set({:string => 'Early Access Edition', :offset_x => -0.05, :offset_y => 0.26, :scale_x => 0.1, :scale_y => 0.04}))
 
-		self << @background = GuiButton.new.set(:offset_x => 0.00, :offset_y => 0.00, :scale_x => 0.10, :scale_y => 0.15, :background_image =>$engine.load_image('images/luz-icon-border.png'))
+		self << @background = GuiButton.new.set(:offset_x => 0.00, :offset_y => 0.00, :scale_x => 0.10, :scale_y => 0.15, :background_image => $engine.load_image('images/luz-icon-border.png'))
 		self << @star_button = GuiButton.new.set(:offset_x => 0.00, :offset_y => 0.00, :scale_x => 0.07, :scale_y => 0.09, :background_image => $engine.load_image('images/luz-starflower.png'))
 		@star_button.on_clicked { close_notify }		
 
