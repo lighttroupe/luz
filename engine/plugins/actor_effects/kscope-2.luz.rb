@@ -31,7 +31,7 @@ class ActorEffectKScope2 < ActorEffect
 					with_clip_plane([-Math.sin(start_radians), -Math.cos(start_radians), 0.0, 0.0]) {
 						with_clip_plane([Math.sin(end_radians), Math.cos(end_radians), 0.0, 0.0]) {
 							# Flip every other slice left-right so the edges mesh perfectly
-							if i.is_odd?
+							if i.odd?
 								with_scale(-1, 1) { yield :child_index => i, :total_children => folds_doubled }
 							else
 								yield :child_index => i, :total_children => total_children

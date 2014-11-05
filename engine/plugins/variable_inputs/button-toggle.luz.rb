@@ -9,7 +9,7 @@ class VariableInputButtonToggle < VariableInput
 	setting 'off_time', :timespan, :summary => '% off'
 
 	def value
-		if $engine.button_press_count(button).is_odd?
+		if $engine.button_press_count(button).odd?
 			return 1.0 if on_time.instant? or last_value.nil?
 			return (last_value + ($env[:frame_time_delta] / on_time.to_seconds)).clamp(0.0, 1.0)
 		else

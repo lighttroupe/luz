@@ -14,9 +14,9 @@ class ActorEffectGridOffset < ActorEffect
 
 		for y in (-number_y..number_y)
 			for x in (-number_x..number_x)
-				next if (x.is_odd? and y == number_y)
+				next if (x.odd? and y == number_y)
 
-				with_translation((x * offset_x), (y * offset_y) + (x.is_odd? ? 0.5 : 0.0)) {
+				with_translation((x * offset_x), (y * offset_y) + (x.odd? ? 0.5 : 0.0)) {
 					yield :child_index => [x.abs, y.abs].max, :total_children => total_children
 				}
 			end

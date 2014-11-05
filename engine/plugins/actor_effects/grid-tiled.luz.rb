@@ -14,7 +14,7 @@ class ActorEffectGridTiled < ActorEffect
 		for y in (-number_y..number_y)
 			for x in (-number_x..number_x)
 				with_translation(x * offset, y * offset) {
-					with_scale(x.is_odd? ? -1 : 1, y.is_odd? ? -1 : 1) {
+					with_scale(x.odd? ? -1 : 1, y.odd? ? -1 : 1) {
 						yield :child_index => max(x.abs, y.abs), :total_children => total_children
 					}
 				}
