@@ -90,8 +90,6 @@ class UserObject
 		['@title', '@enabled'] + self.class.settings.collect { |setting| "@#{setting.name}_setting" }
 	end
 
-	attr_accessor :last_exception
-
 	def settings
 		@settings ||= create_user_object_settings
 	end

@@ -6,7 +6,6 @@ module EngineExceptions
 			raise e
 		rescue Exception => e
 			obj.crashy = true
-			obj.last_exception = e
 			user_object_exception_notify(obj, e)
 		end
 	end
