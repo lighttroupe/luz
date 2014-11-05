@@ -7,11 +7,6 @@ module DrawingTransformations
 			yield
 		}
 	end
-	def with_translation_unsafe(x, y, z=0.0)
-		GL.Translate(x, y, z)
-		yield
-	end
-	#conditional :with_translation
 
 	# Variation of translate, moves "forward" (towards higher Y values)
 	def with_slide(amount)
@@ -22,7 +17,6 @@ module DrawingTransformations
 			yield
 		}
 	end
-	#conditional :with_slide
 
 	def with_angle_slide(angle, distance)
 		return yield if distance == 0.0
@@ -36,7 +30,6 @@ module DrawingTransformations
 			yield
 		}
 	end
-	#conditional :with_angle_slide
 
 	def with_roll(amount, x=0.0, y=0.0, z=1.0)
 		return yield if amount == 0.0
@@ -45,12 +38,6 @@ module DrawingTransformations
 			GL.Rotate(amount * FUZZY_TO_DEGREES, x, y, z) 	# Rotate around the Z axis
 			yield
 		}
-	end
-	def with_roll_unsafe(amount, x=0.0, y=0.0, z=1.0)
-		return yield if amount == 0.0
-
-		GL.Rotate(amount * FUZZY_TO_DEGREES, x, y, z) 	# Rotate around the Z axis
-		yield
 	end
 
 	def with_pitch(amount)
@@ -70,7 +57,6 @@ module DrawingTransformations
 			yield
 		}
 	end
-	#conditional :with_roll, :with_pitch, :with_yaw
 
 	$accumulated_scale_x = 1.0
 	$accumulated_scale_y = 1.0
@@ -116,7 +102,6 @@ module DrawingTransformations
 		GL.Scale(x, y, z)
 		yield
 	end
-	#conditional :with_scale
 
 	def with_identity_transformation
 		GL.PushMatrix		# push modelview
