@@ -21,24 +21,12 @@ class Event < ParentUserObject
 
 	attr_reader :count, :last_count
 
-	def count
-		@count || 0
-	end
-
-	def last_count
-		@last_count || 0
-	end
-
-	def count_changed?
-		@count != @last_count
-	end
-
 	def after_load
 		set_default_instance_variables(:title => default_title, :count => 0, :last_count => 0)
 		super
 	end
 
-	# This allows plugins to communicate to UserObjects by setting a value for an Event
+	# This allows plugins to communicate to UserObjects by setting a value for an Event within a block
 	def with_value(new_value)
 		current_value = @temporary_value
 		@temporary_value = new_value
@@ -52,7 +40,7 @@ class Event < ParentUserObject
 	end
 
 	def on_this_frame?
-		@current_value and !@last_value
+		@current_value && !@last_value
 	end
 
 	def previous_frame?
