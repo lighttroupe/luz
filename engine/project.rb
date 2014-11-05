@@ -33,6 +33,11 @@ class Project < UserObject
 		}
 	}
 
+	# For use by editor
+	def title
+		'Project Plugins'
+	end
+
 	attr_reader :path, :change_count, :missing_plugin_names, :effects
 
 	def initialize
@@ -41,11 +46,20 @@ class Project < UserObject
 		@missing_plugin_names = []
 	end
 
-	# For use by editor
-	def title
-		'Project Plugins'
+	def clear
+		# set all to []
+		OBJECT_SYMBOLS.each { |obj_type| instance_variable_set("@#{obj_type}", []) }
+		@change_count = 0
+		@path = nil
 	end
 
+	def valid_child_class?(klass)
+		klass.ancestors.include? ProjectEffect
+	end
+
+	#
+	# Change monitoring
+	#
 	def changed?
 		@change_count > 0
 	end
@@ -62,13 +76,6 @@ class Project < UserObject
 		end
 	end
 
-	def clear
-		# set all to []
-		OBJECT_SYMBOLS.each { |obj_type| instance_variable_set("@#{obj_type}", []) }
-		@change_count = 0
-		@path = nil
-	end
-
 	def time_since_save
 		Time.now - @last_save_time
 	end
@@ -79,6 +86,9 @@ class Project < UserObject
 		end
 	end
 
+	#
+	# Loading
+	#
 	def load_from_path(path)
 		clear
 		append_from_path(path)
@@ -97,6 +107,9 @@ class Project < UserObject
 		append_from_file(data)
 	end
 
+	#
+	# Saving
+	#
 	def save
 		save_copy_to_path(@path)
 	end
@@ -123,6 +136,9 @@ class Project < UserObject
 		return false
 	end
 
+	#
+	# Iterating
+	#
 	def each_user_object_array
 		OBJECT_SYMBOLS.each { |obj_type|
 			yield instance_variable_get("@#{obj_type}")
@@ -142,27 +158,6 @@ class Project < UserObject
 		}
 	end
 
-	def serialize
-		data = ''
-		saved_objects = {:version => FILE_VERSION}
-		OBJECT_SYMBOLS.each { |obj_type| saved_objects[obj_type] = self.send("#{obj_type}") }
-		ZAML.dump(saved_objects, data)
-		data
-	end
-
-	# Hack to inform the Taggable module when a new object tagged is inserted
-	# This is handled in the Project because it is the authority on the object order
-	def update_tags_for_object_class(klass)
-		obj_type = CLASS_TO_OBJECT_SYMBOL[klass]
-		objs = instance_variable_get("@#{obj_type}")
-		return if (objs.nil? or objs.empty?)
-		klass.sort_tagged_objects { |a,b| (objs.index(a) || 0) <=> (objs.index(b) || 0) } # TODO: slow!!!
-	end
-
-	def valid_child_class?(klass)
-		klass.ancestors.include? ProjectEffect
-	end
-
 private
 
 	def save_to_file(file)
@@ -173,6 +168,14 @@ private
 		#File.open('yamltest.luz', 'w+') { |file|
 		#	YAML.dump(saved_objects, file)
 		#}
+	end
+
+	def serialize
+		data = ''
+		saved_objects = {:version => FILE_VERSION}
+		OBJECT_SYMBOLS.each { |obj_type| saved_objects[obj_type] = self.send("#{obj_type}") }
+		ZAML.dump(saved_objects, data)
+		data
 	end
 
 	def append_from_file(file)
