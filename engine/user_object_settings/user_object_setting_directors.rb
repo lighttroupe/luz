@@ -2,9 +2,17 @@ require 'user_object_setting'
 
 class UserObjectSettingDirectors < UserObjectSetting
 	def to_yaml_properties
-		super + ['@tag']
+		super		# TODO
 	end
 
+	def after_load
+		# TODO set_default_instance_variables(...)
+		super
+	end
+
+	#
+	# API for plugins
+	#
 	def one(index=0)
 		list = get_directors
 		return nil if list.empty?		# NOTE: return without yielding
@@ -29,10 +37,6 @@ class UserObjectSettingDirectors < UserObjectSetting
 private
 
 	def get_directors
-		if @tag
-			Director.with_tag(@tag)
-		else
-			$engine.project.directors
-		end
+		$engine.project.directors
 	end
 end

@@ -1,17 +1,12 @@
 require 'user_object_setting'
 
-# Actor factory
-# -> Sometimes you want one
-# -> Sometimes you want one by tag (by index)
-# -> Sometimes you want all by tag
-
 class UserObjectSettingActors < UserObjectSetting
 	def to_yaml_properties
-		super + ['@tag']
+		super		# TODO
 	end
 
 	def after_load
-		set_default_instance_variables(:tag => nil)
+		# TODO set_default_instance_variables(...)
 		super
 	end
 
@@ -19,7 +14,7 @@ class UserObjectSettingActors < UserObjectSetting
 	# API for plugins
 	#
 	def one(index=0)
-		list = Actor.with_tag(@tag)
+		list = get_actors
 		return nil if list.empty?		# NOTE: return without yielding
 
 		selection = list[index % list.size]		# NOTE: nicely wraps around at both edges
@@ -28,18 +23,24 @@ class UserObjectSettingActors < UserObjectSetting
 	end
 
 	def count
-		Actor.with_tag(@tag).size
+		get_actors.size
 	end
 
 	def each
-		Actor.with_tag(@tag).each { |actor| yield actor }
+		get_actors.each { |actor| yield actor }
 	end
 
 	def each_with_index
-		Actor.with_tag(@tag).each_with_index { |actor, index| yield actor, index }
+		get_actors.each_with_index { |actor, index| yield actor, index }
 	end
 
 	def all
-		yield Actor.with_tag(@tag)
+		yield get_actors
+	end
+
+private
+
+	def get_actors
+		$engine.project.actors		# TODO
 	end
 end
