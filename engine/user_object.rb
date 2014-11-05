@@ -166,7 +166,7 @@ class UserObject
 		rescue NameError
 			raise "bad user object setting type '#{setting.klass}'"
 		end
-		return klass.new(self, setting.name, setting.options)
+		klass.new(self, setting.name, setting.options)
 	end
 
 	# NOTE: also returns whether any cache-breaking-settings have changed
@@ -178,7 +178,7 @@ class UserObject
 		settings.each { |setting|
 			breaks_cache = true if ((setting.last_value != self.send(@setting_name_to_resolve_method_hash[setting.name])) && setting.breaks_cache?)
 		}
-		return breaks_cache
+		breaks_cache
 	end
 
 	def get_user_object_setting_by_name(name)
