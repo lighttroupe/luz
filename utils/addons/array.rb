@@ -206,14 +206,4 @@ class Array
 		self.each_with_index { |obj, index| a << yield(obj, index) }
 		a
 	end
-
-#	def find(&block)
-#		each { |v| return v if block.call(v) }
-#		nil
-#	end
-
-	# TODO: this belongs elsewhere
-	def each_enabled
-		each { |obj| yield obj if obj.enabled? }
-	end
 end
