@@ -1,9 +1,5 @@
 require 'user_object_setting'
 
-# An Actor factory that provides:
-# -> Sometimes you want one by tag (by index)
-# -> Sometimes you want all by tag
-
 class UserObjectSettingActor < UserObjectSetting
 	include Drawing
 

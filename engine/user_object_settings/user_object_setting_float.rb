@@ -6,11 +6,6 @@ class UserObjectSettingFloat < UserObjectSettingNumeric
 	DEFAULT_RANGE = (-1000.0..1000.0)
 	DEFAULT_RANGE_POSITIVE = (0.0..1000.0)
 
-	VALUE_TAB_TITLE = 'Value'
-	ACTIVATION_PAGE_TITLE = 'Activation'
-	ENTER_PAGE_TITLE = 'Enter'
-	EXIT_TAB_TITLE = 'Exit'
-
 	ACTIVATION_DIRECTION_OPTIONS = [[:to, 'to'], [:from, 'from']]
 
 	PARAMS = [:min, :max, :enter_value, :exit_value, :enable_enter_animation, :enter_curve, :enable_animation, :animation_curve, :animation_min, :animation_max, :animation_repeat_number, :animation_repeat_unit, :enable_exit_animation, :exit_curve, :enable_activation, :activation_direction, :activation_curve, :activation_value, :activation_variable]
