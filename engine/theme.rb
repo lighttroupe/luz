@@ -3,8 +3,6 @@ multi_require 'parent_user_object', 'style'
 class Theme < ParentUserObject
 	title 'Theme'
 
-	setting 'background_color', :color, :default => [0.0,0.0,0.0,1.0], :only_literal => true
-
 	def default_title
 		'New Theme'
 	end
