@@ -5,8 +5,6 @@ class UserObject
 
 	Setting = Struct.new('Setting', :name, :klass, :options)
 
-	ICON_WIDTH, ICON_HEIGHT = 24, 24
-
 	@@inherited_classes ||= []
 
 	def self.inherited(klass)
