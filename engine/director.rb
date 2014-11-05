@@ -8,17 +8,15 @@ class Director < ParentUserObject
 	require 'drawing'
 	include Drawing
 
-	ACTOR_RADIUS = 0.5 		# (used by children)
-
 	###################################################################
 	# Object-level functions
 	###################################################################
+	def valid_child_class?(klass)
+		klass.ancestors.include? DirectorEffect
+	end
+
 	attr_accessor :x, :y, :actors, :effects
 	empty_method :render
-
-	def z
-		0.0
-	end
 
 	def to_yaml_properties
 		super + ['@actors'] + tag_instance_variables
@@ -33,9 +31,13 @@ class Director < ParentUserObject
 		super
 	end
 
-	###################################################################
+	def z
+		0.0
+	end
+
+	#
 	# Render
-	###################################################################
+	#
 	def render!
 		user_object_try {
 			if (offscreen_render_actor.present? and not $env[:hit_test] and not $env[:stage])
@@ -95,9 +97,4 @@ class Director < ParentUserObject
 			yield if block_given?
 		end
 	end
-
-	def valid_child_class?(klass)
-		klass.ancestors.include? DirectorEffect
-	end
-
 end
