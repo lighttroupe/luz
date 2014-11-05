@@ -19,9 +19,46 @@ class BeatDetector
 		@beat_double = 0
 	end
 
+	#
+	# API
+	#
 	def beat_double_time! ; @beat_double += 1 ; end
 	def beat_half_time! ; @beat_double -= 1 ; end
 
+	def next_beat_is_zero!
+		@next_beat_is_zero = true
+	end
+
+	def beat_zero!
+		@next_beat_is_zero = true
+		beat!
+	end
+
+	def beat!(beat_time)
+		# Ignore cases of two beat signals very close together (plus it's just not reasonable to have beats as close as one frame apart)
+		return if (@last_tapped_beat_frame >= ($env[:frame_number] - 1))
+
+		@beats.shift
+		@beats.push(beat_time)
+
+		# Update beat time if the last N taps were very evenly spaced (likely-intentional beat tapping)
+		min, max, avg = @beats.delta_min_max_avg
+		@new_seconds_per_beat = avg if (max - min) <= ACCEPTABLE_BEAT_VARIATION
+
+		@last_tapped_beat_time, @last_tapped_beat_frame = beat_time, $env[:frame_number]
+	end
+
+	def beats_per_minute
+		60.0 / @seconds_per_beat	# TODO: could produce a 1/0 here ?
+	end
+
+	def beats_per_minute=(rhs)
+		@seconds_per_beat = 60.0 / rhs
+	end
+
+	#
+	# ticking
+	#
 	def tick(time)
 		@time = time
 		elapsed = (@time - @last_beat_time)
@@ -78,36 +115,5 @@ class BeatDetector
 		end
 
 		@progress = (@time - @last_beat_time) / (@next_planned_beat_time - @last_beat_time)
-	end
-
-	def next_beat_is_zero!
-		@next_beat_is_zero = true
-	end
-
-	def beat_zero!
-		@next_beat_is_zero = true
-		beat!
-	end
-
-	def beat!(beat_time)
-		# Ignore cases of two beat signals very close together (plus it's just not reasonable to have beats as close as one frame apart)
-		return if (@last_tapped_beat_frame >= ($env[:frame_number] - 1))
-
-		@beats.shift
-		@beats.push(beat_time)
-
-		# Update beat time if the last N taps were very evenly spaced (likely-intentional beat tapping)
-		min, max, avg = @beats.delta_min_max_avg
-		@new_seconds_per_beat = avg if (max - min) <= ACCEPTABLE_BEAT_VARIATION
-
-		@last_tapped_beat_time, @last_tapped_beat_frame = beat_time, $env[:frame_number]
-	end
-
-	def beats_per_minute
-		60.0 / @seconds_per_beat	# TODO: could produce a 1/0 here ?
-	end
-
-	def beats_per_minute=(rhs)
-		@seconds_per_beat = 60.0 / rhs
 	end
 end
