@@ -4,7 +4,7 @@ class UserObjectSettingString < UserObjectSetting
 	attr_accessor :string
 
 	def to_yaml_properties
-		['@string'] + super
+		super + ['@string']
 	end
 
 	def immediate_value

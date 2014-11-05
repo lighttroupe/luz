@@ -2,7 +2,7 @@ require 'user_object_setting'
 
 class UserObjectSettingSlider < UserObjectSetting
 	def to_yaml_properties
-		['@slider', '@is_inverted', '@input_min', '@input_max', '@dead_center_size', '@output_min', '@output_max', '@output_curve'] + super
+		super + ['@slider', '@is_inverted', '@input_min', '@input_max', '@dead_center_size', '@output_min', '@output_max', '@output_curve']
 	end
 
 	def after_load
@@ -10,11 +10,6 @@ class UserObjectSettingSlider < UserObjectSetting
 		set_default_instance_variables(:input_min => 0.0, :input_max => 1.0, :output_min => 0.0, :output_max => 1.0, :dead_center_size => 0.0)
 		super
 	end
-
-	LABEL_NORMAL = 'Record '
-	LABEL_RECORDING = 'Recording - move desired slider...'
-	INPUT_TAB_TITLE = 'Input'
-	OUTPUT_TAB_TITLE = 'Output'
 
 	NON_NOTIFY_SLIDER_NAME_REGEXES = [/^Mouse /, /^Wiimote /, /^Tablet /, /^Spectrum Analyzer /]
 
