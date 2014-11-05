@@ -11,10 +11,10 @@ class Vector3
 	end
 
 	def set(x, y=nil, z=nil)
-		if y and z
+		if y && z
 			@x, @y, @z = x, y, z
 		else
-			@x, @y, @z = x.x, x.y, x.z # treat x as a point
+			@x, @y, @z = x.x, x.y, x.z		# treat x as a point
 		end
 		self
 	end
@@ -55,7 +55,6 @@ class Vector3
 	def unit
 		l = self.length
 		return Vector3.new if l == 0.0
-
 		Vector3.new(x / l, y / l, z / l)
 	end
 
@@ -96,7 +95,7 @@ class Vector3
 	end
 
 	def zero?
-		(@x == 0.0 and @y == 0.0 and @z == 0.0)
+		@x == 0.0 && @y == 0.0 && @z == 0.0
 	end
 
 	def to_s
