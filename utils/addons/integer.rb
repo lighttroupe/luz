@@ -42,31 +42,4 @@ class Integer
 	def plural(singular, plural)
 		sprintf("%d %s", self, (self == 1) ? singular : plural)
 	end
-
-	def index_progress_to(total)
-		return 0.0 if self == 0
-		return 1.0 if total == 1
-		return (self.to_f / (total - 1).to_f)
-	end
-
-	def second
-		self
-	end
-	alias :seconds :second
-
-	def minute
-		self * 60
-	end
-	alias :minutes :minute
-
-	def hour
-		self * (60 * 60)
-	end
-	alias :hours :hour
-
-	# TODO: consider moving this elsewhere as it uses $env
-	def beats
-		self * $env[:seconds_per_beat]
-	end
-	alias :beat :beats
 end
