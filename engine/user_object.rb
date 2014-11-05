@@ -85,15 +85,35 @@ class UserObject
 	#
 	# Object-level methods
 	#
-
 	def to_yaml_properties
 		['@title', '@enabled'] + self.class.settings.collect { |setting| "@#{setting.name}_setting" }
 	end
 
-	def settings
-		@settings ||= create_user_object_settings
+	def initialize
+		super
+		after_load
+		resolve_settings
 	end
 
+	def after_load
+		set_default_instance_variables(:title => default_title, :enabled => true)
+		create_user_object_settings
+	end
+
+	def valid_child_class?(klass)
+		false
+	end
+
+	# All user objects have a 'title', the user-settable name.
+	attr_accessor :title
+
+	def default_title
+		self.class.title		# eg. default name for a Rectangle is "Rectangle"
+	end
+
+	#
+	# ticking
+	#
 	empty_method :tick		# override
 
 	def tick!
@@ -106,6 +126,14 @@ class UserObject
 		@last_tick_frame_number && (@last_tick_frame_number > ($env[:frame_number] - 2))
 	end
 
+	#
+	# settings
+	#
+	def settings
+		@settings ||= create_user_object_settings
+	end
+
+	# exception management
 	def user_object_try
 		$engine.user_object_try(self) { yield }
 	end
@@ -121,27 +149,11 @@ class UserObject
 		!@crashy && @enabled
 	end
 
-	# All user objects have a 'title', the user-settable name.
-	attr_accessor :title
-
-	def default_title
-		self.class.title		# eg. default name for a Rectangle is "Rectangle"
-	end
-
-	def initialize
-		super
-		after_load
-		resolve_settings
-	end
-
-	def after_load
-		set_default_instance_variables(:title => default_title, :enabled => true)
-		create_user_object_settings
-	end
-
 	empty_method :before_delete
 
-	# Create instance variables based on the list of settings
+	#
+	# settings
+	#
 	def create_user_object_settings
 		@settings = []
 		self.class.settings.each { |setting|
@@ -188,9 +200,5 @@ class UserObject
 
 	def settings_summary
 		@settings.collect_non_nil { |setting| setting.summary }
-	end
-
-	def valid_child_class?(klass)
-		false
 	end
 end
