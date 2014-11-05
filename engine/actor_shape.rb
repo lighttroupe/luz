@@ -9,23 +9,8 @@ class ActorShape < Actor
 
 	attr_reader :shape
 
-	def texture_coord(v)
-		v
-	end
-
-	def vertex(v)
-		v
-	end
-
-	def combine(coords, vertex_data, weight)
-		coords[0,2]
-	end
-
-	POINTS_PER_VERTEX = 2
-
 	def render
-		# Call shape method of child class.  Returns array of x,y pairs, or array of arrays: [x1,y1,x2,y2, ... ,xn,yn]
-		self.shape { |options| render_with_options(options) }
+		shape { |options| render_with_options(options) }		# shape expected to return array of x,y pairs, or array of arrays: [x1,y1,x2,y2,...]
 	end
 
 	def render_with_options(options)
@@ -43,6 +28,8 @@ class ActorShape < Actor
 	end
 
 private
+
+	POINTS_PER_VERTEX = 2
 
 	def render_triangle_strip(options)
 		options[:shape].each { |shape|
@@ -88,5 +75,18 @@ private
 			GLU.TessEndContour($tessalator)
 		}
 		GLU.TessEndPolygon($tessalator)
+	end
+
+
+	def texture_coord(v)
+		v
+	end
+
+	def vertex(v)
+		v
+	end
+
+	def combine(coords, vertex_data, weight)
+		coords[0,2]
 	end
 end
