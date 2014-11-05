@@ -81,9 +81,6 @@ private
 		key_name
 	end
 
-	def after_update
-	end
-
 	def after_run(seconds)
 		puts sprintf('%d frames in %0.1f seconds = %dfps (~%dfps render loop)', $env[:frame_number], seconds, $env[:frame_number] / seconds, 1.0 / $engine.average_frame_time)
 	end

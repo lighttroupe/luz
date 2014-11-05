@@ -61,8 +61,6 @@ class SDLApplication
 			SDL.delay(sleep_time_ms) if sleep_time_ms > 3		# for tiny amounts it doesn't make sense
 
 			frame_number += 1
-
-			after_update
 		end
 		SDL.quit
 		after_run((SDL.getTicks - start_time_ms) / 1000.0)
