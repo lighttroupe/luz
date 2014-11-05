@@ -2,11 +2,12 @@ require 'user_object_setting'
 
 class UserObjectSettingSelect < UserObjectSetting
 	def to_yaml_properties
-		['@selected'] + super
+		super + ['@selected']
 	end
 
 	def after_load
 		@selected = @options[:default] unless find_selected_option
+		super
 	end
 
 	def immediate_value
