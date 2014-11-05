@@ -125,7 +125,7 @@ private
 		project_tick
 		update_beats(frame_time)
 
-		$gui.gui_tick! if $gui
+		$gui.gui_tick! if $gui		# TODO: remove 'if' ($gui is not present at startup)
 
 		@last_frame_time = frame_time
 	end
