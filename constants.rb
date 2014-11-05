@@ -5,10 +5,6 @@ MESSAGE_BUS_PORT		= 10007								# LOOOZ ! :D
 SETTINGS_DIRECTORY	= '.luz'
 SETTINGS_FILENAME		= 'settings.yaml'
 
-# Time
-SECONDS_PER_MINUTE	= 60
-SECONDS_PER_HOUR		= 3600
-
 # Radians
 RADIANS_PER_CIRCLE	= Math::PI * 2.0
 RADIANS_UP					= -Math::PI / 2.0
