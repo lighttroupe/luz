@@ -6,7 +6,7 @@ class UserObjectSettingCurveIncreasing < UserObjectSetting
 	end
 
 	def after_load
-		@curve ||= $engine.project.curves.first		# This is a hack-- should should we handle this?
+		@curve ||= $engine.project.curves.first		# This is a hack-- how should we handle this?
 		super
 	end
 
