@@ -20,7 +20,7 @@ class Actor < ParentUserObject
 	#
 	# Instance methods
 	#
-	empty_method :render
+	empty_method :render, :with_canvas
 
 	attr_accessor :x, :y
 
@@ -49,19 +49,24 @@ class Actor < ParentUserObject
 		self
 	end
 
-	###################################################################
-	# Render
-	###################################################################
+	def valid_child_class?(klass)
+		klass.ancestors.include? ActorEffect
+	end
 
+	#
+	# ticking
+	#
 	empty_method :tick
 
+	#
+	# rendering
+	#
 	$actor_render_stack ||= []
 	ACTOR_RENDER_STACK_LIMIT = 20
 
 	def render!
 		return if $actor_render_stack.size > ACTOR_RENDER_STACK_LIMIT
 		$actor_render_stack.push(self)
-
 		user_object_try {
 			# resolve_settings, and if it returns true (something changed) and we're using caching, clear it now
 			clear_cache if resolve_settings and self.class.cache_rendering?
@@ -73,13 +78,12 @@ class Actor < ParentUserObject
 				}
 			}
 		}
-
 		$actor_render_stack.pop
 	end
 
-	# Calls render() on effect at 'effect_index', continuing effects
-	# chain once for each time it yields
+private
 
+	# calls render() on effect at 'effect_index', continuing effects chain once for each time it yields
 	def render_recursive(effect_index = 0, &proc)
 		if (effect_index and effect = effects[effect_index])
 			if !effect.usable?
@@ -111,16 +115,6 @@ class Actor < ParentUserObject
 			proc.call
 		end
 	end
-
-	def valid_child_class?(klass)
-		klass.ancestors.include? ActorEffect
-	end
-
-	def with_canvas
-		# stub
-	end
-
-private
 
 	def render_after_effects
 		with_compiled_shader {
