@@ -4,16 +4,12 @@ require 'drawing'
 class UserObjectSetting
 	include Drawing
 
-	TAB_LABEL_MARKUP = '<small><small>%s</small></small>'
-	TAB_LABEL_HIGHLIGHT_MARKUP = '<small><small><span color="white"><u>%s</u></span></small></small>'
-
 	TIME_UNIT_OPTIONS = [[:seconds, 'Seconds'], [:minutes, 'Minutes'], [:hours, 'Hours'], [:beats, 'Beats']]
 	REPEAT_NUMBER_RANGE = 0.1..999
 
 	TIME_UNIT_SHORT = {:seconds => 'sec', :minutes => 'mins', :hours => 'hrs', :beats => 'beats'}
 
-	# Called by widget code when something changes.
-	callback :change
+	callback :change		# Called by widget code when something changes.
 
 	attr_accessor :parent
 	attr_reader :name, :last_value
@@ -24,11 +20,7 @@ class UserObjectSetting
 		after_load
 	end
 
-	empty_method :after_load, :value			# NOTE: default value returns nil
-
-	def merge_options(options)
-		@options.merge!(options)
-	end
+	empty_method :after_load, :value			# NOTE: default returns nil
 
 	def to_yaml_properties
 		['@name', '@options', '@breaks_cache']
