@@ -9,7 +9,7 @@ class UserObjectSetting
 
 	TIME_UNIT_SHORT = {:seconds => 'sec', :minutes => 'mins', :hours => 'hrs', :beats => 'beats'}
 
-	callback :change		# Called by widget code when something changes.
+	callback :change		# called by widget code when something changes
 
 	attr_accessor :parent
 	attr_reader :name, :last_value
@@ -71,7 +71,7 @@ class UserObjectSetting
 	end
 
 	def breaks_cache?
-		@options[:breaks_cache] || false
+		@options[:breaks_cache] == true
 	end
 
 	# What a plugin gets when it uses the name of the setting (as it were a local variable, while in fact it is a method)
