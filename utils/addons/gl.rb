@@ -8,12 +8,6 @@ module GL
 		end
 	end
 
-	def self.SaveAttrib
-		GL.PushAttrib(GL::ALL_ATTRIB_BITS)
-		yield
-		GL.PopAttrib
-	end
-
 	def self.PushAll
 		begin
 			GL.PushAttrib(GL::ALL_ATTRIB_BITS)
