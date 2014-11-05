@@ -12,7 +12,6 @@ module DrawingClipping
 		$next_clip_plane_index -= 1
 		GL.Disable(GL::CLIP_PLANE0 + $next_clip_plane_index)
 	end
-	#conditional :with_clip_plane
 
 	def with_clip_plane_left_of_angle(fuzzy_angle, &proc)
 		radians = RADIANS_UP + (fuzzy_angle * RADIANS_PER_CIRCLE)
@@ -55,5 +54,4 @@ module DrawingClipping
 			}
 		}
 	end
-
 end
