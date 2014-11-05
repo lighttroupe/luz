@@ -34,7 +34,7 @@ class Integer
 
 	# returns 0...self
 	def choose_index_by_fuzzy(fuzzy)
-		throw 'value cannot be 0' if self == 0
+		raise 'value cannot be 0' if self == 0
 		return self - 1 if fuzzy == 1.0
 		return (self * fuzzy).to_i
 	end

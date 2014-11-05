@@ -156,7 +156,7 @@ private
 		when 2049..4096 then 4096
 		when 4097..8192 then 8192
 		else
-			throw "this image is far too big"
+			raise "this image is far too big"
 		end
 	end
 end

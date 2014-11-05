@@ -57,7 +57,7 @@ private
 		when Integer
 			value
 		else
-			throw ArgumentError.new "Event Input plugins should return true, false, or an Integer (got: #{value.class})"
+			raise "Event Input plugins should return true, false, or an Integer (got: #{value.class})"
 		end
 	end
 end

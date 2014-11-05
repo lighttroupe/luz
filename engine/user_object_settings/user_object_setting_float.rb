@@ -55,14 +55,13 @@ class UserObjectSettingFloat < UserObjectSettingNumeric
 
 	def animation_progress(enter_time, enter_beat)
 		case @animation_repeat_unit
-			when :seconds, :minutes, :hours
-				duration = unit_and_number_to_time(@animation_repeat_unit, @animation_repeat_number)
-				return (($env[:time] - enter_time) % duration) / duration
-
-			when :beats
-				return (($env[:beat] - enter_beat) % (@animation_repeat_number)) / @animation_repeat_number
-
-			else throw "unhandled animation_repeat_unit '#{@animation_repeat_unit}'"
+		when :seconds, :minutes, :hours
+			duration = unit_and_number_to_time(@animation_repeat_unit, @animation_repeat_number)
+			(($env[:time] - enter_time) % duration) / duration
+		when :beats
+			(($env[:beat] - enter_beat) % @animation_repeat_number) / @animation_repeat_number
+		else
+			raise "unhandled animation_repeat_unit '#{@animation_repeat_unit}'"
 		end
 	end
 
@@ -73,13 +72,13 @@ class UserObjectSettingFloat < UserObjectSettingNumeric
 		@last_value = @current_value
 
 		# Get value of animation (any float value)
-		if @enable_animation and @animation_curve
+		if @enable_animation && @animation_curve
 			result = @animation_curve.value(animation_progress($env[:birth_time], $env[:birth_beat])).scale(@animation_min, @animation_max)
 		else
 			result = @animation_min		# Use 'animation_min' as constant value (see the GUI)
 		end
 
-		if @enable_activation and @activation_variable
+		if @enable_activation && @activation_variable
 			variable_value = @activation_variable.do_value
 
 			# TODO: special case 0.0 or 1.0?
@@ -91,12 +90,12 @@ class UserObjectSettingFloat < UserObjectSettingNumeric
 		end
 
 		# Enter Animation (scales from enter_value to animation_value on the enter_curve)
-		if @enable_enter_animation and @enter_curve
+		if @enable_enter_animation && @enter_curve
 			result = @enter_curve.value($env[:enter]).scale(@enter_value, result)
 		end
 
 		# Exit Animation (scales from exit_value to animation_value on the exit_curve)
-		if @enable_exit_animation and @exit_curve
+		if @enable_exit_animation && @exit_curve
 			result = @exit_curve.value($env[:exit]).scale(result, @exit_value)
 		end
 
@@ -104,10 +103,10 @@ class UserObjectSettingFloat < UserObjectSettingNumeric
 	end
 
 	def uses_enter?
-		(@enable_enter_animation and @enter_curve)
+		@enable_enter_animation && @enter_curve
 	end
 
 	def uses_exit?
-		(@enable_exit_animation and @exit_curve)
+		@enable_exit_animation && @exit_curve
 	end
 end

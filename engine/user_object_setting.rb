@@ -68,7 +68,7 @@ class UserObjectSetting
 		when :minutes then return number.to_f * 60.0
 		when :hours then return number.to_f * 3600.0
 		when :beats then return number.to_f / $env[:bps]
-		else throw "unhandled time unit '#{unit}'"
+		else raise "unhandled time unit '#{unit}'"
 		end
 	end
 
@@ -78,7 +78,7 @@ class UserObjectSetting
 		when :minutes then return $env[:bps] * 60.0
 		when :hours then return $env[:bps] * 3600.0
 		when :beats then return number
-		else throw "unhandled time unit '#{unit}'"
+		else raise "unhandled time unit '#{unit}'"
 		end
 	end
 

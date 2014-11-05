@@ -10,7 +10,7 @@ class UserObjectSettingColor < UserObjectSetting
 	end
 
 	def after_load
-		#throw 'color array must contain 3 or 4 Floats from 0.0 to 1.0' if @options[:default] and not (color[0].is_a?(Float) and color[1].is_a?(Float) and color[2].is_a?(Float) and (color[3].nil? or color[3].is_a?(Float))
+		#raise 'color array must contain 3 or 4 Floats from 0.0 to 1.0' if @options[:default] and not (color[0].is_a?(Float) and color[1].is_a?(Float) and color[2].is_a?(Float) and (color[3].nil? or color[3].is_a?(Float))
 
 		color = (@options[:default] || DEFAULT_COLOR)
 

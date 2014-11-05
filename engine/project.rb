@@ -178,12 +178,12 @@ private
 	def append_from_file(file)
 		loaded_objects = YAML.load(file)
 
-		throw "version number '#{loaded_objects[:version]}' should be '#{FILE_VERSION}'" unless loaded_objects[:version] == FILE_VERSION
+		raise "version number '#{loaded_objects[:version]}' should be '#{FILE_VERSION}'" unless loaded_objects[:version] == FILE_VERSION
 
 		@missing_plugin_names.clear
 		OBJECT_SYMBOLS.each { |obj_type|
 			loaded_objects[obj_type] ||= []
-			throw "expected array for #{obj_type.to_s} list (was #{loaded_objects[obj_type].class})" unless loaded_objects[obj_type].is_a? Array
+			raise "expected array for #{obj_type.to_s} list (was #{loaded_objects[obj_type].class})" unless loaded_objects[obj_type].is_a? Array
 
 			# clean out any YAML::Objects we find
 			loaded_objects[obj_type].delete_if { |parent_object|

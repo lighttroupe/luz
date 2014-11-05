@@ -5,7 +5,7 @@ module DrawingFrameSaving
 
 	def with_frame_saving
 		#
-		throw "with_frame_saving must not be called unless frame_saving_requested? returns true" unless frame_saving_requested?
+		raise "with_frame_saving must not be called unless frame_saving_requested? returns true" unless frame_saving_requested?
 
 		$max_previous_frame_requested ||= 0
 

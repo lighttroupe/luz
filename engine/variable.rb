@@ -80,7 +80,7 @@ class Variable < ParentUserObject
 		when :average then return inputs.average
 		when :product then return inputs.inject(1.0) { |value, new| value * new }
 		else
-			throw "unknown combine method (#{combine_method})"
+			raise "unknown combine method (#{combine_method})"
 		end
 	end
 

@@ -81,7 +81,7 @@ class ActorShape < Actor
 			}
 			GLU.TessEndPolygon($tessalator)
 		else
-			throw "unhandled shape type '#{options[:type]}'"
+			raise "unhandled shape type '#{options[:type]}'"
 		end
 	end
 end
