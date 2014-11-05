@@ -1,4 +1,4 @@
-# Base-class implementation does nothing but passed
+# Base-class implementation does nothing but passes
 
 class Conditions
 	def satisfied?
