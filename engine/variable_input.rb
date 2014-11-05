@@ -12,7 +12,7 @@ class VariableInput < ChildUserObject
 		return 0.0 unless enabled?
 		return @current_value if $env[:frame_number] == @last_resolve_frame_number
 
-		@last_resolve_frame_number = $env[:frame_number]	# Do this first to avoid any possible recurrsion issues.
+		@last_resolve_frame_number = $env[:frame_number]		# FIRST, to avoid recurrsion issues
 
 		@last_value = @current_value
 
@@ -21,8 +21,7 @@ class VariableInput < ChildUserObject
 			@current_value = (value || 0.0).clamp(0.0, 1.0)
 			return @current_value
 		}
-
-		0.0	# In case of exceptions
+		0.0		# In case of exceptions
 	end
 
 	def changed?

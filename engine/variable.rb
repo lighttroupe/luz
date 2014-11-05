@@ -42,8 +42,7 @@ class Variable < ParentUserObject
 		return @current_value if $env[:frame_number] == @last_resolve_frame_number
 
 		user_object_try {
-			# Do this FIRST, avoiding infinite recurrsion should one of the inputs refer to this variable
-			@last_resolve_frame_number = $env[:frame_number]
+			@last_resolve_frame_number = $env[:frame_number]		# FIRST, avoiding infinite recurrsion should one of the inputs refer to this variable
 
 			# Save current value
 			@last_value = @current_value
@@ -54,7 +53,7 @@ class Variable < ParentUserObject
 
 			return @current_value
 		}
-		return 0.0
+		0.0		# In case of exceptions
 	end
 
 	def changed?
@@ -62,11 +61,11 @@ class Variable < ParentUserObject
 	end
 
 	def value
-		return damper(combine_inputs(collect_input_values))
+		damper(combine_inputs(collect_input_values))
 	end
 
 	def collect_input_values
-		return effects.collect_non_nil { |input| input.do_value if input.usable? }
+		effects.collect_non_nil { |input| input.do_value if input.usable? }
 	end
 
 	def combine_inputs(inputs)
@@ -74,11 +73,11 @@ class Variable < ParentUserObject
 		return 0.0 if inputs.empty?								# Avoids possible divide by 0 later
 
 		case combine_method
-		when :sum then return inputs.sum.clamp(0.0, 1.0)
-		when :minimum then return inputs.minimum
-		when :maximum then return inputs.maximum
-		when :average then return inputs.average
-		when :product then return inputs.inject(1.0) { |value, new| value * new }
+		when :sum then inputs.sum.clamp(0.0, 1.0)
+		when :minimum then inputs.minimum
+		when :maximum then inputs.maximum
+		when :average then inputs.average
+		when :product then inputs.inject(1.0) { |value, new| value * new }
 		else
 			raise "unknown combine method (#{combine_method})"
 		end
@@ -86,7 +85,7 @@ class Variable < ParentUserObject
 
 	def damper(proposed_value)
 		return proposed_value if damper_method == :none
-		return linear_damper(proposed_value, DAMPER_AMOUNTS[damper_method])
+		linear_damper(proposed_value, DAMPER_AMOUNTS[damper_method])
 	end
 
 	def linear_damper(proposed_value, max_change_per_frame)
