@@ -29,11 +29,24 @@ class Image
 		self
 	end
 
-	###################################################################
-	# Loading of pixel data
-	###################################################################
+	#
+	# primary API
+	#
+	def using
+		call_load_proc_if_needed!
+		with_texture(@opengl_texture_id) {
+			yield
+		}
+	end
 
-	# NOTE: this method saves rgba data, so it can be reloaded if necessary
+	def texture_id
+		call_load_proc_if_needed!
+		@opengl_texture_id
+	end
+
+	#
+	# Loading of pixel data		(NOTE: this method saves rgba data, so it can be reloaded if necessary)
+	#
 	def from_image_file_path(file_path)
 		begin
 			image = Magick::Image.read(file_path).first
@@ -60,11 +73,16 @@ class Image
 		self
 	end
 
-	###################################################################
-	# Copying pixel data to OpenGL
-	###################################################################
+	def call_load_proc_if_needed!
+		if proc=@load_proc
+			@load_proc = nil		# (important to clear it before calling, depending on what the callback does)
+			proc.call
+		end
+	end
 
-	# NOTE: these methods don't *save* the data
+	#
+	# Copying pixel data to OpenGL (NOTE: these methods don't *save* the data in Ruby)
+	#
 	def from_rgba8(data, width, height)
 		using {
 			GL.TexImage2D(GL::TEXTURE_2D, mipmap=0, GL::RGBA, width, height, border=0, GL::RGBA, GL::UNSIGNED_BYTE, data)
@@ -106,24 +124,9 @@ class Image
 		self
 	end
 
-	def using
-		if proc=@load_proc
-			@load_proc = nil
-			proc.call
-		end
-		with_texture(@opengl_texture_id) {
-			yield
-		}
-	end
-
-	def texture_id
-		if proc=@load_proc
-			@load_proc = nil
-			proc.call
-		end
-		@opengl_texture_id
-	end
-
+	#
+	# Sampling
+	#
 	def rgba_at(x_fuzzy, y_fuzzy)
 		return [0.0,0.0,0.0,0.0] unless @rgba_data
 		x_index, y_index = @width.choose_index_by_fuzzy(x_fuzzy), @height.choose_index_by_fuzzy(y_fuzzy)
