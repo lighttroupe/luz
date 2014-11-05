@@ -1,4 +1,7 @@
 class Array
+	#
+	# iteration
+	#
 	# define an iterator over each pair of indexes in an array
 	def each_pair_index
 		(0..(self.length-1)).each do |i|
@@ -28,15 +31,18 @@ class Array
 		end
 	end
 
+	#
+	#
+	#
 	def reverse_coordinates
 		a = dup
 		0.step(size - 1, 2) { |i| a[i], a[i+1] = a[i+1], a[i]	}
-		return a.reverse
+		a.reverse
 	end
 
 	def random
-		return self[rand(size)] unless size == 0
-		return nil
+		return nil if size == 0
+		self[rand(size)]
 	end
 
 	def insert_randomly(value)
@@ -66,7 +72,7 @@ class Array
 
 		selection = []
 		number.times { selection << candidates.remove_randomly }
-		return selection
+		selection
 	end
 
 	def random_element
@@ -81,27 +87,27 @@ class Array
 		return true if self.size <= 1
 		value = self.first.send(field)
 		each { |v| return false if v.send(field) != value }
-		return true
+		true
 	end
 
 	def all?
 		each { |obj| return false if yield(obj) == false }
-		return true
+		true
 	end
 
 	def inconsistent?
 		yes = no = false
-		each { |obj| if yield(obj) ; yes = true ; else ; no = true ; end ; return true if yes and no }
-		return false
+		each { |obj| if yield(obj) ; yes = true ; else ; no = true ; end ; return true if yes && no }
+		false
 	end
 
 	def max_by_method(method, *args, &proc)
 		max = nil
 		each { |obj|
 			value = obj.send(method, *args, &proc)
-			max = value if (max.nil?) or (!value.nil? and value > max)
+			max = value if (max.nil?) || (!value.nil? && value > max)
 		}
-		return max
+		max
 	end
 
 	# returns the average change between array elements		NOTE: requires at least two elements
@@ -110,16 +116,16 @@ class Array
 
 		for i in 0..size-2
 			difference = self[i + 1] - self[i]
-			min = difference if (min.nil? or difference < min)
-			max = difference if (max.nil? or difference > max)
+			min = difference if (min.nil? || difference < min)
+			max = difference if (max.nil? || difference > max)
 			total += difference
 		end
-		return [min, max, total / (size - 1)]
+		[min, max, total / (size - 1)]
 	end
 
 	def first_non_blank_string(alt = nil)
-		each {|str| return str unless (str.nil? or str.empty?) }
-		return alt
+		each {|str| return str unless (str.nil? || str.empty?) }
+		alt
 	end
 
 	# sets first element of array to given value
@@ -170,9 +176,9 @@ class Array
 	end
 
 	def sum
-		total = self.first
-		each_with_index { |v, i| total += v if (v and i > 0) }
-		return total
+		total = self.first		# avoid caring about type
+		each_with_index { |v, i| total += v if (v && i > 0) }
+		total
 	end
 
 	def average
@@ -183,32 +189,32 @@ class Array
 				count += 1
 			end
 		}
-		return nil if count == 0
-		return total / count
+		return nil if size == 0
+		total / count
 	end
 
 	def minimum
 		min = nil
-		each { |v| min = v if (min.nil? or v < min) }
-		return min
+		each { |v| min = v if (min.nil? || v < min) }
+		min
 	end
 
 	def maximum
 		max = nil
-		each { |v| max = v if (max.nil? or v > max) }
-		return max
+		each { |v| max = v if (max.nil? || v > max) }
+		max
 	end
 
 	def collect_non_nil
 		a = []
 		self.each { |obj| value = yield obj ; a << value unless value.nil? }
-		return a
+		a
 	end
 
 	def collect_with_index
 		a = []
 		self.each_with_index { |obj, index| a << yield(obj, index) }
-		return a
+		a
 	end
 
 #	def find(&block)
