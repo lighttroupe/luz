@@ -25,7 +25,8 @@ class String
 		search_words = search_string.downcase.split(' ')
 		return false if search_words.empty?
 
-		search_words.all? { |word| self.include? word }
+		self_downcased = self.downcase
+		search_words.all? { |word| self_downcased.include? word }
 
 		# Each search word must match consecutive self.words eg. "music visuals".match?("m vis") == true
 		#string_words = self.split(' ')
