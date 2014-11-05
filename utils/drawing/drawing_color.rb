@@ -15,7 +15,6 @@ module DrawingColor
 		yield
 		GL.Color(*saved)
 	end
-	#conditional :with_color
 
 	def with_color_listsafe(color)
 		GL.PushAttrib(GL_CURRENT_BIT)
@@ -31,11 +30,9 @@ module DrawingColor
 		yield
 		GL.Color(*saved)
 	end
-	#conditional :with_color_and_alpha
 
 	def with_alpha(alpha)
 		saved = GL.GetColorArray
-		#GL.Color(*color.to_a)
 		GL.Color([saved[0], saved[1], saved[2], alpha])
 		yield
 		GL.Color(*saved)
