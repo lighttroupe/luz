@@ -156,7 +156,7 @@ private
 
 	def fill_from_search!
 		clear_list!
-		find_valid_effect_classes.select { |object| object.text_match?(@search) }.each { |object|
+		find_valid_effect_classes.select { |object| object.title.matches?(@search) }.each { |object|
 			renderer = GuiObjectRenderer.new(object)		# NOTE: we unwrap this in a few places
 			renderer.on_clicked {
 				if @selected_object == object

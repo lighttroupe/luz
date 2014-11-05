@@ -17,13 +17,9 @@ class UserObject
 		@@inherited_classes
 	end
 
-	def self.text_match?(search_string)
-		self.title.downcase.matches?(search_string)
-	end
-
-	###################################################################
-	# Class-level settings
-	###################################################################
+	#
+	# Class-level methods
+	#
 	class << self
 		attr_accessor :source_file_path
 	end
@@ -86,9 +82,9 @@ class UserObject
 		@virtual_class == self.class.name
 	end
 
-	###################################################################
-	# Object-level functions
-	###################################################################
+	#
+	# Object-level methods
+	#
 
 	def to_yaml_properties
 		['@title', '@enabled'] + self.class.settings.collect { |setting| "@#{setting.name}_setting" }
@@ -194,10 +190,6 @@ class UserObject
 
 	def settings_summary
 		@settings.collect_non_nil { |setting| setting.summary }
-	end
-
-	def text_match?(search_string)
-		self.title.downcase.matches?(search_string)
 	end
 
 	def valid_child_class?(klass)
