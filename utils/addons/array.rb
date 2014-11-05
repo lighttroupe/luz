@@ -32,14 +32,8 @@ class Array
 	end
 
 	#
+	# Randomness
 	#
-	#
-	def reverse_coordinates
-		a = dup
-		0.step(size - 1, 2) { |i| a[i], a[i+1] = a[i+1], a[i]	}
-		a.reverse
-	end
-
 	def random
 		return nil if size == 0
 		self[rand(size)]
@@ -47,19 +41,6 @@ class Array
 
 	def insert_randomly(value)
 		insert(rand(size), value)
-	end
-
-	def insert_randomly(value)
-		insert(rand(size), value)
-	end
-
-	def delete_unless
-		delete_if { |object| !yield object }
-	end
-
-	# Returns new array containing first n items
-	def top(n)
-		self[0, n]
 	end
 
 	def remove_randomly
@@ -81,6 +62,15 @@ class Array
 
 	def randomize
 		each_index { |i| r = rand(size)	; self[i], self[r] = self[r], self[i] }
+	end
+
+	def delete_unless
+		delete_if { |object| !yield object }
+	end
+
+	# Returns new array containing first n items
+	def top(n)
+		self[0, n]
 	end
 
 	def all_equal(field)
