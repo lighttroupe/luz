@@ -29,7 +29,7 @@ class Actor < ParentUserObject
 	end
 
 	def to_yaml_properties
-		super + ['@x', '@y'] + tag_instance_variables
+		super + ['@x', '@y']
 	end
 
 	def after_load

@@ -19,7 +19,7 @@ class Director < ParentUserObject
 	empty_method :render
 
 	def to_yaml_properties
-		super + ['@actors'] + tag_instance_variables
+		super + ['@actors']
 	end
 
 	def default_title
