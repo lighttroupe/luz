@@ -12,6 +12,9 @@ class ActorEffect < ChildUserObject
 		super
 	end
 
+	#
+	# helper methods for use inside plugin tick/render methods
+	#
 	def child_index
 		$env[:child_index] || 0
 	end
@@ -24,8 +27,10 @@ class ActorEffect < ChildUserObject
 		child_index + 1
 	end
 
-	# default implementation just yields once (= renders the object once)
+	#
+	# default implementations
+	#
 	def render
-		yield
+		yield		# dfeault just renders Actor once (ie does nothing)
 	end
 end
