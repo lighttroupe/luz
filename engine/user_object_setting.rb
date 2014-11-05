@@ -26,10 +26,6 @@ class UserObjectSetting
 		['@name', '@options', '@breaks_cache']
 	end
 
-	def files_used
-		[]
-	end
-
 	def shader?
 		@options[:shader] == true
 	end

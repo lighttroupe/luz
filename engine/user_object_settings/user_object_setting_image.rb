@@ -21,10 +21,6 @@ class UserObjectSettingImage < UserObjectSetting
 		super
 	end
 
-	def files_used
-		[@image_name] + super
-	end
-
 	def summary
 		summary_format(@image_name) if @image_name
 	end
