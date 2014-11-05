@@ -13,20 +13,10 @@ class Object
 
 	def to_a
 		return self if is_a?(Array)
-		return [self]
+		[self]
 	end
 
 	def set_default_instance_variables(hash)
 		hash.each { |k,v| instance_variable_set("@#{k}", v) if instance_variable_get("@#{k}").nil? }
-	end
-
-	# Can be called with a symbol, string, method, or proc.
-	def easy_call(name, *args, &proc)
-		case name
-		when Symbol, String
-			send(name, *args, &proc)
-		when Method, Proc
-			name.call(*args, &proc)
-		end
 	end
 end
