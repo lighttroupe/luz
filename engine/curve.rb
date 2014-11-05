@@ -10,7 +10,7 @@ class Curve < ParentUserObject
 	end
 
 	def effects
-		[]
+		[]		# never has any
 	end
 
 	def after_load
