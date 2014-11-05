@@ -23,5 +23,4 @@ module DrawingShapes
 			GL.End
 		}
 	end
-	alias :fullscreen_rectangle :unit_square
 end
