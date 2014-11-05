@@ -3,16 +3,16 @@ multi_require 'user_object', 'drawing'
 class Style < UserObject
 	title 'Style'
 
-	def default_title
-		''
-	end
-
 	include Drawing
 
 	setting 'color', :color, :default => [1.0,1.0,1.0,1.0], :only_literal => true
 	setting 'image', :image
 
 	pipe :color=, :color_setting
+
+	def default_title
+		''
+	end
 
 	def set_color(color)
 		self.color = color
@@ -37,14 +37,9 @@ class Style < UserObject
 
 	def using_amount(amount)
 		return yield if amount == 0.0
-		# note: currently ignores image
-
+		# NOTE: currently ignores image
 		with_color(current_color.fade_to(amount, color_setting.color)) {
 			yield
 		}
-	end
-
-	def set_pixels(pixels, width, height)
-		image_setting.set_pixels(pixels, width, height)
 	end
 end
