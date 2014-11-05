@@ -1,7 +1,10 @@
+#
+# Hit testing is used for finding the object under the mouse cursor.  It works by rendering each object with a unique color, then reading back the pixel under the cursor.
+#
 module DrawingHitTesting
-	HIT_TEST_INCREMENT = 1		# always 1, except for testing visually
+	HIT_TEST_INCREMENT = 1		# always 1 (useful to change this value when testing visually)
 
-	# Enable and initialize hit-testing mode, which 
+	# Enable and initialize hit-testing mode
 	def with_hit_testing
 		$engine.with_env(:hit_test, true) {
 			$hit_test_id = 0
