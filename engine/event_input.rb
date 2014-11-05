@@ -39,7 +39,7 @@ class EventInput < ChildUserObject
 			@last_activation_time = $env[:time] if @current_value > 0
 			return @current_value
 		}
-		return 0	# In case of exceptions
+		0		# In case of exceptions
 	end
 
 	def changed?
