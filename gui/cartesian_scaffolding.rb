@@ -1,3 +1,6 @@
+#
+# Drawing of the X,Y,Z axes
+#
 class CartesianScaffolding
 	MAJOR_GRIDLINE_COLOR = Color.new([1.0, 1.0, 1.0, 0.3])
 
