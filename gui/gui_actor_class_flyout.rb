@@ -6,21 +6,6 @@ class GuiActorClassFlyout < GuiWindow
 		create!
 	end
 
-	def on_key_press(key)
-		case key
-		when 'up'
-			@list.select_previous!
-		when 'down'
-			@list.select_next!
-		when 'return'
-			if (class_button = @list.selection.first)
-				actor_class_selected_notify(pointer=nil, class_button.klass)
-			end
-		else
-			super
-		end
-	end
-
 	def create!
 		# Background
 		self << (@background=GuiObject.new.set(:background_image => $engine.load_image('images/actor-class-flyout-background.png')))
@@ -34,5 +19,20 @@ class GuiActorClassFlyout < GuiWindow
 				actor_class_selected_notify(pointer, klass)
 			}
 		}
+	end
+
+	def on_key_press(key)
+		case key
+		when 'up'
+			@list.select_previous!
+		when 'down'
+			@list.select_next!
+		when 'return'
+			if (class_button = @list.selection.first)
+				actor_class_selected_notify(pointer=nil, class_button.klass)
+			end
+		else
+			super
+		end
 	end
 end
