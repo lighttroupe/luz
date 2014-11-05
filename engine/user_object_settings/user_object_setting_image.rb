@@ -1,9 +1,6 @@
 require 'user_object_setting'
 
 class UserObjectSettingImage < UserObjectSetting
-	DEFAULT_BUTTON_TEXT = 'Choose'
-	IMAGE_MIME_TYPE_FILTER = 'image/*'
-
 	attr_reader :image_name, :width, :height
 
 	def to_yaml_properties
