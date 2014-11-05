@@ -40,6 +40,7 @@ class UserObjectSetting
 		change_notify
 	end
 
+	# handles the :on_change param in settings, telling the parent UserObject about it
 	def handle_on_change_option
 		return unless parent
 		case @options[:on_change]
