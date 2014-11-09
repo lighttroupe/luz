@@ -8,7 +8,7 @@ class Variable < ParentUserObject
 	attr_reader :current_value, :last_value
 
 	setting 'combine_method', :select, :default => :sum, :options => [[:sum, 'Sum'],[:minimum, 'Minimum'],[:maximum, 'Maximum'],[:average, 'Average'],[:product, 'Multiply']]
-	setting 'damper_method', :select, :default => :none, :options => [[:none, 'None'],[:very_low, 'Very Low'],[:low, 'Low'],[:medium, 'Medium'],[:high, 'High'],[:very_high, 'Very High']]
+	setting 'max_change_per_frame', :float, :range => 0.0..1.0, :default => 1.0..1.0
 
 	#
 	# Class methods
@@ -84,8 +84,8 @@ class Variable < ParentUserObject
 	end
 
 	def damper(proposed_value)
-		return proposed_value if damper_method == :none
-		linear_damper(proposed_value, DAMPER_AMOUNTS[damper_method])
+		return proposed_value if max_change_per_frame == 1.0
+		linear_damper(proposed_value, max_change_per_frame)
 	end
 
 	def linear_damper(proposed_value, max_change_per_frame)
