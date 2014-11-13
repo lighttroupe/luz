@@ -8,7 +8,7 @@ class Variable < ParentUserObject
 	attr_reader :current_value, :last_value
 
 	setting 'combine_method', :select, :default => :sum, :options => [[:sum, 'Sum'],[:minimum, 'Minimum'],[:maximum, 'Maximum'],[:average, 'Average'],[:product, 'Multiply']]
-	setting 'max_change_per_frame', :float, :range => 0.0..1.0, :default => 1.0..1.0
+	setting 'max_change_per_frame', :float, :range => 0.0..1.0, :default => 1.0..1.0, :simple => true
 
 	#
 	# Class methods
