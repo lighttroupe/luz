@@ -51,11 +51,11 @@ Luz currently only runs on Linux.  (Help is wanted porting it to OSX and Windows
 
 1. Install dependencies: **sudo apt-get install build-essential libasound2-dev libfftw3-dev liblo0-dev libgtkmm-2.4-dev libgtkglextmm-x11-1.2-dev libgl1-mesa-dev libglu1-mesa-dev libx11-dev libxext-dev libxi-dev libsdl1.2-dev libcwiimote-dev libbluetooth-dev libportmidi-dev liblo-dev libunique-dev xserver-xorg-input-synaptics-dev**
 
-2. Run **make** in the root directory to build Input Manager and Spectrum Analyzer.
+2. sudo gem1.9.1 install rmagick
 
-3. **./input-manager/input-manager**
+3. Run **make** in the root directory to build Input Manager and Spectrum Analyzer.
 
-4. **./spectrum-analyzer/spectrum-analyzer**
+4. Ctrl-F9 and Ctrl-F10 from within Luz launch the apps.
 
 ## Enhance Your Touchpad
 
