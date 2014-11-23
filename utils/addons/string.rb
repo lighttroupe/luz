@@ -37,3 +37,22 @@ class String
 		strip.length == 0
 	end
 end
+
+if __FILE__ == $0
+	require 'test/unit'
+	class StringTest < Test::Unit::TestCase
+		def setup
+		end
+
+		def test_has_prefix
+			assert_equal true, "one-two".has_prefix?('one')
+			assert_equal true, "one-two".has_prefix?('one-')
+			assert_equal true, "one-two".has_prefix?('one-two')
+		end
+
+		def test_without_prefix
+			assert_equal "-two", "one-two".without_prefix('one')
+			assert_equal "one-two", "one-two".without_prefix('two')
+		end
+	end
+end
