@@ -17,9 +17,8 @@ module EngineImages
 
 	def load_image_thumbnail(path, &proc)
 		thumbnailer.add(path) { |thumbnail_path|
-			if (image=load_image(thumbnail_path))
-				proc.call(image)
-			end
+			image = load_image(thumbnail_path)
+			proc.call(image) if image
 		}
 	end
 
