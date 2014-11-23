@@ -133,7 +133,7 @@ class Project < UserObject
 			File.rename(tmp_path, path)
 			return true
 		}
-		return false
+		false
 	end
 
 	#
