@@ -30,7 +30,6 @@ class GuiDefault < GuiInterface
 	def reload_notify
 		clear!
 		create!
-		choose_image
 	end
 
 	#
@@ -137,15 +136,18 @@ class GuiDefault < GuiInterface
 			close_main_menu!
 		}
 		@main_menu.on_save {
-			$engine.save
-			positive_message 'Project Saved'
+			if $engine.save
+				positive_message 'Project Saved'
+			else
+				negative_message 'Save Failed'
+			end
 		}
 		@main_menu.on_open {
 			choose_project_file { |path|
 				if $application.open_project(path)
-					$gui.positive_message 'Opened successfully.'
+					# positive_message 'Opened Successfully'
 				else
-					$gui.negative_message 'Open failed.'
+					negative_message 'Open Failed'
 				end
 			}
 		}
@@ -450,12 +452,12 @@ class GuiDefault < GuiInterface
 		if key.control?
 			case key
 			when 'f9'
-				$gui.positive_message "Launching Input Manager"
+				positive_message "Launching Input Manager"
 				cmd = 'input-manager/input-manager'
 				open("|#{cmd}")
 
 			when 'f10'
-				$gui.positive_message "Launching Spectrum Analyzer"
+				positive_message "Launching Spectrum Analyzer"
 				cmd = 'spectrum-analyzer/spectrum-analyzer'
 				open("|#{cmd}")
 
