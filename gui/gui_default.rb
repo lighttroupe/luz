@@ -21,6 +21,7 @@ class GuiDefault < GuiInterface
 		super
 		create!
 		positive_message('Welcome to Luz 2.0')
+		@gui_alpha = 0.95
 	end
 
 	def toggle!
@@ -247,7 +248,9 @@ class GuiDefault < GuiInterface
 		when :output
 			yield
 		end
-		gui_render!
+		with_alpha(@gui_alpha) {
+			gui_render!
+		}
 	end
 
 	#
