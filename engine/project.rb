@@ -86,10 +86,26 @@ class Project < UserObject
 		end
 	end
 
+	def media_file_path(absolute_path)
+		raise ArgumentError.new("expected #{absolute_path} to exist") unless File.exists?(absolute_path)
+
+		puts "[#{self.file_path}] media_file_path(#{absolute_path}) => "
+		if absolute_path.has_prefix?(self.file_path)
+			puts absolute_path
+			absolute_path
+		else
+			destination = File.join(file_path, File.basename(absolute_path))
+			FileUtils.cp(absolute_path, destination)
+			puts destination
+			destination
+		end
+	end
+
 	#
 	# Loading
 	#
 	def load_from_path(path)
+		path = File.absolute_path(path)
 		clear
 		append_from_path(path)
 		@path = path

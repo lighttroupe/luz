@@ -40,7 +40,7 @@ class GuiDefault < GuiInterface
 		@dialog_container << dialog
 		dialog.on_selected { |path|
 			dialog.remove_from_parent!
-			yield path
+			yield $engine.project.media_file_path(path)
 		}
 		dialog.on_closed { dialog.remove_from_parent! }
 		dialog.show_for_path(File.dirname($engine.project.path), ['png','gif','jpg','jpeg'])
