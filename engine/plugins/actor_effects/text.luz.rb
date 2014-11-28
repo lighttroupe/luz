@@ -16,8 +16,8 @@ class ActorEffectText < ActorEffect
 
 	setting 'line_spacing', :float, :default => 0.0..1.0, :range => -1.0..1.0, :simple => true, :on_change => :not_drawn!
 
-	setting 'border_left', :float, :default => 0.0..1.0, :range => 0.0..1.0, :simple => true, :on_change => :not_drawn!
-	setting 'border_top', :float, :default => 0.0..1.0, :range => 0.0..1.0, :simple => true, :on_change => :not_drawn!
+	setting 'border_left', :float, :default => 0.0..1.0, :range => -1000.0..1000.0, :on_change => :not_drawn!
+	setting 'border_top', :float, :default => 0.0..1.0, :range => -1000.0..1000.0, :on_change => :not_drawn!
 
 	boolean_accessor :drawn
 
