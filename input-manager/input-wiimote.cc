@@ -49,6 +49,7 @@ bool InputWiimote::scan()
 				// Enable features
 				m_p_wiimote->mode.acc = 1;
 				m_p_wiimote->mode.ir = 1;		// HACK: enabling ir, even when we don't use it, seems to force certain shady wiimotes to send updates when otherwise it took firm shakes to see any data from them (confirmed in wmgui Jan 9 2010)
+				m_p_wiimote->mode.ext = 1;	// extension (nunchuck)
 
 				return true;
 			}
@@ -108,6 +109,8 @@ bool InputWiimote::update()
 	pitch /= 2.0;			//  0.0..2.0 to 0.0..1.0
 	send_float("Pitch", pitch);
 
+	//printf("pitch: %f, tilt says: %f\n", pitch, m_p_wiimote->tilt.x);
+
 	//
 	// Update Roll
 	//
@@ -116,6 +119,64 @@ bool InputWiimote::update()
 	roll += 1.0;		// -1.0..1.0 to 0.0..2.0
 	roll /= 2.0;		//  0.0..2.0 to 0.0..1.0
 	send_float("Roll", roll);
+
+	//printf("roll: %f, tilt says: %f", roll, tilt);
+
+	//
+	// Nunchuk
+	//
+	static TLimits nunchuk_joystick_x_limits = {10000,-10000};
+	float joyx = scale_and_expand_limits(m_p_wiimote->ext.nunchuk.joyx, &nunchuk_joystick_x_limits);
+	send_float("Nunchuk / Joystick X", joyx);
+
+	static TLimits nunchuk_joystick_y_limits = {10000,-10000};
+	float joyy = scale_and_expand_limits(m_p_wiimote->ext.nunchuk.joyy, &nunchuk_joystick_y_limits);
+	send_float("Nunchuk / Joystick Y", joyy);
+
+	static int nunchuck_c_button = 0;
+	if(m_p_wiimote->ext.nunchuk.keys.c != nunchuck_c_button) {
+		nunchuck_c_button = m_p_wiimote->ext.nunchuk.keys.c;
+		send_integer("Nunchuk / C", nunchuck_c_button);
+	}
+	static int nunchuck_z_button = 0;
+	if(m_p_wiimote->ext.nunchuk.keys.z != nunchuck_z_button) {
+		nunchuck_z_button = m_p_wiimote->ext.nunchuk.keys.z;
+		send_integer("Nunchuk / Z", nunchuck_z_button);
+	}
+
+	//static TLimits nunchuk_force_x_limits = {10000,-10000};
+	//float nunchuk_force_x = scale_and_expand_limits(m_p_wiimote->ext.nunchuk.axis.x, &nunchuk_force_x_limits);
+	//send_float("Nunchuk / Force / X", nunchuk_force_x);
+//
+	//static TLimits nunchuk_force_y_limits = {10000,-10000};
+	//float nunchuk_force_y = scale_and_expand_limits(m_p_wiimote->ext.nunchuk.axis.y, &nunchuk_force_y_limits);
+	//send_float("Nunchuk / Force / Z", nunchuk_force_y);		// NOTE: flipped y/z for Luz coordinate system
+//
+	//static TLimits nunchuk_force_z_limits = {10000,-10000};
+	//float nunchuk_force_z = scale_and_expand_limits(m_p_wiimote->ext.nunchuk.axis.z, &nunchuk_force_z_limits);
+	//send_float("Nunchuk / Force / Y", nunchuk_force_z);		// NOTE: flipped y/z for Luz coordinate system
+
+	//printf("joy %d,%d\n", m_p_wiimote->ext.nunchuk.joyx, m_p_wiimote->ext.nunchuk.joyy);
+	//printf("cal %d,%d\n", m_p_wiimote->ext.nunchuk.cal.joyx_min, m_p_wiimote->ext.nunchuk.cal.joyx_max);
+
+	//
+	// Update Pitch
+	//
+	// Clamp to -1.0..1.0 g-force, because any more isn't a function of tilt but rather moving the Wiimote.
+	//float nunchuk_pitch = clamp_float(((float)(m_p_wiimote->ext.nunchuk.axis.y - m_p_wiimote->ext.nunchuk.cal.y_zero) / (float)(m_p_wiimote->ext.nunchuk.cal.y_scale - m_p_wiimote->ext.nunchuk.cal.y_zero)), -1.0, 1.0) ;
+	//nunchuk_pitch *= -1.0;		// We want positive values when Wiimote is vertical
+	//nunchuk_pitch += 1.0;			// -1.0..1.0 to 0.0..2.0
+	//nunchuk_pitch /= 2.0;			//  0.0..2.0 to 0.0..1.0
+	//send_float("Nunchuk / Pitch", nunchuk_pitch);
+
+	//
+	// Update Roll
+	//
+	// Clamp to -1.0..1.0 g-force, because any more isn't a function of tilt but rather moving the Wiimote.
+	//float nunchuk_roll = clamp_float(((float)(m_p_wiimote->ext.nunchuk.axis.x - m_p_wiimote->ext.nunchuk.cal.x_zero) / (float)(m_p_wiimote->ext.nunchuk.cal.x_scale - m_p_wiimote->ext.nunchuk.cal.x_zero)), -1.0, 1.0) ;
+	//nunchuk_roll += 1.0;		// -1.0..1.0 to 0.0..2.0
+	//nunchuk_roll /= 2.0;		//  0.0..2.0 to 0.0..1.0
+	//send_float("Nunchuk / Roll", nunchuk_roll);
 
 	wiimote_copy(m_p_wiimote, m_p_wiimote_old);
 	return true;
