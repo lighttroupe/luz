@@ -21,6 +21,25 @@ class ActorEffectText < ActorEffect
 
 	boolean_accessor :drawn
 
+	def render
+		image = render_text(font, text)
+		return yield unless image
+
+		image.using {
+			yield
+		}
+	end
+
+	def deep_clone(*args)
+		@canvas = nil
+		@image = nil
+		not_drawn!
+		super(*args)
+	end
+
+	#
+	# TODO: move elsewhere
+	#
 	def symbol_to_pango_align(sym)
 		{:left => Pango::ALIGN_LEFT, :center => Pango::ALIGN_CENTER, :right => Pango::ALIGN_RIGHT}[sym] || Pango::ALIGN_LEFT
 	end
@@ -61,6 +80,7 @@ class ActorEffectText < ActorEffect
 					end
 
 					layout = context.create_pango_layout
+
 					text_fixed = text.gsub("\n", " \n")
 					layout.text = text_fixed
 
@@ -101,21 +121,5 @@ class ActorEffectText < ActorEffect
 		end
 
 		@image
-	end
-
-	def render
-		image = render_text(font, text)
-		return yield unless image
-
-		image.using {
-			yield
-		}
-	end
-
-	def deep_clone(*args)
-		@canvas = nil
-		@image = nil
-		not_drawn!
-		super(*args)
 	end
 end
