@@ -7,7 +7,7 @@ class GuiSelect < GuiListSelect
 	def initialize(object, method, options)		# options is [[:one,'One'],[:two,'Two']]
 		super(object, method)
 		@options = options
-		@list = @options.map { |o| o.first }
+		@list = @options.map(&:first)		# keys
 		@selected_label = BitmapFont.new.set(:string => selected_label_text, :scale_x => 0.9, :scale_y => 0.65, :offset_y => -0.12)
 		@color = [0.6, 0.6, 1.0, 1.0]
 	end
