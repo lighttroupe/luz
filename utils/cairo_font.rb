@@ -5,7 +5,7 @@ class CairoFont
 	#easy_accessor :font, :string
 
 	def render_to_image(string, font)
-		@canvas ||= CairoCanvas.new(256, 128)		# TODO: appropriate size
+		@canvas ||= CairoCanvas.new(64*5, 64)		# TODO: appropriate size
 		@image ||= Image.new
 		render(string, font, 1.0)
 		@image
