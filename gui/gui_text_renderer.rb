@@ -1,3 +1,6 @@
+#
+# GuiTextRenderer is intended to render a string in a list
+#
 class GuiTextRenderer < GuiObject
 	attr_reader :text
 
