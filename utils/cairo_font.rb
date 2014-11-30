@@ -52,7 +52,7 @@ private
 					layout_width, layout_height = layout.pixel_size		# NOTE: these are in 0.0-1.0 units
 					context.scale(1.0 / layout_width, 0.85)
 
-			puts "layout_width = #{layout_width}, layout_height = #{layout_height}"
+					#puts "layout_width = #{layout_width}, layout_height = #{layout_height}"
 
 					#context.scale(1, @canvas.height / layout_height)
 					context.show_pango_layout(layout)
