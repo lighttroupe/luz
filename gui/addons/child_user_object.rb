@@ -18,6 +18,14 @@ class ChildUserObject < UserObject
 		gui_render_enable_checkbox
 	end
 
+	def gui_render_label
+		with_translation(0.0, 0.0) {
+			with_scale(0.8, 1.0) {
+				super
+			}
+		}
+	end
+
 	def gui_render_child_conditions
 		if conditions.enable_child_index
 			#@conditions_index_range_label = nil
@@ -43,7 +51,7 @@ class ChildUserObject < UserObject
 	end
 
 	def enable_checkbox
-		@enable_checkbox ||= GuiToggle.new(self, :enabled).set(:offset_x => 0.45, :offset_y => 0.0, :scale_x => 0.09, :scale_y => 0.9)
+		@enable_checkbox ||= GuiToggle.new(self, :enabled).set(:offset_x => -0.45, :offset_y => 0.0, :scale_x => 0.09, :scale_y => 0.9)
 	end
 
 	def hit_test_render!

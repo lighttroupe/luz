@@ -3,7 +3,7 @@ class VariableInput
 
 	def gui_render!
 		gui_render_background
-		with_translation(-enable_checkbox.scale_x / 2.0, 0.0) {
+		with_translation(enable_checkbox.scale_x / 2.0, 0.0) {
 			with_scale_unsafe(1.0 - enable_checkbox.scale_x, 1.0) {
 				gui_render_activation
 			}

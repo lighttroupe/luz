@@ -25,7 +25,7 @@ class Variable
 	end
 
 	def gui_render_label
-		with_translation(-0.1, 0.0) {
+		with_translation(-0.05, 0.0) {
 			with_scale(0.8, 1.0) {
 				super
 			}
