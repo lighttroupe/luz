@@ -18,7 +18,7 @@ private
 		border_left = 0.0
 		border_top = 0.0
 
-		max_width_in_characters = 10
+		max_width_in_characters = 7
 
 		@canvas.using { |context|
 			context.save
@@ -54,9 +54,9 @@ private
 					mode = :normal
 					if mode == :stretch
 						layout_width, layout_height = layout.pixel_size		# NOTE: these are in 0.0-1.0 units
-						context.scale(1.0 / layout_width, 0.85)
+						context.scale(1.0 / layout_width, 0.8)
 					else
-						context.scale(1.0 / max_width_in_characters, 0.85)
+						context.scale(1.0 / max_width_in_characters, 0.8)
 					end
 					#puts "layout_width = #{layout_width}, layout_height = #{layout_height}"
 
