@@ -14,9 +14,7 @@ class Variable
 		end
 
 		# Label
-		with_scale(0.75, 1.0) {
-			gui_render_label
-		}
+		gui_render_label
 	end
 
 	def render_bar_value_with_cache(value)
@@ -24,6 +22,14 @@ class Variable
 		@@value_list_cache ||= Hash.new
 		@@value_list_cache[cache_key] ||= GL.RenderToList { render_bar(value) }
 		GL.CallList(@@value_list_cache[cache_key])
+	end
+
+	def gui_render_label
+		with_translation(-0.1, 0.0) {
+			with_scale(0.8, 1.0) {
+				super
+			}
+		}
 	end
 
 	def render_text_value_with_cache(value)
@@ -34,10 +40,12 @@ class Variable
 	end
 
 	def render_text(value)
-		@value_label ||= GuiLabel.new.set(:scale_x => 0.35, :scale_y => 0.35)
-		with_translation(0.45, 0.25) {
-			@value_label.set_string("#{value}%")
-			@value_label.gui_render!
+		@value_label ||= GuiLabel.new
+		with_translation(0.71, 0.0) {
+			with_scale(0.8, 0.8) {
+				@value_label.set_string("#{value}%")
+				@value_label.gui_render!
+			}
 		}
 	end
 

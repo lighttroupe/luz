@@ -15,8 +15,10 @@ class Event
 		}
 
 		# Label
-		with_translation(0.15, 0.05) {
-			gui_render_label
+		with_translation(0.08, 0.0) {
+			with_scale(0.8, 1.0) {
+				gui_render_label
+			}
 		}
 	end
 end
