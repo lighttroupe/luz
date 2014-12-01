@@ -22,8 +22,8 @@ class Actor
 
 			# Label
 			if pointer_hovering?
-				with_translation(-0.35, -0.35) {
-					with_scale(0.25, 0.25) {
+				with_translation(0.0, -0.35) {
+					with_scale(1.0, 0.25) {
 						gui_render_label
 					}
 				}

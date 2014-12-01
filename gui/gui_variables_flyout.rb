@@ -14,7 +14,7 @@ class GuiVariablesFlyout < GuiWindow
 		self << @message_bus_monitor = GuiMessageBusMonitor.new.set(:scale_x => 0.91, :scale_y => 0.060, :offset_x => 0.0, :offset_y => 0.5 - 0.065/2.0, :background_image => $engine.load_image('images/message-bus-monitor-background.png'))
 
 		# Events list				TODO: don't use $engine here
-		self << @events_list = GuiList.new($engine.project.events).set(:scale_x => 0.85, :scale_y => 0.37, :offset_x => -0.06, :offset_y => 0.22, :item_aspect_ratio => 3.2, :spacing_y => -1.0)
+		self << @events_list = GuiList.new($engine.project.events).set(:scale_x => 0.85, :scale_y => 0.37, :offset_x => -0.06, :offset_y => 0.22, :item_aspect_ratio => 3.0, :spacing_y => -1.0)
 
 		# ...scrollbar
 		@gui_events_list_scrollbar = GuiScrollbar.new(@events_list).set(:scale_x => 0.08, :scale_y => 0.37, :offset_x => 0.4, :offset_y => 0.22)
@@ -27,7 +27,7 @@ class GuiVariablesFlyout < GuiWindow
 		}
 
 		# Variables list		TODO: don't use $engine here
-		self << @variables_list = GuiList.new($engine.project.variables).set(:scale_x => 0.85, :scale_y => 0.37, :offset_x => -0.06, :offset_y => -0.24, :item_aspect_ratio => 3.2, :spacing_y => -1.0)
+		self << @variables_list = GuiList.new($engine.project.variables).set(:scale_x => 0.85, :scale_y => 0.37, :offset_x => -0.06, :offset_y => -0.24, :item_aspect_ratio => 3.0, :spacing_y => -1.0)
 
 		# ...scrollbar
 		@gui_variables_list_scrollbar = GuiScrollbar.new(@variables_list).set(:scale_x => 0.08, :scale_y => 0.37, :offset_x => 0.4, :offset_y => -0.24)

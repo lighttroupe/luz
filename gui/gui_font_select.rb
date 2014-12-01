@@ -25,7 +25,7 @@ class GuiFontSelect < GuiListSelect
 		font_name = get_value
 		return super unless font_name		# "none" text
 		with_gui_object_properties {
-			@value_label ||= BitmapFont.new.set(:scale => 0.75)
+			@value_label ||= GuiLabel.new.set(:scale => 0.75)
 			@value_label.set_string(font_name)
 			@value_label.gui_render!
 		}

@@ -14,7 +14,9 @@ class Variable
 		end
 
 		# Label
-		gui_render_label
+		with_scale(0.75, 1.0) {
+			gui_render_label
+		}
 	end
 
 	def render_bar_value_with_cache(value)
@@ -32,7 +34,7 @@ class Variable
 	end
 
 	def render_text(value)
-		@value_label ||= BitmapFont.new.set(:scale_x => 0.35, :scale_y => 0.35)
+		@value_label ||= GuiLabel.new.set(:scale_x => 0.35, :scale_y => 0.35)
 		with_translation(0.45, 0.25) {
 			@value_label.set_string("#{value}%")
 			@value_label.gui_render!

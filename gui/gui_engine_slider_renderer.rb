@@ -25,7 +25,7 @@ class GuiEngineSliderRenderer < GuiObject
 			render_bar($engine.slider_value(@text))
 
 			with_color(label_color) {
-				@label ||= BitmapFont.new.set(:string => @text, :scale_x => 0.9, :scale_y => 0.65)
+				@label ||= GuiLabel.new.set(:string => @text, :scale_x => 0.9, :scale_y => 0.65)
 				@label.gui_render!
 			}
 		}

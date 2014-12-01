@@ -54,7 +54,7 @@ class UserObject
 			@box = box = GuiBox.new
 
 			# Effects list
-			@gui_effects_list = GuiList.new(effects).set(:spacing_y => -0.8, :scale_x => 0.334, :offset_x => -0.33, :offset_y => -0.03, :scale_y => 0.73, :item_aspect_ratio => 4.5)
+			@gui_effects_list = GuiList.new(effects).set(:spacing_y => -0.8, :scale_x => 0.32, :offset_x => -0.328, :offset_y => -0.03, :scale_y => 0.72, :item_aspect_ratio => 4.5)
 			box << @gui_effects_list
 			@gui_effects_list.on_selection_change {
 				selection = @gui_effects_list.selection.first
@@ -211,22 +211,24 @@ class UserObject
 
 	def gui_render_label_internal
 		with_color(label_color) {
-			@title_label ||= BitmapFont.new.set(:scale_x => 0.95, :scale_y => USER_OBJECT_TITLE_HEIGHT)
+			@title_label ||= GuiLabel.new		#.set(:scale_x => 0.95, :scale_y => USER_OBJECT_TITLE_HEIGHT)
 			@title_label.string = title
-			if pointer_hovering?
-				@title_label.gui_render!
-			else
-				with_vertical_clip_plane_right_of(0.5) {
-					@title_label.gui_render!
-				}
-			end
+			@title_label.gui_render!
+
+			#if pointer_hovering?
+				#@title_label.gui_render!
+			#else
+				#with_vertical_clip_plane_right_of(0.5) {
+					#@title_label.gui_render!
+				#}
+			#end
 		}
 	end
 
 	extend Drawing
 	def self.gui_render_label
 		with_color(LABEL_COLOR) {
-			@@class_title_label ||= Hash.new { |hash, key| hash[key] = BitmapFont.new.set(:string => key, :scale_x => 0.95, :scale_y => USER_OBJECT_TITLE_HEIGHT) }
+			@@class_title_label ||= Hash.new { |hash, key| hash[key] = GuiLabel.new.set(:string => key, :scale_x => 0.95, :scale_y => USER_OBJECT_TITLE_HEIGHT) }
 			@@class_title_label[title].gui_render!
 		}
 	end

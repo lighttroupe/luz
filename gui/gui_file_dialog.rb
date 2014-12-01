@@ -58,9 +58,9 @@ private
 	def create!
 		self << (@background = GuiObject.new.set(:background_image => $engine.load_image('images/file-dialog-background.png')))
 
-		self << (@title_label = BitmapFont.new.set({:color => [0.6,0.6,1.0], :string => @title, :offset_x => -0.03, :offset_y => 0.47, :scale_x => 0.1, :scale_y => 0.05}))
+		self << (@title_label = GuiLabel.new.set({:color => [0.6,0.6,1.0], :string => @title, :offset_x => -0.03, :offset_y => 0.47, :scale_x => 0.1, :scale_y => 0.05}))
 
-		#self << (@title_label = BitmapFont.new.set({:color => [0.6,0.6,1.0], :string => @title, :offset_x => -0.03, :offset_y => 0.47, :scale_x => 0.1, :scale_y => 0.05}))
+		#self << (@title_label = GuiLabel.new.set({:color => [0.6,0.6,1.0], :string => @title, :offset_x => -0.03, :offset_y => 0.47, :scale_x => 0.1, :scale_y => 0.05}))
 
 		self << (@up_button=GuiButton.new.set(:scale_x => 0.05, :scale_y => 0.07, :offset_x => -0.452, :offset_y => 0.5 - 0.09, :background_image => $engine.load_image('images/buttons/directory-up.png')))
 		@up_button.on_clicked { show_for_path(File.join(@path, '..')) }

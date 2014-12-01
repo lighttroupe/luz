@@ -4,7 +4,7 @@ class GuiMessageBar < GuiBox
 
 	def initialize
 		super
-		self << (@text = BitmapFont.new)
+		self << (@text = GuiLabel.new)
 	end
 
 	def messages
