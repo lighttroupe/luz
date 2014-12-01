@@ -10,10 +10,10 @@ class GuiActorClassFlyout < GuiWindow
 		# Background
 		self << (@background=GuiObject.new.set(:background_image => $engine.load_image('images/actor-class-flyout-background.png')))
 
-		self << (@list = GuiVBox.new.set(:scale_x => 0.9, :scale_y => 0.8))
+		self << (@list = GuiGrid.new.set(:scale_x => 0.9, :scale_y => 0.5, :offset_y => 0.22, :min_columns => 2))
 
 		# New Actor buttons
-		[ActorStarFlower, ActorStar, ActorRectangle, ActorRoundedRectangle, ActorLine].each { |klass|
+		[ActorStarFlower, ActorStar, ActorPolygon, ActorLine, ActorRectangle, ActorRoundedRectangle].each { |klass|
 			@list << (new_actor_button = GuiActorClassButton.new(klass).set(:scale_x => 0.75, :scale_y => 0.95))
 			new_actor_button.on_clicked { |pointer|
 				actor_class_selected_notify(pointer, klass)

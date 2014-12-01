@@ -29,13 +29,13 @@ class GuiActorsFlyout < GuiWindow
 		self << (@background=GuiObject.new.set(:background_image => $engine.load_image('images/actor-flyout-background.png')))
 
 		# Edit director button
-		self << @director_edit_button = GuiButton.new.set(:offset_y => 0.5 - 0.025, :scale_y => 0.05, :background_image => $engine.load_image('images/buttons/director-settings.png'))
+		self << @director_edit_button = GuiButton.new.set(:offset_y => 0.5 - 0.025, :scale_y => 0.05, :background_image => $engine.load_image('images/buttons/director-settings.png'), :background_image_hover => $engine.load_image('images/buttons/director-settings-hover.png'))
 		@director_edit_button.on_clicked {
 			$gui.build_editor_for($gui.chosen_director)
 		}
 
 		# View directors button
-		self << @director_view_button = GuiButton.new.set(:offset_y => 0.5 - 0.067, :scale_y => 0.03, :background_image => $engine.load_image('images/buttons/director-view.png'))
+		self << @director_view_button = GuiButton.new.set(:offset_y => 0.5 - 0.067, :scale_y => 0.03, :background_image => $engine.load_image('images/buttons/director-view.png'), :background_image_hover => $engine.load_image('images/buttons/director-view-hover.png'))
 		@director_view_button.on_clicked {
 			$gui.mode = :director
 		}
@@ -53,7 +53,7 @@ class GuiActorsFlyout < GuiWindow
 #			$gui.build_editor_for(actor, :pointer => pointer)
 
 		# Actor Class flyout (for creating new actors)
-		self << @actor_class_flyout = GuiActorClassFlyout.new.set(:scale_x => 0.5, :scale_y => 0.3).
+		self << @actor_class_flyout = GuiActorClassFlyout.new.set(:scale_x => 0.8, :scale_y => 0.3).
 			add_state(:open, {:offset_y => -0.3, :hidden => false}).
 			set_state(:closed, {:offset_y => -0.8, :hidden => true})
 
@@ -65,7 +65,7 @@ class GuiActorsFlyout < GuiWindow
 		}
 
 		# New actor button
-		self << @new_button = GuiButton.new.set(:offset_y => -0.5 + 0.025, :scale_y => 0.05, :color => [1,1,1], :background_image => $engine.load_image('images/buttons/new-actor-button.png'))
+		self << @new_button = GuiButton.new.set(:offset_y => -0.5 + 0.025, :scale_y => 0.05, :color => [1,1,1], :background_image => $engine.load_image('images/buttons/new-actor-button.png'), :background_image_hover => $engine.load_image('images/buttons/new-actor-button-hover.png'))
 
 		@new_button.on_clicked { |pointer|
 			@actor_class_flyout.switch_state({:open => :closed, :closed => :open}, duration=0.2)

@@ -21,7 +21,7 @@ class GuiVariablesFlyout < GuiWindow
 		self << @gui_events_list_scrollbar
 
 		# New Event button
-		self << (@new_event_button = GuiButton.new.set(:scale_x => 1.0, :scale_y => 0.045, :offset_x => 0.0, :offset_y => -0.013, :background_image => $engine.load_image('images/buttons/new-event-button.png')))
+		self << (@new_event_button = GuiButton.new.set(:scale_x => 1.0, :scale_y => 0.045, :offset_x => 0.0, :offset_y => -0.013, :background_image => $engine.load_image('images/buttons/new-event-button.png'), :background_image_hover => $engine.load_image('images/buttons/new-event-button-hover.png')))
 		@new_event_button.on_clicked { |pointer|
 			new_event!
 		}
@@ -34,7 +34,7 @@ class GuiVariablesFlyout < GuiWindow
 		self << @gui_variables_list_scrollbar
 
 		# New Variable button
-		self << (@new_variable_button = GuiButton.new.set(:scale_x => 1.0, :scale_y => 0.043, :offset_x => 0.0, :offset_y => -0.476, :background_image => $engine.load_image('images/buttons/new-variable-button.png')))
+		self << (@new_variable_button = GuiButton.new.set(:scale_x => 1.0, :scale_y => 0.043, :offset_x => 0.0, :offset_y => -0.476, :background_image => $engine.load_image('images/buttons/new-variable-button.png'), :background_image_hover => $engine.load_image('images/buttons/new-variable-button-hover.png')))
 		@new_variable_button.on_clicked { |pointer|
 			new_variable!(pointer)
 		}
