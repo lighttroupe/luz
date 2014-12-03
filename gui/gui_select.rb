@@ -8,7 +8,7 @@ class GuiSelect < GuiListSelect
 		super(object, method)
 		@options = options
 		@list = @options.map(&:first)		# keys
-		@selected_label = GuiLabel.new.set(:width => 4, :text_align => :center, :string => selected_label_text, :scale_x => 0.9)
+		@selected_label = GuiLabel.new.set(:width => 10, :string => selected_label_text, :scale_x => 0.9)
 		@color = [0.6, 0.6, 1.0, 1.0]
 	end
 
