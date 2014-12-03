@@ -8,11 +8,13 @@ class GuiString < GuiObject
 	FOCUS_BACKGROUND_COLOR = [0.2,0.2,0.5]
 	COLOR = [1,1,1]
 
+	easy_accessor :width
+
 	def initialize(object, method)
 		super()
 		@object, @method = object, method
 		@last_rendered_string = ''
-		@label = GuiLabel.new.set(:string => get_value)
+		@label = GuiLabel.new.set(:width => width, :string => get_value)
 	end
 
 	pipe :width=, :label

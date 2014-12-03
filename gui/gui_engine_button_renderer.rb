@@ -29,7 +29,7 @@ class GuiEngineButtonRenderer < GuiObject
 			end
 
 			with_color(label_color) {
-				@label ||= GuiLabel.new.set(:string => @text, :scale_x => 0.9, :scale_y => 0.65)
+				@label ||= GuiLabel.new.set(:width => 15, :string => @text, :scale_x => 0.9, :scale_y => 0.65)
 				@label.gui_render!
 			}
 		}

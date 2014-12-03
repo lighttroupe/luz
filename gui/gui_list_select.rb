@@ -37,7 +37,7 @@ class GuiListSelect < GuiObject
 	end
 
 	def gui_render_no_value
-		@no_value_label ||= GuiLabel.new.set(:width => :fill, :string => @no_value_text, :scale => 0.75, :opacity => 0.1)
+		@no_value_label ||= GuiLabel.new.set(:width => 15, :string => @no_value_text, :scale => 0.75, :opacity => 0.1)
 		@no_value_label.gui_render!
 	end
 

@@ -6,7 +6,7 @@ class GuiEngineSlider < GuiListSelect
 
 	def initialize(object, method)		# options is [[:one,'One'],[:two,'Two']]
 		super(object, method)
-		@selected_label = GuiLabel.new.set(:string => get_value, :scale_x => 0.9, :scale_y => 0.65)
+		@selected_label = GuiLabel.new.set(:width => 20, :string => get_value, :scale_x => 0.9, :scale_y => 0.65)
 		@item_aspect_ratio = 5.0
 	end
 
