@@ -4,7 +4,7 @@ class GuiMessageBar < GuiBox
 
 	def initialize
 		super
-		self << (@text = GuiLabel.new)
+		self << (@text = GuiLabel.new.set(:width => 20, :text_align => :center))
 	end
 
 	def messages

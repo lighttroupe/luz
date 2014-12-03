@@ -15,6 +15,8 @@ class GuiString < GuiObject
 		@label = GuiLabel.new.set(:string => get_value)
 	end
 
+	pipe :width=, :label
+
 	def get_value
 		@object.send(@method).to_s
 	end

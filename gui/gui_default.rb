@@ -187,10 +187,30 @@ class GuiDefault < GuiInterface
 
 		self << @dialog_container = GuiBox.new
 
+		self << text_layout_debugger if false
+
 		add_state(:closed, {:scale_x => 1.5, :scale_y => 1.5, :opacity => 0.0, :hidden => true})
 		set_state(:open, {:scale_x => 1.0, :scale_y => 1.0, :opacity => 1.0, :hidden => false})
 
 		set_initial_state
+	end
+
+	def text_layout_debugger
+		box = GuiBox.new.set(:scale_x => 0.5, :scale_y => 0.5)
+
+		box << GuiLabel.new.set(:offset_x => -0.25, :scale_x => 0.5, :offset_y => 0.5-0.125, :scale_y => 0.25, :string => 'left', :width => 10, :text_align => :left)
+		box << GuiLabel.new.set(:offset_x => -0.25, :scale_x => 0.5, :offset_y => 0.125, :scale_y => 0.25, :string => 'center', :width => 10, :text_align => :center)
+		box << GuiLabel.new.set(:offset_x => -0.25, :scale_x => 0.5, :offset_y => -0.125, :scale_y => 0.25, :string => 'right', :width => 10, :text_align => :right)
+
+		box << GuiLabel.new.set(:offset_x => 0.25, :scale_x => 0.5, :offset_y => 0.5-0.125, :scale_y => 0.25, :string => 'width:fill', :width => :fill)
+		box << GuiLabel.new.set(:offset_x => 0.25, :scale_x => 0.5, :offset_y => 0.125, :scale_y => 0.25, :string => 'slightly longer text', :width => :fill)
+		box << GuiLabel.new.set(:offset_x => 0.25, :scale_x => 0.5, :offset_y => -0.125, :scale_y => 0.25, :string => 'long text will squish to fit', :width => :fill)
+
+		box << GuiLabel.new.set(:offset_x => -0.25, :scale_x => 0.5, :offset_y => -0.30, :scale_y => 0.1, :string => 'LLLLL', :width => 10, :text_align => :left)
+		box << GuiLabel.new.set(:offset_x => -0.25, :scale_x => 0.3, :offset_y => -0.40, :scale_y => 0.1, :string => 'CCCCC', :width => 10, :text_align => :center)
+		box << GuiLabel.new.set(:offset_x => -0.25, :scale_x => 0.1, :offset_y => -0.50, :scale_y => 0.04, :string => 'RRRRR', :width => 10, :text_align => :right)
+
+		box
 	end
 
 	def set_initial_state

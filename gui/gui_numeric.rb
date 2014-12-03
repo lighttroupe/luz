@@ -4,9 +4,9 @@ class GuiNumeric < GuiObject
 	def initialize(object, method, min, max)
 		super()
 		@object, @method_get, @method_set, @min, @max = object, method, (method.to_s+'=').to_sym, min, max
-		@value_label = GuiLabel.new		#.set(:scale_x => 0.9, :scale_y => 0.65, :offset_y => -0.12)
+		@value_label = GuiLabel.new.set(:width => 3, :text_align => :right)		#.set(:scale_x => 0.9, :scale_y => 0.65, :offset_y => -0.12)
 		@value_change_in_progress = ''
-		@gui_string = GuiString.new(self, :value_change_in_progress).set(:scale_x => 0.9, :scale_y => 0.65, :offset_y => -0.12)
+		@gui_string = GuiString.new(self, :value_change_in_progress).set(:width => 5, :scale_x => 0.9, :scale_y => 0.65, :offset_y => -0.12)
 		@color = [0.8, 0.8, 1.0, 1.0]
 	end
 

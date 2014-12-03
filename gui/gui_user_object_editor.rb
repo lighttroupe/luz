@@ -78,7 +78,7 @@ class GuiUserObjectEditor < GuiWindow
 			}
 		end
 
-		self << (@title_text=GuiString.new(@user_object, :title).set(:offset_x => -0.30 + 0.07, :offset_y => 0.5 - 0.07, :scale_x => 0.35, :scale_y => 0.1))		#.set(:background_image => $engine.load_image('images/buttons/menu.png'))
+		self << (@title_text=GuiString.new(@user_object, :title).set(:width => 14, :offset_x => -0.30 + 0.07, :offset_y => 0.5 - 0.07, :scale_x => 0.35, :scale_y => 0.1))		#.set(:background_image => $engine.load_image('images/buttons/menu.png'))
 
 		#
 		# Delete Button

@@ -211,7 +211,7 @@ class UserObject
 
 	def gui_render_label_internal
 		with_color(label_color) {
-			@title_label ||= GuiLabel.new		#.set(:scale_x => 0.95, :scale_y => USER_OBJECT_TITLE_HEIGHT)
+			@title_label ||= GuiLabel.new.set(:width => 10)		#.set(:scale_x => 0.95, :scale_y => USER_OBJECT_TITLE_HEIGHT)
 			@title_label.string = title
 			@title_label.gui_render!
 
@@ -228,7 +228,7 @@ class UserObject
 	extend Drawing
 	def self.gui_render_label
 		with_color(LABEL_COLOR) {
-			@@class_title_label ||= Hash.new { |hash, key| hash[key] = GuiLabel.new.set(:string => key, :scale_x => 0.95, :scale_y => USER_OBJECT_TITLE_HEIGHT) }
+			@@class_title_label ||= Hash.new { |hash, key| hash[key] = GuiLabel.new.set(:width => 10, :string => key, :scale_x => 0.95, :scale_y => USER_OBJECT_TITLE_HEIGHT) }
 			@@class_title_label[title].gui_render!
 		}
 	end

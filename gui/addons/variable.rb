@@ -10,7 +10,7 @@ class Variable
 		if enabled?
 			render_bar_value_with_cache(value)
 			#render_text_value_with_cache(value)
-			render_text((100 * value).to_i)
+			#render_text((100 * value).to_i)
 		end
 
 		# Label
@@ -25,26 +25,28 @@ class Variable
 	end
 
 	def gui_render_label
-		with_translation(-0.05, 0.0) {
-			with_scale(0.8, 1.0) {
+		#with_translation(-0.05, 0.0) {
+		with_translation(0.0, 0.0) {
+			with_scale(1.0, 1.0) {
 				super
 			}
 		}
 	end
 
 	def render_text_value_with_cache(value)
-		cache_key = (100 * value).to_i
 		@@text_list_cache ||= Hash.new
+
+		cache_key = (100 * value).to_i
 		@@text_list_cache[cache_key] ||= GL.RenderToList { render_text(cache_key) }
 		GL.CallList(@@text_list_cache[cache_key])
 	end
 
 	def render_text(value)
-		@value_label ||= GuiLabel.new
-		with_translation(0.71, 0.0) {
-			with_scale(0.8, 0.8) {
-				@value_label.set_string("#{value}%")
-				@value_label.gui_render!
+		@value_label4 ||= GuiLabel.new.set(:width => 3)
+		with_translation(0.44, 0.0) {
+			with_scale(0.16, 0.5) {
+				@value_label4.set_string("#{value}%")
+				@value_label4.gui_render!
 			}
 		}
 	end

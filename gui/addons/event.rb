@@ -15,9 +15,13 @@ class Event
 		}
 
 		# Label
+		gui_render_label
+	end
+
+	def gui_render_label
 		with_translation(-0.08, 0.0) {
 			with_scale(0.8, 1.0) {
-				gui_render_label
+				super
 			}
 		}
 	end
