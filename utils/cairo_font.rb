@@ -12,7 +12,7 @@ class CairoFont
 	end
 
 	def self.renderable?(character)
-		character.present?		# TODO: limit?
+		true		# TODO: limit?
 	end
 
 private
