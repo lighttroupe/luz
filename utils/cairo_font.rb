@@ -11,6 +11,10 @@ class CairoFont
 		@image
 	end
 
+	def self.renderable?(character)
+		character.present?		# TODO: limit?
+	end
+
 private
 
 	def render(string, font, font_size, width_in_characters, text_align)

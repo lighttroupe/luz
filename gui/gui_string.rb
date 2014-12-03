@@ -48,7 +48,7 @@ class GuiString < GuiObject
 	end
 
 	def renderable?(key)
-		BitmapFont.renderable?(key)
+		CairoFont.renderable?(key)
 	end
 
 	#
