@@ -100,7 +100,7 @@ private
 			fill_from_category!
 		}
 
-		self << (@search_label = GuiString.new(self, :search).set(:offset_x => @category_selector.offset_x, :offset_y => @category_selector.offset_y, :scale_x => @category_selector.scale_x, :scale_y => @category_selector.scale_y)).
+		self << (@search_label = GuiString.new(self, :search).set(:width => 20, :color => [1.0,1.0,0.0], :offset_x => @category_selector.offset_x, :offset_y => @category_selector.offset_y, :scale_x => @category_selector.scale_x, :scale_y => @category_selector.scale_y)).
 			add_state(:open, {:opacity => 1.0, :hidden => false}).
 			set_state(:closed, {:opacity => 0.0, :hidden => true})
 
@@ -111,9 +111,9 @@ private
 		self << (@list_scrollbar = GuiScrollbar.new(@list).set({:offset_x => -0.154, :offset_y => -0.07, :scale_x => 0.025, :scale_y => 0.865}))
 		@list.on_selection_change { on_list_selection_change }
 
-		self << (@title = GuiLabel.new.set({:string => '', :width => 30, :offset_x => 0.19, :offset_y => 0.3, :scale_x => 0.58, :scale_y => 0.1}))
-		self << (@description = GuiLabel.new.set({:string => '', :width => 30, :color => [1.0,1.0,1.0], :offset_x => 0.19, :offset_y => 0.2, :scale_x => 0.58, :scale_y => 0.06}))
-		self << (@hint = GuiLabel.new.set({:string => '', :width => 30, :color => [0.7,0.7,0.7], :offset_x => 0.19, :offset_y => 0.1, :scale_x => 0.58, :scale_y => 0.06}))
+		self << (@title = GuiLabel.new.set({:width => 30, :string => '', :offset_x => 0.19, :offset_y => 0.3, :scale_x => 0.58, :scale_y => 0.1}))
+		self << (@description = GuiLabel.new.set({:width => 30, :string => '', :color => [1.0,1.0,1.0], :offset_x => 0.19, :offset_y => 0.2, :scale_x => 0.58, :scale_y => 0.06}))
+		self << (@hint = GuiLabel.new.set({:width => 30, :string => '', :color => [0.7,0.7,0.7], :offset_x => 0.19, :offset_y => 0.1, :scale_x => 0.58, :scale_y => 0.06}))
 
 		#
 		# Close
