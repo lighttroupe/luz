@@ -78,7 +78,7 @@ private
 
 			row << (@enable_activation_toggle=GuiToggle.new(@setting, :enable_activation).set(:scale_x => 0.07, :float => :left, :offset_x => 0.15, :color => [1,0,0,1], :image => $engine.load_image('images/buttons/play.png')))
 			row << (@activation_curve_widget=GuiCurveIncreasing.new(@setting, :activation_curve).set(:scale_x => 0.13, :scale_y => 0.8, :float => :left, :opacity => 0.4))
-			row << (@activation_direction_widget=GuiSelect.new(@setting, :activation_direction, UserObjectSettingFloat::ACTIVATION_DIRECTION_OPTIONS).set(:scale_x => 0.1, :float => :left, :opacity => 0.4))
+			row << (@activation_direction_widget=GuiSelect.new(@setting, :activation_direction, UserObjectSettingFloat::ACTIVATION_DIRECTION_OPTIONS).set(:width => 4, :scale_x => 0.1, :float => :left, :opacity => 0.4))
 			row << (@activation_value_widget=GuiFloat.new(@setting, :activation_value, @min, @max).set(:scale_x => 0.15, :float => :left, :opacity => 0.4))
 
 			row << (@activation_when_text=GuiLabel.new.set(:width => 4, :text_align => :center, :string => 'when', :scale_x => 0.1, :float => :left, :opacity => 0.4))

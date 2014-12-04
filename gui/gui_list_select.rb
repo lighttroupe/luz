@@ -2,7 +2,7 @@
 multi_require 'gui_list_popup'
 
 class GuiListSelect < GuiObject
-	easy_accessor :no_value_text, :item_aspect_ratio
+	easy_accessor :no_value_text, :item_aspect_ratio, :width
 
 	def initialize(object, method)
 		super()
