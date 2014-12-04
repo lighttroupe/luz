@@ -38,24 +38,24 @@ Luz currently only runs on Linux.  (Help is wanted porting it to OSX and Windows
 
 2. Install dependencies: **sudo apt-get install ruby1.9.1 libsdl-ruby1.9.1 libopengl-ruby1.9.1**
 
-3. Optionally run **./build** in utils/webcam for the Webcam plugin.
+3. sudo gem1.9.1 install rmagick
 
-4. Optionally run **./build** in utils/video_file for the Video plugin.
+4. Optionally run **./build** in utils/webcam for the Webcam plugin.
 
-5. Optionally enhance your laptop's touchpad (see below).
+5. Optionally run **./build** in utils/video_file for the Video plugin.
 
-6. **ruby1.9.1 luz.rb gui/editor.luz**
+6. Optionally enhance your laptop's touchpad (see below).
+
+7. **ruby1.9.1 luz.rb gui/editor.luz**
 
 
 ## Running Input Manager and Spectrum Analyzer
 
 1. Install dependencies: **sudo apt-get install build-essential libasound2-dev libfftw3-dev liblo0-dev libgtkmm-2.4-dev libgtkglextmm-x11-1.2-dev libgl1-mesa-dev libglu1-mesa-dev libx11-dev libxext-dev libxi-dev libsdl1.2-dev libcwiimote-dev libbluetooth-dev libportmidi-dev liblo-dev libunique-dev xserver-xorg-input-synaptics-dev**
 
-2. sudo gem1.9.1 install rmagick
+2. Run **make** in the root directory to build Input Manager and Spectrum Analyzer.
 
-3. Run **make** in the root directory to build Input Manager and Spectrum Analyzer.
-
-4. Ctrl-F9 and Ctrl-F10 from within Luz launch the apps.
+3. Ctrl-F9 and Ctrl-F10 from within Luz launch the apps.
 
 ## Enhance Your Touchpad
 
