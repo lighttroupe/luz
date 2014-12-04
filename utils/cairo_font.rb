@@ -7,7 +7,7 @@ class CairoFont
 	#easy_accessor :font, :string
 
 	def render_to_image(string, font, width_in_characters, text_align)
-		@canvas ||= CairoCanvas.new(512, 256)		# TODO: appropriate size
+		@canvas ||= CairoCanvas.new(300, 150)		# TODO: appropriate size
 		@image ||= Image.new
 		render(string, font, size=1.0, width_in_characters, text_align)
 		@image
@@ -76,6 +76,8 @@ private
 						when :left, nil		# default
 							# font is 1 tall, width is approx how many chars we can show
 							context.scale(horizontal_scale, vertical_scale)
+							#layout.width = @canvas.width
+							#layout.ellipsize = Pango::ELLIPSIZE_END
 						when :center
 							# Center layout assumes the string is smaller than the container
 							layout_width, layout_height = layout.pixel_size
