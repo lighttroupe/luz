@@ -12,6 +12,8 @@ class GuiSelect < GuiListSelect
 		@color = [0.6, 0.6, 1.0, 1.0]
 	end
 
+	pipe [:width=, :text_align=], :selected_label
+
 	#
 	# API
 	#

@@ -1,7 +1,14 @@
 class GuiFontSelect < GuiListSelect
+	def initialize(*args)
+		@value_label = GuiLabel.new.set(:width => 15)
+		super
+	end
+
+	pipe :width=, :value_label
+
 	def list
 		$gui_font_select_options ||= build_available_font_family_list
-		$gui_font_select_options.map { |name| GuiTextRenderer.new(name) }
+		$gui_font_select_options.map { |name| GuiTextRenderer.new(name).set(:width => 15) }
 	end
 
 	def build_available_font_family_list
@@ -25,7 +32,6 @@ class GuiFontSelect < GuiListSelect
 		font_name = get_value
 		return super unless font_name		# "none" text
 		with_gui_object_properties {
-			@value_label ||= GuiLabel.new.set(:width => 15, :scale => 0.75)
 			@value_label.set_string(font_name)
 			@value_label.gui_render!
 		}
