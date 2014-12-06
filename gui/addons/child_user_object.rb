@@ -29,7 +29,7 @@ class ChildUserObject < UserObject
 	def gui_render_child_conditions
 		if conditions.enable_child_index
 			#@conditions_index_range_label = nil
-			@conditions_index_range_label ||= GuiLabel.new.set(:width => 5, :scale_x => 0.45, :scale_y => 0.45)
+			@conditions_index_range_label ||= GuiLabel.new.set(:width => 10, :scale_x => 0.45, :scale_y => 0.45)
 			with_translation(0.20, -0.3) {
 				with_color(LABEL_CHILD_INDEX_RANGE_COLOR) {
 					if (@cached_child_number_min != conditions.child_number_min) || (@cached_child_number_max != conditions.child_number_max)
