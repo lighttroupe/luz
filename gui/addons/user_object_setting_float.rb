@@ -21,7 +21,7 @@ private
 
 	def create!
 		self << create_user_object_setting_name_label
-		self << @vbox = GuiVBox.new
+		self << @vbox = GuiVBox.new.set(:scale_y => 0.9)
 
 		row = GuiHBox.new	#.set(:scale_y => 0.5, :offset_y => 0.23)
 			row << GuiFloat.new(@setting, :animation_min, @min, @max).set(:scale_x => 0.15, :float => :left)
