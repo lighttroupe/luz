@@ -18,7 +18,6 @@ class CairoFont
 		LETTERS.include? letter
 	end
 
-
 private
 
 	def render(string, font, font_size, width_in_characters, text_align)
