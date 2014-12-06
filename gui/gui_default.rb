@@ -24,7 +24,7 @@ class GuiDefault < GuiInterface
 		create!
 		positive_message('Welcome to Luz 2.0')
 		@gui_alpha = 0.95
-		@gui_font = "Ubuntu"
+		@gui_font = "Ubuntu"		# "Comic Sans MS" "eufm10"
 	end
 
 	def toggle!
@@ -195,24 +195,6 @@ class GuiDefault < GuiInterface
 		set_initial_state
 	end
 
-	def text_layout_debugger
-		box = GuiBox.new.set(:scale_x => 0.5, :scale_y => 0.5)
-
-		box << GuiLabel.new.set(:offset_x => -0.25, :scale_x => 0.5, :offset_y => 0.5-0.125, :scale_y => 0.25, :string => 'left', :width => 10, :text_align => :left)
-		box << GuiLabel.new.set(:offset_x => -0.25, :scale_x => 0.5, :offset_y => 0.125, :scale_y => 0.25, :string => 'center', :width => 10, :text_align => :center)
-		box << GuiLabel.new.set(:offset_x => -0.25, :scale_x => 0.5, :offset_y => -0.125, :scale_y => 0.25, :string => 'right', :width => 10, :text_align => :right)
-
-		box << GuiLabel.new.set(:offset_x => 0.25, :scale_x => 0.5, :offset_y => 0.5-0.125, :scale_y => 0.25, :string => 'width:fill', :width => :fill)
-		box << GuiLabel.new.set(:offset_x => 0.25, :scale_x => 0.5, :offset_y => 0.125, :scale_y => 0.25, :string => 'slightly longer text', :width => :fill)
-		box << GuiLabel.new.set(:offset_x => 0.25, :scale_x => 0.5, :offset_y => -0.125, :scale_y => 0.25, :string => 'long text will squish to fit', :width => :fill)
-
-		box << GuiLabel.new.set(:offset_x => -0.25, :scale_x => 0.5, :offset_y => -0.30, :scale_y => 0.1, :string => 'LLLLL', :width => 10, :text_align => :left)
-		box << GuiLabel.new.set(:offset_x => -0.25, :scale_x => 0.3, :offset_y => -0.40, :scale_y => 0.1, :string => 'CCCCC', :width => 10, :text_align => :center)
-		box << GuiLabel.new.set(:offset_x => -0.25, :scale_x => 0.1, :offset_y => -0.50, :scale_y => 0.04, :string => 'RRRRR', :width => 10, :text_align => :right)
-
-		box
-	end
-
 	def set_initial_state
 		@user_object = nil					# this object the user is editing
 		@user_object_editor = nil		# editor widget (window)
@@ -293,7 +275,8 @@ class GuiDefault < GuiInterface
 		when Director
 			close_directors_menu! #if self.chosen_director == user_object
 			if self.chosen_director == user_object
-				self.mode = :director
+				#self.mode = :director
+				return
 			else
 				self.chosen_director = user_object
 				clear_user_object_editor
@@ -656,5 +639,23 @@ class GuiDefault < GuiInterface
 	def output_object_counts
 		p (counts = ObjectSpace.count_objects)
 		positive_message "#{counts[:TOTAL]} Objects, #{counts[:FREE]} Free"
+	end
+
+	def text_layout_debugger
+		box = GuiBox.new.set(:scale_x => 0.5, :scale_y => 0.5)
+
+		box << GuiLabel.new.set(:offset_x => -0.25, :scale_x => 0.5, :offset_y => 0.5-0.125, :scale_y => 0.25, :string => 'left', :width => 10, :text_align => :left)
+		box << GuiLabel.new.set(:offset_x => -0.25, :scale_x => 0.5, :offset_y => 0.125, :scale_y => 0.25, :string => 'center', :width => 10, :text_align => :center)
+		box << GuiLabel.new.set(:offset_x => -0.25, :scale_x => 0.5, :offset_y => -0.125, :scale_y => 0.25, :string => 'right', :width => 10, :text_align => :right)
+
+		box << GuiLabel.new.set(:offset_x => 0.25, :scale_x => 0.5, :offset_y => 0.5-0.125, :scale_y => 0.25, :string => 'width:fill', :width => :fill)
+		box << GuiLabel.new.set(:offset_x => 0.25, :scale_x => 0.5, :offset_y => 0.125, :scale_y => 0.25, :string => 'slightly longer text', :width => :fill)
+		box << GuiLabel.new.set(:offset_x => 0.25, :scale_x => 0.5, :offset_y => -0.125, :scale_y => 0.25, :string => 'long text will squish to fit', :width => :fill)
+
+		box << GuiLabel.new.set(:offset_x => -0.25, :scale_x => 0.5, :offset_y => -0.30, :scale_y => 0.1, :string => 'LLLLL', :width => 10, :text_align => :left)
+		box << GuiLabel.new.set(:offset_x => -0.25, :scale_x => 0.3, :offset_y => -0.40, :scale_y => 0.1, :string => 'CCCCC', :width => 10, :text_align => :center)
+		box << GuiLabel.new.set(:offset_x => -0.25, :scale_x => 0.1, :offset_y => -0.50, :scale_y => 0.04, :string => 'RRRRR', :width => 10, :text_align => :right)
+
+		box
 	end
 end
