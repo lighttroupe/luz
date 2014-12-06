@@ -21,6 +21,10 @@ class ActorEffectText < ActorEffect
 
 	boolean_accessor :drawn
 
+	def width
+		20
+	end
+
 	def render
 		image = render_text(font, text)
 		return yield unless image
@@ -43,7 +47,7 @@ class ActorEffectText < ActorEffect
 	def render_text(font, text)
 		@cairo_font ||= CairoFont.new
 		unless drawn?
-			@image = @cairo_font.render_to_image(text, font)
+			@image = @cairo_font.render_to_image(text, font, width, font_alignment)
 			drawn!
 		end
 		@image
