@@ -4,7 +4,7 @@ class ActorEffectDrawMethod < ActorEffect
 
 	categories :color
 
-	setting 'draw_method', :select, :options => DRAW_METHOD_OPTIONS, :summary => true
+	setting 'draw_method', :select, :options => DRAW_METHOD_OPTIONS, :default => DRAW_METHOD_OPTIONS.first.first, :summary => true
 
 	def render
 		with_pixel_combine_function(draw_method) {
