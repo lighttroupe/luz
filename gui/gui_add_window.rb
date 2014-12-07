@@ -100,7 +100,7 @@ private
 			fill_from_category!
 		}
 
-		self << (@search_label = GuiString.new(self, :search).set(:width => 20, :color => [1.0,1.0,0.0], :offset_x => @category_selector.offset_x, :offset_y => @category_selector.offset_y, :scale_x => @category_selector.scale_x, :scale_y => @category_selector.scale_y)).
+		self << (@search_label = GuiString.new(self, :search).set(:width => 20, :color => [1.0,1.0,0.0], :offset_x => -0.25 + 0.02, :scale_x => 0.5, :offset_y => @category_selector.offset_y, :scale_y => @category_selector.scale_y)).
 			add_state(:open, {:opacity => 1.0, :hidden => false}).
 			set_state(:closed, {:opacity => 0.0, :hidden => true})
 
