@@ -11,8 +11,8 @@ class GuiBeatLight < GuiObject
 
 	def gui_render!
 		with_color(on? ? $gui.view_color : BEAT_OFF_COLOR) {
-			with_scale(on? ? ($env[:beat_scale].scale(1.1, 1.0)) : 1.0) {
-				with_multiplied_alpha(on? ? ($env[:beat_scale].scale(1.0, 0.5)) : 0.0) {
+			with_scale(on? ? ($env[:beat_scale].scale(1.0, 0.9)) : 1.0) {
+				with_multiplied_alpha(on? ? ($env[:beat_scale].scale(1.0, 0.0)) : 0.0) {
 					background_image.using {
 						unit_square
 					}
