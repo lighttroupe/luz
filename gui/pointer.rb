@@ -211,8 +211,7 @@ private
 	end
 
 	def show_click_spot
-		i = $engine.load_image('images/mouse-click.png')
-		splash = GuiObject.new.set(:skip_hit_test => true, :background_image => i, :offset_x => x, :offset_y => y, :scale_x => 0.0, :scale_y => 0.0, :opacity => 1.0).animate({:scale_x => 0.05, :scale_y => 0.08, :opacity => 0.5}, 0.2) {
+		splash = GuiObject.new.set(:skip_hit_test => true, :background_image => $engine.load_image('images/mouse-click.png'), :offset_x => x, :offset_y => y, :scale_x => 0.0, :scale_y => 0.0, :opacity => 1.0).animate({:scale_x => 0.05, :scale_y => 0.08, :opacity => 0.5}, 0.2) {
 			splash.remove_from_parent!
 		}
 		$gui << splash
