@@ -210,7 +210,17 @@ private
 		!@click_time.nil? && (Time.now - @click_time) < 0.4
 	end
 
+	def show_click_spot
+		i = $engine.load_image('images/mouse-click.png')
+		splash = GuiObject.new.set(:background_image => i, :offset_x => x, :offset_y => y, :scale_x => 0.0, :scale_y => 0.0, :opacity => 1.0).animate({:scale_x => 0.05, :scale_y => 0.08, :opacity => 0.5}, 0.2) {
+			splash.remove_from_parent!
+		}
+		$gui << splash
+	end
+
 	def respond_to_click
+		show_click_spot	# if highlight_click?
+
 		#
 		# Pointer capture feature: all clicks go to the "capture object", which can uncapture via return value
 		#
