@@ -356,7 +356,7 @@ class GuiDefault < GuiInterface
 			close_actors_flyout!
 			default_focus!
 			true
-		elsif @user_object_editor && @user_object_editor.visible?
+		elsif (@user_object_editor && @user_object_editor.visible?) && close_user_object_editor_on_click?
 			clear_user_object_editor
 			default_focus!
 			true
@@ -620,6 +620,13 @@ class GuiDefault < GuiInterface
 
 	def cancel_keyboard_focus_for(object)
 		cancel_keyboard_focus! if has_keyboard_focus?(object)
+	end
+
+	#
+	# Preferences
+	#
+	def close_user_object_editor_on_click?
+		false		# TODO: per-pointer preference?
 	end
 
 	#
