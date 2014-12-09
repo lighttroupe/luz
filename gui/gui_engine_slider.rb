@@ -2,11 +2,11 @@ multi_require 'gui_list_select'
 multi_require 'gui_engine_slider_renderer'
 
 class GuiEngineSlider < GuiListSelect
-	VALUE_COLOR = [0.0, 0.0, 0.4, 0.8]
+	VALUE_COLOR = [0.2, 0.5, 0.2, 1.0]
 
 	def initialize(object, method)		# options is [[:one,'One'],[:two,'Two']]
 		super(object, method)
-		@selected_label = GuiLabel.new.set(:width => 20, :string => get_value, :scale_x => 0.9, :scale_y => 0.65)
+		@selected_label = GuiLabel.new.set(:width => 17, :string => get_value, :scale_x => 0.9, :scale_y => 0.65)
 		@item_aspect_ratio = 5.0
 	end
 
