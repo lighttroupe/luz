@@ -64,7 +64,9 @@ module MethodsForGuiObject
 		tick_animations!
 	end
 
+	easy_accessor :skip_hit_test
 	def hit_test_render!
+		return if skip_hit_test
 		with_positioning {
 			render_hit_test_unit_square
 		}
