@@ -69,6 +69,10 @@ class GuiBox < GuiObject
 		clear_selection!
 	end
 
+	def count
+		@contents.count
+	end
+
 	def contents=(contents)
 		unlink! if @contents
 		@contents = contents		# NOTE: points at list, doesn't copy it (list operations happen on the array we're showing)
