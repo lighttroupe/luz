@@ -3,6 +3,7 @@ class GuiDirectorMenu < GuiWindow
 		super()
 		create!
 		@grid.contents = contents
+		update_grid_size!
 	end
 
 	def create!
@@ -36,6 +37,7 @@ class GuiDirectorMenu < GuiWindow
 	def add_new_director!
 		director = Director.new
 		@grid << director
+		update_grid_size!
 		$gui.build_editor_for(director)
 		switch_state({:open => :closed}, duration=0.5)
 	end
@@ -66,5 +68,11 @@ class GuiDirectorMenu < GuiWindow
 		else
 			super
 		end
+	end
+
+private
+
+	def update_grid_size!
+		@grid.min_columns = (@grid.count > 9) ? 5 : 3
 	end
 end
