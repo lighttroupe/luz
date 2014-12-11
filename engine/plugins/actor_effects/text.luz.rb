@@ -19,6 +19,8 @@ class ActorEffectText < ActorEffect
 	setting 'border_left', :float, :default => 0.0..1.0, :range => -1000.0..1000.0, :on_change => :not_drawn!
 	setting 'border_top', :float, :default => 0.0..1.0, :range => -1000.0..1000.0, :on_change => :not_drawn!
 
+	setting 'lines', :integer, :default => 1..10, :range => 1..100, :on_change => :not_drawn!
+
 	boolean_accessor :drawn
 
 	def width
@@ -47,7 +49,7 @@ class ActorEffectText < ActorEffect
 	def render_text(font, text)
 		@cairo_font ||= CairoFont.new
 		unless drawn?
-			@image = @cairo_font.render_to_image(text, font, width, font_alignment)
+			@image = @cairo_font.render_to_image(text, font, width, lines, font_alignment)
 			drawn!
 		end
 		@image

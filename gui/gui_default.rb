@@ -146,6 +146,8 @@ class GuiDefault < GuiInterface
 				negative_message 'Save Failed'
 			end
 		}
+		#@main_menu.on_save_as {
+		#}
 		@main_menu.on_open {
 			choose_project_file { |path|
 				if $application.open_project(path)
@@ -564,7 +566,7 @@ class GuiDefault < GuiInterface
 	end
 
 	def pointer_double_click_on_nothing(pointer)
-		build_editor_for(@user_object, :grab_keyboard_focus => true) if @user_object
+		#build_editor_for(@user_object, :grab_keyboard_focus => true) if @user_object
 	end
 
 	def active_view
@@ -662,6 +664,10 @@ class GuiDefault < GuiInterface
 		box << GuiLabel.new.set(:offset_x => -0.25, :scale_x => 0.5, :offset_y => -0.30, :scale_y => 0.1, :string => 'LLLLL', :width => 10, :text_align => :left)
 		box << GuiLabel.new.set(:offset_x => -0.25, :scale_x => 0.3, :offset_y => -0.40, :scale_y => 0.1, :string => 'CCCCC', :width => 10, :text_align => :center)
 		box << GuiLabel.new.set(:offset_x => -0.25, :scale_x => 0.1, :offset_y => -0.50, :scale_y => 0.04, :string => 'RRRRR', :width => 10, :text_align => :right)
+
+		box << GuiLabel.new.set(:lines => 5, :width => 10, :text_align => :left, :offset_x => 0.25, :scale_x => 0.5, :offset_y => -0.35, :scale_y => 0.2, :string => 'Long text with multiple lines, whatever will it do when reaching the end?')
+		box << GuiLabel.new.set(:lines => 5, :width => 10, :text_align => :center, :offset_x => 0.25, :scale_x => 0.5, :offset_y => -0.55, :scale_y => 0.2, :string => 'Long text with multiple lines, whatever will it do when reaching the end?')
+		box << GuiLabel.new.set(:lines => 5, :width => 10, :text_align => :right, :offset_x => 0.25, :scale_x => 0.5, :offset_y => -0.75, :scale_y => 0.2, :string => 'Long text with multiple lines, whatever will it do when reaching the end?')
 
 		box
 	end

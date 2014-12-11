@@ -6,10 +6,10 @@
 class CairoFont
 	#easy_accessor :font, :string
 
-	def render_to_image(string, font, width_in_characters, text_align)
+	def render_to_image(string, font, width_in_characters, lines=1, text_align=:left)
 		@canvas ||= CairoCanvas.new(300, 150)		# TODO: appropriate size
 		@image ||= Image.new
-		render(string, font, size=1.0, width_in_characters, text_align)
+		render(string, font, size=1.0, width_in_characters, lines, text_align)
 		@image
 	end
 
@@ -20,11 +20,10 @@ class CairoFont
 
 private
 
-	def render(string, font, font_size, width_in_characters, text_align)
+	def render(string, font, font_size, width_in_characters, lines, text_align)
 		#line_spacing = 1.0		# TODO ?
 		border_left = 0.0
 		border_top = 0.0
-		lines = 1
 
 		@canvas.using { |context|
 			context.save
@@ -37,8 +36,7 @@ private
 
 					# "layout" - a Pango plan for rendering
 					layout = context.create_pango_layout
-					#layout.alignment = symbol_to_pango_align(alignment)
-					#layout.width = @canvas.width					# TODO: wrapping
+
 					#layout.spacing = line_spacing * Pango::SCALE					# TODO: line spacing
 
 					# build Pango font description
@@ -60,7 +58,7 @@ private
 						layout_width, layout_height = layout.pixel_size
 						context.scale(@canvas.width / layout_width.to_f, 0.85)
 					else
-						logical_width_in_pixels = width_in_characters * em_width
+						logical_width_in_pixels = width_in_characters * em_width		# how big we pretend the canvas is
 						actual_width_in_pixels = @canvas.width
 
 						#puts "em_width => #{em_width}, em_height => #{em_height}"
@@ -71,22 +69,28 @@ private
 
 						#puts "width_in_characters=#{width_in_characters}, horizontal_scale=#{horizontal_scale}"
 
+						# multi-line mode with word wrapping
+						if lines > 1
+							layout.wrap = Pango::WRAP_WORD
+							layout.width = actual_width_in_pixels.to_f * Pango::SCALE / horizontal_scale		# wrap at this width (in pango units)
+							layout.alignment = symbol_to_pango_align(text_align)
+						end
+
 						case text_align
 						when :left, nil		# default
 							# font is 1 tall, width is approx how many chars we can show
 							context.scale(horizontal_scale, vertical_scale)
-							#layout.width = @canvas.width
 							#layout.ellipsize = Pango::ELLIPSIZE_END
 						when :center
 							# Center layout assumes the string is smaller than the container
 							layout_width, layout_height = layout.pixel_size
 							free_space = (@canvas.width.to_f - (layout_width.to_f * horizontal_scale))		# NOTE: using final, post-scaled text width
-							context.move_to((free_space / 2.0), 0.0)		# if free_space > 0.0
+							context.move_to((free_space / 2.0), 0.0) if lines == 1
 							context.scale(horizontal_scale, vertical_scale)
 						when :right
 							layout_width, layout_height = layout.pixel_size
 							free_space = (@canvas.width.to_f - (layout_width.to_f * horizontal_scale))		# NOTE: using final, post-scaled text width
-							context.move_to(free_space, 0.0)
+							context.move_to(free_space, 0.0) if lines == 1
 							context.scale(horizontal_scale, vertical_scale)
 						else
 							raise "text_align = #{text_align}"
