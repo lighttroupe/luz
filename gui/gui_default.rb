@@ -665,9 +665,9 @@ class GuiDefault < GuiInterface
 		box << GuiLabel.new.set(:offset_x => -0.25, :scale_x => 0.3, :offset_y => -0.40, :scale_y => 0.1, :string => 'CCCCC', :width => 10, :text_align => :center)
 		box << GuiLabel.new.set(:offset_x => -0.25, :scale_x => 0.1, :offset_y => -0.50, :scale_y => 0.04, :string => 'RRRRR', :width => 10, :text_align => :right)
 
-		box << GuiLabel.new.set(:lines => 5, :width => 10, :text_align => :left, :offset_x => 0.25, :scale_x => 0.5, :offset_y => -0.35, :scale_y => 0.2, :string => 'Long text with multiple lines, whatever will it do when reaching the end?')
-		box << GuiLabel.new.set(:lines => 5, :width => 10, :text_align => :center, :offset_x => 0.25, :scale_x => 0.5, :offset_y => -0.55, :scale_y => 0.2, :string => 'Long text with multiple lines, whatever will it do when reaching the end?')
-		box << GuiLabel.new.set(:lines => 5, :width => 10, :text_align => :right, :offset_x => 0.25, :scale_x => 0.5, :offset_y => -0.75, :scale_y => 0.2, :string => 'Long text with multiple lines, whatever will it do when reaching the end?')
+		box << GuiLabel.new.set(:lines => 5, :width => 20, :text_align => :left, :offset_x => 0.25, :scale_x => 0.5, :offset_y => -0.35, :scale_y => 0.2, :string => '20x5 Here we have a left-aligned block of text supporting up to five lines of text.  It wraps on word boundaries.  This space intentionally not left blank.')
+		box << GuiLabel.new.set(:lines => 3, :width => 15, :text_align => :center, :offset_x => 0.25, :scale_x => 0.5, :offset_y => -0.55, :scale_y => 0.2, :string => 'Same size box, but now center-aligned and supporting only three lines.')
+		box << GuiLabel.new.set(:lines => 4, :width => 30, :color => [1,1,0], :text_align => :right, :font => 'FreeMono Bold Italic', :offset_x => 0.25, :scale_x => 0.5, :offset_y => -0.75, :scale_y => 0.2, :string => 'Labels have :color and :font settings, and support bold and italic text.  Labels are quite versatile!')
 
 		box
 	end
