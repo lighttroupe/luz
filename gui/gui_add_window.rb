@@ -113,7 +113,7 @@ private
 
 		self << (@title = GuiLabel.new.set({:width => 20, :string => '', :color => [0.7,0.7,0.9], :offset_x => 0.19, :offset_y => 0.3, :scale_x => 0.58, :scale_y => 0.1}))
 		self << (@description = GuiLabel.new.set({:width => 20, :lines => 3, :string => '', :color => [0.95,0.95,1.0], :offset_x => 0.19, :offset_y => 0.125, :scale_x => 0.58, :scale_y => 0.25}))
-		self << (@hint = GuiLabel.new.set({:width => 20, :lines => 3, :string => '', :color => [0.7,0.7,0.7], :offset_x => 0.19, :offset_y => -0.125, :scale_x => 0.58, :scale_y => 0.25}))
+		self << (@hint = GuiLabel.new.set({:width => 30, :lines => 3, :string => '', :color => [0.7,0.7,0.7], :offset_x => 0.19, :offset_y => -0.125, :scale_x => 0.58, :scale_y => 0.2}))
 
 		#
 		# Close
