@@ -73,6 +73,6 @@ class GuiDirectorMenu < GuiWindow
 private
 
 	def update_grid_size!
-		@grid.min_columns = (@grid.count > 9) ? 5 : 3
+		@grid.min_columns = (@grid.count > 9) ? (@grid.count > 16 ? 5 : 4) : 3
 	end
 end
