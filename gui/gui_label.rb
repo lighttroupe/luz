@@ -4,7 +4,7 @@ require 'gui_object'
 # GuiLabel is a piece of static text
 #
 class GuiLabel < GuiObject
-	easy_accessor :string, :width, :text_align, :lines
+	easy_accessor :string, :width, :text_align, :font, :lines
 
 	def string=(s)
 		return if @string == s
@@ -14,7 +14,7 @@ class GuiLabel < GuiObject
 
 	def gui_render!
 		@cairo_font ||= CairoFont.new
-		@image ||= @cairo_font.render_to_image(string, $gui.gui_font, width || 1, lines || 1, text_align)
+		@image ||= @cairo_font.render_to_image(string, font || $gui.gui_font, width || 1, lines || 1, text_align)
 
 		with_positioning {
 			#with_color([0,0.2,0.2]) { unit_square }
