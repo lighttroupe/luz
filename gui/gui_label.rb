@@ -6,6 +6,12 @@ require 'gui_object'
 class GuiLabel < GuiObject
 	easy_accessor :string, :width, :text_align, :font, :lines
 
+	callback :clicked
+
+	def click(pointer)
+		clicked_notify(pointer)
+	end
+
 	def string=(s)
 		return if @string == s
 		@string = s
