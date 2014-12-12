@@ -44,7 +44,7 @@ class GuiFileDialog < GuiBox
 
 	def add_files
 		@files.each { |filename|
-			@directory_list << (renderer = GuiTextRenderer.new(filename).set(:label_color => FILE_COLOR))
+			@directory_list << (renderer = GuiLabel.new.set(:string => filename, :color => FILE_COLOR))
 			renderer.on_clicked { notify_for_filename(filename) }
 		}
 	end

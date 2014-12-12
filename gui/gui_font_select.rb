@@ -8,7 +8,7 @@ class GuiFontSelect < GuiListSelect
 
 	def list
 		$gui_font_select_options ||= build_available_font_family_list
-		$gui_font_select_options.map { |name| GuiTextRenderer.new(name).set(:width => 15) }
+		$gui_font_select_options.map { |name| GuiLabel.new.set(:string => name, :width => 15) }
 	end
 
 	def build_available_font_family_list
@@ -22,7 +22,7 @@ class GuiFontSelect < GuiListSelect
 	end
 
 	def set_value(value)
-		super(value.text)
+		super(value.string)
 	end
 
 	#
