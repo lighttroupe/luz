@@ -37,7 +37,7 @@ class GuiFileDialog < GuiBox
 
 	def add_directories
 		@directories.each { |filename|
-			@directory_list << (renderer = GuiTextRenderer.new(filename).set(:width => 20, :label_color => DIRECTORY_COLOR))
+			@directory_list << (renderer = GuiLabel.new.set(:string => filename, :width => 20, :color => DIRECTORY_COLOR))
 			renderer.on_clicked { show_for_path(File.join(@path, filename)) }
 		}
 	end
