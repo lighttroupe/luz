@@ -21,6 +21,7 @@ class GuiDefault < GuiInterface
 
 	def initialize
 		super
+		preload_images
 		create!
 		positive_message('Welcome to Luz 2.0')
 		@gui_alpha = 0.95
@@ -34,6 +35,10 @@ class GuiDefault < GuiInterface
 	def reload_notify
 		clear!
 		create!
+	end
+
+	def preload_images
+		File.read('gui/preload-images').split("\n").each { |path| $engine.load_image(path) }
 	end
 
 	#
