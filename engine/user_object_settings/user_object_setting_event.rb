@@ -1,11 +1,11 @@
 require 'user_object_setting'
 
 class UserObjectSettingEvent < UserObjectSetting
+	attr_accessor :event
+
 	def to_yaml_properties
 		super + ['@event']
 	end
-
-	attr_reader :event
 
 	def now?
 		@event ? (@event.do_value == true) : false

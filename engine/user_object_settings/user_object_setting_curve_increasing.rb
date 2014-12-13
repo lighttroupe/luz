@@ -15,4 +15,3 @@ class UserObjectSettingCurveIncreasing < UserObjectSetting
 		@curve
 	end
 end
-

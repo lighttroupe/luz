@@ -18,4 +18,3 @@ class UserObjectSettingTheme < UserObjectSetting
 		summary_format(@theme.title) if @theme
 	end
 end
-

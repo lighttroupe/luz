@@ -5,13 +5,9 @@ class UserObjectSettingDirector < UserObjectSetting
 		super + ['@director']
 	end
 
-	def one
-		yield @director if @director
-	end
-
 	def render
 		one { |director|
-			if (@enable_render_on_actor and @render_on_actor)
+			if (@enable_render_on_actor && @render_on_actor)
 				with_offscreen_buffer { |buffer|
 					# save future actor renders to buffer
 					buffer.using {
@@ -27,6 +23,10 @@ class UserObjectSettingDirector < UserObjectSetting
 				director.render!
 			end
 		}
+	end
+
+	def one
+		yield @director if @director
 	end
 
 	def summary

@@ -18,4 +18,3 @@ class UserObjectSettingCurve < UserObjectSetting
 		summary_format(@curve.title) if @curve
 	end
 end
-
