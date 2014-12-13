@@ -20,10 +20,9 @@ class GuiEngineSlider < GuiListSelect
 	end
 
 	def gui_render!
-		value = $engine.slider_value(get_value)
 		with_gui_object_properties {
 			with_color(VALUE_COLOR) {
-				render_progress_bar_with_cache(value)
+				render_progress_bar_with_cache($engine.slider_value(get_value))
 			}
 			@selected_label.gui_render!
 		}
