@@ -1,3 +1,11 @@
+class UserObjectSettingFloat
+	attr_accessor :min, :max, :enable_enter_animation, :enable_exit_animation, :options
+
+	def gui_build_editor
+		UserObjectSettingFloatRenderer.new(self)
+	end
+end
+
 class UserObjectSettingRenderer < GuiBox
 	def create_user_object_setting_name_label
 		@name_label ||= GuiLabel.new.set(:width => 15, :string => @setting.name.gsub('_',' '), :color => [1.0,1.0,1.0,1.0], :scale_x => 0.5, :scale_y => 0.35, :offset_x => -0.25, :offset_y => 0.53)
@@ -95,13 +103,5 @@ private
 			}
 		end
 		@vbox << row
-	end
-end
-
-class UserObjectSettingFloat
-	attr_accessor :min, :max, :enable_enter_animation, :enable_exit_animation, :options
-
-	def gui_build_editor
-		UserObjectSettingFloatRenderer.new(self)
 	end
 end
