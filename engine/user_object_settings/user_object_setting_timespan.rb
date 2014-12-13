@@ -12,8 +12,9 @@ class UserObjectSettingTimespan < UserObjectSetting
 		@time_unit ||= (@options[:default] ? @options[:default][1] : (:seconds))
 	end
 
-	attr_reader :time_number, :time_unit
-
+	#
+	# ...
+	#
 	def instant?
 		@time_number == 0
 	end
@@ -28,7 +29,7 @@ class UserObjectSettingTimespan < UserObjectSetting
 		elapsed = $env[:time] - time
 		elapsed = elapsed.abs		# NOTE: progress backwards in time works just as well
 
-		return (elapsed / self.to_seconds).clamp(0.0, 1.0)
+		(elapsed / self.to_seconds).clamp(0.0, 1.0)
 	end
 
 	def delta
