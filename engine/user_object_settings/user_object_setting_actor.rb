@@ -3,7 +3,11 @@ require 'user_object_setting'
 class UserObjectSettingActor < UserObjectSetting
 	include Drawing
 
+	HANDLE_POSITION = 1
+	GRAB_DISTANCE = 5
+
 	attr_accessor :x, :y, :z
+
 	def to_yaml_properties
 		super + ['@actor', '@x', '@y', '@z']
 	end
@@ -11,15 +15,6 @@ class UserObjectSettingActor < UserObjectSetting
 	def after_load
 		set_default_instance_variables(:x => 0.0, :y => 0.0, :z => 0.0)
 		super
-	end
-
-	HANDLE_POSITION = 1
-	def handle_drag_scroll_up(handle_id)
-		@z = ((@z - 0.1) * 10.0).round / 10.0
-	end
-
-	def handle_drag_scroll_down(handle_id)
-		@z = ((@z + 0.1) * 10.0).round / 10.0
 	end
 
 	def draw_hit_test_handles
@@ -30,7 +25,6 @@ class UserObjectSettingActor < UserObjectSetting
 		}
 	end
 
-	GRAB_DISTANCE = 5
 	def draw_handles
 		GL.PushAll {
 			GL.LineWidth(4.0)
