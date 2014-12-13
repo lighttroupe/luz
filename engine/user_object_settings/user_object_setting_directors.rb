@@ -6,9 +6,9 @@ class UserObjectSettingDirectors < UserObjectSetting
 	#
 	def one(index=0)
 		list = get_directors
-		return nil if list.empty?		# NOTE: return without yielding
+		return if list.empty?		# NOTE: doesn't yield
 
-		selection = list[index % list.size]		# NOTE: nicely wraps around at both edges
+		selection = list[index % list.size]		# NOTE: wraps at both edges
 		yield selection if block_given?
 		selection
 	end
