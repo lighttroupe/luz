@@ -10,7 +10,6 @@ class UserObjectSettingTheme < UserObjectSetting
 		super
 	end
 
-	# enter and exit times are in engine-time (seconds, float)
 	def immediate_value
 		@theme
 	end
