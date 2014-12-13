@@ -39,10 +39,6 @@ class UserObject
 		end
 	end
 
-	def create_something!
-		open_add_child_window!
-	end
-
 	def open_add_child_window!
 		@add_child_window.grab_keyboard_focus!
 		@add_child_window.switch_state({:closed => :open}, duration=0.2)

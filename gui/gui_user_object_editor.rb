@@ -10,10 +10,6 @@ class GuiUserObjectEditor < GuiWindow
 		set(options)
 	end
 
-	def create_something!
-		@user_object.create_something!
-	end
-
 	def on_key_press(key)
 		if key == 'n' && key.control?
 			@user_object.open_add_child_window!
