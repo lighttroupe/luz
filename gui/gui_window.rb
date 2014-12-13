@@ -19,4 +19,10 @@ class GuiWindow < GuiBox
 	def closed?
 		!open?
 	end
+
+	# scroll wheel over a window shouldn't leak to the background
+	def scroll_up!(pointer) ; end
+	def scroll_down!(pointer) ; end
+	def scroll_left!(pointer) ; end
+	def scroll_right!(pointer) ; end
 end
