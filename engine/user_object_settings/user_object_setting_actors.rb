@@ -1,15 +1,6 @@
 require 'user_object_setting'
 
 class UserObjectSettingActors < UserObjectSetting
-	def to_yaml_properties
-		super		# TODO
-	end
-
-	def after_load
-		# TODO set_default_instance_variables(...)
-		super
-	end
-
 	#
 	# API for plugins
 	#
