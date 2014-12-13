@@ -23,9 +23,11 @@ class Actor
 	end
 
 	def gui_tick!
-		init_offscreen_buffer
+		init_offscreen_buffer unless @offscreen_buffer
 		update_offscreen_buffer! if update_offscreen_buffer?
 	end
+
+private
 
 	def update_offscreen_buffer?
 		true		# pointer_hovering?
