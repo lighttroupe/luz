@@ -2,7 +2,7 @@
 # Hit testing is used for finding the object under the mouse cursor.  It works by rendering each object with a unique color, then reading back the pixel under the cursor.
 #
 module DrawingHitTesting
-	HIT_TEST_INCREMENT = 1		# always 1 (useful to change this value when testing visually)
+	HIT_TEST_INCREMENT = 1		# (only useful to change this value when testing visually)
 
 	# Enable and initialize hit-testing mode
 	def with_hit_testing
@@ -24,7 +24,6 @@ module DrawingHitTesting
 
 	def next_hit_test_id
 		$hit_test_id += HIT_TEST_INCREMENT
-		return $hit_test_id
 	end
 
 	def with_unique_hit_test_color_for_object(object, user_data_integer=0)
@@ -45,6 +44,6 @@ module DrawingHitTesting
 	def hit_test_object_at(x, y)		# pixel coordinates
 		color = glReadPixels(x, y, 1, 1, GL_RGB, GL_UNSIGNED_BYTE).unpack("CCC")
 		object = $hit_test_options[[color[0], color[1]]]
-		return [object, color[1]]
+		[object, color[1]]
 	end
 end
