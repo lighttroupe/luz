@@ -8,7 +8,7 @@ class Theme
 		box << (@add_button=GuiButton.new.set(:scale_x => 0.075, :scale_y => 0.15, :offset_x => -0.5, :offset_y => 0.5, :background_image => $engine.load_image('images/buttons/menu.png')))
 		@add_button.on_clicked {
 			effects << Style.new
-			GL.DestroyList(@gui_render_styles_list) ; @gui_render_styles_list = nil
+			clear_render_styles_cache!
 		}
 		box
 	end
@@ -18,15 +18,15 @@ class Theme
 	#
 	def gui_render!
 		gui_render_styles
-
-		# Label and shading effect
-		if pointer_hovering?
-			# TODO: draw darkening layer
-			gui_render_label
-		end
+		gui_render_label if pointer_hovering?
 	end
 
 private
+
+	def clear_render_styles_cache!
+		GL.DestroyList(@gui_render_styles_list)
+		@gui_render_styles_list = nil
+	end
 
 	def gui_render_styles
 		@gui_render_styles_list = GL.RenderCached(@gui_render_styles_list) {
