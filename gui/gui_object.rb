@@ -73,7 +73,7 @@ module MethodsForGuiObject
 	end
 
 	def render_hit_test_unit_square
-		with_unique_hit_test_color_for_object(self, 0) {
+		with_unique_hit_test_color_for_object(self) {
 			unit_square
 		}
 	end

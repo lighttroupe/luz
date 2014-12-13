@@ -234,7 +234,7 @@ class UserObject
 	end
 
 	def hit_test_render!
-		with_unique_hit_test_color_for_object(self, 0) { unit_square }
+		with_unique_hit_test_color_for_object(self) { unit_square }
 	end
 
 	#

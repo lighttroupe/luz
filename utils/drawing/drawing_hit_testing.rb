@@ -41,6 +41,8 @@ module DrawingHitTesting
 		hit_test_object_at(x_index, y_index)
 	end
 
+private
+
 	def hit_test_object_at(x, y)		# pixel coordinates
 		color = glReadPixels(x, y, 1, 1, GL_RGB, GL_UNSIGNED_BYTE).unpack("CCC")
 		object = $hit_test_options[[color[0], color[1]]]
