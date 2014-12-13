@@ -1,17 +1,8 @@
 class Actor
 	ACTOR_COLOR = [1,1,1,1]
 
-	def background_image
-		@background_image ||= $engine.load_image('images/actor-background.png').set_texture_options(:no_smoothing => true)
-	end
-
 	def gui_render!
 		with_gui_object_properties {
-
-			# Checkerboard background
-			#background_image.using {
-				#unit_square
-			#}
 
 			# Render as cached image
 			with_color(ACTOR_COLOR) {
@@ -44,11 +35,7 @@ class Actor
 	# ...
 	#
 	def init_offscreen_buffer
-		@offscreen_buffer ||= get_offscreen_buffer(framebuffer_image_size)
-	end
-
-	def framebuffer_image_size
-		:medium		# see drawing_framebuffer_objects.rb
+		@offscreen_buffer ||= get_offscreen_buffer(:medium)
 	end
 
 	def with_image
