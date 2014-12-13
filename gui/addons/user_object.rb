@@ -13,6 +13,20 @@ class UserObject
 
 	SHAKE_DISTANCE = 0.007
 
+	#
+	# Class level
+	#
+	extend Drawing
+	def self.gui_render_label
+		with_color(LABEL_COLOR) {
+			@@class_title_label ||= Hash.new { |hash, key| hash[key] = GuiLabel.new.set(:width => 10, :string => key, :scale_x => 0.95, :scale_y => USER_OBJECT_TITLE_HEIGHT) }
+			@@class_title_label[title].gui_render!
+		}
+	end
+
+	#
+	# Instance level
+	#
 	def grab_keyboard_focus!
 		effects_list_grab_focus!
 	end
@@ -107,12 +121,6 @@ class UserObject
 		end
 	end
 
-	def build_add_child_window_for_pointer(pointer)
-		@add_window ||= 
-		@add_window.switch_state(:closed => :open)
-		@add_window
-	end
-
 	def remove_selected
 		@gui_effects_list.selection.each { |object|
 			effects.delete(object)
@@ -168,12 +176,8 @@ class UserObject
 		}
 	end
 
-	def has_settings_list?
-		!@gui_settings_list.nil?
-	end
-
 	#
-	# Draggable
+	# Dragging
 	#
 	def draggable?
 		true		# needed for list reordering
@@ -205,30 +209,6 @@ class UserObject
 		end
 	end
 
-	def gui_render_label_internal
-		with_color(label_color) {
-			@title_label ||= GuiLabel.new.set(:width => 10)		#.set(:scale_x => 0.95, :scale_y => USER_OBJECT_TITLE_HEIGHT)
-			@title_label.string = title
-			@title_label.gui_render!
-
-			#if pointer_hovering?
-				#@title_label.gui_render!
-			#else
-				#with_vertical_clip_plane_right_of(0.5) {
-					#@title_label.gui_render!
-				#}
-			#end
-		}
-	end
-
-	extend Drawing
-	def self.gui_render_label
-		with_color(LABEL_COLOR) {
-			@@class_title_label ||= Hash.new { |hash, key| hash[key] = GuiLabel.new.set(:width => 10, :string => key, :scale_x => 0.95, :scale_y => USER_OBJECT_TITLE_HEIGHT) }
-			@@class_title_label[title].gui_render!
-		}
-	end
-
 	def hit_test_render!
 		with_unique_hit_test_color_for_object(self) { unit_square }
 	end
@@ -238,7 +218,6 @@ class UserObject
 	#
 	def click(pointer)
 		$gui.build_editor_for(self, :pointer => pointer, :grab_keyboard_focus => true)
-
 		@parent.child_click(pointer) if @parent
 	end
 
@@ -247,11 +226,15 @@ class UserObject
 		@gui_effects_list.set_selection(user_object) if @gui_effects_list
 	end
 
-	#
-	# Helpers
-	#
-
 private
+
+	def gui_render_label_internal
+		with_color(label_color) {
+			@title_label ||= GuiLabel.new.set(:width => 10)		#.set(:scale_x => 0.95, :scale_y => USER_OBJECT_TITLE_HEIGHT)
+			@title_label.string = title
+			@title_label.gui_render!
+		}
+	end
 
 	def label_color
 		if crashy?

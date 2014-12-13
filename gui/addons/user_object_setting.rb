@@ -4,9 +4,10 @@
 class UserObjectSetting
 	include GuiPointerBehavior
 	BACKGROUND_COLOR = [1,1,0,0.5]
+	NOT_IMPLEMENTED_COLOR = [1,0,1,1]
 
 	def gui_build_editor
-		GuiObject.new.set(:color => [1,0,1,1])		# default render, purple "not implemented yet" debugging aid
+		GuiObject.new.set(:color => NOT_IMPLEMENTED_COLOR)		# override
 	end
 
 	def create_user_object_setting_name_label

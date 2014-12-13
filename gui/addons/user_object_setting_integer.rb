@@ -22,4 +22,3 @@ class UserObjectSettingInteger
 		@animation_min = (@animation_min - 1).clamp(@min, @max)
 	end
 end
-
