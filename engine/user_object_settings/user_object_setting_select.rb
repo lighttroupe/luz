@@ -15,7 +15,7 @@ class UserObjectSettingSelect < UserObjectSetting
 	end
 
 	def find_selected_option
-		@options[:options].find { |o| o.first == @selected }		# format: [[:sym, 'name'], ...]
+		@options[:options].find { |o| o.first == @selected }		# format is [[:symbol, 'name'], ...]
 	end
 
 	def summary
