@@ -4,7 +4,6 @@ class UserObjectSettingFloat < UserObjectSettingNumeric
 	attr_reader :last_value
 
 	DEFAULT_RANGE = (-1000.0..1000.0)
-	DEFAULT_RANGE_POSITIVE = (0.0..1000.0)
 
 	ACTIVATION_DIRECTION_OPTIONS = [[:to, 'to'], [:from, 'from']]
 
@@ -18,46 +17,21 @@ class UserObjectSettingFloat < UserObjectSettingNumeric
 	def after_load
 		super
 
-		@options[:range] = DEFAULT_RANGE_POSITIVE if @options[:range] == :positive
-		@options[:range] = DEFAULT_RANGE if @options[:range].nil?
-
+		# range is the hard limit: we won't return values outside the range
+		@options[:range] ||= DEFAULT_RANGE
 		@min ||= @options[:range].first
 		@max ||= @options[:range].last
 
 		@options[:default] ||= @options[:range]
-
 		@animation_min ||= @options[:default].first.clamp(@min, @max)
 		@animation_max ||= @options[:default].last.clamp(@min, @max)
 
 		@enter_curve ||= $engine.project.curves.first
-		@exit_curve ||= $engine.project.curves.first
-		@animation_curve ||= $engine.project.curves.first
-		@activation_curve ||= $engine.project.curves.first
+		@exit_curve ||= @enter_curve
+		@animation_curve ||= @enter_curve
+		@activation_curve ||= @enter_curve
 
-		set_default_instance_variables(
-			:enable_enter_animation => false,
-			:enter_value => (0.0).clamp(@min, @max),
-			:enable_animation => false,
-			:animation_repeat_number => 4,
-			:animation_repeat_unit => :beats,
-			:enable_exit_animation => false,
-			:exit_value => (0.0).clamp(@min, @max),
-			:enable_activation => false,
-			:activation_direction => :to,
-			:activation_value => (1.0).clamp(@min, @max),
-			:activation_variable => nil)
-	end
-
-	def animation_progress(enter_time, enter_beat)
-		case @animation_repeat_unit
-		when :seconds, :minutes, :hours
-			duration = unit_and_number_to_time(@animation_repeat_unit, @animation_repeat_number)
-			(($env[:time] - enter_time) % duration) / duration
-		when :beats
-			(($env[:beat] - enter_beat) % @animation_repeat_number) / @animation_repeat_number
-		else
-			raise "unhandled animation_repeat_unit '#{@animation_repeat_unit}'"
-		end
+		set_default_instance_variables(:enable_enter_animation => false, :enter_value => (0.0).clamp(@min, @max), :enable_animation => false, :animation_repeat_number => 4, :animation_repeat_unit => :beats, :enable_exit_animation => false, :exit_value => (0.0).clamp(@min, @max), :enable_activation => false, :activation_direction => :to, :activation_value => (1.0).clamp(@min, @max), :activation_variable => nil)
 	end
 
 	def immediate_value
@@ -98,10 +72,24 @@ class UserObjectSettingFloat < UserObjectSettingNumeric
 	end
 
 	def uses_enter?
-		@enable_enter_animation && @enter_curve
+		@enable_enter_animation && !@enter_curve.nil?
 	end
 
 	def uses_exit?
-		@enable_exit_animation && @exit_curve
+		@enable_exit_animation && !@exit_curve.nil?
+	end
+
+private
+
+	def animation_progress(enter_time, enter_beat)
+		case @animation_repeat_unit
+		when :seconds, :minutes, :hours
+			duration = unit_and_number_to_time(@animation_repeat_unit, @animation_repeat_number)
+			(($env[:time] - enter_time) % duration) / duration
+		when :beats
+			(($env[:beat] - enter_beat) % @animation_repeat_number) / @animation_repeat_number
+		else
+			raise "unhandled animation_repeat_unit '#{@animation_repeat_unit}'"
+		end
 	end
 end
