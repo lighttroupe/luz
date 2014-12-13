@@ -10,7 +10,7 @@ class ActorEffectImageOfActor < ActorEffect
 		with_offscreen_buffer { |buffer|
 			# draw chosen actor to texture
 			buffer.using {
-				actor.one { |actor| actor.render! }
+				actor.one { |actor| actor.render }
 			}
 
 			# continue effect chain with this buffer
