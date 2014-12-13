@@ -8,9 +8,6 @@ class Curve
 
 	POINTS_IN_ICON = 200
 
-	#
-	# API
-	#
 	def gui_build_editor
 		GuiObjectRenderer.new(self)
 	end
