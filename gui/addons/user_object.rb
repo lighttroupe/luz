@@ -213,6 +213,9 @@ class UserObject
 		with_unique_hit_test_color_for_object(self) { unit_square }
 	end
 
+	def gui_tick! ; end
+	def self.gui_tick! ; end
+
 	#
 	# Pointer
 	#
