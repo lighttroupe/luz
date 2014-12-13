@@ -1,51 +1,24 @@
 #
 # GuiEngineSliderText wraps a single String representing a "slider" value from the engine, eg "Mouse 01 / X"
 #
-class GuiEngineSliderRenderer < GuiObject
+class GuiEngineSliderRenderer < GuiLabel
 	VALUE_COLOR = [0.0, 0.0, 0.4, 0.8]
 
-	attr_reader :text
-
-	callback :clicked
-
-	def initialize(text)
-		@text = text
+	def initialize(slider_name)
+		@string = slider_name		# @string is what GuiLabel wants
+		set(:width => 15)
 	end
 
 	def to_s
-		@text
-	end
-
-	def click(pointer)
-		clicked_notify(pointer)
+		@string
 	end
 
 	def gui_render!
 		with_gui_object_properties {
-			render_bar($engine.slider_value(@text))
-
-			with_color(label_color) {
-				@label ||= GuiLabel.new.set(:width => 15, :string => @text, :scale_x => 0.9, :scale_y => 0.65)
-				@label.gui_render!
+			with_color_listsafe(VALUE_COLOR) {
+				render_progress_bar_with_cache($engine.slider_value(@string))
 			}
+			super			# normal label
 		}
-	end
-
-private
-
-	def render_bar(value)
-		if value > 0.0
-			with_translation(-0.5 + value/2.0, 0.0) {
-				with_scale_unsafe(value, 1.0) {
-					with_color_listsafe(VALUE_COLOR) {
-						unit_square
-					}
-				}
-			}
-		end
-	end
-
-	def label_color
-		[1,1,1]
 	end
 end
