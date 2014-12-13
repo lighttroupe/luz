@@ -4,6 +4,11 @@ class Director
 
 	ENTER_EXIT_PROGESS_COLOR = [1.0,1.0,0.0,0.8]
 
+	def gui_tick!
+		init_offscreen_buffer unless @offscreen_buffer
+		update_offscreen_buffer! if update_offscreen_buffer?
+	end
+
 	def gui_render!
 		with_gui_object_properties {
 			# Render as cached image
@@ -24,6 +29,9 @@ class Director
 		}
 	end
 
+	#
+	# pointer
+	#
 	def click(pointer)
 		if selected?
 			super
@@ -34,17 +42,22 @@ class Director
 	end
 
 	def scroll_down!(pointer)
-		#clear_animations_for_field!(:gui_enter_exit_progress)
 		@gui_enter_exit_progress = (@gui_enter_exit_progress - 0.1).clamp(0.0,1.0)
 	end
 	def scroll_up!(pointer)
-		#clear_animations_for_field!(:gui_enter_exit_progress)
 		@gui_enter_exit_progress = (@gui_enter_exit_progress + 0.1).clamp(0.0,1.0)
 	end
 
-	def gui_tick!
-		init_offscreen_buffer
-		update_offscreen_buffer! if update_offscreen_buffer?
+	#
+	# cached rendering (for live previews)
+	#
+	def init_offscreen_buffer
+		@gui_enter_exit_progress ||= 0.5
+		@offscreen_buffer ||= get_offscreen_buffer(:medium)
+	end
+
+	def with_image
+		@offscreen_buffer.with_image { yield } if @offscreen_buffer		# otherwise doesn't yield
 	end
 
 	def update_offscreen_buffer?
@@ -53,18 +66,8 @@ class Director
 		if @countdown == 0
 			pointer_hovering? || selected?
 		else
-			($env[:frame_number] % $engine.project.directors.count) == index
 			@countdown -= 1
 		end
-	end
-
-	def init_offscreen_buffer
-		@gui_enter_exit_progress ||= 0.5
-		@offscreen_buffer ||= get_offscreen_buffer(:medium)
-	end
-
-	def with_image
-		@offscreen_buffer.with_image { yield } if @offscreen_buffer		# otherwise doesn't yield
 	end
 
 	def update_offscreen_buffer!
