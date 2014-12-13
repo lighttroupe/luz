@@ -4,7 +4,7 @@ class UserObjectSettingTimespan < UserObjectSetting
 	attr_accessor :time_number, :time_unit
 
 	def to_yaml_properties
-		['@time_number', '@time_unit'] + super
+		super + ['@time_number', '@time_unit']
 	end
 
 	def after_load

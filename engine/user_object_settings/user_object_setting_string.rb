@@ -11,4 +11,3 @@ class UserObjectSettingString < UserObjectSetting
 		@string.to_s
 	end
 end
-

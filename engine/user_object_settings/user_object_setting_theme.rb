@@ -2,7 +2,7 @@ require 'user_object_setting'	#,'theme_combobox'
 
 class UserObjectSettingTheme < UserObjectSetting
 	def to_yaml_properties
-		['@theme'] + super
+		super + ['@theme']
 	end
 
 	def after_load

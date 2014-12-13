@@ -4,7 +4,7 @@ class UserObjectSettingVariable < UserObjectSetting
 	attr_reader :variable
 
 	def to_yaml_properties
-		['@variable'] + super
+		super + ['@variable']
 	end
 
 	def immediate_value
