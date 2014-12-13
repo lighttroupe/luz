@@ -23,11 +23,6 @@ class UserObjectSettingEvent < UserObjectSetting
 		@event ? @event.count : 0
 	end
 
-	# 
-	def with_value(value, &proc)
-		@event ? @event.with_value(value, &proc) : yield
-	end
-
 	def summary
 		summary_format(@event.title) if @event
 	end

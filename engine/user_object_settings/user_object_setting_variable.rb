@@ -15,10 +15,6 @@ class UserObjectSettingVariable < UserObjectSetting
 		@variable ? @variable.last_value : 0.0
 	end
 
-	def with_value(value, &proc)
-		@variable ? @variable.with_value(value, &proc) : yield
-	end
-
 	def summary
 		summary_format(@variable.title) if @variable
 	end
