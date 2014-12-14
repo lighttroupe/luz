@@ -236,10 +236,14 @@ private
 
 	def gui_render_label_internal
 		with_color(label_color) {
-			@title_label ||= GuiLabel.new.set(:width => 10)		#.set(:scale_x => 0.95, :scale_y => USER_OBJECT_TITLE_HEIGHT)
+			@title_label ||= GuiLabel.new.set(:width => label_ems)		#.set(:scale_x => 0.95, :scale_y => USER_OBJECT_TITLE_HEIGHT)
 			@title_label.string = title
 			@title_label.gui_render!
 		}
+	end
+
+	def label_ems
+		10
 	end
 
 	def label_color

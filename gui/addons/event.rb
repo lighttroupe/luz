@@ -4,11 +4,15 @@ class Event
 
 	def gui_render!
 		gui_render_background
-		gui_render_on_off_state
 		gui_render_label
+		gui_render_on_off_state
 	end
 
 private
+
+	def label_ems
+		8
+	end
 
 	def gui_render_on_off_state
 		with_translation(0.5 - 0.08, 0.0) {
