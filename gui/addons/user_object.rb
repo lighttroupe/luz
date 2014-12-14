@@ -9,7 +9,7 @@ class UserObject
 	LABEL_COLOR_EVENT_OFF = [1,1,0,0.35]
 	LABEL_COLOR_DISABLED = [1,1,1,0.35]
 	LABEL_COLOR = [1,1,1,1]
-	USER_OBJECT_TITLE_HEIGHT = 0.65
+	USER_OBJECT_TITLE_HEIGHT = 1.0
 
 	SHAKE_DISTANCE = 0.007
 
@@ -19,7 +19,7 @@ class UserObject
 	extend Drawing
 	def self.gui_render_label
 		with_color(LABEL_COLOR) {
-			@@class_title_label ||= Hash.new { |hash, key| hash[key] = GuiLabel.new.set(:width => 10, :string => key, :scale_x => 0.95, :scale_y => USER_OBJECT_TITLE_HEIGHT) }
+			@@class_title_label ||= Hash.new { |hash, key| hash[key] = GuiLabel.new.set(:width => 14, :string => key, :scale_x => 0.95, :scale_y => USER_OBJECT_TITLE_HEIGHT) }
 			@@class_title_label[title].gui_render!
 		}
 	end
@@ -236,14 +236,14 @@ private
 
 	def gui_render_label_internal
 		with_color(label_color) {
-			@title_label ||= GuiLabel.new.set(:width => label_ems)		#.set(:scale_x => 0.95, :scale_y => USER_OBJECT_TITLE_HEIGHT)
+			@title_label ||= GuiLabel.new.set(:width => label_ems, :scale_y => USER_OBJECT_TITLE_HEIGHT)
 			@title_label.string = title
 			@title_label.gui_render!
 		}
 	end
 
 	def label_ems
-		10
+		12
 	end
 
 	def label_color
