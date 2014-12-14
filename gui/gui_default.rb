@@ -662,9 +662,9 @@ class GuiDefault < GuiInterface
 		box << GuiLabel.new.set(:offset_x => -0.25, :scale_x => 0.5, :offset_y => 0.125, :scale_y => 0.25, :string => 'center', :width => 10, :text_align => :center)
 		box << GuiLabel.new.set(:offset_x => -0.25, :scale_x => 0.5, :offset_y => -0.125, :scale_y => 0.25, :string => 'right', :width => 10, :text_align => :right)
 
-		box << GuiLabel.new.set(:offset_x => 0.25, :scale_x => 0.5, :offset_y => 0.5-0.125, :scale_y => 0.25, :string => 'width:fill', :width => :fill)
-		box << GuiLabel.new.set(:offset_x => 0.25, :scale_x => 0.5, :offset_y => 0.125, :scale_y => 0.25, :string => 'slightly longer text', :width => :fill)
-		box << GuiLabel.new.set(:offset_x => 0.25, :scale_x => 0.5, :offset_y => -0.125, :scale_y => 0.25, :string => 'long text will squish to fit', :width => :fill)
+		box << GuiLabel.new.set(:offset_x => 0.25, :scale_x => 0.5, :offset_y => 0.5-0.125, :scale_y => 0.25, :string => 'width:fill', :width => 6, :text_align => :fill)
+		box << GuiLabel.new.set(:offset_x => 0.25, :scale_x => 0.5, :offset_y => 0.125, :scale_y => 0.25, :string => 'slightly longer text', :width => 6, :text_align => :fill)
+		box << GuiLabel.new.set(:offset_x => 0.25, :scale_x => 0.5, :offset_y => -0.125, :scale_y => 0.25, :string => 'long text will squish to fit', :width => 6, :text_align => :fill)
 
 		box << GuiLabel.new.set(:offset_x => -0.25, :scale_x => 0.5, :offset_y => -0.30, :scale_y => 0.1, :string => 'LLLLL', :width => 10, :text_align => :left)
 		box << GuiLabel.new.set(:offset_x => -0.25, :scale_x => 0.3, :offset_y => -0.40, :scale_y => 0.1, :string => 'CCCCC', :width => 10, :text_align => :center)

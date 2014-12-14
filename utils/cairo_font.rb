@@ -7,8 +7,7 @@ class CairoFont
 	#easy_accessor :font, :string
 
 	def render_to_image(string, font, width_in_characters, lines=1, text_align=:left)
-		canvas_width_in_pixels = width_in_characters == :fill ? 200 : 24 * width_in_characters
-		@canvas ||= CairoCanvas.new(canvas_width_in_pixels, 150)		# HACK: arbitrary pixel size
+		@canvas ||= CairoCanvas.new(24 * width_in_characters, 150)		# HACK: arbitrary pixel size
 		@image ||= Image.new
 		render(string, font, size=1.0, width_in_characters, lines, text_align)
 		@image
@@ -55,50 +54,47 @@ private
 
 					layout.text = string		#.gsub("\n", " \n")		# TODO: document why ?!
 
-					case width_in_characters
+					logical_width_in_pixels = width_in_characters * em_width		# how big we pretend the canvas is
+					actual_width_in_pixels = @canvas.width
+
+					#puts "em_width => #{em_width}, em_height => #{em_height}"
+					#puts "logical_width_in_pixels=#{logical_width_in_pixels}, actual_width_in_pixels=#{actual_width_in_pixels}"
+
+					horizontal_scale = actual_width_in_pixels.to_f / logical_width_in_pixels.to_f
+
+					#puts "width_in_characters=#{width_in_characters}, horizontal_scale=#{horizontal_scale}"
+
+					# multi-line mode with word wrapping
+					if lines > 1
+						layout.wrap = Pango::WRAP_WORD
+						layout.width = actual_width_in_pixels.to_f * Pango::SCALE / horizontal_scale		# wrap at this width (in pango units)
+						layout.alignment = symbol_to_pango_align(text_align)
+					end
+
+					context.translate(0.0, @canvas.height * (1.0 - vertical_scale) / 2.0)
+
+					case text_align
 					when :fill
 						# scale to fill horizontally
 						layout_width, layout_height = layout.pixel_size
 						context.scale(@canvas.width / layout_width.to_f, vertical_scale)
+					when :left, nil		# default
+						# font is 1 tall, width is approx how many chars we can show
+						context.scale(horizontal_scale, vertical_scale)
+						#layout.ellipsize = Pango::ELLIPSIZE_END
+					when :center
+						# Center layout assumes the string is smaller than the container
+						layout_width, layout_height = layout.pixel_size
+						free_space = (@canvas.width.to_f - (layout_width.to_f * horizontal_scale))		# NOTE: using final, post-scaled text width
+						context.move_to((free_space / 2.0), 0.0) if lines == 1
+						context.scale(horizontal_scale, vertical_scale)
+					when :right
+						layout_width, layout_height = layout.pixel_size
+						free_space = (@canvas.width.to_f - (layout_width.to_f * horizontal_scale))		# NOTE: using final, post-scaled text width
+						context.move_to(free_space, 0.0) if lines == 1
+						context.scale(horizontal_scale, vertical_scale)
 					else
-						logical_width_in_pixels = width_in_characters * em_width		# how big we pretend the canvas is
-						actual_width_in_pixels = @canvas.width
-
-						#puts "em_width => #{em_width}, em_height => #{em_height}"
-						#puts "logical_width_in_pixels=#{logical_width_in_pixels}, actual_width_in_pixels=#{actual_width_in_pixels}"
-
-						horizontal_scale = actual_width_in_pixels.to_f / logical_width_in_pixels.to_f
-
-						#puts "width_in_characters=#{width_in_characters}, horizontal_scale=#{horizontal_scale}"
-
-						# multi-line mode with word wrapping
-						if lines > 1
-							layout.wrap = Pango::WRAP_WORD
-							layout.width = actual_width_in_pixels.to_f * Pango::SCALE / horizontal_scale		# wrap at this width (in pango units)
-							layout.alignment = symbol_to_pango_align(text_align)
-						end
-
-						context.translate(0.0, @canvas.height * (1.0 - vertical_scale) / 2.0)
-
-						case text_align
-						when :left, nil		# default
-							# font is 1 tall, width is approx how many chars we can show
-							context.scale(horizontal_scale, vertical_scale)
-							#layout.ellipsize = Pango::ELLIPSIZE_END
-						when :center
-							# Center layout assumes the string is smaller than the container
-							layout_width, layout_height = layout.pixel_size
-							free_space = (@canvas.width.to_f - (layout_width.to_f * horizontal_scale))		# NOTE: using final, post-scaled text width
-							context.move_to((free_space / 2.0), 0.0) if lines == 1
-							context.scale(horizontal_scale, vertical_scale)
-						when :right
-							layout_width, layout_height = layout.pixel_size
-							free_space = (@canvas.width.to_f - (layout_width.to_f * horizontal_scale))		# NOTE: using final, post-scaled text width
-							context.move_to(free_space, 0.0) if lines == 1
-							context.scale(horizontal_scale, vertical_scale)
-						else
-							raise "text_align = #{text_align}"
-						end
+						raise "text_align = #{text_align}"
 					end
 
 					#puts "layout_width = #{layout_width}, layout_height = #{layout_height}"
