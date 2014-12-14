@@ -7,9 +7,8 @@ class CairoFont
 	#easy_accessor :font, :string
 
 	def render_to_image(string, font, width_in_characters, lines=1, text_align=:left)
-		raise "width_in_characters must be a number" unless width_in_characters
-
-		@canvas ||= CairoCanvas.new(24 * width_in_characters, 150)		# HACK: arbitrary pixel size
+		canvas_width_in_pixels = width_in_characters == :fill ? 200 : 24 * width_in_characters
+		@canvas ||= CairoCanvas.new(canvas_width_in_pixels, 150)		# HACK: arbitrary pixel size
 		@image ||= Image.new
 		render(string, font, size=1.0, width_in_characters, lines, text_align)
 		@image
