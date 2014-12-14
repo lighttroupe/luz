@@ -8,7 +8,9 @@ class UserObjectSettingFloat
 		box << create_user_object_setting_name_label
 		box << @vbox = GuiVBox.new.set(:scale_y => 0.8, :offset_y => -0.1)
 
-		box << (@enable_enter_exit_button=GuiEnterExitButton.new(self).set(:scale_x => 0.10, :offset_x => 0.5 - 0.05, :scale_y => 0.3, :offset_y => 0.5))
+		unless @options[:simple]
+			box << (@enable_enter_exit_button=GuiEnterExitButton.new(self).set(:scale_x => 0.10, :offset_x => 0.5 - 0.05, :scale_y => 0.3, :offset_y => 0.5))
+		end
 
 		row = GuiHBox.new	#.set(:scale_y => 0.5, :offset_y => 0.23)
 			row << GuiFloat.new(self, :animation_min, @min, @max).set(:scale_x => 0.15, :float => :left)
