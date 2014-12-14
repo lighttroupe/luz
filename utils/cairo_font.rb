@@ -7,7 +7,9 @@ class CairoFont
 	#easy_accessor :font, :string
 
 	def render_to_image(string, font, width_in_characters, lines=1, text_align=:left)
-		@canvas ||= CairoCanvas.new(16 * width_in_characters, 150)		# HACK: arbitrary pixel size
+		raise "width_in_characters must be a number" unless width_in_characters
+
+		@canvas ||= CairoCanvas.new(24 * width_in_characters, 150)		# HACK: arbitrary pixel size
 		@image ||= Image.new
 		render(string, font, size=1.0, width_in_characters, lines, text_align)
 		@image
@@ -24,6 +26,8 @@ private
 		#line_spacing = 1.0		# TODO ?
 		border_left = 0.0
 		border_top = 0.0
+
+		vertical_scale = 0.78
 
 		@canvas.using { |context|
 			context.save
@@ -56,7 +60,7 @@ private
 					when :fill
 						# scale to fill horizontally
 						layout_width, layout_height = layout.pixel_size
-						context.scale(@canvas.width / layout_width.to_f, 0.85)
+						context.scale(@canvas.width / layout_width.to_f, vertical_scale)
 					else
 						logical_width_in_pixels = width_in_characters * em_width		# how big we pretend the canvas is
 						actual_width_in_pixels = @canvas.width
@@ -65,7 +69,6 @@ private
 						#puts "logical_width_in_pixels=#{logical_width_in_pixels}, actual_width_in_pixels=#{actual_width_in_pixels}"
 
 						horizontal_scale = actual_width_in_pixels.to_f / logical_width_in_pixels.to_f
-						vertical_scale = 0.85
 
 						#puts "width_in_characters=#{width_in_characters}, horizontal_scale=#{horizontal_scale}"
 
@@ -75,6 +78,8 @@ private
 							layout.width = actual_width_in_pixels.to_f * Pango::SCALE / horizontal_scale		# wrap at this width (in pango units)
 							layout.alignment = symbol_to_pango_align(text_align)
 						end
+
+						context.translate(0.0, @canvas.height * (1.0 - vertical_scale) / 2.0)
 
 						case text_align
 						when :left, nil		# default
