@@ -6,7 +6,9 @@ class UserObjectSettingFloat
 	def gui_build_editor
 		box = GuiBox.new
 		box << create_user_object_setting_name_label
-		box << @vbox = GuiVBox.new.set(:scale_y => 0.9)
+		box << @vbox = GuiVBox.new.set(:scale_y => 0.8, :offset_y => -0.1)
+
+		box << (@enable_enter_exit_button=GuiEnterExitButton.new(self).set(:scale_x => 0.10, :offset_x => 0.5 - 0.05, :scale_y => 0.3, :offset_y => 0.5))
 
 		row = GuiHBox.new	#.set(:scale_y => 0.5, :offset_y => 0.23)
 			row << GuiFloat.new(self, :animation_min, @min, @max).set(:scale_x => 0.15, :float => :left)
@@ -34,8 +36,6 @@ class UserObjectSettingFloat
 		# Row 2
 		row = GuiHBox.new	#.set(:scale_y => 0.5, :offset_y => -0.25)
 		unless @options[:simple]
-			row << (@enable_enter_exit_button=GuiEnterExitButton.new(self).set(:scale_x => 0.15, :scale_y => 0.9, :offset_x => -0.425, :offset_y => -0.08))
-
 			@enable_enter_exit_button.on_clicked { |pointer|
 				if @enter_exit_popup
 					@enter_exit_popup.animate({:scale_x => 0.0, :scale_y => 0.0}, 0.05) {
