@@ -13,7 +13,7 @@ class GuiMainMenu < GuiBox
 		self << @open_button = GuiButton.new.set(:scale_x => 0.05, :scale_y => 0.06, :offset_x => 0.475, :offset_y => 0.47, :background_image => $engine.load_image('images/buttons/main-menu-open.png'), :background_image_hover => $engine.load_image('images/buttons/main-menu-open-hover.png'), :background_image_click => $engine.load_image('images/buttons/main-menu-open-click.png'))
 		@open_button.on_clicked { open_notify }
 
-		self << @new_button = GuiButton.new.set(:scale => 0.05, :offset_x => 0.475, :offset_y => 0.4, :background_image => $engine.load_image('images/buttons/main-menu-new.png'), :background_image_hover => $engine.load_image('images/buttons/main-menu-new.png'), :background_image_click => $engine.load_image('images/buttons/main-menu-new.png'))
+		self << @new_button = GuiButton.new.set(:scale_x => 0.02, :scale_y => 0.05, :offset_x => 0.5 - 0.010, :offset_y => 0.4, :background_image => $engine.load_image('images/buttons/main-menu-new.png'), :background_image_hover => $engine.load_image('images/buttons/main-menu-new-hover.png'), :background_image_click => $engine.load_image('images/buttons/main-menu-new.png'))
 		@new_button.on_clicked { new_notify }
 
 		self << (@text1 = GuiLabel.new.set({:string => 'Luz 2.0', :offset_x => 0.0, :offset_y => 0.335, :scale_x => 0.1, :scale_y => 0.07, :width => :fill}))
