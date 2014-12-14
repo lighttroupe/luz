@@ -28,6 +28,10 @@ class ChildUserObject < UserObject
 
 private
 
+	def label_ems
+		14
+	end
+
 	def gui_render_label
 		with_translation(0.0, 0.0) {
 			with_scale(0.8, 1.0) {
