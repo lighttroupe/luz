@@ -4,9 +4,9 @@ class ActorEffectTranslate < ActorEffect
 
 	category :transform
 
-	setting 'x', :float, :default => 0.0..1.0
-	setting 'y', :float, :default => 0.0..1.0
-	setting 'z', :float, :default => 0.0..1.0
+	setting 'x', :float, :default => 0.0..1.0, :digits => 3
+	setting 'y', :float, :default => 0.0..1.0, :digits => 3
+	setting 'z', :float, :default => 0.0..1.0, :digits => 3
 
 	def render
 		with_translation(x, y, z) {
