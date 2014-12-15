@@ -12,14 +12,14 @@ class UserObjectSettingSlider
 			}
 		}
 
-		box << (input_min=GuiFloat.new(self, :input_min, 0.0, 1.0).set(:scale_x => 0.07, :scale_y => 0.6, :offset_y => 0.0, :float => :left))
-		box << (input_max=GuiFloat.new(self, :input_max, 0.0, 1.0).set(:scale_x => 0.07, :scale_y => 0.6, :offset_y => 0.0, :float => :left))
+		box << (input_min=GuiFloat.new(self, :input_min, 0.0, 1.0, digits=2).set(:scale_x => 0.07, :scale_y => 0.6, :offset_y => 0.0, :float => :left))
+		box << (input_max=GuiFloat.new(self, :input_max, 0.0, 1.0, digits=2).set(:scale_x => 0.07, :scale_y => 0.6, :offset_y => 0.0, :float => :left))
 		box << GuiLabel.new.set(:string => 'input', :width => 4, :text_align => :fill, :color => [0.8,0.8,1.0], :offset_x => 0.13, :scale_x => 0.07, :offset_y => -0.35, :scale_y => 0.3)
 
 		box << GuiCurveIncreasing.new(self, :output_curve).set(:float => :left, :scale_x => 0.12, :scale_y => 0.5)
 
-		box << (output_min=GuiFloat.new(self, :output_min, 0.0, 1.0).set(:scale_x => 0.07, :scale_y => 0.6, :offset_y => 0.0, :float => :left))
-		box << (output_max=GuiFloat.new(self, :output_max, 0.0, 1.0).set(:scale_x => 0.07, :scale_y => 0.6, :offset_y => 0.0, :float => :left))
+		box << (output_min=GuiFloat.new(self, :output_min, 0.0, 1.0, digits=2).set(:scale_x => 0.07, :scale_y => 0.6, :offset_y => 0.0, :float => :left))
+		box << (output_max=GuiFloat.new(self, :output_max, 0.0, 1.0, digits=2).set(:scale_x => 0.07, :scale_y => 0.6, :offset_y => 0.0, :float => :left))
 		box << GuiLabel.new.set(:string => 'output', :width => 4, :text_align => :fill, :color => [0.8,0.8,1.0], :offset_x => 0.39, :scale_x => 0.07, :offset_y => -0.35, :scale_y => 0.3)
 
 		box

@@ -1,10 +1,10 @@
 require 'gui_numeric'
 
 class GuiFloat < GuiNumeric
-	def initialize(object, method, min, max)
+	def initialize(object, method, min, max, digits)
 		super(object, method, min, max)
 		@change_speed_multiplier = 4.0
-		@format_string = "%+0.2f"
+		@format_string = "%+0.#{digits}f"
 		@zero_value = 0.0
 		draggable!
 	end
