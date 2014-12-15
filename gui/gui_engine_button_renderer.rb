@@ -20,7 +20,7 @@ class GuiEngineButtonRenderer < GuiObject
 		clicked_notify(pointer)
 	end
 
-	def gui_render!
+	def gui_render
 		with_gui_object_properties {
 			if $engine.button_down?(@text)
 				with_color(GUI_COLOR_ON) {
@@ -30,7 +30,7 @@ class GuiEngineButtonRenderer < GuiObject
 
 			with_color(label_color) {
 				@label ||= GuiLabel.new.set(:width => 15, :string => @text, :scale_x => 0.9, :scale_y => 0.65)
-				@label.gui_render!
+				@label.gui_render
 			}
 		}
 	end

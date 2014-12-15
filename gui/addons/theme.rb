@@ -16,7 +16,7 @@ class Theme
 	#
 	# Rendering
 	#
-	def gui_render!
+	def gui_render
 		gui_render_styles
 		gui_render_label if pointer_hovering?
 	end
@@ -48,7 +48,7 @@ private
 							with_translation(x, (num_rows - y)) {
 								break if index >= effects.size
 								with_scale(0.85) {
-									effects[index].gui_render!
+									effects[index].gui_render
 								}
 							}
 							index += 1

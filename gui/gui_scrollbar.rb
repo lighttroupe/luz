@@ -8,7 +8,7 @@ class GuiScrollbarScroller < GuiObject
 		@scrollbar = scrollbar
 	end
 
-	def gui_render!
+	def gui_render
 		with_positioning {
 			with_color(scroller_color) {
 				unit_square
@@ -56,7 +56,7 @@ class GuiScrollbar < GuiBox
 		@scroller.set(:scale_y => scroller_size * 0.95, :offset_y => (0.5 - scroller_half_size) - (scroller_progress * space))
 	end
 
-	def gui_render!
+	def gui_render
 		# @target.scroll_velocity
 		with_positioning {
 			with_color(WELL_COLOR) {

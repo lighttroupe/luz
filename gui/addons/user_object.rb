@@ -20,7 +20,7 @@ class UserObject
 	def self.gui_render_label
 		with_color(LABEL_COLOR) {
 			@@class_title_label ||= Hash.new { |hash, key| hash[key] = GuiLabel.new.set(:width => 14, :string => key, :scale_x => 0.95, :scale_y => USER_OBJECT_TITLE_HEIGHT) }
-			@@class_title_label[title].gui_render!
+			@@class_title_label[title].gui_render
 		}
 	end
 
@@ -200,7 +200,7 @@ class UserObject
 	#
 	# Rendering
 	#
-	def gui_render!
+	def gui_render
 		gui_render_background
 		gui_render_label
 	end
@@ -238,7 +238,7 @@ private
 		with_color(label_color) {
 			@title_label ||= GuiLabel.new.set(:width => label_ems, :scale_y => USER_OBJECT_TITLE_HEIGHT)
 			@title_label.string = title
-			@title_label.gui_render!
+			@title_label.gui_render
 		}
 	end
 

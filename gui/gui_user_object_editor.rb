@@ -40,7 +40,7 @@ class GuiUserObjectEditor < GuiWindow
 		@user_object.grab_keyboard_focus!
 	end
 
-	def gui_render!
+	def gui_render
 		super
 		if @class_icon_button
 			if @user_object.ticked_recently?

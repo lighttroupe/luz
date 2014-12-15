@@ -9,7 +9,7 @@ class Director
 		update_offscreen_buffer! if update_offscreen_buffer?
 	end
 
-	def gui_render!
+	def gui_render
 		with_gui_object_properties {
 			# Render as cached image
 			with_image {

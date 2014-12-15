@@ -9,7 +9,7 @@ class GuiBeatLight < GuiObject
 		($env[:beat_number] % beats_per_measure) == beat_index		# or only on the one frame... && $env[:is_beat]
 	end
 
-	def gui_render!
+	def gui_render
 		with_color(on? ? $gui.view_color : BEAT_OFF_COLOR) {
 			with_scale(on? ? ($env[:beat_scale].scale(1.0, 0.9)) : 1.0) {
 				with_multiplied_alpha(on? ? ($env[:beat_scale].scale(1.0, 0.0)) : 0.0) {

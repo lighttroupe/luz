@@ -28,12 +28,12 @@ class GuiFontSelect < GuiListSelect
 	#
 	# Render
 	#
-	def gui_render!
+	def gui_render
 		font_name = get_value
 		return super unless font_name		# "none" text
 		with_gui_object_properties {
 			@value_label.set_string(font_name)
-			@value_label.gui_render!
+			@value_label.gui_render
 		}
 	end
 end

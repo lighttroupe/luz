@@ -28,7 +28,7 @@ class GuiString < GuiObject
 		@label.string = value
 	end
 
-	def gui_render!
+	def gui_render
 		with_positioning {
 			if keyboard_focus?
 				with_color(FOCUS_BACKGROUND_COLOR) {
@@ -38,7 +38,7 @@ class GuiString < GuiObject
 
 			with_color(color) {
 				# TODO @label.keyboard_focus = keyboard_focus?
-				@label.gui_render!
+				@label.gui_render
 			}
 		}
 	end

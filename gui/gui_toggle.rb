@@ -28,7 +28,7 @@ class GuiToggle < GuiObject
 	#
 	# Rendering
 	#
-	def gui_render!
+	def gui_render
 		with_gui_object_properties {
 			with_scale(0.6, 0.4) {
 				with_color(get_value ? COLOR_ON : COLOR_OFF) {

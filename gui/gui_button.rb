@@ -17,7 +17,7 @@ class GuiButton < GuiObject
 		holding_notify(pointer)
 	end
 
-	def gui_render!
+	def gui_render
 		return if hidden?
 		with_positioning {
 #			with_color(gui_color) {

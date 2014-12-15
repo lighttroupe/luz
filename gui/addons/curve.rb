@@ -15,7 +15,7 @@ class Curve
 	#
 	# Rendering
 	#
-	def gui_render!
+	def gui_render
 		gui_render_background
 
 		if pointer_hovering?

@@ -25,11 +25,11 @@ class GuiListSelect < GuiObject
 	#
 	# Render
 	#
-	def gui_render!
+	def gui_render
 		with_gui_object_properties {
 			object = get_value
 			if object
-				object.gui_render!
+				object.gui_render
 			else
 				gui_render_no_value
 			end
@@ -38,7 +38,7 @@ class GuiListSelect < GuiObject
 
 	def gui_render_no_value
 		@no_value_label ||= GuiLabel.new.set(:width => 6, :text_align => :center, :string => @no_value_text, :scale => 0.75, :opacity => 0.1)
-		@no_value_label.gui_render!
+		@no_value_label.gui_render
 	end
 
 	#

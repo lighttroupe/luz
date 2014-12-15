@@ -232,7 +232,7 @@ class GuiDefault < GuiInterface
 	end
 
 	#
-	# Rendering: render is called every frame, gui_render! only when the Editor plugin thinks it's visible 
+	# Rendering: render is called every frame, gui_render only when the Editor plugin thinks it's visible 
 	#
 	def view_color
 		case @mode
@@ -250,18 +250,18 @@ class GuiDefault < GuiInterface
 		when :actor
 			clear_screen(ACTOR_BACKGROUND_COLOR)
 			$engine.with_content_aspect_ratio {
-				@actor_view.gui_render!
+				@actor_view.gui_render
 			}
 		when :director
 			clear_screen(DIRECTOR_BACKGROUND_COLOR)
 			$engine.with_content_aspect_ratio {
-				@director_view.gui_render!
+				@director_view.gui_render
 			}
 		when :output
 			yield
 		end
 		with_alpha(@gui_alpha) {
-			gui_render!
+			gui_render
 		}
 	end
 

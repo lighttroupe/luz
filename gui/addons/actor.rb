@@ -1,7 +1,7 @@
 class Actor
 	ACTOR_COLOR = [1,1,1,1]
 
-	def gui_render!
+	def gui_render
 		with_gui_object_properties {
 
 			# Render as cached image

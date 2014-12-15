@@ -7,7 +7,7 @@ class GuiInterface < GuiBox
 		@pointers = [PointerMouse.new.set_background_image($engine.load_image('images/pointer.png'))]
 	end
 
-	def gui_render!
+	def gui_render
 		return if hidden?
 		super
 		render_pointers

@@ -13,7 +13,7 @@ class GuiEngineSliderRenderer < GuiLabel
 		@string
 	end
 
-	def gui_render!
+	def gui_render
 		with_gui_object_properties {
 			with_color_listsafe(VALUE_COLOR) {
 				render_progress_bar_with_cache($engine.slider_value(@string))

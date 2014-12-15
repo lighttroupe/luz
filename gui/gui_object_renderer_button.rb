@@ -8,7 +8,7 @@ class GuiObjectRendererButton < GuiButton
 		@object = object
 	end
 
-	def gui_render!
+	def gui_render
 		super
 		with_positioning {
 			if pointer_hovering?

@@ -29,9 +29,9 @@ class GuiSelect < GuiListSelect
 	#
 	# Rendering
 	#
-	def gui_render!
+	def gui_render
 		with_gui_object_properties {
-			@selected_label.gui_render!
+			@selected_label.gui_render
 		}
 	end
 

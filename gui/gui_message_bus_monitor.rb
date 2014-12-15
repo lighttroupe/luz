@@ -17,7 +17,7 @@ class GuiMessageBusMonitor < GuiButton
 		end
 	end
 
-	def gui_render!
+	def gui_render
 		with_alpha(calculate_alpha) {
 			with_gui_object_properties {
 				@image.using {

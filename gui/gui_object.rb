@@ -78,7 +78,7 @@ module MethodsForGuiObject
 		}
 	end
 
-	def gui_render!
+	def gui_render
 		with_positioning {
 			gui_render_background
 			gui_render_placeholder unless background_image

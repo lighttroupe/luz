@@ -9,7 +9,7 @@ class GuiBackButton < GuiHistoryButton
 		@history.back!
 	end
 
-	def gui_render!
+	def gui_render
 		with_alpha(@history.can_go_back? ? 1.0 : 0.2) {
 			super
 		}
@@ -21,7 +21,7 @@ class GuiForwardButton < GuiHistoryButton
 		@history.forward!
 	end
 
-	def gui_render!
+	def gui_render
 		with_alpha(@history.can_go_forward? ? 1.0 : 0.2) {
 			super
 		}

@@ -24,9 +24,9 @@ class GuiGrid < GuiBox
 		min_columns || DEFAULT_MIN_COLUMNS		# TODO: default value
 	end
 
-	def gui_render!
+	def gui_render
 		return if hidden?
-		each_with_positioning { |gui_object| gui_object.gui_render! }
+		each_with_positioning { |gui_object| gui_object.gui_render }
 	end
 
 	def hit_test_render!

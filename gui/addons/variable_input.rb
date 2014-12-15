@@ -1,7 +1,7 @@
 class VariableInput
 	PROGRESS_BAR_COLOR = [0.0,1.0,0.5,0.7]
 
-	def gui_render!
+	def gui_render
 		gui_render_background
 		gui_render_progress_bar if enabled?
 		gui_render_label

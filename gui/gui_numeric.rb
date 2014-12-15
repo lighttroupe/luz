@@ -29,13 +29,13 @@ class GuiNumeric < GuiObject
 	#
 	# Rendering
 	#
-	def gui_render!
+	def gui_render
 		with_gui_object_properties {
 			if keyboard_focus?
-				@gui_string.gui_render!
+				@gui_string.gui_render
 			else
 				@value_label.set_string(generate_string)
-				@value_label.gui_render!
+				@value_label.gui_render
 			end
 		}
 	end

@@ -18,7 +18,7 @@ class GuiLabel < GuiObject
 		@image = nil
 	end
 
-	def gui_render!
+	def gui_render
 		@cairo_font ||= CairoFont.new
 		@image ||= @cairo_font.render_to_image(string, font || $gui.gui_font, width || 1, lines || 1, text_align)
 

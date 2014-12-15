@@ -7,14 +7,14 @@ class ChildUserObject < UserObject
 	#
 	# class level
 	#
-	def self.gui_render!
+	def self.gui_render
 		gui_render_label
 	end
 
 	#
 	# instance level
 	#
-	def gui_render!
+	def gui_render
 		gui_render_background
 		gui_render_label
 		gui_render_child_conditions
@@ -54,14 +54,14 @@ private
 							@conditions_index_range_label.set_string("only children #{@cached_child_number_min}-#{@cached_child_number_max}")
 						end
 					end
-					@conditions_index_range_label.gui_render!
+					@conditions_index_range_label.gui_render
 				}
 			}
 		end
 	end
 
 	def gui_render_enable_checkbox
-		enable_checkbox.gui_render!
+		enable_checkbox.gui_render
 	end
 
 	def enable_checkbox

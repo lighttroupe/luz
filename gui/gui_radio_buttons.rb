@@ -5,7 +5,7 @@ class GuiRadioButton < GuiObject
 	easy_accessor :parent
 	easy_accessor :value
 
-	def gui_render!
+	def gui_render
 		with_color(on? ? ON_COLOR : OFF_COLOR) {
 			background_image.using {
 				unit_square

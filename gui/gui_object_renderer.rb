@@ -20,10 +20,10 @@ class GuiObjectRenderer < GuiObject
 	#
 	# rendering
 	#
-	def gui_render!
+	def gui_render
 		return if hidden?
 		gui_render_background
-		@object.gui_render!		# TODO: send a symbol for customizable render method (ie simple curves)
+		@object.gui_render		# TODO: send a symbol for customizable render method (ie simple curves)
 	end
 
 	#

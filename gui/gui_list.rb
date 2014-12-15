@@ -55,14 +55,14 @@ class GuiList < GuiBox
 
 	BACKGROUND_COLOR = [0,0,0,0.8]
 	ALT_COLOR = [0.1,0.1,0.12,0.7]
-	def gui_render!
+	def gui_render
 		return if hidden?
 #		with_positioning { with_color(BACKGROUND_COLOR) { unit_square } }
 		toggle = false		# TODO: improve
 		each_with_positioning { |gui_object|
 			with_color(ALT_COLOR) { unit_square } if toggle
 			toggle = !toggle
-			gui_object.gui_render!
+			gui_object.gui_render
 		}
 
 		if keyboard_focus?

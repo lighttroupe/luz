@@ -7,7 +7,7 @@ class GuiEnterExitButton < GuiButton
 		@exit_image = $engine.load_image('images/buttons/exit.png')
 	end
 
-	def gui_render!
+	def gui_render
 		with_gui_object_properties {
 			with_translation(-0.25, 0.0) {
 				with_scale(0.5, 1.0) {
