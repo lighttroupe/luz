@@ -75,7 +75,12 @@
 			row << (@activation_when_text=GuiLabel.new.set(:string => 'when', :width => 4, :text_align => :center, :scale_x => 0.1, :float => :left, :opacity => 0.0, :hidden => true))
 			row << (@activation_variable_widget=GuiVariable.new(self, :activation_variable).set(:no_value_text => 'variable', :scale_x => 0.26, :float => :left, :opacity => 0.0, :hidden => true))
 
-			@activation_widgets = [@activation_curve_widget, @activation_value_widget, @activation_direction_widget, @activation_when_text, @activation_variable_widget]
+			row << @new_activation_variable_button=GuiButton.new.set(:scale_x => 0.08, :float => :left, :background_image => $engine.load_image('images/buttons/new.png'), :background_image_hover => $engine.load_image('images/buttons/new.png'), :background_image_click => $engine.load_image('images/buttons/new.png'))
+			@new_activation_variable_button.on_clicked { |pointer|
+				@activation_variable = $gui.new_variable!(pointer)
+			}
+
+			@activation_widgets = [@activation_curve_widget, @activation_value_widget, @activation_direction_widget, @activation_when_text, @activation_variable_widget, @new_activation_variable_button]
 
 			@enable_activation_toggle.on_clicked_with_init {
 				if @enable_activation_toggle.on?
