@@ -17,14 +17,14 @@
 		end
 
 		row = GuiHBox.new	#.set(:scale_y => 0.5, :offset_y => 0.23)
-			row << GuiFloat.new(self, :animation_min, @min, @max, digits).set(:scale_x => 0.15, :float => :left)
+			row << GuiFloat.new(self, :animation_min, @min, @max, digits).set(:text_align => :center, :scale_x => 0.15, :float => :left)
 
 			unless @options[:simple]
 				row << (@enable_animation_toggle=GuiToggle.new(self, :enable_animation).set(:scale_x => 0.07, :float => :left, :color => [1,0,0,1], :image => $engine.load_image('images/buttons/play.png')))
-				row << (@animation_curve_widget=GuiCurve.new(self, :animation_curve).set(:scale_x => 0.13, :scale_y => 0.8, :float => :left, :opacity => 0.0, :hidden => true))
-				row << (@animation_max_widget=GuiFloat.new(self, :animation_max, @min, @max, digits).set(:scale_x => 0.15, :float => :left, :opacity => 0.0, :hidden => true))
+				row << (@animation_curve_widget=GuiCurve.new(self, :animation_curve).set(:scale_x => 0.1, :scale_y => 0.85, :float => :left, :opacity => 0.0, :hidden => true))
+				row << (@animation_max_widget=GuiFloat.new(self, :animation_max, @min, @max, digits).set(:text_align => :center, :scale_x => 0.15, :float => :left, :opacity => 0.0, :hidden => true))
 				row << (@animation_every_text=GuiLabel.new.set(:width => 4, :text_align => :fill, :string => 'every', :offset_x => 0.014, :scale_x => 0.08, :float => :left, :opacity => 0.0, :hidden => true))
-				row << (@animation_repeat_number_widget=GuiFloat.new(self, :animation_repeat_number, 0.25, 128.0, 2).set(:step_amount => 0.25, :scale_x => 0.12, :float => :left, :opacity => 0.0, :hidden => true))
+				row << (@animation_repeat_number_widget=GuiFloat.new(self, :animation_repeat_number, 0.25, 128.0, 2).set(:text_align => :center, :step_amount => 0.25, :scale_x => 0.12, :float => :left, :opacity => 0.0, :hidden => true))
 				row << (@animation_repeat_unit_widget=GuiSelect.new(self, :animation_repeat_unit, UserObjectSettingFloat::TIME_UNIT_OPTIONS).set(:width => 5, :text_align => :left, :scale_x => 0.15, :float => :left, :opacity => 0.0, :hidden => true))
 
 				@animation_widgets = [@animation_curve_widget, @animation_max_widget, @animation_every_text, @animation_repeat_number_widget, @animation_repeat_unit_widget]
@@ -70,7 +70,7 @@
 			row << (@enable_activation_toggle=GuiToggle.new(self, :enable_activation).set(:scale_x => 0.07, :float => :left, :offset_x => 0.15, :color => [1,0,0,1], :image => $engine.load_image('images/buttons/play.png')))
 			row << (@activation_curve_widget=GuiCurveIncreasing.new(self, :activation_curve).set(:scale_x => 0.13, :scale_y => 0.8, :float => :left, :opacity => 0.0, :hidden => true))
 			row << (@activation_direction_widget=GuiSelect.new(self, :activation_direction, UserObjectSettingFloat::ACTIVATION_DIRECTION_OPTIONS).set(:width => 3, :text_align => :center, :scale_x => 0.08, :float => :left, :opacity => 0.0, :hidden => true))
-			row << (@activation_value_widget=GuiFloat.new(self, :activation_value, @min, @max, digits).set(:scale_x => 0.15, :float => :left, :opacity => 0.0, :hidden => true))
+			row << (@activation_value_widget=GuiFloat.new(self, :activation_value, @min, @max, digits).set(:text_align => :center, :scale_x => 0.15, :float => :left, :opacity => 0.0, :hidden => true))
 
 			row << (@activation_when_text=GuiLabel.new.set(:string => 'when', :width => 4, :text_align => :center, :scale_x => 0.1, :float => :left, :opacity => 0.0, :hidden => true))
 			row << (@activation_variable_widget=GuiVariable.new(self, :activation_variable).set(:no_value_text => 'variable', :scale_x => 0.26, :float => :left, :opacity => 0.0, :hidden => true))
