@@ -283,7 +283,7 @@ class GuiDefault < GuiInterface
 			close_directors_menu! #if self.chosen_director == user_object
 			if self.chosen_director == user_object
 				#self.mode = :director
-				return
+				#return
 			else
 				self.chosen_director = user_object
 				clear_user_object_editor
