@@ -95,7 +95,7 @@ class UserObject
 			}
 
 			# Settings list
-			@gui_settings_list = GuiList.new.set(:spacing_y => -1.0, :scale_x => 0.55, :offset_x => 0.195, :offset_y => -0.03, :scale_y => 0.73, :item_aspect_ratio => 5.0)
+			@gui_settings_list = GuiList.new.set(:spacing_y => -1.0, :scale_x => 0.55, :offset_x => 0.195, :offset_y => -0.035, :scale_y => 0.72, :item_aspect_ratio => 5.0)
 			box << @gui_settings_list
 			gui_fill_settings_list(self)		# show this object's settings
 
