@@ -1,6 +1,8 @@
 class GuiNumeric < GuiObject
 	easy_accessor :step_amount
 
+	pipe [:text_align=, :width=], :value_label
+
 	def initialize(object, method, min, max)
 		super()
 		@object, @method_get, @method_set, @min, @max = object, method, (method.to_s+'=').to_sym, min, max
