@@ -68,7 +68,7 @@
 			}
 
 			row << (@enable_activation_toggle=GuiToggle.new(self, :enable_activation).set(:scale_x => 0.07, :float => :left, :offset_x => 0.15, :color => [1,0,0,1], :image => $engine.load_image('images/buttons/play.png')))
-			row << (@activation_curve_widget=GuiCurveIncreasing.new(self, :activation_curve).set(:scale_x => 0.13, :scale_y => 0.8, :float => :left, :opacity => 0.0, :hidden => true))
+			row << (@activation_curve_widget=GuiCurveIncreasing.new(self, :activation_curve).set(:scale_x => 0.1, :scale_y => 0.8, :float => :left, :opacity => 0.0, :hidden => true))
 			row << (@activation_direction_widget=GuiSelect.new(self, :activation_direction, UserObjectSettingFloat::ACTIVATION_DIRECTION_OPTIONS).set(:width => 3, :text_align => :center, :scale_x => 0.08, :float => :left, :opacity => 0.0, :hidden => true))
 			row << (@activation_value_widget=GuiFloat.new(self, :activation_value, @min, @max, digits).set(:text_align => :center, :scale_x => 0.15, :float => :left, :opacity => 0.0, :hidden => true))
 
