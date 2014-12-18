@@ -32,7 +32,7 @@ Luz currently only runs on Linux.  (Help is wanted porting it to OSX and Windows
 
 1. **git clone https://github.com/lighttroupe/luz-next.git**
 
-2. Install dependencies: **sudo apt-get install ruby1.9.1 libsdl-ruby1.9.1 libopengl-ruby1.9.1**
+2. Install dependencies: **sudo apt-get install ruby1.9.1 libsdl-ruby1.9.1 libopengl-ruby1.9.1 ruby-pango**
 
 3. sudo gem1.9.1 install rmagick
 
