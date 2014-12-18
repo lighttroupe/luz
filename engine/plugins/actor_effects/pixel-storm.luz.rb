@@ -4,7 +4,7 @@ class ActorEffectPixelStorm < ActorEffect
 
 	categories :color
 
-	setting 'amount', :float, :default => 0.0..1.0, :shader => true
+	setting 'amount', :float, :default => 0.0..1.0, :shader => true, :digits => 3
 
 	CODE = "
 		texture_st.s += ((0.5 - rand(texture_st.st)) * amount);
