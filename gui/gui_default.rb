@@ -172,7 +172,7 @@ class GuiDefault < GuiInterface
 			$application.open_project(BASE_SET_PATH)
 		}
 
-		# Director Grid popup
+		# Director Menu
 		self << @directors_menu = GuiDirectorMenu.new($engine.project.directors).
 			add_state(:open, {:scale_x => 1.0, :scale_y => 1.0, :opacity => 1.0, :hidden => false}).
 			set_state(:closed, {:scale_x => 1.1, :scale_y => 1.1, :offset_y => 0.0,:hidden => true})
