@@ -13,7 +13,7 @@ class GuiActorClassFlyout < GuiWindow
 		self << (@list = GuiGrid.new.set(:scale_x => 0.9, :scale_y => 0.5, :offset_y => 0.22, :min_columns => 2))
 
 		# New Actor buttons
-		[ActorStarFlower, ActorStar, ActorPolygon, ActorLine, ActorRectangle, ActorRoundedRectangle].each { |klass|
+		[ActorStarFlower, ActorStar, ActorPolygon, ActorLine, ActorRectangle, ActorRoundedRectangle, ActorOffscreenCanvas].each { |klass|
 			@list << (new_actor_button = GuiActorClassButton.new(klass).set(:scale_x => 0.75, :scale_y => 0.95))
 			new_actor_button.on_clicked { |pointer|
 				actor_class_selected_notify(pointer, klass)

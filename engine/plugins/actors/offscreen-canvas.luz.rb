@@ -37,6 +37,6 @@ private
 	end
 
 	def create_fbo
-		FramebufferObject.new(:height => 1024, :width => 1024)
+		GLFrameBufferObject.new(:height => 1024, :width => 1024)
 	end
 end
