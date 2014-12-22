@@ -1,6 +1,6 @@
 require 'pathname'
 
-class GuiFileDialog < GuiBox
+class GuiFileDialog < GuiWindow
 	attr_accessor :path
 
 	callback :selected, :closed
