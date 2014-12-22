@@ -1,6 +1,6 @@
 multi_require 'gui_pointer_behavior', 'gui_object', 'gui_label', 'gui_box', 'gui_hbox', 'gui_vbox', 'gui_list', 'gui_scrollbar', 'gui_grid', 'gui_message_bar', 'gui_beat_monitor', 'gui_time_control', 'gui_button', 'gui_float', 'gui_toggle', 'gui_curve', 'gui_curve_increasing', 'gui_theme', 'gui_integer', 'gui_select', 'gui_actor', 'gui_director', 'gui_event', 'gui_variable', 'gui_font_select', 'gui_engine_button', 'gui_engine_slider', 'gui_radio_buttons', 'gui_object_renderer', 'gui_main_menu', 'gui_window'
 load_directory(Dir.pwd + '/gui/addons/', '**.rb')		# Addons to existing objects
-multi_require 'gui_actor_view', 'gui_director_view', 'gui_preferences_box', 'gui_user_object_editor', 'gui_delete_button', 'gui_enter_exit_button', 'gui_enter_exit_popup', 'gui_add_window', 'gui_interface', 'gui_actor_class_button', 'gui_director_menu', 'gui_actors_flyout', 'gui_variables_flyout', 'gui_message_bus_monitor', 'gui_file_dialog', 'gui_image_dialog', 'gui_confirmation_dialog', 'keyboard'
+multi_require 'gui_actor_view', 'gui_director_view', 'gui_preferences_box', 'gui_user_object_editor', 'gui_delete_button', 'gui_enter_exit_button', 'gui_enter_exit_popup', 'gui_add_window', 'gui_interface', 'gui_actor_class_button', 'gui_director_menu', 'gui_actors_flyout', 'gui_variables_flyout', 'gui_message_bus_monitor', 'gui_file_dialog', 'gui_directory_dialog', 'gui_image_dialog', 'gui_confirmation_dialog', 'keyboard'
 
 class GuiDefault < GuiInterface
 	ACTOR_BACKGROUND_COLOR    = [0,0,0,0]
@@ -9,6 +9,8 @@ class GuiDefault < GuiInterface
 	ACTOR_VIEW_COLOR = [1,0.5,0.5,1]
 	DIRECTOR_VIEW_COLOR = [0.5,1,0.5,1]
 	OUTPUT_VIEW_COLOR = [0.5,0.5,1,1]
+
+	DEFAULT_PROJECT_NAME = 'project.luz'
 
 	pipe [:positive_message, :negative_message], :message_bar
 
@@ -45,18 +47,29 @@ class GuiDefault < GuiInterface
 	# File Utils
 	#
 	def choose_image
-		dialog = GuiImageDialog.new('Choose Image').set(:scale_x => 0.8, :scale_y => 0.8, :offset_y => -0.1)
+		dialog = GuiImageDialog.new('Choose Image', ['png','gif','jpg','jpeg']).set(:scale_x => 0.8, :scale_y => 0.8, :offset_y => -0.1)
 		@dialog_container << dialog
 		dialog.on_selected { |path|
 			dialog.remove_from_parent!
 			yield $engine.project.media_file_path(path)
 		}
 		dialog.on_closed { dialog.remove_from_parent! }
-		dialog.show_for_path(File.dirname($engine.project.path), ['png','gif','jpg','jpeg'])
+		dialog.show_for_path(File.dirname($engine.project.path))
 	end
 
 	def choose_project_file
 		dialog = GuiFileDialog.new('Open Project', ['luz']).set(:scale_x => 0.8, :scale_y => 0.8, :offset_y => -0.1)
+		@dialog_container << dialog
+		dialog.on_selected { |path|
+			dialog.remove_from_parent!
+			yield path
+		}
+		dialog.on_closed { dialog.remove_from_parent! }
+		dialog.show_for_path(File.dirname($engine.project.path))
+	end
+
+	def choose_project_directory
+		dialog = GuiDirectoryDialog.new('Choose Directory for New Project')
 		@dialog_container << dialog
 		dialog.on_selected { |path|
 			dialog.remove_from_parent!
@@ -166,11 +179,12 @@ class GuiDefault < GuiInterface
 		}
 		@main_menu.on_new {
 			save_changes_before {
-				#choose_project_path { |path|
-					# TODO: copy base.luz to that directory
-					# TODO: open it
-					$application.open_project(BASE_SET_PATH)
-				#}
+				choose_project_directory { |path|
+					destination_path = File.join(path, DEFAULT_PROJECT_NAME)
+					# TODO: assert doesn't exist
+					FileUtils.cp BASE_SET_PATH, destination_path		# copy into place
+					$application.open_project(destination_path)
+				}
 			}
 		}
 
