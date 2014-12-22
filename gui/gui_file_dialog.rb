@@ -8,7 +8,7 @@ class GuiFileDialog < GuiWindow
 	DIRECTORY_COLOR = [0.5,0.5,1.0,1.0]
 	FILE_COLOR = [1,1,1,1]
 
-	def initialize(title, extensions)
+	def initialize(title, extensions=nil)
 		super()
 		@title = title
 		@extensions = extensions
