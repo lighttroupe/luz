@@ -56,14 +56,14 @@ class GuiDefault < GuiInterface
 	end
 
 	def choose_project_file
-		dialog = GuiFileDialog.new('Open Project').set(:scale_x => 0.8, :scale_y => 0.8, :offset_y => -0.1)
+		dialog = GuiFileDialog.new('Open Project', ['luz']).set(:scale_x => 0.8, :scale_y => 0.8, :offset_y => -0.1)
 		@dialog_container << dialog
 		dialog.on_selected { |path|
 			dialog.remove_from_parent!
 			yield path
 		}
 		dialog.on_closed { dialog.remove_from_parent! }
-		dialog.show_for_path(File.dirname($engine.project.path), ['luz'])
+		dialog.show_for_path(File.dirname($engine.project.path))
 	end
 
 	#

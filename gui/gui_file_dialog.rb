@@ -8,16 +8,16 @@ class GuiFileDialog < GuiBox
 	DIRECTORY_COLOR = [0.5,0.5,1.0,1.0]
 	FILE_COLOR = [1,1,1,1]
 
-	def initialize(title)
+	def initialize(title, extensions)
 		super()
 		@title = title
+		@extensions = extensions
 		create!
 	end
 
-	def show_for_path(path, extensions=nil)
+	def show_for_path(path)
 		return unless File.exists?(path)
 		path = Pathname.new(path).realpath.to_s
-		@extensions = extensions
 		@path_string.set_value(path)		# this calls path=
 	end
 
@@ -25,7 +25,7 @@ class GuiFileDialog < GuiBox
 		@directory_list.clear!
 		if File.exists?(path)
 			@path = Pathname.new(path).realpath.to_s
-			@directories, @files = load_directories, load_files(@extensions)
+			@directories, @files = load_directories, load_files
 			fill_directory_list
 		end
 	end
@@ -37,14 +37,14 @@ class GuiFileDialog < GuiBox
 
 	def add_directories
 		@directories.each { |filename|
-			@directory_list << (renderer = GuiLabel.new.set(:string => filename, :width => 20, :color => DIRECTORY_COLOR))
+			@directory_list << (renderer = GuiLabel.new.set(:string => filename, :width => 40, :color => DIRECTORY_COLOR))
 			renderer.on_clicked { show_for_path(File.join(@path, filename)) }
 		}
 	end
 
 	def add_files
 		@files.each { |filename|
-			@directory_list << (renderer = GuiLabel.new.set(:string => filename, :color => FILE_COLOR))
+			@directory_list << (renderer = GuiLabel.new.set(:string => filename, :width => 40, :color => FILE_COLOR))
 			renderer.on_clicked { notify_for_filename(filename) }
 		}
 	end
@@ -65,13 +65,13 @@ private
 		self << (@up_button=GuiButton.new.set(:scale_x => 0.05, :scale_y => 0.07, :offset_x => -0.452, :offset_y => 0.5 - 0.09, :background_image => $engine.load_image('images/buttons/directory-up.png')))
 		@up_button.on_clicked { show_for_path(File.join(@path, '..')) }
 		self << (@path_string = GuiString.new(self, :path).set(:width => 50, :color => [0.7,0.7,0.7], :offset_x => 0.04, :scale_x => 0.9, :scale_y => 0.04, :offset_y => 0.5 - 0.08))
-		self << (@directory_list = GuiList.new.set(:scale_y => 0.825, :offset_x => 0.0, :offset_y => -0.035, :spacing_y => -1.0, :item_aspect_ratio => 16.5))
+		self << (@directory_list = GuiList.new.set(:scale_x => 0.95, :scale_y => 0.825, :offset_x => 0.0, :offset_y => -0.035, :spacing_y => -1.0, :item_aspect_ratio => 15.5))
 
 		self << (@close_button=GuiButton.new.set(:scale_x => 0.3, :scale_y => 0.05, :offset_x => 0.0, :offset_y => -0.5 + 0.025, :background_image => $engine.load_image('images/buttons/close.png')))
 		@close_button.on_clicked { closed_notify }
 
 		# focus
-		@directory_list.grab_keyboard_focus!
+		#@directory_list.grab_keyboard_focus!
 	end
 
 	def load_directories
@@ -89,17 +89,15 @@ private
 		File.directory?(File.join(@path, filename))		# it exists.
 	end
 
-	def load_files(extensions)
+	def load_files
 		files = []
-		Dir.new(@path).each_with_extensions(extensions) { |filename|
-			files << File.basename(filename) if show_filename?(filename)
+		Dir.new(@path).each_with_extensions(@extensions) { |filepath|
+			files << File.basename(filepath) if show_path?(filepath)
 		}
 		files
 	end
 
-	def show_filename?(filename)
-		return false if filename[0] == '.'
-		filepath = File.join(@path, filename)
+	def show_path?(filepath)
 		File.exist?(filepath) && !File.directory?(filepath)
 	end
 end
