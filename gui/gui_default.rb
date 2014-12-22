@@ -1,6 +1,6 @@
 multi_require 'gui_pointer_behavior', 'gui_object', 'gui_label', 'gui_box', 'gui_hbox', 'gui_vbox', 'gui_list', 'gui_scrollbar', 'gui_grid', 'gui_message_bar', 'gui_beat_monitor', 'gui_time_control', 'gui_button', 'gui_float', 'gui_toggle', 'gui_curve', 'gui_curve_increasing', 'gui_theme', 'gui_integer', 'gui_select', 'gui_actor', 'gui_director', 'gui_event', 'gui_variable', 'gui_font_select', 'gui_engine_button', 'gui_engine_slider', 'gui_radio_buttons', 'gui_object_renderer', 'gui_main_menu', 'gui_window'
 load_directory(Dir.pwd + '/gui/addons/', '**.rb')		# Addons to existing objects
-multi_require 'gui_actor_view', 'gui_director_view', 'gui_preferences_box', 'gui_user_object_editor', 'gui_delete_button', 'gui_enter_exit_button', 'gui_enter_exit_popup', 'gui_add_window', 'gui_interface', 'gui_actor_class_button', 'gui_director_menu', 'gui_actors_flyout', 'gui_variables_flyout', 'gui_message_bus_monitor', 'gui_file_dialog', 'gui_image_dialog', 'keyboard'
+multi_require 'gui_actor_view', 'gui_director_view', 'gui_preferences_box', 'gui_user_object_editor', 'gui_delete_button', 'gui_enter_exit_button', 'gui_enter_exit_popup', 'gui_add_window', 'gui_interface', 'gui_actor_class_button', 'gui_director_menu', 'gui_actors_flyout', 'gui_variables_flyout', 'gui_message_bus_monitor', 'gui_file_dialog', 'gui_image_dialog', 'gui_confirmation_dialog', 'keyboard'
 
 class GuiDefault < GuiInterface
 	ACTOR_BACKGROUND_COLOR    = [0,0,0,0]
@@ -154,22 +154,24 @@ class GuiDefault < GuiInterface
 		#@main_menu.on_save_as {
 		#}
 		@main_menu.on_open {
-			choose_project_file { |path|
-				if $application.open_project(path)
-					# positive_message 'Opened Successfully'
-				else
-					negative_message 'Open Failed'
-				end
+			save_changes_before {
+				choose_project_file { |path|
+					if $application.open_project(path)
+						# positive_message 'Opened Successfully'
+					else
+						negative_message 'Open Failed'
+					end
+				}
 			}
 		}
 		@main_menu.on_new {
-			#save_changes_before {
+			save_changes_before {
 				#choose_project_path { |path|
 					# TODO: copy base.luz to that directory
 					# TODO: open it
+					$application.open_project(BASE_SET_PATH)
 				#}
-			#}
-			$application.open_project(BASE_SET_PATH)
+			}
 		}
 
 		# Director Menu
@@ -634,6 +636,15 @@ class GuiDefault < GuiInterface
 	#
 	def close_user_object_editor_on_click?
 		false		# TODO: per-pointer preference?
+	end
+
+	def save_changes_before
+		#return yield unless $engine.project.changed?		# TODO: re-enable when we track changes
+		body = ""		# sprintf("%s will be lost.", $engine.project.change_count.plural("change", "changes"))
+		confirmation = GuiConfirmationDialog.new("Abandon Project?", body, "Yes, abandon it", "No, keep playing")
+		confirmation.on_yes { confirmation.remove_from_parent! ; yield }
+		confirmation.on_no { confirmation.remove_from_parent! }
+		self << confirmation
 	end
 
 	#
