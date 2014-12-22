@@ -1,5 +1,5 @@
 class GuiMainMenu < GuiBox
-	callback :save, :close, :open, :new
+	callback :save, :close, :open, :new, :quit
 
 	def initialize
 		super
@@ -34,6 +34,6 @@ class GuiMainMenu < GuiBox
 		@save_button.on_clicked { save_notify ; close_notify }
 
 		self << @quit_button = GuiButton.new.set(:scale_x => 0.05, :scale_y => 0.06, :offset_x => -0.475, :offset_y => -0.47, :background_image => $engine.load_image('images/buttons/main-menu-quit.png'), :background_image_hover => $engine.load_image('images/buttons/main-menu-quit-hover.png'), :background_image_click => $engine.load_image('images/buttons/main-menu-quit-click.png'))
-		@quit_button.on_clicked { $application.finished! }
+		@quit_button.on_clicked { quit_notify }
 	end
 end

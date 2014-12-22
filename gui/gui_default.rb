@@ -193,6 +193,11 @@ class GuiDefault < GuiInterface
 				}
 			}
 		}
+		@main_menu.on_quit {
+			save_changes_before {
+				$application.finished!
+			}
+		}
 
 		# Director Menu
 		self << @directors_menu = GuiDirectorMenu.new($engine.project.directors).
