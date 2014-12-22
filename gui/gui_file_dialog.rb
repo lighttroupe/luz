@@ -58,7 +58,7 @@ private
 	def create!
 		self << (@background = GuiObject.new.set(:background_image => $engine.load_image('images/file-dialog-background.png')))
 
-		self << (@title_label = GuiLabel.new.set({:width => 10, :color => [0.6,0.6,1.0], :string => @title, :offset_x => 0.0, :offset_y => 0.47, :scale_x => 0.15, :scale_y => 0.05}))
+		self << (@title_label = GuiLabel.new.set({:width => 20, :color => [0.6,0.6,1.0], :string => @title, :offset_x => 0.0, :offset_y => 0.47, :scale_x => 0.3, :scale_y => 0.05}))
 
 		#self << (@title_label = GuiLabel.new.set({:color => [0.6,0.6,1.0], :string => @title, :offset_x => -0.03, :offset_y => 0.47, :scale_x => 0.1, :scale_y => 0.05}))
 
