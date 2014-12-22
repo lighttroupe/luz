@@ -164,11 +164,7 @@ class GuiDefault < GuiInterface
 			close_main_menu!
 		}
 		@main_menu.on_save {
-			if $engine.save
-				positive_message 'Project Saved'
-			else
-				negative_message 'Save Failed'
-			end
+			save_project
 		}
 		#@main_menu.on_save_as {
 		#}
@@ -227,6 +223,25 @@ class GuiDefault < GuiInterface
 		set_state(:open, {:scale_x => 1.0, :scale_y => 1.0, :opacity => 1.0, :hidden => false})
 
 		set_initial_state
+	end
+
+	def save_project
+
+		if $engine.project.path
+			if $engine.project.save
+				positive_message 'Project Saved'
+			else
+				negative_message 'Save Failed'
+			end
+		else
+			choose_project_directory { |path|
+				if $engine.project.save_to_path(File.join(path, DEFAULT_PROJECT_NAME))
+					positive_message 'Project Saved'
+				else
+					negative_message 'Save Failed'
+				end
+			}
+		end
 	end
 
 	def set_initial_state
@@ -544,15 +559,7 @@ class GuiDefault < GuiInterface
 			when 'r'
 				$application.reload_code!
 			when 's'
-				if $engine.project.path
-					$engine.project.save
-					positive_message 'Project Saved'
-				else
-					choose_project_directory { |path|
-						$engine.project.save_to_path(File.join(path, DEFAULT_PROJECT_NAME))
-						positive_message 'Project Saved'
-					}
-				end
+				save_project
 			when 'f1'
 				self.mode = :actor
 			when 'f2'
