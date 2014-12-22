@@ -47,6 +47,8 @@ class GuiDefault < GuiInterface
 	# File Utils
 	#
 	def choose_image
+		return $gui.positive_message "Save Project before adding images" unless $engine.project.path
+
 		dialog = GuiImageDialog.new('Choose Image', ['png','gif','jpg','jpeg']).set(:scale_x => 0.8, :scale_y => 0.8, :offset_y => -0.1)
 		@dialog_container << dialog
 		dialog.on_selected { |path|
