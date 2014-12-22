@@ -65,7 +65,7 @@ class GuiDefault < GuiInterface
 			yield path
 		}
 		dialog.on_closed { dialog.remove_from_parent! }
-		dialog.show_for_path(File.dirname($engine.project.path))
+		dialog.show_for_path(File.dirname($engine.project.path || default_directory))
 	end
 
 	def choose_project_directory
@@ -76,7 +76,11 @@ class GuiDefault < GuiInterface
 			yield path
 		}
 		dialog.on_closed { dialog.remove_from_parent! }
-		dialog.show_for_path(File.dirname($engine.project.path))
+		dialog.show_for_path(File.dirname($engine.project.path || default_directory))
+	end
+
+	def default_directory
+		Dir.home
 	end
 
 	#
@@ -533,8 +537,15 @@ class GuiDefault < GuiInterface
 			when 'r'
 				$application.reload_code!
 			when 's'
-				$engine.project.save
-				positive_message 'Project Saved'
+				if $engine.project.path
+					$engine.project.save
+					positive_message 'Project Saved'
+				else
+					choose_project_directory { |path|
+						$engine.project.save_to_path(File.join(path, DEFAULT_PROJECT_NAME))
+						positive_message 'Project Saved'
+					}
+				end
 			when 'f1'
 				self.mode = :actor
 			when 'f2'

@@ -82,7 +82,11 @@ $LOAD_PATH << './gui'
 multi_require 'pointer', 'pointer_mouse', 'gui_default'
 
 # Load
-$engine.load_from_path(project_path || BASE_SET_PATH)
+if project_path
+	$engine.load_from_path(project_path)
+else
+	$engine.project.append_from_path(BASE_SET_PATH)
+end
 
 $gui = GuiDefault.new
 

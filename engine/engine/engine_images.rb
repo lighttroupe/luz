@@ -25,7 +25,7 @@ module EngineImages
 	def load_images(relative_path)
 		@images_cache ||= {}
 
-		relative_path = relative_path.without_prefix(@project.file_path)		# path.sub(, '') if @project.file_path && path.index(@project.file_path) == 0
+		relative_path = relative_path.without_prefix(@project.file_path) if @project.file_path
 
 		file_path = find_file_by_relative_path(relative_path)
 
