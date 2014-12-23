@@ -5,19 +5,21 @@ require 'gui_object'
 #
 class GuiString < GuiObject
 	FOCUS_COLOR = [1,1,0.3]
-	FOCUS_BACKGROUND_COLOR = [0.2,0.2,0.5]
+	FOCUS_BACKGROUND_COLOR = [0.2,0.2,0.3]
+
+	HOVER_BACKGROUND_COLOR = [0.1,0.1,0.1]
 	COLOR = [1,1,1]
 
-	easy_accessor :width
+	pipe [:width, :width=, :text_align, :text_align=], :label
+
+	easy_accessor :color, :focus_color
 
 	def initialize(object, method)
 		super()
 		@object, @method = object, method
 		@last_rendered_string = ''
-		@label = GuiLabel.new.set(:width => width, :string => get_value)
+		@label = GuiLabel.new.set(:string => get_value)
 	end
-
-	pipe :width=, :label
 
 	def get_value
 		@object.send(@method).to_s
@@ -31,20 +33,15 @@ class GuiString < GuiObject
 	def gui_render
 		with_positioning {
 			if keyboard_focus?
-				with_color(FOCUS_BACKGROUND_COLOR) {
-					unit_square
-				}
-			end
-
-			with_color(color) {
-				# TODO @label.keyboard_focus = keyboard_focus?
+				with_color(FOCUS_BACKGROUND_COLOR) { unit_square }
 				@label.gui_render
-			}
+			elsif pointer_hovering?
+				with_color(HOVER_BACKGROUND_COLOR) { unit_square }
+				@label.gui_render
+			else
+				@label.gui_render
+			end
 		}
-	end
-
-	def color
-		keyboard_focus? ? FOCUS_COLOR : COLOR
 	end
 
 	def renderable?(key)

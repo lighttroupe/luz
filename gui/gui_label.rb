@@ -23,9 +23,10 @@ class GuiLabel < GuiObject
 		@image ||= @cairo_font.render_to_image(string, font || $gui.gui_font, width || 1, lines || 1, text_align)
 
 		with_positioning {
-			#with_color([0,0.2,0.2]) { unit_square }
 			#with_color([0.5,0.5,1]) { unit_square_outline }
-			@image.using { unit_square }
+			with_color(color) {
+				@image.using { unit_square }
+			}
 		}
 	end
 end
