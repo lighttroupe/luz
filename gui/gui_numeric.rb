@@ -8,7 +8,7 @@ class GuiNumeric < GuiObject
 		@object, @method_get, @method_set, @min, @max = object, method, (method.to_s+'=').to_sym, min, max
 		@value_label = GuiLabel.new.set(:width => 4, :text_align => :right)		#.set(:scale_x => 0.9, :scale_y => 0.65, :offset_y => -0.12)
 		@value_change_in_progress = ''
-		@gui_string = GuiString.new(self, :value_change_in_progress).set(:width => 4, :scale_x => 0.9, :scale_y => 0.65, :offset_y => -0.12)
+		@gui_string = GuiString.new(self, :value_change_in_progress).set(:color => [1.0,1.0,0.0], :width => 4, :text_align => :center)
 		@color = [0.8, 0.8, 1.0, 1.0]
 	end
 
