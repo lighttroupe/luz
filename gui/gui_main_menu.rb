@@ -1,4 +1,4 @@
-class GuiMainMenu < GuiBox
+class GuiMainMenu < GuiWindow
 	callback :save, :close, :open, :new, :quit
 
 	def initialize
@@ -29,6 +29,9 @@ class GuiMainMenu < GuiBox
 		self << (@open_text   = GuiLabel.new.set({:color => [0.6,0.6,1.0], :string => 'open', :offset_x => 0.425, :offset_y => 0.48, :scale_x => 0.05, :scale_y => 0.04, :width => 4, :text_align => :fill}))
 		self << (@quit_text   = GuiLabel.new.set({:color => [0.6,0.6,1.0], :string => 'quit', :offset_x => -0.42, :offset_y => -0.47, :scale_x => 0.05, :scale_y => 0.04, :width => 4, :text_align => :fill}))
 		self << (@save_text   = GuiLabel.new.set({:color => [0.6,0.6,1.0], :string => 'save', :offset_x => 0.425, :offset_y => -0.47, :scale_x => 0.05, :scale_y => 0.04, :width => 4, :text_align => :fill}))
+
+		project_file_name = $engine.project.path ? $engine.project.path : ''
+		self << (@project_name = GuiLabel.new.set({:string => project_file_name, :width => 45, :text_align => :center, :offset_x => 0.0, :offset_y => -0.475, :scale_x => 0.7, :scale_y => 0.025}))
 
 		self << @save_button = GuiButton.new.set(:scale_x => 0.05, :scale_y => 0.06, :offset_x => 0.475, :offset_y => -0.47, :background_image => $engine.load_image('images/buttons/main-menu-save.png'), :background_image_hover => $engine.load_image('images/buttons/main-menu-save-hover.png'), :background_image_click => $engine.load_image('images/buttons/main-menu-save-click.png'))
 		@save_button.on_clicked { save_notify ; close_notify }
