@@ -5,8 +5,8 @@ class ActorEffectLine < ActorEffect
 	category :child_producer
 
 	setting 'number', :integer, :range => 1..100, :default => 1..2, :summary => true
-	setting 'angle', :float, :range => -1.0..1.0, :default => 0.0..1.0
-	setting 'distance', :float, :range => -100.0..100.0, :default => 1.0..2.0
+	setting 'angle', :float, :default => 0.0..1.0, :digits => 3
+	setting 'distance', :float, :range => -100.0..100.0, :default => 1.0..2.0, :digits => 3
 
 	def render
 		with_roll(angle) {
