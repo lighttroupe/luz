@@ -22,10 +22,14 @@ class GuiNumeric < GuiObject
 	end
 
 	def set_value(value)
+		@object.send(@method_set, clamp_value(value))
+	end
+
+	def clamp_value(value)
 		value = @min if @min && value < @min
 		value = @max if @max && value > @max
 		value = @zero_value if value == -@zero_value		# HACK to avoid odd case of -0.0
-		@object.send(@method_set, value)
+		value
 	end
 
 	# TODO: rename get_value, set_value to value, value=
@@ -68,10 +72,13 @@ class GuiNumeric < GuiObject
 	def on_key_press(key)
 		case key
 		when 'return'
+			# finalize manual value change
+			# feature: hold shift to animate the value to the new setting
+			value = clamp_value(purify_value(@value_change_in_progress.to_f))
 			if key.shift?
-				add_animation(:value, @value_change_in_progress.to_f, duration=5.0)
+				add_animation(:value, value, duration=5.0)
 			else
-				set_value(purify_value(@value_change_in_progress.to_f))
+				set_value(value)
 			end
 			@gui_string.set_value('')
 			cancel_keyboard_focus!
