@@ -21,19 +21,19 @@ module ValueAnimation
 			# eg animate({:opacity => 1.0})
 			duration = target_value unless target_value == :none
 			fields.each { |field, target_value|
-				add_animation(field, target_value, duration, proc)
+				add_animation(field, target_value, duration, &proc)
 				proc = nil		# only the first one should call the proc
 			}
 		else
 			# eg animate(:opacity, 1.0)
 			field = fields
-			add_animation(field, target_value, duration, proc)
+			add_animation(field, target_value, duration, &proc)
 		end
 		self
 	end
 
 	# Add a single value animation
-	def add_animation(field, target_value, duration, proc)
+	def add_animation(field, target_value, duration, &proc)
 		set_method = (field.to_s+'=').to_sym
 		current_value = send(field)
 
