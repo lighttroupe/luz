@@ -28,6 +28,10 @@ class GuiNumeric < GuiObject
 		@object.send(@method_set, value)
 	end
 
+	# TODO: rename get_value, set_value to value, value=
+	def value ; get_value ; end
+	def value=(v) ; set_value(v) ; end
+
 	#
 	# Rendering
 	#
@@ -64,7 +68,11 @@ class GuiNumeric < GuiObject
 	def on_key_press(key)
 		case key
 		when 'return'
-			set_value(purify_value(@value_change_in_progress.to_f))
+			if key.shift?
+				add_animation(:value, @value_change_in_progress.to_f, duration=5.0)
+			else
+				set_value(purify_value(@value_change_in_progress.to_f))
+			end
 			@gui_string.set_value('')
 			cancel_keyboard_focus!
 		when 'escape'
