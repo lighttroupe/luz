@@ -52,9 +52,6 @@ class Engine
 	require 'engine/engine_plugins'
 	include EnginePlugins
 
-	require 'engine/engine_pausing'
-	include EnginePausing
-
 	require 'engine/engine_file_monitoring'
 	include EngineFileMonitoring
 
@@ -68,7 +65,6 @@ class Engine
 	def post_initialize(options = {})
 		@frame_number = 0
 
-		init_pausing
 		init_time
 		init_beats
 
