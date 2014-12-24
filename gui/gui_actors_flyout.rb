@@ -53,8 +53,8 @@ class GuiActorsFlyout < GuiWindow
 #			$gui.build_editor_for(actor, :pointer => pointer)
 
 		# Actor Class flyout (for creating new actors)
-		self << @actor_class_flyout = GuiActorClassFlyout.new.set(:scale_x => 0.8, :scale_y => 0.3).
-			add_state(:open, {:offset_y => -0.3, :hidden => false}).
+		self << @actor_class_flyout = GuiActorClassFlyout.new.set(:scale_x => 0.9, :scale_y => 0.2).
+			add_state(:open, {:offset_y => -0.35, :hidden => false}).
 			set_state(:closed, {:offset_y => -0.8, :hidden => true})
 
 		@actor_class_flyout.on_actor_class_selected { |pointer, klass|

@@ -10,7 +10,7 @@ class GuiActorClassFlyout < GuiWindow
 		# Background
 		self << (@background=GuiObject.new.set(:background_image => $engine.load_image('images/actor-class-flyout-background.png')))
 
-		self << (@list = GuiGrid.new.set(:scale_x => 0.9, :scale_y => 0.5, :offset_y => 0.22, :min_columns => 2))
+		self << (@list = GuiGrid.new.set(:scale_x => 0.98, :scale_y => 0.98, :offset_y => 0.0, :min_columns => 3))
 
 		# New Actor buttons
 		[ActorStarFlower, ActorStar, ActorPolygon, ActorLine, ActorRectangle, ActorRoundedRectangle, ActorOffscreenCanvas].each { |klass|
