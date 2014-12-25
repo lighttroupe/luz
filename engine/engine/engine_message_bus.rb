@@ -12,6 +12,6 @@ module EngineMessageBus
 	end
 
 	def read_from_message_bus
-		@message_buses.each { |bus| bus.update }
+		@message_buses.each(&:update)
 	end
 end
