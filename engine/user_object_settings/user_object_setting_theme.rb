@@ -1,6 +1,8 @@
 require 'user_object_setting'	#,'theme_combobox'
 
 class UserObjectSettingTheme < UserObjectSetting
+	attr_accessor :theme
+
 	def to_yaml_properties
 		super + ['@theme']
 	end

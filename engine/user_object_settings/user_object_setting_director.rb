@@ -1,6 +1,8 @@
 require 'user_object_setting'
 
 class UserObjectSettingDirector < UserObjectSetting
+	attr_accessor :director
+
 	def to_yaml_properties
 		super + ['@director']
 	end

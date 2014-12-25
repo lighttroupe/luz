@@ -1,6 +1,8 @@
 require 'user_object_setting'
 
 class UserObjectSettingCurve < UserObjectSetting
+	attr_accessor :curve
+
 	def to_yaml_properties
 		super + ['@curve']
 	end
