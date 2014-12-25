@@ -48,36 +48,30 @@ class GuiDefault < GuiInterface
 	#
 	def choose_image
 		return $gui.positive_message "Save Project before adding images" unless $engine.project.path
-
-		dialog = GuiImageDialog.new('Choose Image', ['png','gif','jpg','jpeg']).set(:scale_x => 0.8, :scale_y => 0.8, :offset_y => -0.1)
-		@dialog_container << dialog
-		dialog.on_selected { |path|
-			dialog.remove_from_parent!
-			yield $engine.project.media_file_path(path)
-		}
+		@dialog_container << dialog = GuiImageDialog.new('Choose Image', ['png','gif','jpg','jpeg']).set(:scale_x => 0.8, :scale_y => 0.8, :offset_y => -0.1)
+		dialog.on_selected { |path| dialog.remove_from_parent! ; yield $engine.project.media_file_path(path) }
 		dialog.on_closed { dialog.remove_from_parent! }
 		dialog.show_for_path(File.dirname($engine.project.path))
 	end
 
 	def choose_project_file
-		dialog = GuiFileDialog.new('Open Project', ['luz']).set(:scale_x => 0.8, :scale_y => 0.8, :offset_y => -0.1)
-		@dialog_container << dialog
-		dialog.on_selected { |path|
-			dialog.remove_from_parent!
-			yield path
-		}
+		@dialog_container << dialog = GuiFileDialog.new('Open Project', ['luz'])
 		dialog.on_closed { dialog.remove_from_parent! }
+		dialog.on_selected { |path| dialog.remove_from_parent! ; yield path }
 		dialog.show_for_path(File.dirname($engine.project.path || default_directory))
 	end
 
 	def choose_project_directory
-		dialog = GuiDirectoryDialog.new('Choose Directory for New Project')
-		@dialog_container << dialog
-		dialog.on_selected { |path|
-			dialog.remove_from_parent!
-			yield path
-		}
+		@dialog_container << dialog = GuiDirectoryDialog.new('Choose Directory for New Project')
 		dialog.on_closed { dialog.remove_from_parent! }
+		dialog.on_selected { |path| dialog.remove_from_parent! ; yield path }
+		dialog.show_for_path(File.dirname($engine.project.path || default_directory))
+	end
+
+	def choose_project_path
+		@dialog_container << dialog = GuiDirectoryDialog.new('Save New Project')		# TODO: convert to a save-file-to-directory situation
+		dialog.on_closed { dialog.remove_from_parent! }
+		dialog.on_selected { |path| dialog.remove_from_parent! ; yield path }
 		dialog.show_for_path(File.dirname($engine.project.path || default_directory))
 	end
 
@@ -233,8 +227,8 @@ class GuiDefault < GuiInterface
 				negative_message 'Save Failed'
 			end
 		else
-			choose_project_directory { |path|
-				if $engine.project.save_to_path(File.join(path, DEFAULT_PROJECT_NAME))
+			choose_project_path { |path|
+				if $engine.project.save_to_path(File.join(path, DEFAULT_PROJECT_NAME))		# TODO: choose_project_path provides the file name
 					positive_message 'Project Saved'
 				else
 					negative_message 'Save Failed'
@@ -678,8 +672,8 @@ class GuiDefault < GuiInterface
 
 	def save_changes_before
 		return yield unless $engine.project.changed?
-		body = sprintf("%s will be lost", $engine.project.change_count.plural("change", "changes"))
-		confirmation = GuiConfirmationDialog.new("Abandon Project?", body, "Yes, abandon it", "No, keep playing")
+		body = $engine.project.change_count.plural("unsaved change", "unsaved changes")
+		confirmation = GuiConfirmationDialog.new("Save Project before continuing?", body, "Continue without saving", "Save Project")
 		confirmation.on_yes { confirmation.remove_from_parent! ; yield }
 		confirmation.on_no { confirmation.remove_from_parent! }
 		self << confirmation
