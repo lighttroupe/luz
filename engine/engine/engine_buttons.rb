@@ -17,9 +17,6 @@ module EngineButtons
 	# returns whether button was eaten by a grab
 	def on_button_down(name, frame_offset = 0)
 		return false unless name
-
-		$env[:last_message_bus_activity_at] = $env[:frame_time]			# TODO: move elsewhere?
-
 		on_new_button(name)
 
 		# Some input devices don't send "button up" events, so we force it here (NOTE: of course user can still only use the button-down moment)
