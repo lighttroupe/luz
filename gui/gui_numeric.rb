@@ -40,7 +40,7 @@ class GuiNumeric < GuiValue
 			if keyboard_focus?
 				@gui_string.gui_render
 			else
-				@value_label.set_string(generate_string)
+				@value_label.set_string(generate_string)		# TODO: avoid this work
 				@value_label.gui_render
 			end
 		}
