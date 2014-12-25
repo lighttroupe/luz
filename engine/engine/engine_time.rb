@@ -7,14 +7,6 @@ module EngineTime
 		@time = 0.0
 	end
 
-	def reset_time!
-		@time = 0.0
-	end
-
-	def add_to_engine_time(amount)
-		@add_to_engine_time += amount
-	end
-
 	def update_time(outside_time)
 		@frame_time = outside_time		# Real-World Time
 		@frame_time_delta = @frame_time - @last_frame_time
@@ -31,6 +23,17 @@ module EngineTime
 		@total_frame_times += (Time.now - frame_start)
 	end
 
+	def add_to_engine_time(amount)
+		@add_to_engine_time += amount		# (can be negative)
+	end
+
+	def reset_time!
+		@time = 0.0
+	end
+
+	#
+	# Stats
+	#
 	def average_frame_time
 		@total_frame_times / @frame_number
 	end
