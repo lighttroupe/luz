@@ -226,7 +226,6 @@ class GuiDefault < GuiInterface
 	end
 
 	def save_project
-
 		if $engine.project.path
 			if $engine.project.save
 				positive_message 'Project Saved'
@@ -678,8 +677,8 @@ class GuiDefault < GuiInterface
 	end
 
 	def save_changes_before
-		#return yield unless $engine.project.changed?		# TODO: re-enable when we track changes
-		body = ""		# sprintf("%s will be lost.", $engine.project.change_count.plural("change", "changes"))
+		return yield unless $engine.project.changed?
+		body = sprintf("%s will be lost", $engine.project.change_count.plural("change", "changes"))
 		confirmation = GuiConfirmationDialog.new("Abandon Project?", body, "Yes, abandon it", "No, keep playing")
 		confirmation.on_yes { confirmation.remove_from_parent! ; yield }
 		confirmation.on_no { confirmation.remove_from_parent! }
