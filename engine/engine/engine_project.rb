@@ -1,4 +1,8 @@
 module EngineProject
+	include Callbacks
+
+	callback :new_project
+
 	def init_project
 		@project = Project.new
 	end
@@ -18,7 +22,6 @@ module EngineProject
 	pipe :save_to_path, :project
 	pipe :project_changed!, :project, :method => :changed!
 	pipe :project_changed?, :project, :method => :changed?
-	pipe :clear_objects, :project, :method => :clear
 
 	def reinitialize_user_objects
 		@project.each_user_object { |obj| safe { obj.after_load } }					# NOTE: use of user_object_try here would be silly, since we're about to set it non-crashy, but protection is still needed
@@ -27,10 +30,10 @@ module EngineProject
 	end
 
 	def project_pretick
-		@project.effects.each { |effect| effect.pretick! }
+		@project.effects.each(&:pretick!)		# { |effect| effect.pretick! }
 	end
 
 	def project_tick
-		@project.effects.each { |effect| effect.tick! }
+		@project.effects.each(&:tick!)			# { |effect| effect.tick! }
 	end
 end

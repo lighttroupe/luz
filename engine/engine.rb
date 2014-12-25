@@ -11,7 +11,6 @@ class Engine
 	#
 	# Callbacks
 	#
-	callback :new_project
 	callback :frame_end
 	callback :reload
 	callback :user_object_exception
@@ -89,8 +88,6 @@ class Engine
 	end
 
 	def do_frame(time)
-		return if @paused
-
 		record_frame_time {
 			tick(time)
 			render(enable_frame_saving=true)
@@ -127,6 +124,6 @@ private
 	end
 
 	def resolve_events
-		@project.events.each { |event| event.do_value }			# unlike sliders, events would lose "presses" if not updated every frame
+		@project.events.each(&:do_value)			# unlike sliders, events would lose "presses" if not updated every frame
 	end
 end
