@@ -79,8 +79,8 @@ class Engine
 		init_project
 
 		set_opengl_defaults
-		projection
-		view
+		set_opengl_projection
+		set_opengl_view
 
 		# set up the environment
 		@frame_number -= 1			# HACK: without counting it

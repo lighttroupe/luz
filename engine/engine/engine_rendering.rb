@@ -56,7 +56,7 @@ module EngineRendering
 	#
 	# OpenGL
 	#
-	def projection
+	def set_opengl_projection
 		@camera_distance_from_origin = 0.5
 
 		# TODO: comment formula below
@@ -69,7 +69,7 @@ module EngineRendering
 		GLU.Perspective(angle, 1.0, 0.001, 1024.0) # NOTE: near/far clip plane numbers are somewhat arbitrary.
 	end
 
-	def view
+	def set_opengl_view
 		GL.MatrixMode(GL::MODELVIEW)
 		GL.LoadIdentity
 		GL.Translate(0,0,-@camera_distance_from_origin) # NOTE: makes a 1x1 object at the origin visible/fullscreen

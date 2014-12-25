@@ -108,8 +108,8 @@ module DrawingTransformations
 		GL.MatrixMode(GL::PROJECTION)
 		GL.PushMatrix		# push projection
 
-		$engine.projection		# TODO: shouldn't reference $engine here, instead have a way to store defaults
-		$engine.view
+		$engine.set_opengl_projection		# TODO: shouldn't reference $engine here, instead have a way to store defaults
+		$engine.set_opengl_view
 
 		yield
 
