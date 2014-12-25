@@ -34,8 +34,4 @@ module EngineTime
 	def average_frame_time
 		@total_frame_times / @frame_number
 	end
-
-	def average_frames_per_second
-		@frame_number / @total_frame_times
-	end
 end
