@@ -95,9 +95,7 @@ module DrawingTransformations
 			$accumulated_scale_y = saved_y
 		}
 	end
-	def with_scale_unsafe(x, y=nil, z=nil)
-		y ||= x
-		z ||= 1.0
+	def with_scale_unsafe(x, y=x, z=1.0)
 		return yield if x == 1.0 and y == 1.0 and z == 1.0
 		GL.Scale(x, y, z)
 		yield
