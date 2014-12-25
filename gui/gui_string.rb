@@ -1,9 +1,7 @@
-require 'gui_object'
-
 #
 # GuiString is for viewing and editing a single Ruby string property of an object.
 #
-class GuiString < GuiObject
+class GuiString < GuiValue
 	FOCUS_COLOR = [1,1,0.3]
 	FOCUS_BACKGROUND_COLOR = [0.2,0.2,0.3]
 
@@ -15,18 +13,17 @@ class GuiString < GuiObject
 	easy_accessor :color, :focus_color
 
 	def initialize(object, method)
-		super()
-		@object, @method = object, method
+		super
 		@last_rendered_string = ''
 		@label = GuiLabel.new.set(:string => get_value)
 	end
 
 	def get_value
-		@object.send(@method).to_s
+		super.to_s
 	end
 
 	def set_value(value)
-		@object.send(@method.to_s+'=', value)
+		super
 		@label.string = value
 	end
 

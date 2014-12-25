@@ -1,6 +1,8 @@
 require 'user_object_setting'
 
 class UserObjectSettingSelect < UserObjectSetting
+	attr_accessor :selected
+
 	def to_yaml_properties
 		super + ['@selected']
 	end

@@ -7,11 +7,7 @@ class GuiDirector < GuiListSelect
 	end
 
 	def set_value(value)
-		if value
-			super(value.object)
-		else
-			super(nil)
-		end
+		value ? super(value.object) : super(nil)
 	end
 end
 

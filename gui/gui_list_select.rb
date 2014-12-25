@@ -1,25 +1,13 @@
 # superclass for single-value setting widgets like GuiTheme
 multi_require 'gui_list_popup'
 
-class GuiListSelect < GuiObject
+class GuiListSelect < GuiValue
 	easy_accessor :no_value_text, :item_aspect_ratio, :width
 
 	def initialize(object, method)
-		super()
-		@object, @method = object, '@'+method.to_s
+		super
 		@no_value_text = 'none'
 		@item_aspect_ratio = 1.6
-	end
-
-	#
-	# API
-	#
-	def get_value
-		@object.instance_variable_get(@method)
-	end
-
-	def set_value(value)
-		@object.instance_variable_set(@method, value)
 	end
 
 	#

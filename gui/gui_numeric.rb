@@ -1,11 +1,11 @@
-class GuiNumeric < GuiObject
+class GuiNumeric < GuiValue
 	easy_accessor :step_amount
 
 	pipe [:text_align=, :width=], :value_label
 
 	def initialize(object, method, min, max)
-		super()
-		@object, @method_get, @method_set, @min, @max = object, method, (method.to_s+'=').to_sym, min, max
+		super(object, method)
+		@min, @max = min, max
 		@value_label = GuiLabel.new.set(:width => 4, :text_align => :right)		#.set(:scale_x => 0.9, :scale_y => 0.65, :offset_y => -0.12)
 		@value_change_in_progress = ''
 		@gui_string = GuiString.new(self, :value_change_in_progress).set(:color => [1.0,1.0,0.0], :width => 4, :text_align => :center)
@@ -17,12 +17,8 @@ class GuiNumeric < GuiObject
 	#
 	# API
 	#
-	def get_value
-		@object.send(@method_get)
-	end
-
 	def set_value(value)
-		@object.send(@method_set, clamp_value(value))
+		super(clamp_value(value))
 	end
 
 	def clamp_value(value)

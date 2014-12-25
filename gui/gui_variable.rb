@@ -1,5 +1,3 @@
-multi_require 'gui_list_select'
-
 class GuiVariable < GuiListSelect
 	def initialize(object, method)		# options is [[:one,'One'],[:two,'Two']]
 		super(object, method)
