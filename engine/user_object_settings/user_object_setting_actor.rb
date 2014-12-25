@@ -1,8 +1,6 @@
 require 'user_object_setting'
 
 class UserObjectSettingActor < UserObjectSetting
-	include Drawing
-
 	attr_accessor :actor
 
 	def to_yaml_properties
