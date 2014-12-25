@@ -1,6 +1,8 @@
 require 'user_object_setting'
 
 class UserObjectSettingSlider < UserObjectSetting
+	attr_accessor :slider, :is_inverted, :input_min, :input_max, :dead_center_size, :output_min, :output_max, :output_curve
+
 	def to_yaml_properties
 		super + ['@slider', '@is_inverted', '@input_min', '@input_max', '@dead_center_size', '@output_min', '@output_max', '@output_curve']
 	end
