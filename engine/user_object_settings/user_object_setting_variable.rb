@@ -1,7 +1,7 @@
 require 'user_object_setting'
 
 class UserObjectSettingVariable < UserObjectSetting
-	attr_reader :variable
+	attr_accessor :variable
 
 	def to_yaml_properties
 		super + ['@variable']
