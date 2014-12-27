@@ -15,6 +15,7 @@ class GuiDirectorMenu < GuiWindow
 		@output_view_button.on_clicked {
 			$gui.mode = :output
 			close!
+			$gui.toggle!
 		}
 
 		self << @project_effects_button = GuiButton.new.set(:scale_x => 0.05, :scale_y => 0.06, :offset_x => 0.475, :offset_y => -0.47, :background_image => $engine.load_image('images/buttons/project-effects.png'), :background_image_hover => $engine.load_image('images/buttons/project-effects-hover.png'), :background_image_click => $engine.load_image('images/buttons/project-effects-click.png'))
