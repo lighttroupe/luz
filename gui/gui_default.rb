@@ -673,10 +673,12 @@ class GuiDefault < GuiInterface
 	def save_changes_before
 		return yield unless $engine.project.changed?
 		body = $engine.project.change_count.plural("unsaved change", "unsaved changes")
-		confirmation = GuiConfirmationDialog.new("Save Project before continuing?", body, "Continue without saving", "Save Project")
-		confirmation.on_yes { confirmation.remove_from_parent! ; yield }
-		confirmation.on_no { confirmation.remove_from_parent! }
-		self << confirmation
+		self << confirmation = GuiConfirmationDialog.new("Save Project before continuing?", body, "Continue without saving", "Save Project")		# yes, no
+
+		# 
+		confirmation.on_yes    { confirmation.remove_from_parent! ; yield }
+		confirmation.on_no     { confirmation.remove_from_parent! ; $engine.save_project ; yield }
+		confirmation.on_cancel { confirmation.remove_from_parent! }
 	end
 
 	#
