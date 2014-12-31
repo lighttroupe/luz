@@ -146,27 +146,11 @@ class UserObject
 		if user_object == self
 			@gui_effects_list.clear_selection!
 		else
-			@gui_child_conditions_enable_event.remove_from_parent! if @gui_child_conditions_enable_event
-			@gui_child_conditions_event.remove_from_parent! if @gui_child_conditions_event
-			@gui_child_conditions_enable_child_index.remove_from_parent! if @gui_child_conditions_enable_child_index
-			@gui_child_conditions_child_number_min.remove_from_parent! if @gui_child_conditions_child_number_min
-			@gui_child_conditions_child_number_max.remove_from_parent! if @gui_child_conditions_child_number_max
+			remove_child_conditions_widgets!
 
 			# Build child conditions GUI
 			if user_object.respond_to? :conditions
-				@gui_child_conditions_enable_event = GuiToggle.new(user_object.conditions, :enable_event).set(:scale_x => 0.025, :scale_y => 0.05, :offset_x => -0.25 + 0.22, :offset_y => 0.40)
-				@gui_child_conditions_event = GuiEvent.new(user_object.conditions, :event).set(:scale_x => 0.2, :scale_y => 0.05, :offset_x => -0.25 + 0.34, :offset_y => 0.40, :item_aspect_ratio => 5.0)
-				@box << @gui_child_conditions_event
-				@box << @gui_child_conditions_enable_event
-
-				if user_object.is_a? ActorEffect
-					@gui_child_conditions_enable_child_index = GuiToggle.new(user_object.conditions, :enable_child_index).set(:scale_x => 0.025, :scale_y => 0.05, :offset_x =>  0.22, :offset_y => 0.40)
-					@gui_child_conditions_child_number_min = GuiInteger.new(user_object.conditions, :child_number_min, 1, 100).set(:scale_x => 0.08, :scale_y => 0.075, :offset_x => 0.28, :offset_y => 0.40)
-					@gui_child_conditions_child_number_max = GuiInteger.new(user_object.conditions, :child_number_max, 1, 100).set(:scale_x => 0.08, :scale_y => 0.075, :offset_x => 0.36, :offset_y => 0.40)
-					@box << @gui_child_conditions_enable_child_index
-					@box << @gui_child_conditions_child_number_min
-					@box << @gui_child_conditions_child_number_max
-				end
+				build_child_conditions_widgets!(user_object)
 			end
 		end
 
@@ -175,6 +159,29 @@ class UserObject
 			@gui_settings_list << setting.gui_build_editor.set(:opacity => 0.0, :scale_y => 0.8).animate({:opacity => 1.0}, duration=index*0.1)
 		}
 	end
+
+private
+
+	def build_child_conditions_widgets!(user_object)
+		@box << @gui_child_conditions_enable_event = GuiToggle.new(user_object.conditions, :enable_event).set(:scale_x => 0.025, :scale_y => 0.05, :offset_x => -0.25 + 0.22, :offset_y => 0.40)
+		@box << @gui_child_conditions_event = GuiEvent.new(user_object.conditions, :event).set(:scale_x => 0.2, :scale_y => 0.05, :offset_x => -0.25 + 0.34, :offset_y => 0.40, :item_aspect_ratio => 5.0)
+
+		if user_object.is_a? ActorEffect
+			@box << @gui_child_conditions_enable_child_index = GuiToggle.new(user_object.conditions, :enable_child_index).set(:scale_x => 0.025, :scale_y => 0.05, :offset_x =>  0.22, :offset_y => 0.40)
+			@box << @gui_child_conditions_child_number_min = GuiInteger.new(user_object.conditions, :child_number_min, 1, 100).set(:scale_x => 0.08, :scale_y => 0.075, :offset_x => 0.28, :offset_y => 0.40)
+			@box << @gui_child_conditions_child_number_max = GuiInteger.new(user_object.conditions, :child_number_max, 1, 100).set(:scale_x => 0.08, :scale_y => 0.075, :offset_x => 0.36, :offset_y => 0.40)
+		end
+	end
+
+	def remove_child_conditions_widgets!
+		@gui_child_conditions_enable_event.remove_from_parent! if @gui_child_conditions_enable_event
+		@gui_child_conditions_event.remove_from_parent! if @gui_child_conditions_event
+		@gui_child_conditions_enable_child_index.remove_from_parent! if @gui_child_conditions_enable_child_index
+		@gui_child_conditions_child_number_min.remove_from_parent! if @gui_child_conditions_child_number_min
+		@gui_child_conditions_child_number_max.remove_from_parent! if @gui_child_conditions_child_number_max
+	end
+
+public
 
 	#
 	# Dragging
