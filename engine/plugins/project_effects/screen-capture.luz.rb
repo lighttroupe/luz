@@ -18,7 +18,18 @@ class ProjectEffectScreenCapture < ProjectEffect
 	def generate_output_filepath
 		time = Time.now
 		output_filename = sprintf("luz-screenshot-%04d_%02d_%02d-%02d_%02d_%02d_%04d-%06d.png", time.year, time.month, time.day, time.hour, time.min, time.sec, time.usec/100, $env[:frame_number]) # time for good file system sorting, frame number to further promote uniqueness
-		output_filepath = File.join($engine.project.file_path, output_filename)
+		if (p=$engine.project.file_path)
+			File.join(p, output_filename)
+		elsif (p=desktop_directory)
+			File.join(p, output_filename)
+		else
+			File.join(Dir.home, output_filename)
+		end
+	end
+
+	def desktop_directory
+		p = File.join(Dir.home, "Desktop")
+		p if File.exists?(p)
 	end
 
 	def save_pixels_to_path(pixels, output_filepath)
@@ -46,7 +57,7 @@ class ProjectEffectScreenCapture < ProjectEffect
 	end
 
 	def tick
-		if (event.now? and $gui.nil?)	# NOTE: only operates in performer
+		if event.now?
 			output_filepath = generate_output_filepath
 
 			# Get pixels and write them to temporary file
