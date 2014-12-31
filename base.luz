@@ -11,9 +11,6 @@
           :summary: renders on %
         breaks_cache: 
         actor: 
-        x: 0.0
-        y: 0.0
-        z: 0.0
       effects: []
       actors: []
   :themes: 
@@ -3519,6 +3516,35 @@
         enable_event: false
         event: 
         event_invert: false
+    - !ruby/object:ProjectEffectAspectRatio
+      title: Aspect Ratio
+      enabled: true
+      mode_setting: !ruby/object:UserObjectSettingSelect
+        name: mode
+        options: 
+          :default: :stretched
+          :options: 
+            - - :stretched
+              - Stretched
+            - - :square_horizontal
+              - Square (stretch horizontally)
+            - - :square_vertical
+              - Square (stretch vertically)
+        breaks_cache: 
+        selected: :stretched
+      conditions: !ruby/object:ChildConditions
+        child_index_max: 0
+        child_index_min: 0
+        enable_child_index: false
+        enable_event: false
+        event: 
+        event_invert: false
+        enable_child_index: false
+        child_index_min: 0
+        child_index_max: 0
+        enable_event: false
+        event: 
+        event_invert: false
     - !ruby/object:ProjectEffectDirectorCycle
       title: Director Cycle
       enabled: true
@@ -3540,12 +3566,12 @@
         breaks_cache: 
         event: 
       crossfade_time_setting: !ruby/object:UserObjectSettingTimespan
-        time_number: 8.0
-        time_unit: :beats
         name: crossfade_time
         options: 
           :summary: true
         breaks_cache: 
+        time_number: 8.0
+        time_unit: :beats
       conditions: !ruby/object:ChildConditions
         child_index_max: 0
         child_index_min: 0
