@@ -60,6 +60,7 @@ class GuiActorsFlyout < GuiWindow
 		@actor_class_flyout.on_actor_class_selected { |pointer, klass|
 			actor = klass.new
 			@actors_list.add_after_selection(actor)
+			$engine.project_changed!
 			$gui.build_editor_for(actor, :pointer => pointer)
 			@actor_class_flyout.switch_state({:open => :closed}, duration=0.2)
 		}
