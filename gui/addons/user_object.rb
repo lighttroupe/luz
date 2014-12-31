@@ -112,6 +112,8 @@ class UserObject
 				@gui_effects_list.set_selection(new_object)
 				@gui_effects_list.scroll_to_selection!
 				gui_fill_settings_list(new_object)
+
+				$engine.project_changed!
 			}
 			box << @add_child_window
 
