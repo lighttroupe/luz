@@ -122,9 +122,10 @@ class UserObject
 	end
 
 	def remove_selected
-		@gui_effects_list.selection.each { |object|
-			effects.delete(object)
-		}
+		@gui_effects_list.selection.each { |object| effects.delete(object) }		# TODO: each_selected { }
+		@gui_effects_list.clear_selection!		# needed?
+		@gui_settings_list.clear!							# (was showing for selected/deleted object)
+		#build_settings_list_for(self)
 	end
 
 	def clone_selected
@@ -149,7 +150,10 @@ class UserObject
 			remove_child_conditions_widgets!
 			build_child_conditions_widgets!(user_object)
 		end
+		build_settings_list_for(user_object)
+	end
 
+	def build_settings_list_for(user_object)
 		@gui_settings_list.clear!
 		user_object.settings.each_with_index { |setting, index|
 			@gui_settings_list << setting.gui_build_editor.set(:opacity => 0.0, :scale_y => 0.8).animate({:opacity => 1.0}, duration=index*0.1)
