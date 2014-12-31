@@ -142,16 +142,12 @@ class UserObject
 	def gui_fill_settings_list(user_object)
 		return unless @gui_settings_list
 
-		# UX: if we're selecting the parent object, no children should be selected
+		# UX: if we're selecting the parent object, no children (effects) should be selected
 		if user_object == self
 			@gui_effects_list.clear_selection!
-		else
+		else	# selecting a child (effect)
 			remove_child_conditions_widgets!
-
-			# Build child conditions GUI
-			if user_object.respond_to? :conditions
-				build_child_conditions_widgets!(user_object)
-			end
+			build_child_conditions_widgets!(user_object)
 		end
 
 		@gui_settings_list.clear!
@@ -163,14 +159,23 @@ class UserObject
 private
 
 	def build_child_conditions_widgets!(user_object)
-		@box << @gui_child_conditions_enable_event = GuiToggle.new(user_object.conditions, :enable_event).set(:scale_x => 0.025, :scale_y => 0.05, :offset_x => -0.25 + 0.22, :offset_y => 0.40)
-		@box << @gui_child_conditions_event = GuiEvent.new(user_object.conditions, :event).set(:scale_x => 0.2, :scale_y => 0.05, :offset_x => -0.25 + 0.34, :offset_y => 0.40, :item_aspect_ratio => 5.0)
+		return unless user_object.respond_to? :conditions
 
+		conditions_container = GuiBox.new.set(:scale_x => 0.45, :scale_y => 0.05, :offset_x => 0.18, :offset_y => 0.40)
+
+		# only while event
+		conditions_container << @gui_child_conditions_enable_event = GuiToggle.new(user_object.conditions, :enable_event).set(:scale_x => 0.035, :float => :left)
+		conditions_container << @gui_child_conditions_event_invert = GuiToggle.new(user_object.conditions, :event_invert).set(:scale_x => 0.035, :float => :left)
+		conditions_container << @gui_child_conditions_event = GuiEvent.new(user_object.conditions, :event).set(:scale_x => 0.4, :float => :left, :item_aspect_ratio => 5.0)
+
+		# only applying to children 2-4
 		if user_object.is_a? ActorEffect
-			@box << @gui_child_conditions_enable_child_index = GuiToggle.new(user_object.conditions, :enable_child_index).set(:scale_x => 0.025, :scale_y => 0.05, :offset_x =>  0.22, :offset_y => 0.40)
-			@box << @gui_child_conditions_child_number_min = GuiInteger.new(user_object.conditions, :child_number_min, 1, 100).set(:scale_x => 0.08, :scale_y => 0.075, :offset_x => 0.28, :offset_y => 0.40)
-			@box << @gui_child_conditions_child_number_max = GuiInteger.new(user_object.conditions, :child_number_max, 1, 100).set(:scale_x => 0.08, :scale_y => 0.075, :offset_x => 0.36, :offset_y => 0.40)
+			conditions_container << @gui_child_conditions_enable_child_index = GuiToggle.new(user_object.conditions, :enable_child_index).set(:offset_x => 0.05, :scale_x => 0.035, :float => :left)
+			conditions_container << @gui_child_conditions_child_number_min = GuiInteger.new(user_object.conditions, :child_number_min, 1, 100).set(:scale_x => 0.1, :float => :left, :text_align => :center)
+			conditions_container << @gui_child_conditions_child_number_max = GuiInteger.new(user_object.conditions, :child_number_max, 1, 100).set(:scale_x => 0.1, :float => :left, :text_align => :center)
 		end
+
+		@box << conditions_container
 	end
 
 	def remove_child_conditions_widgets!
