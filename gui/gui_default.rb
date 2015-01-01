@@ -1,6 +1,6 @@
 multi_require 'gui_pointer_behavior', 'gui_object', 'gui_value', 'gui_label', 'gui_box', 'gui_window', 'gui_hbox', 'gui_vbox', 'gui_list', 'gui_scrollbar', 'gui_grid', 'gui_message_bar', 'gui_beat_monitor', 'gui_time_control', 'gui_button', 'gui_float', 'gui_toggle', 'gui_curve', 'gui_curve_increasing', 'gui_theme', 'gui_integer', 'gui_select', 'gui_actor', 'gui_director', 'gui_event', 'gui_variable', 'gui_font_select', 'gui_engine_button', 'gui_engine_slider', 'gui_radio_buttons', 'gui_object_renderer', 'gui_main_menu'
+multi_require 'gui_settings_window', 'gui_actor_view', 'gui_director_view', 'gui_user_object_editor', 'gui_delete_button', 'gui_enter_exit_button', 'gui_enter_exit_popup', 'gui_add_window', 'gui_interface', 'gui_actor_class_button', 'gui_director_menu', 'gui_actors_flyout', 'gui_variables_flyout', 'gui_message_bus_monitor', 'gui_file_dialog', 'gui_directory_dialog', 'gui_image_dialog', 'gui_confirmation_dialog', 'keyboard'
 load_directory(Dir.pwd + '/gui/addons/', '**.rb')		# Addons to existing objects
-multi_require 'gui_actor_view', 'gui_director_view', 'gui_preferences_box', 'gui_user_object_editor', 'gui_delete_button', 'gui_enter_exit_button', 'gui_enter_exit_popup', 'gui_add_window', 'gui_interface', 'gui_actor_class_button', 'gui_director_menu', 'gui_actors_flyout', 'gui_variables_flyout', 'gui_message_bus_monitor', 'gui_file_dialog', 'gui_directory_dialog', 'gui_image_dialog', 'gui_confirmation_dialog', 'keyboard'
 
 class GuiDefault < GuiInterface
 	ACTOR_BACKGROUND_COLOR    = [0,0,0,0]
@@ -651,12 +651,12 @@ class GuiDefault < GuiInterface
 		keyboard.grab(object, &proc)
 	end
 
-	def cancel_keyboard_focus!
-		keyboard.cancel_grab!
-	end
-
 	def has_keyboard_focus?(object)
 		keyboard.grabbed_by_object?(object)
+	end
+
+	def cancel_keyboard_focus!
+		keyboard.cancel_grab!
 	end
 
 	def cancel_keyboard_focus_for(object)
