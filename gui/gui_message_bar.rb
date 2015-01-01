@@ -4,6 +4,7 @@ class GuiMessageBar < GuiBox
 
 	def initialize
 		super
+		self << (@background = GuiObject.new.set(:background_image => $engine.load_image('images/message-bar-background.png')))
 		self << (@text = GuiLabel.new.set(:width => 20, :text_align => :center))
 	end
 
@@ -37,10 +38,11 @@ class GuiMessageBar < GuiBox
 	def next_message!
 		message = messages.shift
 		if message
-			@text.set_string(message).set({:hidden => false}).animate(:opacity, 1.0, duration=0.01)
+			@text.set_string(message).set({:hidden => false})
+			animate(:opacity, 1.0, duration=0.01)
 			@message_time = $env[:frame_time]
 		else
-			@text.animate(:opacity, 0.0, duration=0.2) { @text.hidden! }
+			animate(:opacity, 0.0, duration=0.2) { hidden! }
 			@message_time = nil
 		end
 	end
