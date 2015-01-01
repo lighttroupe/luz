@@ -17,15 +17,18 @@ class Settings
 	def load(path)
 		File.open(path, 'r') { |file|
 			load_settings_from_file(file)
+			@path = path
 			#puts "Loaded settings from #{path}..."
 			#@settings.each_pair { |key, value| puts "- #{key}: #{value}" }
 		} rescue nil
 		self
 	end
 
-	def save(path)
+	def save(path=nil)
+		path ||= @path
 		File.open(path, 'w') { |file|
 			save_settings_to_file(file)
+			@path = path
 		} rescue nil
 		self
 	end

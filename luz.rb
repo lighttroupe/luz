@@ -96,3 +96,5 @@ $engine.on_new_project {
 
 # Go!
 $application.run
+
+$settings.save
