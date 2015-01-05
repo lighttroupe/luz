@@ -53,8 +53,8 @@ private
 
 	def create!
 		self << GuiObject.new.set(:background_image => $engine.load_image('images/list-popup-background.png'))
-		self << @up_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/scroll-up.png'), :offset_y => 0.4, :scale_y => 0.06)
-		self << @down_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/scroll-up.png'), :offset_y => -0.4, :scale_y => -0.06)
+		self << @up_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/scroll-up.png'), :background_image_hover => $engine.load_image('images/buttons/scroll-up-hover.png'),:background_image_click => $engine.load_image('images/buttons/scroll-up-click.png'), :offset_y => 0.4, :scale_y => 0.06)
+		self << @down_button = GuiButton.new.set(:background_image => $engine.load_image('images/buttons/scroll-up.png'), :background_image_hover => $engine.load_image('images/buttons/scroll-up-hover.png'),:background_image_click => $engine.load_image('images/buttons/scroll-up-click.png'), :offset_y => -0.4, :scale_y => -0.06)
 		#@list.scroll_to(self.get_value)
 		@up_button.on_holding { |pointer| @list.scroll_by(pointer, -0.1) }
 		@down_button.on_holding { |pointer| @list.scroll_by(pointer, 0.1) }

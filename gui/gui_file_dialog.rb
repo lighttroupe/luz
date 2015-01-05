@@ -62,12 +62,12 @@ private
 
 		#self << (@title_label = GuiLabel.new.set({:color => [0.6,0.6,1.0], :string => @title, :offset_x => -0.03, :offset_y => 0.47, :scale_x => 0.1, :scale_y => 0.05}))
 
-		self << (@up_button=GuiButton.new.set(:scale_x => 0.05, :scale_y => 0.07, :offset_x => -0.452, :offset_y => 0.5 - 0.09, :background_image => $engine.load_image('images/buttons/directory-up.png')))
+		self << (@up_button=GuiButton.new.set(:scale_x => 0.05, :scale_y => 0.07, :offset_x => -0.452, :offset_y => 0.5 - 0.09, :background_image => $engine.load_image('images/buttons/directory-up.png'), :background_image_hover => $engine.load_image('images/buttons/directory-up-hover.png')))
 		@up_button.on_clicked { show_for_path(File.join(@path, '..')) }
 		self << (@path_string = GuiString.new(self, :path).set(:width => 50, :color => [0.7,0.7,0.7], :offset_x => 0.04, :scale_x => 0.9, :scale_y => 0.04, :offset_y => 0.5 - 0.08))
 		self << (@directory_list = GuiList.new.set(:scale_x => 0.95, :scale_y => 0.825, :offset_x => 0.0, :offset_y => -0.035, :spacing_y => -1.0, :item_aspect_ratio => 15.5))
 
-		self << (@close_button=GuiButton.new.set(:scale_x => 0.3, :scale_y => 0.05, :offset_x => 0.0, :offset_y => -0.5 + 0.025, :background_image => $engine.load_image('images/buttons/close.png')))
+		self << (@close_button=GuiButton.new.set(:scale_x => 0.3, :scale_y => 0.05, :offset_x => 0.0, :offset_y => -0.5 + 0.025, :background_image => $engine.load_image('images/buttons/close-file-view.png'), :background_image_hover => $engine.load_image('images/buttons/close-file-view-hover.png')))
 		@close_button.on_clicked { closed_notify }
 
 		# focus
