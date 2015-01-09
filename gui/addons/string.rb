@@ -4,4 +4,9 @@ class String
 	def no_modifiers?
 		!shift && !control && !alt
 	end
+
+	def shifted
+		@shifted || self
+	end
+	attr_writer :shifted
 end

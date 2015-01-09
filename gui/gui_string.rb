@@ -66,7 +66,7 @@ class GuiString < GuiValue
 			append_text(' ')
 		else
 			if renderable?(key)
-				append_text(key.shift? ? key.upcase : key)
+				append_text(key.shifted)		# with shift key logic applied (eg. / => ?)
 			end
 		end
 	end

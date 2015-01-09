@@ -7,6 +7,7 @@ require 'sdl_application'
 
 class LuzPerformer < SDLApplication
 	SDL_TO_LUZ_BUTTON_NAMES = {'`' => 'Grave', '\\' => 'Backslash', '[' => 'Left Bracket', ']' => 'Right Bracket', ';' => 'Semicolon', "'" => 'Apostrophe', '/' => 'Slash', '.' => 'Period', ',' => 'Comma', '-' => 'Minus', '=' => 'Equal', 'left ctrl' => 'Left Control', 'right ctrl' => 'Right Control'}
+	SHIFT_LOOKUP = {'/' => '?', "'" => '"', ';' => ':', ',' => '<', '.' => '>', '=' => '+', '-' => '_', '1' => '!', '2' => '@', '3' => '#', '4' => '$', '5' => '%', '6' => '^', '7' => '&', '8' => '*', '9' => '(', '0' => ')', '[' => '{', ']' => '}'}
 
 	# (hacks for reduced garbage / better performance)
 	MOUSE_1_X = "Mouse 01 / X"
@@ -78,7 +79,12 @@ private
 		key_name.shift = ((sdl_event.mod & SDL::Key::MOD_SHIFT) > 0)
 		key_name.control = ((sdl_event.mod & SDL::Key::MOD_CTRL) > 0)
 		key_name.alt = ((sdl_event.mod & SDL::Key::MOD_ALT) > 0)
+		key_name.shifted = shift_key(key_name) if key_name.shift?
 		key_name
+	end
+
+	def shift_key(key_name)
+		SHIFT_LOOKUP[key_name] || key_name.upcase
 	end
 
 	def after_run(seconds)
