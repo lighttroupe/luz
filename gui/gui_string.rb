@@ -58,16 +58,21 @@ class GuiString < GuiValue
 			cancel_keyboard_focus!
 		when 'backspace'
 			if key.alt?
-				set_value('')
+				set_value('')																# alt-backspace erases string
+			elsif key.control?
+				if (last_space=get_value.rindex(' '))
+					set_value(get_value[0, last_space])				# control-backspace removes a word
+				else
+					set_value('')		# (only one word left)
+				end
 			else
-				set_value(get_value[0, get_value.length-1]) if get_value.length > 0
+				set_value(get_value[0, get_value.length-1]) if get_value.length > 0				# basic backspace
 			end
 		when 'space'
 			append_text(' ')
 		else
-			if renderable?(key)
-				append_text(key.shifted)		# with shift key logic applied (eg. / => ?)
-			end
+			# (player typing)
+			append_text(key.shifted) if renderable?(key)		# shifted means with shift key logic applied (eg. / => ?)
 		end
 	end
 
