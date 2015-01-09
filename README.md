@@ -10,7 +10,9 @@ Luz takes input from wiimotes, MIDI, Wacom tablets, joysticks, gamepads, and gen
 
 Luz has run hundreds of live venue shows.
 
-Luz is written in Ruby and built on the shoulders of SDL, OpenGL, ffmpeg.
+Luz is written in Ruby and uses SDL, OpenGL, ffmpeg for the heavy lifting.
+
+The Luz 2.0 interface is designed in Inkscape.  Find the source SVGs in the gui/images directory.
 
 [![Code Climate](https://codeclimate.com/github/lighttroupe/luz-next.png)](https://codeclimate.com/github/lighttroupe/luz-next)
 
