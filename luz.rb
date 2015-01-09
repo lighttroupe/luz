@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 ######################################################################################
-# Copyright 2014 Ian McIntosh <ian@openanswers.org> released until the GPL version 2 #
+# Copyright 2015 Ian McIntosh <ian@openanswers.org> released under the GPL version 2 #
 ######################################################################################
 
 $LOAD_PATH << '/usr/lib/ruby/1.9.1/i486-linux/'			# TODO: remove this
