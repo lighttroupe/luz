@@ -16,9 +16,6 @@ class GuiDefault < GuiInterface
 
 	attr_accessor :mode, :directors_menu
 
-	pipe :new_event!, :variables_flyout
-	pipe :new_variable!, :variables_flyout
-
 	attr_reader :gui_font
 
 	def initialize
@@ -41,6 +38,18 @@ class GuiDefault < GuiInterface
 
 	def preload_images
 		File.read('gui/preload-images').split("\n").each { |path| $engine.load_image(path) }
+	end
+
+	#
+	# UserObject factory!
+	#
+	pipe :new_event!, :variables_flyout
+	pipe :new_variable!, :variables_flyout
+
+	def new_theme!(pointer=nil)
+		$engine.project.themes << theme=Theme.new
+		build_editor_for(theme, {:pointer => pointer})
+		theme
 	end
 
 	#
@@ -138,6 +147,7 @@ class GuiDefault < GuiInterface
 		#
 		self << @user_object_editor_container = GuiBox.new
 
+		# Reopen button shows after you close the user object editor
 		self << (@reopen_button=GuiButton.new.set(:scale_x => 0.1, :scale_y => 0.022, :offset_x => 0.0, :background_image => $engine.load_image('images/buttons/reopen-user-object-editor.png'), :background_image_hover => $engine.load_image('images/buttons/reopen-user-object-editor-hover.png'))).
 			add_state(:open, {:offset_y => -0.5 + 0.011, :hidden => false}).
 			set_state(:closed, {:offset_y => -0.5 - 0.011, :hidden => true})
@@ -306,28 +316,25 @@ class GuiDefault < GuiInterface
 	def build_editor_for(user_object, options={})
 		return unless user_object
 
+		# extract options
 		grab_keyboard_focus = options.delete(:grab_keyboard_focus)
 		pointer = options[:pointer]
-		editor = @user_object_editor if @user_object == user_object
+		editor = @user_object_editor if @user_object == user_object		# reuse editor if already showing this object
 		editor_visible = (editor && !editor.hidden?)
 
 		hide_reopen_button!
 
-		case user_object
+		case user_object				# "let's take a look at this ..."
 		when Director
-			close_directors_menu! #if self.chosen_director == user_object
-			if self.chosen_director == user_object
-				#self.mode = :director
-				#return
-			else
-				self.chosen_director = user_object
+			close_directors_menu!
+			unless self.chosen_director == user_object
+				self.chosen_director = user_object				# change scenery
 				clear_user_object_editor
-				return
 			end
+			return
 		when Actor
 			if editor_visible
 				@actor_view.actor = user_object
-				#self.mode = :actor
 				return
 			else
 				# Rule: cannot edit one actor while viewing a different one (so show this actor while editing)
