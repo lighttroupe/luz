@@ -62,3 +62,7 @@ Your touchpad will work like a mouse by default, but you can get high-definition
 <https://help.ubuntu.com/community/SynapticsTouchpad#Enabling_SHMConfig_in_order_to_get_synclient_debug_output>
 
 **Reboot** and then Input Manager should show a "Touchpad" input and will send *Touchpad / X*, *Touchpad / Y* and *Touchpad / Pressure* to Luz automatically.
+
+## Unofficial 64 bit DEB packages from openartist.org
+
+http://openartist.org/debian/trusty64/luz-next_20141027-1_amd64.deb
