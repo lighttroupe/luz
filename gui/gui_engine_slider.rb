@@ -10,6 +10,9 @@ class GuiEngineSlider < GuiListSelect
 		@item_aspect_ratio = 5.0
 	end
 
+	#
+	# GuiListSelect methods
+	#
 	def list
 		$engine.seen_sliders_list.map { |slider| GuiEngineSliderRenderer.new(slider) }
 	end
@@ -19,6 +22,13 @@ class GuiEngineSlider < GuiListSelect
 		@selected_label.set_string(get_value)
 	end
 
+	def step_amount
+		1
+	end
+
+	#
+	# GuiObject methods
+	#
 	def gui_render
 		with_gui_object_properties {
 			with_color(VALUE_COLOR) {
@@ -26,9 +36,5 @@ class GuiEngineSlider < GuiListSelect
 			}
 			@selected_label.gui_render
 		}
-	end
-
-	def step_amount
-		1
 	end
 end
