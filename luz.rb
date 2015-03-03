@@ -4,7 +4,7 @@
 # Copyright 2015 Ian McIntosh <ian@openanswers.org> released under the GPL version 2 #
 ######################################################################################
 
-$LOAD_PATH << '/usr/lib/ruby/1.9.1/i486-linux/'			# TODO: remove this
+$LOAD_PATH << '/usr/lib/ruby/1.9.1/i486-linux/'			# location of sdl_ext and perhaps others (TODO: remove this)
 
 APP_NAME = 'Luz 2'
 BASE_SET_PATH = 'base.luz'
