@@ -40,6 +40,10 @@ class GuiUserObjectEditor < GuiWindow
 		@user_object.grab_keyboard_focus!
 	end
 
+	def edit_title
+		@title_text.grab_keyboard_focus!
+	end
+
 	def gui_render
 		super
 		if @class_icon_button

@@ -389,6 +389,10 @@ class GuiDefault < GuiInterface
 			animate({:offset_x => 0.0, :offset_y => -0.3, :scale_x => 0.65, :scale_y => 0.4, :opacity => 1.0}, duration=0.2)
 	end
 
+	def user_object_editor_edit_text
+		@user_object_editor.edit_title if @user_object_editor
+	end
+
 	def clear_user_object_editor		# TODO: for pointer ?
 		if @user_object_editor
 			editor = @user_object_editor		# local cache (closures!)
