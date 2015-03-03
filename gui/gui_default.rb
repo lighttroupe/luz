@@ -369,14 +369,20 @@ class GuiDefault < GuiInterface
 	end
 
 	def trash!(user_object)
-		@actors_flyout.remove(user_object)
-		@actor_view.actor = nil if @actor_view.actor == user_object
-
-		@directors_list.remove(user_object)
-		@director_view.director = nil if @director_view.director == user_object
-
-		@variables_flyout.remove(user_object)
-
+		case user_object
+		when Actor
+			@actors_flyout.remove(user_object)
+			@actor_view.actor = nil if @actor_view.actor == user_object
+		when Director
+			$gui.negative_message "Can't delete last director." and return if $engine.project.directors.count <= 1
+			$engine.project.directors.delete(user_object)
+			@directors_list.remove(user_object)
+			if @director_view.director == user_object
+				self.chosen_director = $engine.project.directors.first
+			end
+		when Variable, Event
+			@variables_flyout.remove(user_object)
+		end
 		clear_user_object_editor if user_object == @user_object
 	end
 
