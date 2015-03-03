@@ -326,12 +326,17 @@ class GuiDefault < GuiInterface
 
 		case user_object				# "let's take a look at this ..."
 		when Director
-			close_directors_menu!
-			unless self.chosen_director == user_object
-				self.chosen_director = user_object				# change scenery
-				clear_user_object_editor
+			# switch to director?
+			if @directors_menu.visible?
+				close_directors_menu!
+				unless self.chosen_director == user_object
+					self.chosen_director = user_object				# change scenery
+					clear_user_object_editor
+					return
+				end
+			else
+				# open in editor
 			end
-			return
 		when Actor
 			if editor_visible
 				@actor_view.actor = user_object
