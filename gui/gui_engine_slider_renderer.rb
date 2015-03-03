@@ -13,6 +13,10 @@ class GuiEngineSliderRenderer < GuiLabel
 		@string
 	end
 
+	def ==(s)
+		@string == s
+	end
+
 	def gui_render
 		with_gui_object_properties {
 			with_color_listsafe(VALUE_COLOR) {
