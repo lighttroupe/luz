@@ -145,9 +145,10 @@ class Project < UserObject
 		# save to a .tmp file first, and once that is known to work,
 		tmp_path = path + '.tmp'
 		File.open(tmp_path, 'w+') { |tmp_file|
-			save_to_file(tmp_file)
-			File.rename(tmp_path, path)
-			return true
+			if save_to_file(tmp_file)
+				File.rename(tmp_path, path)
+				return true
+			end
 		}
 		false
 	end
@@ -177,8 +178,14 @@ class Project < UserObject
 private
 
 	def save_to_file(file)
-		file << serialize
-		file.flush
+		begin
+			file << serialize
+			file.flush
+			return true
+		rescue Exception => e
+			$gui.negative_message e.message
+			return false
+		end
 
 		# For comparison:
 		#File.open('yamltest.luz', 'w+') { |file|
