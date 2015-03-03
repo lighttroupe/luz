@@ -42,7 +42,7 @@ class GuiMessageBar < GuiBox
 			animate(:opacity, 1.0, duration=0.01)
 			@message_time = $env[:frame_time]
 		else
-			animate(:opacity, 0.0, duration=0.2) { hidden! }
+			animate(:opacity, 0.0, duration=0.2) { }
 			@message_time = nil
 		end
 	end
