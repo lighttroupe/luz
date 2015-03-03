@@ -54,7 +54,8 @@ class GuiVariablesFlyout < GuiWindow
 	end
 
 	def new_variable!(pointer=nil)
-		@variables_list.add_after_selection(variable = Variable.new)
+		variable = Variable.new
+		@variables_list.add_after_selection(variable)
 		@variables_list.set_selection(variable)
 		$gui.build_editor_for(variable, :pointer => pointer)
 		$engine.project_changed!
@@ -62,7 +63,8 @@ class GuiVariablesFlyout < GuiWindow
 	end
 
 	def new_event!(pointer=nil)
-		@events_list.add_after_selection(event = Event.new)
+		event = Event.new
+		@events_list.add_after_selection(event)
 		@events_list.set_selection(event)
 		$gui.build_editor_for(event, :pointer => pointer)
 		$engine.project_changed!
