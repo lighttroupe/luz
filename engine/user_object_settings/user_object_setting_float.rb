@@ -1,8 +1,6 @@
 require 'user_object_setting_numeric'
 
 class UserObjectSettingFloat < UserObjectSettingNumeric
-	attr_reader :last_value
-
 	DEFAULT_RANGE = (-1000.0..1000.0)
 
 	ACTIVATION_DIRECTION_OPTIONS = [[:to, 'to'], [:from, 'from']]
@@ -69,6 +67,10 @@ class UserObjectSettingFloat < UserObjectSettingNumeric
 		end
 
 		return (@current_value = result.clamp(@min, @max))	# Never return anything outside (@min to @max)
+	end
+
+	def last_value
+		@last_value || @min
 	end
 
 	def uses_enter?
