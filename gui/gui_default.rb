@@ -233,6 +233,7 @@ class GuiDefault < GuiInterface
 		if $engine.project.path
 			if $engine.project.save
 				positive_message 'Project Saved'
+				yield
 			else
 				negative_message 'Save Failed'
 			end
@@ -240,6 +241,7 @@ class GuiDefault < GuiInterface
 			choose_project_path { |path|
 				if $engine.project.save_to_path(File.join(path, DEFAULT_PROJECT_NAME))		# TODO: choose_project_path provides the file name
 					positive_message 'Project Saved'
+					yield
 				else
 					negative_message 'Save Failed'
 				end
@@ -699,7 +701,7 @@ class GuiDefault < GuiInterface
 
 		# 
 		confirmation.on_yes    { confirmation.remove_from_parent! ; yield }
-		confirmation.on_no     { confirmation.remove_from_parent! ; $engine.save_project ; yield }
+		confirmation.on_no     { confirmation.remove_from_parent! ; save_project { yield } }
 		confirmation.on_cancel { confirmation.remove_from_parent! }
 	end
 
