@@ -17,7 +17,7 @@ class GuiMessageBar < GuiBox
 	end
 	alias :negative_message :positive_message		# for now
 
-	def gui_tick!
+	def gui_tick
 		super
 		next_message! if next_message?
 	end

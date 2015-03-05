@@ -60,7 +60,7 @@ module MethodsForGuiObject
 	#
 	# 
 	#
-	def gui_tick!
+	def gui_tick
 		tick_animations!
 	end
 

@@ -179,9 +179,9 @@ class GuiBox < GuiObject
 	#
 	# Extend GuiObject methods to pass them along to contents
 	#
-	def gui_tick!
+	def gui_tick
 		return if hidden?
-		@contents.each { |gui_object| gui_object.gui_tick! }
+		@contents.each { |gui_object| gui_object.gui_tick }
 		super
 	end
 

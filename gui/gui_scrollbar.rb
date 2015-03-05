@@ -43,7 +43,7 @@ class GuiScrollbar < GuiBox
 		draggable!
 	end
 
-	def gui_tick!
+	def gui_tick
 		unless @scroller
 			self << (@scroller = GuiScrollbarScroller.new(self).set(:scale_x => 0.50, :scale_y => 1.0))
 		end

@@ -212,8 +212,8 @@ public
 	#
 	# Ticking
 	#
-	def gui_tick! ; end
-	def self.gui_tick! ; end
+	def gui_tick ; end
+	def self.gui_tick ; end
 
 	#
 	# Rendering

@@ -4,7 +4,7 @@ class Director
 
 	ENTER_EXIT_PROGESS_COLOR = [1.0,1.0,0.0,0.8]
 
-	def gui_tick!
+	def gui_tick
 		init_offscreen_buffer unless @offscreen_buffer
 		update_offscreen_buffer! if update_offscreen_buffer?
 	end

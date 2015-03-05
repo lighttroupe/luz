@@ -22,7 +22,7 @@ class Actor
 		}
 	end
 
-	def gui_tick!
+	def gui_tick
 		init_offscreen_buffer unless @offscreen_buffer
 		update_offscreen_buffer! if update_offscreen_buffer?
 	end

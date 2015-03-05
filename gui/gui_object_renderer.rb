@@ -15,7 +15,7 @@ class GuiObjectRenderer < GuiObject
 		super || (@object == object)
 	end
 
-	pipe :gui_tick!, :object
+	pipe :gui_tick, :object
 
 	#
 	# rendering

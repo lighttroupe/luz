@@ -37,7 +37,7 @@ class GuiList < GuiBox
 	#
 	# tick, render
 	#
-	def gui_tick!
+	def gui_tick
 		super
 		if allow_scrolling?
 			starting_scroll = @scroll

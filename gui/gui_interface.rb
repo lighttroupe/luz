@@ -13,7 +13,7 @@ class GuiInterface < GuiBox
 		render_pointers
 	end
 
-	def gui_tick!
+	def gui_tick
 		return if hidden?
 		super
 		with_hit_testing {
