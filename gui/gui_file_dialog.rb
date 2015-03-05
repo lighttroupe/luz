@@ -67,13 +67,13 @@ private
 
 		#self << (@title_label = GuiLabel.new.set({:color => [0.6,0.6,1.0], :string => @title, :offset_x => -0.03, :offset_y => 0.47, :scale_x => 0.1, :scale_y => 0.05}))
 
-		self << (@up_button=GuiButton.new.set(:scale_x => 0.05, :scale_y => 0.07, :offset_x => -0.18, :offset_y => 0.5 - 0.16, :background_image => $engine.load_image('images/buttons/directory-up.png'), :background_image_hover => $engine.load_image('images/buttons/directory-up-hover.png')))
+		self << (@up_button=GuiButton.new.set(:scale_x => 0.05, :scale_y => 0.07, :offset_x => -0.17, :offset_y => 0.5 - 0.16, :background_image => $engine.load_image('images/buttons/directory-up.png'), :background_image_hover => $engine.load_image('images/buttons/directory-up-hover.png')))
 		@up_button.on_clicked { show_for_path(File.join(@path, '..')) }
 
 		self << (@path_string = GuiString.new(self, :path).set(:width => 40, :text_align => :center, :color => [1.0,1.0,1.0], :scale_x => 0.7, :scale_y => 0.04, :offset_y => 0.5 - 0.08))
-		self << (@directory_list = GuiList.new.set(:scale_x => 0.30, :scale_y => 0.825, :offset_x => 0.0, :offset_y => -0.035, :spacing_y => -1.0, :item_aspect_ratio => 8.0))
+		self << (@directory_list = GuiList.new.set(:scale_x => 0.25, :scale_y => 0.825, :offset_x => 0.0, :offset_y => -0.035, :spacing_y => -1.0, :item_aspect_ratio => 8.0))
 
-		self << (@close_button=GuiButton.new.set(:scale_x => 0.06, :scale_y => 0.06, :offset_x => 0.5 - 0.03, :offset_y => 0.5 - 0.03, :background_image => $engine.load_image('images/buttons/close-file-view.png'), :background_image_hover => $engine.load_image('images/buttons/close-file-view-hover.png')))
+		self << (@close_button=GuiButton.new.set(:scale_x => 0.05, :scale_y => 0.06, :offset_x => 0.475, :offset_y => 0.47, :background_image => $engine.load_image('images/buttons/file-dialog-cancel.png'), :background_image_hover => $engine.load_image('images/buttons/file-dialog-cancel-hover.png'), :background_image_click => $engine.load_image('images/buttons/file-dialog-cancel-click.png')))
 		@close_button.on_clicked { closed_notify }
 
 		# focus
