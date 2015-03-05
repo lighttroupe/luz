@@ -41,7 +41,7 @@ class GuiMainMenu < GuiWindow
 			add_state(:open, {:offset_x => -0.325, :hidden => false}).
 			set_state(:closed, {:offset_x => -0.56, :hidden => true})
 
-		self << @settings_button = GuiButton.new.set(:scale_x => -0.05, :scale_y => 0.06, :offset_x => -0.475, :offset_y => 0.4, :background_image => $engine.load_image('images/buttons/main-menu-save.png'), :background_image_hover => $engine.load_image('images/buttons/main-menu-save-hover.png'), :background_image_click => $engine.load_image('images/buttons/main-menu-save-click.png'))
+		self << @settings_button = GuiButton.new.set(:scale_x => 0.02, :scale_y => 0.05, :offset_x => -0.49, :offset_y => 0.4, :background_image => $engine.load_image('images/buttons/main-menu-settings.png'), :background_image_hover => $engine.load_image('images/buttons/main-menu-settings-hover.png'))		#, :background_image_click => $engine.load_image('images/buttons/main-menu-settings-click.png'))
 		@settings_button.on_clicked { @settings_window.switch_state({:closed => :open, :open => :closed}, duration=0.2) }
 
 		self << @quit_button = GuiButton.new.set(:scale_x => 0.05, :scale_y => 0.06, :offset_x => -0.475, :offset_y => -0.47, :background_image => $engine.load_image('images/buttons/main-menu-quit.png'), :background_image_hover => $engine.load_image('images/buttons/main-menu-quit-hover.png'), :background_image_click => $engine.load_image('images/buttons/main-menu-quit-click.png'))
