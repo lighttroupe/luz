@@ -9,6 +9,7 @@ class GuiInterface < GuiBox
 
 	def gui_render
 		return if hidden?
+		tick_animations!
 		super
 		render_pointers
 	end
@@ -24,6 +25,10 @@ class GuiInterface < GuiBox
 	end
 
 private
+
+	def tick_animations!
+		$value_animation_manager.tick_animations!
+	end
 
 	def hit_test_needed?
 		true		# TODO (needed for hover and click)

@@ -61,7 +61,6 @@ module MethodsForGuiObject
 	# 
 	#
 	def gui_tick
-		tick_animations!
 	end
 
 	easy_accessor :skip_hit_test
