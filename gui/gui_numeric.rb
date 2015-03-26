@@ -38,7 +38,16 @@ class GuiNumeric < GuiValue
 	def gui_render
 		with_gui_object_properties {
 			if keyboard_focus?
+				# faint display of current value
+				with_alpha(0.15) {
+					@value_label.set_string(generate_string)		# TODO: avoid this work
+					@value_label.gui_render
+				}
+				# new value in progress
 				@gui_string.gui_render
+
+				# outline for edit mode
+				with_color([0.3,0.3,0.0]) { unit_square_outline }
 			else
 				@value_label.set_string(generate_string)		# TODO: avoid this work
 				@value_label.gui_render
