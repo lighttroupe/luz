@@ -49,6 +49,10 @@ class ValueAnimationManager < Array
 		}
 	end
 
+	def cancel_animations_for_object_and_field!(object, field)
+		delete_if { |animation| animation.object == object && animation.get_method == field }
+	end
+
 	def finalize_animations_for_object_and_field!(object, field)
 		delete_if { |animation|
 			if animation.object == object && animation.get_method == field
@@ -89,5 +93,9 @@ module ValueAnimation
 	# Add a single value animation
 	def add_animation(field, target_value, duration, &proc)
 		$value_animation_manager.add_animation(self, field, target_value, duration, &proc)
+	end
+
+	def cancel_animations_for_field!(field)
+		$value_animation_manager.cancel_animations_for_object_and_field!(self, field)
 	end
 end 

@@ -83,6 +83,7 @@ class GuiNumeric < GuiValue
 			if key.shift?
 				add_animation(:value, value, duration=$settings['value-animation-time'].to_f.clamp(0.1, 30.0))
 			else
+				cancel_animations_for_field!(:value)
 				set_value(value)
 			end
 			@gui_string.set_value('')
