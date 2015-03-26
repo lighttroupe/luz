@@ -6,12 +6,11 @@ class GuiDeleteButton < GuiBox
 			parent.close_cover		# auto-close
 		end
 
-		#def gui_render
-			#super
-			#if pointer_hovering?
-				#unit_square
-			#end
-		#end
+		def gui_render
+			with_alpha(fuzzy_sine($env[:beat] * 3.0).scale(0.7,1.0)) {
+				super
+			}
+		end
 	end
 
 	def initialize(*args)
