@@ -3,7 +3,7 @@
 #
 class GuiString < GuiValue
 	FOCUS_COLOR = [1,1,0.3]
-	FOCUS_BACKGROUND_COLOR = [0.2,0.2,0.3]
+	FOCUS_BACKGROUND_COLOR = [0.2,0.2,0.1]
 
 	HOVER_BACKGROUND_COLOR = [0.1,0.1,0.1]
 	COLOR = [1,1,1]
@@ -30,8 +30,11 @@ class GuiString < GuiValue
 	def gui_render
 		with_positioning {
 			if keyboard_focus?
-				with_color(FOCUS_BACKGROUND_COLOR) { unit_square }
-				@label.gui_render
+				modulate = fuzzy_sine($env[:beat]).scale(0.5, 1.0)
+				with_color([FOCUS_BACKGROUND_COLOR[0] * modulate, FOCUS_BACKGROUND_COLOR[1] * modulate, FOCUS_BACKGROUND_COLOR[2] * modulate]) { unit_square }
+				with_alpha(fuzzy_sine($env[:beat]).scale(0.8, 1.0)) {
+					@label.gui_render
+				}
 			elsif pointer_hovering?
 				with_color(HOVER_BACKGROUND_COLOR) { unit_square }
 				@label.gui_render
