@@ -7,9 +7,13 @@ class GuiDeleteButton < GuiBox
 		end
 
 		def gui_render
-			with_alpha(fuzzy_sine($env[:beat] * 3.0).scale(0.7,1.0)) {
+			if pointer_hovering?
+				with_alpha(fuzzy_sine($env[:beat] * 3.0).scale(0.7,1.0)) {
+					super
+				}
+			else
 				super
-			}
+			end
 		end
 	end
 
