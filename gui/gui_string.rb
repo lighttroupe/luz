@@ -3,7 +3,7 @@
 #
 class GuiString < GuiValue
 	FOCUS_COLOR = [1,1,0.3]
-	FOCUS_BACKGROUND_COLOR = [0.2,0.2,0.1]
+	FOCUS_BACKGROUND_COLOR = [0.15,0.15,0.05]
 
 	HOVER_BACKGROUND_COLOR = [0.1,0.1,0.1]
 	COLOR = [1,1,1]
@@ -35,6 +35,8 @@ class GuiString < GuiValue
 				with_alpha(fuzzy_sine($env[:beat]).scale(0.8, 1.0)) {
 					@label.gui_render
 				}
+				with_color([0.2,0.2,0.0]) { unit_square_outline }
+
 			elsif pointer_hovering?
 				with_color(HOVER_BACKGROUND_COLOR) { unit_square }
 				@label.gui_render
