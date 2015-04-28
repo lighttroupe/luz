@@ -233,7 +233,7 @@ class GuiDefault < GuiInterface
 		if $engine.project.path
 			if $engine.project.save
 				positive_message 'Project Saved'
-				yield
+				yield if block_given?
 			else
 				negative_message 'Save Failed'
 			end
@@ -241,7 +241,7 @@ class GuiDefault < GuiInterface
 			choose_project_path { |path|
 				if $engine.project.save_to_path(File.join(path, DEFAULT_PROJECT_NAME))		# TODO: choose_project_path provides the file name
 					positive_message 'Project Saved'
-					yield
+					yield if block_given?
 				else
 					negative_message 'Save Failed'
 				end
