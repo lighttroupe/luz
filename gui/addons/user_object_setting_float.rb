@@ -45,7 +45,7 @@
 			@enable_enter_exit_button.on_clicked { |pointer|
 				if @enter_exit_popup
 					@enter_exit_popup.animate({:scale_x => 0.0, :scale_y => 0.0}, 0.05) {
-						@enter_exit_popup.remove_from_parent!
+						@enter_exit_popup.remove_from_parent! if @enter_exit_popup
 						@enter_exit_popup = nil
 					}
 				else
