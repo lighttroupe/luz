@@ -58,7 +58,7 @@ module Shapes
 				vertices << (radius * Math.cos(radians))
 				vertices << (radius * Math.sin(radians))
 
-				# Using modulus here lets us start at and radians value we like
+				# Using modulus here lets us start at any radians value we like
 				radians = (radians + radians_step) % (Math::PI * 2)
 			end
 		end
