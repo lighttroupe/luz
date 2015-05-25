@@ -6,27 +6,26 @@ require 'path'
 module Shapes
 	def self.Circle(radius, points)
 		radians_step = ((Math::PI * 2.0) / points)		# Total radians / total points
-		radians = first_radian = Math::PI / 2		# Start at the 'top'
+		radians = Math::PI / 2		# Start at the 'top'
 
 		# Add center to make a nice TRIANGLE_FAN (see OpenGL docs)
 		vertices = []
 
-		for point in 0..(points-1)
-			# Add point
+		for point in 0...points
 			vertices << (radius * Math.cos(radians))
 			vertices << (radius * Math.sin(radians))
 			radians += radians_step
 		end
 
 		# Add first/final point to close the shape
-		vertices << (radius * Math.cos(first_radian))
-		vertices << (radius * Math.sin(first_radian))
+		vertices << vertices[0]
+		vertices << vertices[1]
 		vertices
 	end
 
 	def self.Ring(radius, points)
 		radians_step = ((Math::PI * 2.0) / points)		# Total radians / total points
-		radians = first_radian = Math::PI / 2		# Start at the 'top'
+		radians = Math::PI / 2		# Start at the 'top'
 
 		vertices = Array.new
 		for point in 0..(points-1)
@@ -44,17 +43,16 @@ module Shapes
 		# Basically we are plotting a circle, but we vary the radius with each point.
 		# To produce a nice curve, we use the output of cos() to determine the radius.
 		radians_step = ((Math::PI * 2.0) / (arms * points_per_arm))		# Total radians / total points
-		radians = first_radian = Math::PI / 2		# Start at the 'top'
+		radians = Math::PI / 2		# Start at the 'top'
 
 		# Add center of flower to make a nice TRIANGLE_FAN (see OpenGL docs)
 		vertices = []
 
-		for arm in 0..(arms-1)
-			for point in 0..(points_per_arm-1)
+		for arm in 0...arms
+			for point in 0...points_per_arm
 				radius = radius_proc.call(point.to_f / points_per_arm.to_f)
-				first_radius ||= radius
 
-				# Add point
+				# Add x and y, this is multiplying a vector
 				vertices << (radius * Math.cos(radians))
 				vertices << (radius * Math.sin(radians))
 
@@ -64,9 +62,8 @@ module Shapes
 		end
 
 		# Add first/final point to close the shape
-		vertices << (first_radius * Math.cos(first_radian))
-		vertices << (first_radius * Math.sin(first_radian))
-
+		vertices << vertices[0]
+		vertices << vertices[1]
 		vertices
 	end
 
