@@ -1,5 +1,7 @@
 # Luz 2
 
+[![Screenshot](http://41.media.tumblr.com/accf5bff3d48056e959747db5fed666a/tumblr_nh8q2pWPCs1te3fw8o1_540.png)][http://lighttroupe.tumblr.com/]
+
 Fullscreen interactive motion graphics toy builder.
 
 <http://lighttroupe.tumblr.com>
