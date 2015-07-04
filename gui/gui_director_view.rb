@@ -4,10 +4,14 @@ class GuiDirectorView < GuiBox
 	attr_accessor :director
 
 	def gui_render
-		camera.using {
-			scaffolding.render
-			@director.render if @director
-		}
+		if false
+			camera.using {
+				scaffolding.render
+				@director.render if @director
+			}
+		else
+			@director.render! if @director
+		end
 	end
 
 	#
