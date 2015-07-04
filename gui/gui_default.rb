@@ -16,7 +16,7 @@ class GuiDefault < GuiInterface
 
 	attr_accessor :mode, :directors_menu
 
-	attr_reader :gui_font
+	attr_reader :gui_font, :user_object
 
 	def initialize
 		super

@@ -7,12 +7,18 @@ class Theme
 		gui_render_label if pointer_hovering?
 	end
 
-private
+	def open_add_child_window!
+		style = Style.new
+		effects << style
+		style.on_clicked
+	end
 
 	def clear_render_styles_cache!
 		GL.DestroyList(@gui_render_styles_list)
 		@gui_render_styles_list = nil
 	end
+
+private
 
 	def gui_render_styles
 		@gui_render_styles_list = GL.RenderCached(@gui_render_styles_list) {
