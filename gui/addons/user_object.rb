@@ -107,13 +107,7 @@ class UserObject
 			@add_child_window = GuiAddWindow.new(self)
 			@add_child_window.on_add { |new_object|
 				@add_child_window.hide!
-
-				@gui_effects_list.add_after_selection(new_object)
-				@gui_effects_list.set_selection(new_object)
-				@gui_effects_list.scroll_to_selection!
-				gui_fill_settings_list(new_object)
-
-				$engine.project_changed!
+				add_and_select_new_object(new_object)
 			}
 			box << @add_child_window
 
@@ -121,6 +115,14 @@ class UserObject
 		else
 			GuiObject.new		# nothing
 		end
+	end
+
+	def add_and_select_new_object(new_object)
+		@gui_effects_list.add_after_selection(new_object)
+		@gui_effects_list.set_selection(new_object)
+		@gui_effects_list.scroll_to_selection!
+		gui_fill_settings_list(new_object)
+		$engine.project_changed!
 	end
 
 	def remove_selected
