@@ -1,14 +1,15 @@
+# encoding: ASCII-8BIT
 #
 # ZAML -- A partial replacement for YAML, writen with speed and code clarity
-#         in mind.  ZAML fixes one YAML bug (loading Exceptions) and provides 
+#         in mind.  ZAML fixes one YAML bug (loading Exceptions) and provides
 #         a replacement for YAML.dump() unimaginatively called ZAML.dump(),
-#         which is faster on all known cases and an order of magnitude faster 
+#         which is faster on all known cases and an order of magnitude faster
 #         with complex structures.
 #
 # http://github.com/hallettj/zaml
 #
 # Authors: Markus Roberts, Jesse Hallett, Ian McIntosh, Igal Koshevoy, Simon Chiang
-# 
+#
 
 require 'yaml'
 
@@ -40,19 +41,19 @@ class ZAML
         end
     class Label
         #
-        # YAML only wants objects in the datastream once; if the same object 
-        #    occurs more than once, we need to emit a label ("&idxxx") on the 
+        # YAML only wants objects in the datastream once; if the same object
+        #    occurs more than once, we need to emit a label ("&idxxx") on the
         #    first occurrence and then emit a back reference (*idxxx") on any
-        #    subsequent occurrence(s). 
+        #    subsequent occurrence(s).
         #
         # To accomplish this we keeps a hash (by object id) of the labels of
         #    the things we serialize as we begin to serialize them.  The labels
         #    initially serialize as an empty string (since most objects are only
-        #    going to be be encountered once), but can be changed to a valid 
-        #    (by assigning it a number) the first time it is subsequently used, 
-        #    if it ever is.  Note that we need to do the label setup BEFORE we 
-        #    start to serialize the object so that circular structures (in 
-        #    which we will encounter a reference to the object as we serialize 
+        #    going to be be encountered once), but can be changed to a valid
+        #    (by assigning it a number) the first time it is subsequently used,
+        #    if it ever is.  Note that we need to do the label setup BEFORE we
+        #    start to serialize the object so that circular structures (in
+        #    which we will encounter a reference to the object as we serialize
         #    it can be handled).
         #
         def self.counter_reset
@@ -83,7 +84,7 @@ class ZAML
             emit(label.reference)
           else
             if @structured_key_prefix and not obj.is_a? String
-                emit(@structured_key_prefix) 
+                emit(@structured_key_prefix)
                 @structured_key_prefix = nil
                 end
             emit(new_label_for(obj))
@@ -95,7 +96,7 @@ class ZAML
         @recent_nl = false unless s.kind_of?(Label)
         end
     def nl(s='')
-        emit(@indent || "\n") unless @recent_nl 
+        emit(@indent || "\n") unless @recent_nl
         emit(s)
         @recent_nl = true
         end
@@ -125,7 +126,7 @@ class Object
         end
     def to_zaml(z)
         z.first_time_only(self) {
-            z.emit(zamlized_class_name(Object)) 
+            z.emit(zamlized_class_name(Object))
             z.nested {
                 instance_variables = to_yaml_properties
                 if instance_variables.empty?
@@ -220,7 +221,7 @@ class String
         gsub( /([\x80-\xFF])/ ) { |x| "\\x#{x.unpack("C")[0].to_s(16)}" }
         end
     def to_zaml(z)
-        z.first_time_only(self) { 
+        z.first_time_only(self) {
             num = '[-+]?(0x)?\d+\.?\d*'
             case
               when self == ''
@@ -229,21 +230,21 @@ class String
               #   z.emit("!binary |\n")
               #   z.emit([self].pack("m*"))
               when (
-                    (self =~ /\A(true|false|yes|no|on|null|off|#{num}(:#{num})*|!|=|~)$/i) or 
+                    (self =~ /\A(true|false|yes|no|on|null|off|#{num}(:#{num})*|!|=|~)$/i) or
                     (self =~ /\A\n* /) or
                     (self =~ /\s$/) or
                     (self =~ /^[>|][-+\d]*\s/i) or
-                    (self[-1..-1] =~ /\s/) or 
+                    (self[-1..-1] =~ /\s/) or
                     (self =~ /[\x00-\x08\x0B\x0C\x0E-\x1F\x80-\xFF]/) or
-                    (self =~ /[,\[\]\{\}\r\t]|:\s|\s#/) or 
-                    (self =~ /\A([-:?!#&*'"]|<<|%.+:.)/) 
+                    (self =~ /[,\[\]\{\}\r\t]|:\s|\s#/) or
+                    (self =~ /\A([-:?!#&*'"]|<<|%.+:.)/)
                     )
                 z.emit("\"#{escaped_for_zaml}\"")
               when self =~ /\n/
                 if self[-1..-1] == "\n" then z.emit('|+') else z.emit('|-') end
                 z.nested { split("\n",-1).each { |line| z.nl; z.emit(line.chomp("\n")) } }
                 z.nl
-              else 
+              else
                 z.emit(self)
               end
             }
@@ -252,7 +253,7 @@ class String
 
 class Hash
     def to_zaml(z)
-        z.first_time_only(self) { 
+        z.first_time_only(self) {
             z.nested {
                 if empty?
                     z.emit('{}')
@@ -272,13 +273,13 @@ class Hash
 class Array
     def to_zaml(z)
         z.first_time_only(self) {
-            z.nested { 
+            z.nested {
                 if empty?
                     z.emit('[]')
                   else
                     each { |v| z.nl('- '); v.to_zaml(z) }
                   end
-                } 
+                }
             }
         end
     end
@@ -301,7 +302,7 @@ class Date
 class Range
     def to_zaml(z)
         z.first_time_only(self) {
-            z.emit(zamlized_class_name(Range)) 
+            z.emit(zamlized_class_name(Range))
             z.nested {
                 z.nl
                 z.emit('begin: ')

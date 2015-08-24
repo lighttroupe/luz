@@ -43,29 +43,29 @@ private
 	def handle_sdl_event(event)
 		case event
 		# Mouse input
-		when SDL::Event2::MouseMotion
+		when SDL2::Event::MouseMotion
 			$engine.on_slider_change(MOUSE_1_X, (event.x / (@width - 1).to_f))
 			$engine.on_slider_change(MOUSE_1_Y, (1.0 - (event.y / (@height - 1).to_f)))
 
-		when SDL::Event2::MouseButtonDown
+		when SDL2::Event::MouseButtonDown
 			$engine.on_button_down(MOUSE_1_BUTTON_FORMATTER[event.button], frame_offset=1)
 
-		when SDL::Event2::MouseButtonUp
+		when SDL2::Event::MouseButtonUp
 			$engine.on_button_up(MOUSE_1_BUTTON_FORMATTER[event.button], frame_offset=1)
 
 		# Keyboard input
-		when SDL::Event2::KeyDown
-			key_name = SDL::Key.get_key_name(event.sym)
+		when SDL2::Event::KeyDown
+			key_name = SDL2::Key.name_of(event.sym)
 			button_name = sdl_to_luz_button_name(key_name)
 			$engine.on_button_down(button_name, 1)	# 1 is frame_offset: use it on the coming frame
 			$gui.raw_keyboard_input(sdl_to_gui_key(key_name, event))
 
-		when SDL::Event2::KeyUp
-			key_name = SDL::Key.get_key_name(event.sym)
+		when SDL2::Event::KeyUp
+			key_name = SDL2::Key.name_of(event.sym)
 			button_name = sdl_to_luz_button_name(key_name)
 			$engine.on_button_up(button_name, 1)		# 1 is frame_offset: use it on the coming frame
 
-		when SDL::Event2::Quit
+		when SDL2::Event::Quit
 			finished!
 		end
 	end
@@ -76,9 +76,9 @@ private
 	end
 
 	def sdl_to_gui_key(key_name, sdl_event)		# actually decorates the existing String ;P
-		key_name.shift = ((sdl_event.mod & SDL::Key::MOD_SHIFT) > 0)
-		key_name.control = ((sdl_event.mod & SDL::Key::MOD_CTRL) > 0)
-		key_name.alt = ((sdl_event.mod & SDL::Key::MOD_ALT) > 0)
+		key_name.shift = ((sdl_event.mod & SDL2::Key::Mod::SHIFT) > 0)
+		key_name.control = ((sdl_event.mod & SDL2::Key::Mod::CTRL) > 0)
+		key_name.alt = ((sdl_event.mod & SDL2::Key::Mod::ALT) > 0)
 		key_name.shifted = shift_key(key_name) if key_name.shift?
 		key_name
 	end
