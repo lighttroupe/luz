@@ -1,6 +1,6 @@
 module DrawingTransformations
-	def with_translation(x, y, z=0.0)
-		return yield unless x && y && z
+	def with_translation(x, y, z=nil)
+		x ||= 0.0 ; y ||= 0.0 ; z ||= 0.0
 		return yield if x == 0.0 && y == 0.0 && z == 0.0
 
 		GL.SaveMatrix {
