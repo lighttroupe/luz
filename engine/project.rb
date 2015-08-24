@@ -2,7 +2,7 @@ multi_require 'callbacks', 'project_effect', 'yaml', 'zaml'
 
 # For File.mv
 require 'fileutils'	# ruby 1.9
-YAML::ENGINE.yamler = 'syck' if defined?(YAML::ENGINE) && YAML::ENGINE.respond_to?(:yamler)
+#YAML::ENGINE.yamler = 'syck' if defined?(YAML::ENGINE) && YAML::ENGINE.respond_to?(:yamler)
 
 require 'callbacks'
 
@@ -202,7 +202,7 @@ private
 	end
 
 	def append_from_file(file)
-		loaded_objects = YAML.load(file)
+		loaded_objects = Syck.load(file)
 
 		raise "version number '#{loaded_objects[:version]}' should be '#{FILE_VERSION}'" unless loaded_objects[:version] == FILE_VERSION
 
@@ -213,12 +213,12 @@ private
 
 			# clean out any YAML::Objects we find
 			loaded_objects[obj_type].delete_if { |parent_object|
-				if parent_object.is_a? YAML::Object
+				if parent_object.is_a? Syck::Object
 					@missing_plugin_names << "#{parent_object.class} (object: #{parent_object.ivars['title']})"
 					true
 				else
 					parent_object.effects.delete_if { |child_object|
-						if child_object.is_a? YAML::Object
+						if child_object.is_a? Syck::Object
 							@missing_plugin_names << "#{child_object.class} (in object: #{parent_object.title})"
 							true
 						else
