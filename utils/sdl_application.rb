@@ -11,7 +11,7 @@ class SDLApplication
 	boolean_accessor :system_mouse
 
 	def initialize(name)
-		@name, @width, @height, @bits_per_pixel = name, 640, 480, 0		# NOTE: setting bpp to 0 means "current" in SDL
+		@name, @width, @height, @bits_per_pixel = name, 0, 0, 0		# NOTE: setting bpp to 0 means "current" in SDL
 		@fullscreen = true
 		@stencil_buffer = true
 		@border = true
@@ -86,6 +86,11 @@ private
 	def init_sdl
 		puts "Using SDL2 bindings version #{SDL2::VERSION}"
 		SDL2.init(SDL2::INIT_VIDEO | SDL2::INIT_TIMER)
+
+		if @width == 0 || @height == 0
+			display_mode = SDL2::Display.displays.first.desktop_mode
+			@width, @height = display_mode.w, display_mode.h
+		end
 
 		# Window
 		#SDL2::WM.set_caption(@name, '')		UPGRADE
