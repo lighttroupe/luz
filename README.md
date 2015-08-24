@@ -6,13 +6,13 @@ Fullscreen interactive motion graphics toy builder.
 
 <http://lighttroupe.tumblr.com>
 
-Luz supports vector shapes, animated gifs, sprites, video files.
+Create your visuals using vector shapes, animated gifs, sprites, webcams and videos.
 
-Luz takes input from wiimotes, MIDI, Wacom tablets, joysticks, gamepads, and generic OpenSoundControl input.
+Connect unlimited input devices: Luz supports wiimotes, MIDI, Wacom tablets, joysticks, gamepads, and OpenSoundControl input.
 
-Luz has run hundreds of live venue shows.
+Luz has provided interactive visuals at hundreds of venues, festivals, and house parties.
 
-Luz is written in Ruby and uses SDL, OpenGL, ffmpeg for the heavy lifting.
+Luz is written in Ruby and offloads all the heavy pixel pushing to ffmpeg, OpenGL, and your GPU.
 
 The Luz 2.0 interface is designed in Inkscape.  Find the source SVGs in the gui/images directory.
 
