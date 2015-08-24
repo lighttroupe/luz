@@ -8,9 +8,7 @@ class Theme
 	end
 
 	def open_add_child_window!
-		style = Style.new
-		effects << style
-		style.on_clicked
+		effects << Style.new
 	end
 
 	def clear_render_styles_cache!
