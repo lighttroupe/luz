@@ -53,6 +53,15 @@ private
 		when SDL2::Event::MouseButtonUp
 			$engine.on_button_up(MOUSE_1_BUTTON_FORMATTER[event.button], frame_offset=1)
 
+		when SDL2::Event::MouseWheel
+			if event.y == 1
+				$engine.on_button_down(sprintf("Mouse %02d / Button 04", event.which + 1), 1)		# last 1 is frame_offset: use it on the coming frame
+			elsif event.y == -1
+				$engine.on_button_down(sprintf("Mouse %02d / Button 05", event.which + 1), 1)		# last 1 is frame_offset: use it on the coming frame
+			else
+				puts "unhandled mouse wheel event: #{event}"
+			end
+
 		# Keyboard input
 		when SDL2::Event::KeyDown
 			key_name = SDL2::Key.name_of(event.sym)
