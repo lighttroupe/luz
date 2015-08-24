@@ -46,10 +46,9 @@ private
 
 	def reload_if_needed
 		if file_name != @file_name
-			if $engine.project.file_path && File.exist?(path=File.join($engine.project.file_path, file_name))
-				if (file = FFmpeg::File.new(path))
-					@file = file
-				end
+			if $engine.project.file_path
+				path = File.join($engine.project.file_path, file_name)
+				@file = FFmpeg::File.new(path) if File.file?(path)
 			end
 			@file_name = file_name
 		end
