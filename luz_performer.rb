@@ -6,7 +6,7 @@
 require 'sdl_application'
 
 class LuzPerformer < SDLApplication
-	SDL_TO_LUZ_BUTTON_NAMES = {'`' => 'Grave', '\\' => 'Backslash', '[' => 'Left Bracket', ']' => 'Right Bracket', ';' => 'Semicolon', "'" => 'Apostrophe', '/' => 'Slash', '.' => 'Period', ',' => 'Comma', '-' => 'Minus', '=' => 'Equal', 'left ctrl' => 'Left Control', 'right ctrl' => 'Right Control'}
+	SDL_TO_LUZ_BUTTON_NAMES = {'`' => 'Grave', '\\' => 'Backslash', '[' => 'Left Bracket', ']' => 'Right Bracket', ';' => 'Semicolon', "'" => 'Apostrophe', '/' => 'Slash', '.' => 'Period', ',' => 'Comma', '-' => 'Minus', '=' => 'Equal', 'Left Ctrl' => 'Left Control', 'Right Ctrl' => 'Right Control'}
 	SHIFT_LOOKUP = {'/' => '?', "'" => '"', ';' => ':', ',' => '<', '.' => '>', '=' => '+', '-' => '_', '1' => '!', '2' => '@', '3' => '#', '4' => '$', '5' => '%', '6' => '^', '7' => '&', '8' => '*', '9' => '(', '0' => ')', '[' => '{', ']' => '}'}
 
 	# (hacks for reduced garbage / better performance)
@@ -76,6 +76,7 @@ private
 	end
 
 	def sdl_to_gui_key(key_name, sdl_event)		# actually decorates the existing String ;P
+		key_name.downcase!
 		key_name.shift = ((sdl_event.mod & SDL2::Key::Mod::SHIFT) > 0)
 		key_name.control = ((sdl_event.mod & SDL2::Key::Mod::CTRL) > 0)
 		key_name.alt = ((sdl_event.mod & SDL2::Key::Mod::ALT) > 0)
