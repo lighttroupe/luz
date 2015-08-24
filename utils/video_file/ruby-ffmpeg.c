@@ -50,7 +50,7 @@ static VALUE FFmpeg_File_read_next_frame(VALUE self) {
 
 			// Did we get a video frame?
 			if(frame_finished > 0) {
-				sws_scale(video_file->sws_context, (video_file->av_frame->data), video_file->av_frame->linesize, 0, video_file->av_codec_context->height, video_file->av_frame_rgb->data, video_file->av_frame_rgb->linesize);
+				sws_scale(video_file->sws_context, (const uint8_t * const*)(video_file->av_frame->data), video_file->av_frame->linesize, 0, video_file->av_codec_context->height, video_file->av_frame_rgb->data, video_file->av_frame_rgb->linesize);
 				video_file->frame_index++;
 				return video_file->ruby_string_buffer;
 			}
@@ -65,27 +65,32 @@ static VALUE FFmpeg_File_free(VALUE self) {
 }
 
 static VALUE FFmpeg_File_new(VALUE klass, VALUE v_file_path) {
+	printf("ruby-ffmpeg: initing...\n");
+
 	lazy_init_ffmpeg();
 	char* file_path = RSTRING_PTR(v_file_path);		// eg. "/dev/video0"
 
 	video_file_t* video_file = ALLOC_N(video_file_t, 1);
+	memset(video_file, 0, sizeof(video_file_t));
+
+printf("%d, %d, %d, %d ...", video_file->fd, video_file->video_index, video_file->frame_index, video_file->frame_count);							// index of the first video stream in a file
 
 	video_file->frame_index = 0;		// TODO: needed?
 
 	//
 	// Open video file
 	//
-	printf("ruby-ffmpeg: opening %s...\n", file_path);
-
-	if(av_open_input_file(&(video_file->av_format_context), file_path, NULL, 0, NULL) != 0)
+	printf("ruby-ffmpeg: opening '%s' ...\n", file_path);
+	if(avformat_open_input(&(video_file->av_format_context), file_path, NULL, NULL) != 0)
 		return Qnil;
 
-	if(av_find_stream_info(video_file->av_format_context) < 0)
+	printf("ruby-ffmpeg: getting stream info...\n");
+	if(avformat_find_stream_info(video_file->av_format_context, NULL) < 0)
 		return Qnil;
 
-	dump_format(video_file->av_format_context, 0, file_path, 0);		// console debug output
+	av_dump_format(video_file->av_format_context, 0, file_path, 0);		// console debug output
 
-	// Find video stream
+	printf("ruby-ffmpeg: finding video stream...\n");
 	int i;
 	for(i=0; i<(video_file->av_format_context->nb_streams); i++) {
 		if(video_file->av_format_context->streams[i]->codec->codec_type == CODEC_TYPE_VIDEO) {
@@ -96,31 +101,29 @@ static VALUE FFmpeg_File_new(VALUE klass, VALUE v_file_path) {
 	video_file->av_codec_context = video_file->av_format_context->streams[video_file->video_index]->codec;
 	video_file->time_base_per_frame = ((int64_t)(video_file->av_codec_context->time_base.num) * AV_TIME_BASE) / (int64_t)(video_file->av_codec_context->time_base.den);
 
-	// Find decoder for video stream
+	printf("ruby-ffmpeg: finding decoder...\n");
 	video_file->av_codec = avcodec_find_decoder(video_file->av_codec_context->codec_id);
 	if(video_file->av_codec == NULL) {
 		fprintf(stderr, "Unsupported codec!\n");
 		return Qnil;
 	}
 
-	if(avcodec_open(video_file->av_codec_context, video_file->av_codec) < 0)
+	printf("ruby-ffmpeg: opening decoder...\n");
+	if(avcodec_open2(video_file->av_codec_context, video_file->av_codec, NULL) < 0)
 		return Qnil;
 
-	// Get scaling context (eg. YUV=>RGB)
+	printf("ruby-ffmpeg: get scaling context (size and color space conversion eg. YUV=>RGB)...\n");
 	video_file->sws_context = sws_getContext(video_file->av_codec_context->width, video_file->av_codec_context->height,	// input size
 																video_file->av_codec_context->pix_fmt,
 																video_file->av_codec_context->width, video_file->av_codec_context->height,	// output size
-																//PIX_FMT_YUV420P, SWS_FAST_BILINEAR, 0, 0, 0 );
 																PIX_FMT_RGB24, SWS_FAST_BILINEAR, 0, 0, 0 );
 
-	video_file->av_frame = avcodec_alloc_frame();
-	video_file->av_frame_rgb = avcodec_alloc_frame();
+	video_file->av_frame = av_frame_alloc();
+	video_file->av_frame_rgb = av_frame_alloc();
 
 	int buffer_size = avpicture_get_size(PIX_FMT_RGB24, video_file->av_codec_context->width, video_file->av_codec_context->height);
 
-// TODO: doesn't seem to need to use av_malloc ... uint8_t* buffer = (uint8_t *)av_malloc(numBytes * sizeof(uint8_t));
-
-	char* temp_buffer = ALLOC_N(char, buffer_size);		// rb_str_new() sometimes segfaults with just ""
+	char* temp_buffer = ALLOC_N(char, buffer_size);								// rb_str_new() sometimes segfaults with just ""
 	video_file->ruby_string_buffer = rb_str_new(temp_buffer, buffer_size);
 	rb_gc_register_address(&(video_file->ruby_string_buffer));		// otherwise Ruby will delete our string!
 

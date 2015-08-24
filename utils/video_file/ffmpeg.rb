@@ -1,5 +1,5 @@
 begin
-	require_relative "1.9/ffmpeg.#{RbConfig::CONFIG['DLEXT']}"
+	require_relative "ffmpeg.#{RbConfig::CONFIG['DLEXT']}"
 rescue LoadError => e
 end
 
@@ -31,7 +31,7 @@ module FFmpeg
 		end
 
 		def read_next_frame_into_image(image)
-			#puts "reading next frame" 
+			#puts "reading next frame"
 			new_data = read_next_frame
 			#puts "video-file: read_next_frame failed" unless new_data
 			image.from_rgb8(new_data, self.width, self.height) if new_data
