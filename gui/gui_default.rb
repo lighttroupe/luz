@@ -31,6 +31,10 @@ class GuiDefault < GuiInterface
 		switch_state({:open => :closed, :closed => :open}, duration=0.35)
 	end
 
+	def rendering_output?
+		mode == :output
+	end
+
 	def reload_notify
 		clear!
 		create!
@@ -279,7 +283,7 @@ class GuiDefault < GuiInterface
 	end
 
 	#
-	# Rendering: render is called every frame, gui_render only when the Editor plugin thinks it's visible 
+	# Rendering: render is called every frame, gui_render only when the Editor plugin thinks it's visible
 	#
 	def view_color
 		case @mode
@@ -699,7 +703,7 @@ class GuiDefault < GuiInterface
 		body = $engine.project.change_count.plural("unsaved change", "unsaved changes")
 		self << confirmation = GuiConfirmationDialog.new("Save Project before continuing?", body, "Continue without saving", "Save Project")		# yes, no
 
-		# 
+		#
 		confirmation.on_yes    { confirmation.remove_from_parent! ; yield }
 		confirmation.on_no     { confirmation.remove_from_parent! ; save_project { yield } }
 		confirmation.on_cancel { confirmation.remove_from_parent! }

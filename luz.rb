@@ -63,6 +63,9 @@ options = OptionParser.new do |opts|
 	opts.on("--system-mouse", "System Mouse") do
 		$application.system_mouse = true
 	end
+	opts.on("--output-window", "Output Window on 2nd Display") do
+		$application.use_output_window = true
+	end
 	opts.on("--borderless", "Borderless") do
 		$application.border = false
 	end
@@ -97,6 +100,11 @@ $engine.on_new_project {
 }
 
 # Go!
-$application.run
+begin
+	$application.run
+rescue Interrupt
+ensure
+	puts "\nThanks for playing with me! -Luz"
+end
 
 $settings.save
