@@ -61,7 +61,7 @@ class SDLApplication
 			if @output_window
 				with_output_window_context {
 					GL.Viewport(0, 0, @output_window.size[0], @output_window.size[1])
-					clear_screen([1.0, 0.0, 0.0, 0.0])
+					clear_screen([0.0, 0.0, 0.0, 0.0])
 
 					if $gui.rendering_output?
 						with_texture_of_previous_frame(1) {		# TODO: 0
