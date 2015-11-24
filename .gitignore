@@ -26,6 +26,3 @@ Makefile
 *.mpg
 *.bmp
 *.luz
-
-# temp script to launch 2.0
-go
