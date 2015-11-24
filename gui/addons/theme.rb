@@ -12,7 +12,7 @@ class Theme
 	end
 
 	def clear_render_styles_cache!
-		GL.DestroyList(@gui_render_styles_list)
+		GL.DestroyList(@gui_render_styles_list) if @gui_render_styles_list
 		@gui_render_styles_list = nil
 	end
 
