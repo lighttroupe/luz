@@ -34,7 +34,7 @@ Here are some Luz 1 video tutorials (all the same concepts apply, only the inter
 
 Luz currently only runs on Linux.  (Help is wanted porting it to OSX and Windows.)
 
-1. **sudo apt-get install git ruby1.9.1 libsdl-ruby1.9.1 libopengl-ruby1.9.1 ruby-pango**
+1. **sudo apt-get install git ruby2.1 ruby-sdl ruby-opengl ruby-pango**
 
 2. **git clone https://github.com/lighttroupe/luz-next.git**
 
