@@ -531,14 +531,22 @@ class GuiDefault < GuiInterface
 		if key.control?
 			case key
 			when 'f9'
-				positive_message "Launching Input Manager"
-				cmd = 'input-manager/input-manager'
-				open("|#{cmd}")
+				begin
+					cmd = 'input-manager/input-manager'
+					open("|#{cmd}")
+					positive_message "Launching Input Manager"
+				rescue
+					negative_message "Launching Input Manager Failed"
+				end
 
 			when 'f10'
-				positive_message "Launching Spectrum Analyzer"
-				cmd = 'spectrum-analyzer/spectrum-analyzer'
-				open("|#{cmd}")
+				begin
+					cmd = 'spectrum-analyzer/spectrum-analyzer'
+					open("|#{cmd}")
+					positive_message "Launching Spectrum Analyzer"
+				rescue
+					positive_message "Launching Spectrum Analyzer Failed"
+				end
 
 			when 'right'
 				if @actors_flyout.keyboard_focus?
