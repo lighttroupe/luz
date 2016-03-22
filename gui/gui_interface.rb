@@ -9,12 +9,12 @@ class GuiInterface < GuiBox
 
 	def gui_render
 		return if hidden?
-		tick_animations!
-		super
+		super		# visual rendering
 		render_pointers
 	end
 
 	def gui_tick
+		tick_value_animations!
 		return if hidden?
 		super
 		with_hit_testing {
@@ -26,7 +26,7 @@ class GuiInterface < GuiBox
 
 private
 
-	def tick_animations!
+	def tick_value_animations!
 		$value_animation_manager.tick_animations!
 	end
 
