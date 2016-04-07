@@ -132,7 +132,7 @@ private
 		#SDL2.setGLAttr(SDL2::GL_STENCIL_SIZE, 8) if @stencil_buffer		UPGRADE
 		#@screen = SDL2.set_video_mode(@width, @height, @bits_per_pixel, sdl_video_mode_flags)
 
-		@window = SDL2::Window.create(@name, 0, 0, @width, @height, sdl_video_mode_flags | SDL2::Window::INPUT_GRABBED)
+		@window = SDL2::Window.create(@name, 0, 0, @width, @height, sdl_video_mode_flags | SDL2::Window::Flags::INPUT_GRABBED)
 		@context = SDL2::GL::Context.create(@window)
 
 		displays = SDL2::Display.displays
@@ -156,18 +156,18 @@ private
 	end
 
 	def sdl_video_mode_flags
-		flags = SDL2::Window::OPENGL
-		flags |= SDL2::Window::FULLSCREEN_DESKTOP if @fullscreen
-		flags |= SDL2::Window::MAXIMIZED if @fullscreen
-		flags |= SDL2::Window::RESIZABLE if !@fullscreen
-		flags |= SDL2::Window::BORDERLESS unless @border
+		flags = SDL2::Window::Flags::OPENGL
+		flags |= SDL2::Window::Flags::FULLSCREEN_DESKTOP if @fullscreen
+		flags |= SDL2::Window::Flags::MAXIMIZED if @fullscreen
+		flags |= SDL2::Window::Flags::RESIZABLE if !@fullscreen
+		flags |= SDL2::Window::Flags::BORDERLESS unless @border
 		flags
 	end
 	def sdl_output_window_video_mode_flags
-		flags = SDL2::Window::OPENGL
-		#flags |= SDL2::Window::FULLSCREEN_DESKTOP
-		flags |= SDL2::Window::MAXIMIZED
-		flags |= SDL2::Window::BORDERLESS
+		flags = SDL2::Window::Flags::OPENGL
+		#flags |= SDL2::Window::Flags::FULLSCREEN_DESKTOP
+		flags |= SDL2::Window::Flags::MAXIMIZED
+		flags |= SDL2::Window::Flags::BORDERLESS
 		flags
 	end
 
