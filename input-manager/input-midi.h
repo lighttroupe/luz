@@ -1,3 +1,4 @@
+#ifdef SUPPORT_MIDI
 extern "C" {
 	#include <portmidi.h>
 	#include <porttime.h>
@@ -30,3 +31,4 @@ private:
 	void reset_all();
 	bool process_midi_event(PmEvent& event);
 };
+#endif

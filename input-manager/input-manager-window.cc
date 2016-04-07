@@ -19,7 +19,9 @@ InputManagerWindow::InputManagerWindow()
 		m_window_vbox(),
 		m_inputs_vbox(),
 		m_toolbar(),
+#ifdef SUPPORT_WIIMOTE
 		m_wiimote_discover_button(MSG_DISCOVER_WIIMOTE),
+#endif
 		m_broadcast_button(MSG_ENABLE_BROADCAST)
 {
 	set_title(WINDOW_TITLE);
@@ -44,8 +46,10 @@ InputManagerWindow::InputManagerWindow()
 	m_toolbar.set_spacing(STANDARD_WIDGET_SPACING);
 
 		// Toolbar: Wiimote Discovery button
+#ifdef SUPPORT_WIIMOTE
 		m_wiimote_discover_button.signal_clicked().connect(sigc::mem_fun(*this, &InputManagerWindow::on_wiimote_discover_button_clicked));
 		m_toolbar.pack_start(m_wiimote_discover_button, false, false);
+#endif
 
 		// Toolbar: spacer to push furth items to the far right
 		Gtk::Label* spacer = new Gtk::Label();
@@ -69,12 +73,15 @@ InputManagerWindow::InputManagerWindow()
 	//
 	// MIDI
 	//
+#ifdef SUPPORT_MIDI
 	InputMIDI* midi = new InputMIDI();
 	add_input(midi);
+#endif
 
 	//
 	// Touchpad
 	//
+#ifdef SUPPORT_TOUCHPAD
 	InputTouchpad* touchpad = new InputTouchpad();
 	if(touchpad->connect()) {
 		add_input(touchpad);
@@ -82,10 +89,12 @@ InputManagerWindow::InputManagerWindow()
 	else {
 		delete touchpad;
 	}
+#endif
 
 	//
 	// Tablets
 	//
+#ifdef SUPPORT_TABLET
 	vector<string>* list = tablet_list();
 	for(int i=0; i<list->size() ; i++) {
 		string* s = &(list->at(i));
@@ -96,15 +105,18 @@ InputManagerWindow::InputManagerWindow()
 			add_input(tablet);
 		}
 	}
+#endif
 
 	//
 	// Joysticks
 	//
+#ifdef SUPPORT_JOYSTICK
 	int count = joystick_count();
 	for(int i=0 ; i<count ; i++) {
 		InputJoystick* joystick = joystick_open_by_index(i);
 		add_input(joystick);
 	}
+#endif
 }
 
 void gtk_flush()
@@ -132,6 +144,7 @@ bool InputManagerWindow::on_key_press_event(GdkEventKey* event)
 }
 */
 
+#ifdef SUPPORT_WIIMOTE
 void InputManagerWindow::on_wiimote_discover_button_clicked()
 {
 	InputWiimote* pInputWiimote = new InputWiimote();
@@ -154,6 +167,7 @@ void InputManagerWindow::on_wiimote_discover_button_clicked()
 	}
 	m_wiimote_discover_button.set_sensitive(true);
 }
+#endif
 
 void InputManagerWindow::on_broadcast_changed()
 {

@@ -1,3 +1,4 @@
+#ifdef SUPPORT_WIIMOTE
 #include "input-wiimote.h"
 #include <stdio.h>
 #include <unistd.h>		// for usleep()
@@ -193,3 +194,4 @@ InputWiimote::~InputWiimote()
 		wiimote_close(m_p_wiimote);
 	}
 }
+#endif

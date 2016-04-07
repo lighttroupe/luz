@@ -1,3 +1,4 @@
+#ifdef SUPPORT_TOUCHPAD
 #include "input-touchpad.h"
 #include "utils.h"
 
@@ -91,3 +92,4 @@ void InputTouchpad::sleep()
 InputTouchpad::~InputTouchpad()
 {
 }
+#endif
