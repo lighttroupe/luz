@@ -9,12 +9,12 @@ class GuiInterface < GuiBox
 
 	def gui_render
 		return if hidden?
-		tick_animations!
 		super
 		render_pointers
 	end
 
 	def gui_tick
+		tick_animations!
 		return if hidden?
 		super
 		with_hit_testing {
