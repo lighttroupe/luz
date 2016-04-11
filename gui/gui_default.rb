@@ -341,7 +341,10 @@ class GuiDefault < GuiInterface
 					return
 				end
 			else
-				# open in editor
+				# create/view offscreen render actor
+				self.chosen_director.offscreen_render_actor_setting.set_to_new_actor_of_class(ActorRectangle) unless self.chosen_director.offscreen_render_actor.present?
+				self.chosen_director.offscreen_render_actor.one { |actor| build_editor_for(actor, options) }
+				return
 			end
 		when Actor
 			if editor_visible
