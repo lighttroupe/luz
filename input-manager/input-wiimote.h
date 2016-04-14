@@ -11,12 +11,13 @@ public:
 	InputWiimote();
 	virtual ~InputWiimote();
 	bool scan();
-
 	bool update();
+	void sleep();
+
 	const char* device_type();
 	const char* device_name();
 
-	void sleep();
+	int m_old_buttons;
 
 private:
 	cwiid_wiimote_t* m_p_wiimote;
