@@ -1,14 +1,14 @@
 #!/usr/bin/env ruby
 require 'fileutils'
 
-puts 'Getting needed software to build ffmpeg video support...'
-`sudo apt-get -y install ruby1.9.1 ruby1.9.1-dev libavformat-dev libswscale-dev`
+puts '### Getting needed software to build ffmpeg video support...'
+`sudo apt-get -y install ruby ruby-dev libavformat-dev libavcodec-dev libavutil-dev libswscale-dev libswscale-ffmpeg-dev`
 
-puts 'Building ffmpeg for Ruby 1.9...'
-FileUtils.rm_f '1.9/ffmpeg.so'
-`ruby1.9.1 extconf.rb`
+FileUtils.rm_f 'ffmpeg.so'
+
+puts '### Generating makefile...'
+`ruby extconf.rb`
+
+puts '### Running makefile...'
 `make clean`
 `make`
-
-FileUtils.mkdir_p '1.9'
-FileUtils.mv 'ffmpeg.so', '1.9/ffmpeg.so'

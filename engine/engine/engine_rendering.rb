@@ -65,8 +65,7 @@ module EngineRendering
 		GL.MatrixMode(GL::PROJECTION)
 		GL.LoadIdentity
 
-		# 1.0 = output ratio
-		GLU.Perspective(angle, 1.0, 0.001, 1024.0) # NOTE: near/far clip plane numbers are somewhat arbitrary.
+		GLU.Perspective(angle, 1.0, 0.001, 1024.0)		# 1.0 is output ratio. NOTE: near/far clip plane numbers are somewhat arbitrary.
 	end
 
 	def set_opengl_view

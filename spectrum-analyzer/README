@@ -1,6 +1,8 @@
 # Luz Spectrum Analyzer
 # =====================
 #
+# NOTE: the program pavucontrol can be used to change the Spectrum Analyzer's sound source: mics, or listening to the playing music ("Monitor of ...")
+#
 # To build Spectrum Analyzer on Ubuntu use:
 
 sudo apt-get install build-essential libasound2-dev libfftw3-dev liblo0-dev libgtkmm-2.4-dev libgtkglextmm-x11-1.2-dev libgl1-mesa-dev libglu1-mesa-dev

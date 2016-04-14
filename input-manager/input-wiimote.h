@@ -1,9 +1,6 @@
 extern "C" {
-	#define _ENABLE_TILT
-	#define _ENABLE_FORCE
-
-	#include <wiimote.h>
-	#include <wiimote_api.h>
+	#include <bluetooth/bluetooth.h>
+	#include <cwiid.h>
 }
 
 #include "input.h"
@@ -14,14 +11,15 @@ public:
 	InputWiimote();
 	virtual ~InputWiimote();
 	bool scan();
-
 	bool update();
+	void sleep();
+
 	const char* device_type();
 	const char* device_name();
 
-	void sleep();
+	int m_old_buttons;
 
 private:
-	wiimote_t* m_p_wiimote;
-	wiimote_t* m_p_wiimote_old;
+	cwiid_wiimote_t* m_p_wiimote;
+	cwiid_wiimote_t* m_p_wiimote_old;
 };

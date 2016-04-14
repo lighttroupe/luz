@@ -2,9 +2,6 @@
 #define __INPUT_TABLET_H__
 
 extern "C" {
-	#include <wiimote.h>
-	#include <wiimote_api.h>
-
 	//
 	// Xinput Support for Tablets
 	//

@@ -34,20 +34,16 @@ Here are some Luz 1 video tutorials (all the same concepts apply, only the inter
 
 Luz currently only runs on Linux.  (Help is wanted porting it to OSX and Windows.)
 
-1. **sudo apt-get install git ruby1.9.1 libsdl-ruby1.9.1 libopengl-ruby1.9.1 ruby-pango**
-
-2. **git clone https://github.com/lighttroupe/luz-next.git**
-
-3. **sudo gem1.9.1 install rmagick**
-
-4. Optionally run **./build** in utils/webcam for the Webcam plugin.
-
-5. Optionally run **./build** in utils/video_file for the Video plugin.
-
-6. Optionally enhance your laptop's touchpad (see below).
-
-7. **ruby1.9.1 luz.rb gui/editor.luz**
-
+1. open terminal
+2. sudo apt-get install git ruby ruby-dev ruby-pango libsdl2-dev libglw1-mesa-dev freeglut3-dev ruby-rmagick
+3. sudo gem install ruby-sdl2 syck opengl glu glut
+4. git clone https://github.com/lighttroupe/luz-next.git
+5. cd luz-next
+6. git checkout sdl2
+7. Optionally run **./build** in utils/webcam for the Webcam plugin.
+8. Optionally run **./build** in utils/video_file for the Video plugin.
+9. Optionally enhance your laptop's touchpad (see below).
+10. ./go
 
 ## Running Input Manager and Spectrum Analyzer
 

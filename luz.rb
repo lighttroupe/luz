@@ -4,7 +4,12 @@
 # Copyright 2015 Ian McIntosh <ian@openanswers.org> released under the GPL version 2 #
 ######################################################################################
 
-$LOAD_PATH << '/usr/lib/ruby/1.9.1/i486-linux/'			# location of sdl_ext and perhaps others (TODO: remove this)
+if RUBY_VERSION[0,3] != '2.1'
+	puts "For Speed and Smoooth Flow, choose Ruby Version 2.1 (you are using #{RUBY_VERSION})"
+	exit
+else
+	puts "Using Ruby #{RUBY_VERSION}"
+end
 
 APP_NAME = 'Luz 2'
 BASE_SET_PATH = 'base.luz'
@@ -15,16 +20,18 @@ $LOAD_PATH << './engine'
 $LOAD_PATH << './engine/user_object_settings'
 
 require 'reloadable_require'
-multi_require 'optparse', 'sdl', 'opengl', 'addons/dir'
+multi_require 'optparse', 'sdl2', 'opengl', 'glu', 'addons/dir', 'syck'
+
+include GL
+include GLU
+
 load_directory(File.join(Dir.pwd, 'utils', 'addons'), '**.rb')
 multi_require 'method_piping', 'boolean_accessor', 'constants', 'drawing', 'luz_performer', 'engine', 'settings', 'vector3'
 
-if RUBY_VERSION[0,3] != '1.9'
-	puts "For Speed and Smoooth Flow, choose Ruby Version 1.9 (you are using #{RUBY_VERSION})"
-	exit
-else
-	puts "Using Ruby #{RUBY_VERSION}"
-end
+# GUI
+multi_require 'easy_accessor', 'value_animation', 'value_animation_states'
+$LOAD_PATH << './gui'
+multi_require 'pointer', 'pointer_mouse', 'gui_default'
 
 #
 # Begin App
@@ -56,6 +63,9 @@ options = OptionParser.new do |opts|
 	opts.on("--system-mouse", "System Mouse") do
 		$application.system_mouse = true
 	end
+	opts.on("--output-window", "Output Window on 2nd Display") do
+		$application.use_output_window = true
+	end
 	opts.on("--borderless", "Borderless") do
 		$application.border = false
 	end
@@ -76,12 +86,7 @@ $engine.load_plugins
 USER_OBJECT_EXCEPTION_FORMAT = "#{'#' * 80}\nOops! The plugin shown below has caused an error and has stopped functioning:\n\n%s\nObject:%s\n#{'#' * 80}\n"
 $engine.on_user_object_exception { |object, exception| puts sprintf(USER_OBJECT_EXCEPTION_FORMAT, exception.report_format, object.title) }
 
-# GUI
-multi_require 'easy_accessor', 'value_animation', 'value_animation_states'
-$LOAD_PATH << './gui'
-multi_require 'pointer', 'pointer_mouse', 'gui_default'
-
-# Load
+# Load Project
 if project_path
 	$engine.load_from_path(project_path)
 else
@@ -91,10 +96,15 @@ end
 $gui = GuiDefault.new
 
 $engine.on_new_project {
-	$gui = GuiDefault.new
+	$gui = GuiDefault.new			# out with the old...
 }
 
 # Go!
-$application.run
+begin
+	$application.run
+rescue Interrupt
+ensure
+	puts "\nThanks for playing with me! -Luz"
+end
 
 $settings.save

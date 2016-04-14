@@ -65,7 +65,9 @@ int main(int argc, char *argv[])
 	g_message_bus = new MessageBus();
 
 	input_init();
+#ifdef SUPPORT_JOYSTICK
 	joystick_init();
+#endif
 
 	//
 	// Main Window

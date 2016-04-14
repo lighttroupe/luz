@@ -1,3 +1,4 @@
+#ifdef SUPPORT_JOYSTICK
 #include "input-joystick.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -142,3 +143,4 @@ void InputJoystick::sleep()
 InputJoystick::~InputJoystick()
 {
 }
+#endif

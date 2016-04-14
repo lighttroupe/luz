@@ -1,4 +1,9 @@
 class UserObjectSettingActor
+	def set_to_new_actor_of_class(klass)
+		@actor = klass.new
+		$engine.project.actors << @actor
+	end
+
 	def gui_build_editor
 		box = GuiBox.new
 		box << create_user_object_setting_name_label
@@ -7,8 +12,7 @@ class UserObjectSettingActor
 		box << new_button=GuiButton.new.set(:float => :left, :scale_x => 0.10, :scale_y => 0.70, :offset_y => -0.3, :background_image => $engine.load_image('images/buttons/new-actor.png'), :background_image_hover => $engine.load_image('images/buttons/new-actor-hover.png'), :background_image_click => $engine.load_image('images/buttons/new-actor-click.png'))
 		new_button.on_clicked { |pointer|
 			select_actor_klass(pointer) { |klass|
-				@actor = klass.new
-				$engine.project.actors << @actor
+				set_to_new_actor_of_class(klass)
 			}
 		}
 

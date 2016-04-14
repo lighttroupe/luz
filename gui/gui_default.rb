@@ -31,6 +31,10 @@ class GuiDefault < GuiInterface
 		switch_state({:open => :closed, :closed => :open}, duration=0.35)
 	end
 
+	def rendering_output?
+		mode == :output
+	end
+
 	def reload_notify
 		clear!
 		create!
@@ -279,7 +283,7 @@ class GuiDefault < GuiInterface
 	end
 
 	#
-	# Rendering: render is called every frame, gui_render only when the Editor plugin thinks it's visible 
+	# Rendering: render is called every frame, gui_render only when the Editor plugin thinks it's visible
 	#
 	def view_color
 		case @mode
@@ -337,7 +341,10 @@ class GuiDefault < GuiInterface
 					return
 				end
 			else
-				# open in editor
+				# create/view offscreen render actor
+				self.chosen_director.offscreen_render_actor_setting.set_to_new_actor_of_class(ActorRectangle) unless self.chosen_director.offscreen_render_actor.present?
+				self.chosen_director.offscreen_render_actor.one { |actor| build_editor_for(actor, options) }
+				return
 			end
 		when Actor
 			if editor_visible
@@ -527,14 +534,22 @@ class GuiDefault < GuiInterface
 		if key.control?
 			case key
 			when 'f9'
-				positive_message "Launching Input Manager"
-				cmd = 'input-manager/input-manager'
-				open("|#{cmd}")
+				begin
+					cmd = 'input-manager/input-manager'
+					open("|#{cmd}")
+					positive_message "Launching Input Manager"
+				rescue
+					negative_message "Launching Input Manager Failed"
+				end
 
 			when 'f10'
-				positive_message "Launching Spectrum Analyzer"
-				cmd = 'spectrum-analyzer/spectrum-analyzer'
-				open("|#{cmd}")
+				begin
+					cmd = 'spectrum-analyzer/spectrum-analyzer'
+					open("|#{cmd}")
+					positive_message "Launching Spectrum Analyzer"
+				rescue
+					positive_message "Launching Spectrum Analyzer Failed"
+				end
 
 			when 'right'
 				if @actors_flyout.keyboard_focus?
@@ -699,7 +714,7 @@ class GuiDefault < GuiInterface
 		body = $engine.project.change_count.plural("unsaved change", "unsaved changes")
 		self << confirmation = GuiConfirmationDialog.new("Save Project before continuing?", body, "Continue without saving", "Save Project")		# yes, no
 
-		# 
+		#
 		confirmation.on_yes    { confirmation.remove_from_parent! ; yield }
 		confirmation.on_no     { confirmation.remove_from_parent! ; save_project { yield } }
 		confirmation.on_cancel { confirmation.remove_from_parent! }

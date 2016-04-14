@@ -1,3 +1,4 @@
+#ifdef SUPPORT_TABLET
 #include "input-tablet.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -133,6 +134,7 @@ bool InputTablet::update()
 
 	// Block waiting for one event
 	XNextEvent(m_display, &event);
+
 	if (event.type == m_motion_type) {
 		XDeviceMotionEvent* motion_event = (XDeviceMotionEvent*)&event;
 
@@ -176,3 +178,4 @@ InputTablet::~InputTablet()
 	XCloseDevice(m_display, m_device);
 	XCloseDisplay(m_display);
 }
+#endif

@@ -33,7 +33,11 @@ class GuiListSelect < GuiValue
 	# Mouse interaction
 	#
 	def click(pointer)
-		create_popup_list(pointer)
+		if list.empty?
+			$gui.positive_message "None! Create One"
+		else
+			create_popup_list(pointer)
+		end
 	end
 
 	def scroll_up!(pointer)

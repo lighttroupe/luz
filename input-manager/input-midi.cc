@@ -1,3 +1,4 @@
+#ifdef SUPPORT_MIDI
 #include <stdio.h>
 #include <unistd.h>		// for usleep()
 
@@ -171,3 +172,4 @@ InputMIDI::~InputMIDI()
 {
 	Pm_Terminate();
 }
+#endif

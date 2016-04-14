@@ -5,11 +5,21 @@
 using namespace std;
 
 #include "input.h"
+#ifdef SUPPORT_WIIMOTE
 #include "input-wiimote.h"
+#endif
+#ifdef SUPPORT_TABLET
 #include "input-tablet.h"
+#endif
+#ifdef SUPPORT_MIDI
 #include "input-midi.h"
+#endif
+#ifdef SUPPORT_JOYSTICK
 #include "input-joystick.h"
+#endif
+#ifdef SUPPORT_TOUCHPAD
 #include "input-touchpad.h"
+#endif
 
 class InputManagerWindow : public Gtk::Window
 {

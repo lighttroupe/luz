@@ -17,10 +17,12 @@ class GuiInterface < GuiBox
 		tick_value_animations!
 		return if hidden?
 		super
-		with_hit_testing {
-			hit_test_render!
-			hit_test_pointers!
-		} if hit_test_needed?
+		if hit_test_needed?
+			with_hit_testing {
+				hit_test_render!
+				hit_test_pointers!
+			}
+		end
 		tick_pointers
 	end
 
