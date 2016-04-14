@@ -5,6 +5,9 @@
 
 	DEFAULT_DIGITS = 2
 
+	DISABLED_SETTINGS_STYLE = {:opacity => 0.2, :hidden => false}
+	ENABLED_SETTINGS_STYLE = {:opacity => 1.0, :hidden => false}
+
 	def gui_build_editor
 		box = GuiBox.new
 		box << create_user_object_setting_name_label
@@ -31,9 +34,9 @@
 
 				@enable_animation_toggle.on_clicked_with_init {
 					if @enable_animation_toggle.on?
-						@animation_widgets.each_with_index { |widget, index| widget.animate({:opacity => 1.0, :hidden => false}, duration = (0.05 + (index * 0.3))) }
+						@animation_widgets.each_with_index { |widget, index| widget.animate(ENABLED_SETTINGS_STYLE, duration = (0.05 + (index * 0.3))) }
 					else
-						@animation_widgets.each_with_index { |widget, index| widget.animate({:opacity => 0.05, :hidden => true}, duration = (0.2)) }
+						@animation_widgets.each_with_index { |widget, index| widget.animate(DISABLED_SETTINGS_STYLE, duration = (0.2)) }
 					end
 				}
 			end
@@ -84,9 +87,9 @@
 
 			@enable_activation_toggle.on_clicked_with_init {
 				if @enable_activation_toggle.on?
-					@activation_widgets.each_with_index { |widget, index| widget.animate({:opacity => 1.0, :hidden => false}, duration = (0.05 + (index * 0.3))) }
+					@activation_widgets.each_with_index { |widget, index| widget.animate(ENABLED_SETTINGS_STYLE, duration = (0.05 + (index * 0.3))) }
 				else
-					@activation_widgets.each_with_index { |widget, index| widget.animate({:opacity => 0.05, :hidden => true}, duration = (0.2)) }
+					@activation_widgets.each_with_index { |widget, index| widget.animate(DISABLED_SETTINGS_STYLE, duration = (0.2)) }
 				end
 			}
 		end
