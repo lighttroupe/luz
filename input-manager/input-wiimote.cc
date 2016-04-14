@@ -9,6 +9,7 @@
 //
 // Buttons
 //
+#ifdef NOPE
 static struct { int mask; const char* name; } g_wiimote_buttons[] = {
 	{WIIMOTE_KEY_1, "1"},
 	{WIIMOTE_KEY_2, "2"},
@@ -22,12 +23,15 @@ static struct { int mask; const char* name; } g_wiimote_buttons[] = {
 	{WIIMOTE_KEY_UP, "Up"},	// ▲
 	{WIIMOTE_KEY_DOWN, "Down"}	// ▼
 };
+#endif
 
 InputWiimote::InputWiimote()
 {
+#ifdef NOPE
 	// init wiimote structs, set to 0 (see WIIMOTE_INIT)
-	m_p_wiimote = (wiimote_t*)calloc(sizeof(wiimote_t), 1);
-	m_p_wiimote_old = (wiimote_t*)calloc(sizeof(wiimote_t), 1);
+	m_p_wiimote = (cwiid_wiimote_t*)calloc(sizeof(cwiid_wiimote_t), 1);
+	m_p_wiimote_old = (cwiid_wiimote_t*)calloc(sizeof(cwiid_wiimote_t), 1);
+#endif
 }
 
 const char* InputWiimote::device_type()
@@ -42,6 +46,7 @@ const char* InputWiimote::device_name()
 
 bool InputWiimote::scan()
 {
+#ifdef NOPE
 	int tries = 2;
 	while(tries-- > 0) {
 		if(wiimote_discover(m_p_wiimote, (uint8_t)1) > 0) {
@@ -61,11 +66,13 @@ bool InputWiimote::scan()
 			}
 		}
 	}
+#endif
 	return false;
 }
 
 bool InputWiimote::update()
 {
+#ifdef NOPE
 	// Default LED state reflects the device number ("Wiimote 01" in Luz will have 1st bit set, "Wiimote 02" the second, etc.)
 	m_p_wiimote->led.bits = 1 << (device_number()-1);
 	m_p_wiimote->rumble = 0;
@@ -180,6 +187,7 @@ bool InputWiimote::update()
 	//send_float("Nunchuk / Roll", nunchuk_roll);
 
 	wiimote_copy(m_p_wiimote, m_p_wiimote_old);
+#endif
 	return true;
 }
 
@@ -190,8 +198,10 @@ void InputWiimote::sleep()
 
 InputWiimote::~InputWiimote()
 {
+#ifdef NOPE
 	if(wiimote_is_open(m_p_wiimote)) {
 		wiimote_close(m_p_wiimote);
 	}
+#endif
 }
 #endif

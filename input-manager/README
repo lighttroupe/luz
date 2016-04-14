@@ -3,5 +3,5 @@
 #
 # To build Input Manager on Ubuntu use:
 
-sudo apt-get install build-essential libx11-dev libxext-dev libxi-dev libbluetooth-dev libportmidi-dev liblo-dev libunique-dev libgtkmm-2.4-dev
+sudo apt-get install build-essential libx11-dev libxext-dev libxi-dev libbluetooth-dev libportmidi-dev libcwiid-dev liblo-dev libunique-dev libgtkmm-2.4-dev
 make
