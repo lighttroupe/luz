@@ -81,7 +81,7 @@ class GuiNumeric < GuiValue
 			# feature: hold shift to animate the value to the new setting
 			value = clamp_value(purify_value(@value_change_in_progress.to_f))
 			if key.shift?
-				add_animation(:value, value, duration=$settings['value-animation-time'].to_f.clamp(0.1, 30.0))
+				add_animation(:value, value, duration=$settings['value-animation-time'].to_f)
 			else
 				cancel_animations_for_field!(:value)
 				set_value(value)
