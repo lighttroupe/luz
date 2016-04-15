@@ -26,9 +26,9 @@ The Luz 2.0 interface is designed in Inkscape.  Find the source SVGs in the gui/
 
 ## Video Tutorials
 
-Here are some Luz 1 video tutorials (all the same concepts apply, only the interface is different):
+Here are some Luz 1 videos and tutorials (all the same concepts apply, only the interface is different):
 
-<http://lighttroupe.com/luz>
+<https://www.youtube.com/user/superlighttube/videos?flow=grid&sort=da&view=0>
 
 # Running Luz
 
