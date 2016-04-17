@@ -39,8 +39,8 @@ Luz currently only runs on Linux.  (Help is wanted porting it to OSX and Windows
 3. sudo gem install ruby-sdl2 syck opengl glu glut
 4. git clone https://github.com/lighttroupe/luz-next.git
 5. cd luz-next
-6. Optionally run **./build** in utils/webcam for the Webcam plugin.
-7. Optionally run **./build** in utils/video_file for the Video plugin.
+6. Optionally run **./build.sh** in utils/webcam for the Webcam plugin.
+7. Optionally run **./build.sh** in utils/video_file for the Video plugin.
 8. ./go
 
 ## Running Input Manager and Spectrum Analyzer
