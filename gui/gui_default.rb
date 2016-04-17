@@ -22,7 +22,6 @@ class GuiDefault < GuiInterface
 		super
 		preload_images
 		create!
-		positive_message('Welcome to Luz 2.0')
 		@gui_alpha = 1.0
 		@gui_font = "Ubuntu"		# "Comic Sans MS" "eufm10"
 	end
@@ -82,7 +81,7 @@ class GuiDefault < GuiInterface
 	end
 
 	def choose_project_path
-		@dialog_container << dialog = GuiDirectoryDialog.new('Save New Project')		# TODO: convert to a save-file-to-directory situation
+		@dialog_container << dialog = GuiDirectoryDialog.new('Choose Directory for Project')		# TODO: convert to a save-file-to-directory situation
 		dialog.on_closed { dialog.remove_from_parent! }
 		dialog.on_selected { |path| dialog.remove_from_parent! ; yield path }
 		dialog.show_for_path($engine.project.path ? File.dirname($engine.project.path) : default_directory)
