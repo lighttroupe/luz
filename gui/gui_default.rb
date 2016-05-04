@@ -67,24 +67,35 @@ class GuiDefault < GuiInterface
 	end
 
 	def choose_project_file
-		@dialog_container << dialog = GuiFileDialog.new('Open Project', ['luz'])
+		@dialog_container << dialog = GuiFileDialog.new('Choose Luz Project to Open', ['luz'])
 		dialog.on_closed { dialog.remove_from_parent! }
 		dialog.on_selected { |path| dialog.remove_from_parent! ; yield path }
 		dialog.show_for_path($engine.project.path ? File.dirname($engine.project.path) : default_directory)
 	end
 
-	def choose_project_directory
-		@dialog_container << dialog = GuiDirectoryDialog.new('Choose Directory for New Project')
-		dialog.on_closed { dialog.remove_from_parent! }
-		dialog.on_selected { |path| dialog.remove_from_parent! ; yield path }
-		dialog.show_for_path($engine.project.path ? File.dirname($engine.project.path) : default_directory)
-	end
+	#def choose_project_directory
+		#@dialog_container << dialog = GuiDirectoryDialog.new('Choose Directory for New Project')
+		#dialog.on_closed { dialog.remove_from_parent! }
+		#dialog.on_selected { |path| dialog.remove_from_parent! ; yield path }
+		#dialog.show_for_path($engine.project.path ? File.dirname($engine.project.path) : default_directory)
+	#end
 
+	# For choosing file name to save project
 	def choose_project_path
 		@dialog_container << dialog = GuiDirectoryDialog.new('Choose Directory for Project')		# TODO: convert to a save-file-to-directory situation
 		dialog.on_closed { dialog.remove_from_parent! }
-		dialog.on_selected { |path| dialog.remove_from_parent! ; yield path }
+		dialog.on_selected { |path|
+			dialog.remove_from_parent!
+			choose_file_name { |file_name|
+				path_with_file_name = File.join(path, file_name)		# TODO: choose file name
+				yield path_with_file_name
+			}
+		}
 		dialog.show_for_path($engine.project.path ? File.dirname($engine.project.path) : default_directory)
+	end
+
+	def choose_file_name
+		yield DEFAULT_PROJECT_NAME		# TODO
 	end
 
 	def default_directory
@@ -193,11 +204,10 @@ class GuiDefault < GuiInterface
 		}
 		@main_menu.on_new {
 			save_changes_before {
-				choose_project_directory { |path|
-					destination_path = File.join(path, DEFAULT_PROJECT_NAME)
+				choose_project_path { |path|
 					# TODO: assert doesn't exist
-					FileUtils.cp BASE_SET_PATH, destination_path		# copy into place
-					$application.open_project(destination_path)
+					FileUtils.cp BASE_SET_PATH, path		# copy into place
+					$application.open_project(path)
 				}
 			}
 		}
@@ -655,20 +665,20 @@ class GuiDefault < GuiInterface
 	end
 
 	def scroll_up!(pointer)
-		return unless (view = active_view)
-		view.scroll_up!(pointer)
+		view = active_view
+		view.scroll_up!(pointer) if view
 	end
 	def scroll_down!(pointer)
-		return unless (view = active_view)
-		view.scroll_down!(pointer)
+		view = active_view
+		view.scroll_down!(pointer) if view
 	end
 	def scroll_left!(pointer)
-		return unless (view = active_view)
-		view.scroll_left!(pointer)
+		view = active_view
+		view.scroll_left!(pointer) if view
 	end
 	def scroll_right!(pointer)
-		return unless (view = active_view)
-		view.scroll_right!(pointer)
+		view = active_view
+		view.scroll_right!(pointer) if view
 	end
 
 	#
