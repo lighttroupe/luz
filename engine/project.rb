@@ -235,17 +235,5 @@ private
 
 		@last_save_time = Time.now
 		$engine.reinitialize_user_objects
-		update_tags
-	end
-
-	def update_tags
-		OBJECT_SYMBOLS.each { |obj_type|
-			objs = instance_variable_get("@#{obj_type}")
-			next if objs.empty?
-			next unless objs.first.class.respond_to? :sort_tagged_objects
-
-			klass = OBJECT_SYMBOL_TO_CLASS[obj_type]
-			klass.sort_tagged_objects { |a,b| (objs.index(a) || 0) <=> (objs.index(b) || 0) } # TODO: use a.index <=> b.index when that is added to UOs
-		}
 	end
 end
