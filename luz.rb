@@ -4,8 +4,8 @@
 # Copyright 2015 Ian McIntosh <ian@openanswers.org> released under the GPL version 2 #
 ######################################################################################
 
-if RUBY_VERSION[0,3] != '2.1'
-	puts "For Speed and Smoooth Flow, choose Ruby Version 2.1 (you are using #{RUBY_VERSION})"
+if RUBY_VERSION[0] != '2'
+	puts "For Speed and Smoooth Flow, choose Ruby 2 (you are using #{RUBY_VERSION})"
 	exit
 else
 	puts "Using Ruby #{RUBY_VERSION}"
