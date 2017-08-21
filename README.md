@@ -1,26 +1,36 @@
 # Luz 2
 
+Fullscreen interactive motion graphics toy builder.
+
 [![Screenshot](http://41.media.tumblr.com/accf5bff3d48056e959747db5fed666a/tumblr_nh8q2pWPCs1te3fw8o1_540.png)](http://lighttroupe.tumblr.com/)
 
-Fullscreen interactive motion graphics toy builder.
+Luz lets you make and play visual toys!
+
+Just add music, input devices, a projector, and you've got an addiction.
 
 <http://lighttroupe.tumblr.com>
 
-Create your visuals using vector shapes, animated gifs, sprites, webcams and videos.
+Create 'actors' using: vector shapes, animated gifs, sprites, webcams and videos.
 
-Connect unlimited input devices: Luz supports wiimotes, MIDI, Wacom tablets, joysticks, gamepads, and OpenSoundControl input.
+Every actor gets unlimited effects that layer and combine in delightful ways.
 
-Luz has provided interactive visuals at hundreds of venues, festivals, and house parties.
+Every setting of every effect can be animated to time or beats, or connected to any button or axis of your various input devices.
+
+Luz supports wiimotes, Wacom tablets, joysticks, gamepads, and OpenSoundControl input.
+
+Luz can also be driven by external MIDI sources or any OpenSoundControl sending software.
 
 Luz is written in Ruby and offloads all the heavy pixel pushing to ffmpeg, OpenGL, and your GPU.
 
-The Luz 2.0 interface is designed in Inkscape.  Find the source SVGs in the gui/images directory.
+The Luz 2.0 interface was designed in Inkscape and the source SVGs are in the gui/images directory.
+
+Luz has provided interactive visuals at hundreds of venues, festivals, and house parties!
 
 [![Code Climate](https://codeclimate.com/github/lighttroupe/luz-next.png)](https://codeclimate.com/github/lighttroupe/luz-next)
 
 ## The Luz Project consists of:
 
-- **Luz 2**: fullscreen motion graphics editor and performer (Ruby, OpenGL, SDL, OSC in)
+- **Luz 2**: fullscreen motion graphics editor and performer (Ruby, OpenGL, SDL, OSC input)
 - **Luz Input Manager**: sends live input device data to Luz (C++, Gtk, libwiimote, SDL Input, OSC out)
 - **Luz Spectrum Analyzer**: sends live audio information to Luz (C++, Gtk, OpenGL, FFTW, OSC out)
 
