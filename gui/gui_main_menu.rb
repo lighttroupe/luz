@@ -17,7 +17,7 @@ class GuiMainMenu < GuiWindow
 		@new_button.on_clicked { new_notify }
 
 		self << (@text1 = GuiLabel.new.set({:string => 'Luz 2.0', :offset_x => 0.0, :offset_y => 0.335, :scale_x => 0.1, :scale_y => 0.07, :width => 4, :text_align => :fill}))
-		self << (@text2 = GuiLabel.new.set({:string => 'Early Access Edition', :offset_x => 0.0, :offset_y => 0.26, :scale_x => 0.15, :scale_y => 0.04, :width => 10, :text_align => :fill}))
+		#self << (@text2 = GuiLabel.new.set({:string => 'Early Access Edition', :offset_x => 0.0, :offset_y => 0.26, :scale_x => 0.15, :scale_y => 0.04, :width => 10, :text_align => :fill}))
 
 		self << @background = GuiButton.new.set(:offset_x => 0.00, :offset_y => 0.00, :scale_x => 0.10, :scale_y => 0.15, :background_image => $engine.load_image('images/luz-icon-border.png'))
 		self << @star_button = GuiButton.new.set(:offset_x => 0.00, :offset_y => 0.00, :scale_x => 0.07, :scale_y => 0.09, :background_image => $engine.load_image('images/luz-starflower.png'))
