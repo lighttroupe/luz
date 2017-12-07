@@ -12,7 +12,8 @@ class ImageThumbnailer
 private
 
 	def thumbnail_directory_path
-		File.join(Dir.home, '.thumbnails/normal')
+		#File.join(Dir.home, '.thumbnails/normal')
+		File.join(Dir.home, '.cache/thumbnails/normal')		# new as of ubuntu 15.04
 	end
 
 	def thumbnail_file_name_for_path(path)
