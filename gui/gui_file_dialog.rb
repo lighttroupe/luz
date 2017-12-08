@@ -22,7 +22,12 @@ class GuiFileDialog < GuiWindow
 		return unless File.exists?(path)
 		path = Pathname.new(path).realpath.to_s
 		self.path = path
-		@path_label.string = path
+		display_path = path_to_display(path)
+		@path_label.string = display_path
+	end
+
+	def path_to_display(path)
+		path.without_prefix(Dir.home)
 	end
 
 	def path=(path)
