@@ -127,7 +127,7 @@ class Project < UserObject
 	# Saving
 	#
 	def save
-		save_copy_to_path(@path)
+		save_to_path(@path)
 	end
 
 	def save_to_path(path)
