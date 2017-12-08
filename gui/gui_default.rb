@@ -366,7 +366,7 @@ class GuiDefault < GuiInterface
 				@actor_view.actor = user_object if self.mode == :actor
 			end
 		when Variable, Event
-			if user_object == @user_object
+			if editor_visible && user_object == @user_object
 				# double click on variable/event
 				@user_object_editor.edit_title if @user_object_editor
 				return
@@ -437,8 +437,9 @@ class GuiDefault < GuiInterface
 				show_reopen_button! unless @user_object_editor
 			}
 		end
-		@user_object_editor = nil
+		@last_user_object = @user_object
 		@user_object = nil
+		@user_object_editor = nil
 	end
 
 	def hide_something!
@@ -546,7 +547,7 @@ class GuiDefault < GuiInterface
 	end
 
 	def reshow_latest!
-		build_editor_for(@user_object, :grab_keyboard_focus => true) if @user_object
+		build_editor_for(@last_user_object, :grab_keyboard_focus => true) if @last_user_object
 	end
 
 	def on_key_press(key)
