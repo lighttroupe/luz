@@ -59,7 +59,7 @@ class GuiString < GuiValue
 
 	def on_key_press(key)
 		case key
-		when 'return', 'escape'
+		when 'return', 'escape', 'tab'
 			cancel_keyboard_focus!
 		when 'backspace'
 			if key.alt?

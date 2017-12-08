@@ -38,6 +38,7 @@ multi_require 'pointer', 'pointer_mouse', 'gui_default'
 #
 $settings = Settings.new.load(File.join(Dir.home, SETTINGS_DIRECTORY, SETTINGS_FILENAME))
 $settings['value-animation-time'] ||= GuiSettingsWindow::DEFAULT_VALUE_ANIMATION_TIME
+$settings['gui-alpha'] ||= GuiSettingsWindow::DEFAULT_GUI_ALPHA
 
 $application = LuzPerformer.new(APP_NAME)
 

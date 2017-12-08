@@ -16,7 +16,7 @@ class Event < ParentUserObject
 	# Instance methods
 	#
 	def default_title
-		'New Event'
+		''		# 'New Event'
 	end
 
 	attr_reader :count, :last_count

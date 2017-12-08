@@ -15,6 +15,7 @@ class GuiDefault < GuiInterface
 	pipe [:positive_message, :negative_message], :message_bar
 
 	attr_accessor :mode, :directors_menu
+	attr_accessor :gui_alpha
 
 	attr_reader :gui_font, :user_object
 
@@ -320,7 +321,8 @@ class GuiDefault < GuiInterface
 		when :output
 			yield
 		end
-		with_alpha(@gui_alpha) {
+
+		with_alpha($settings['gui-alpha']) {
 			gui_render
 		}
 	end
@@ -363,16 +365,22 @@ class GuiDefault < GuiInterface
 				# Rule: cannot edit one actor while viewing a different one (so show this actor while editing)
 				@actor_view.actor = user_object if self.mode == :actor
 			end
-		when Variable, Event
-			clear_user_object_editor and return if editor_visible
 		end
 
 		if user_object.is_a?(ParentUserObject) || user_object.is_a?(Project)		# TODO: responds_to? :effects ?
+			# intended for variable/event
+			if user_object == @user_object
+				@user_object_editor.edit_title if @user_object_editor
+				return
+			end
+
 			# show editor for user_object
 			clear_user_object_editor		# only support one for now
 
 			@user_object_editor = create_user_object_editor_for_pointer(user_object, pointer || Vector3.new(0.0,-0.5), options)
 			@user_object_editor.grab_keyboard_focus! if grab_keyboard_focus
+
+			# becomes the current user_object
 			@user_object = user_object
 			@user_object_editor_container << @user_object_editor
 

@@ -21,7 +21,7 @@ class Variable < ParentUserObject
 	# Instance methods
 	#
 	def default_title
-		'New Variable'
+		''		# 'New Variable' if basic mode ?
 	end
 
 	def after_load
