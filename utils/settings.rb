@@ -15,21 +15,26 @@ class Settings
 	end
 
 	def load(path)
+		@path = path		# store for save, even if file doesn't exist
 		File.open(path, 'r') { |file|
 			load_settings_from_file(file)
-			@path = path
 			#puts "Loaded settings from #{path}..."
-			#@settings.each_pair { |key, value| puts "- #{key}: #{value}" }
-		} rescue nil
+		} rescue Errno::ENOENT
 		self
 	end
 
 	def save(path=nil)
 		path ||= @path
-		File.open(path, 'w') { |file|
-			save_settings_to_file(file)
-			@path = path
-		} rescue nil
+		begin
+			File.open(path, 'w') { |file|
+				save_settings_to_file(file)
+				@path = path
+				#puts "Saved settings to #{path}..."
+			}
+		rescue => e
+			puts "error saving"
+			p e.report_format
+		end
 		self
 	end
 
