@@ -36,7 +36,12 @@ multi_require 'pointer', 'pointer_mouse', 'gui_default'
 #
 # Begin App
 #
-$settings = Settings.new.load(File.join(Dir.home, SETTINGS_DIRECTORY, SETTINGS_FILENAME))
+settings_directory_path = File.join(Dir.home, SETTINGS_DIRECTORY_NAME)
+FileUtils.mkdir_p(settings_directory_path) rescue Errno::EEXIST
+
+settings_file_path = File.join(settings_directory_path, SETTINGS_FILENAME)
+
+$settings = Settings.new.load(settings_file_path)
 $settings['value-animation-time'] ||= GuiSettingsWindow::DEFAULT_VALUE_ANIMATION_TIME
 $settings['gui-alpha'] ||= GuiSettingsWindow::DEFAULT_GUI_ALPHA
 

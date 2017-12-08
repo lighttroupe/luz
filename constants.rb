@@ -2,8 +2,8 @@
 MESSAGE_BUS_IP			= "255.255.255.255"		# Broadcast address
 MESSAGE_BUS_PORT		= 10007								# LOOOZ ! :D
 
-SETTINGS_DIRECTORY	= '.luz'
-SETTINGS_FILENAME		= 'settings.yaml'
+SETTINGS_DIRECTORY_NAME	= '.luz'
+SETTINGS_FILENAME				= 'settings.yaml'
 
 # Radians
 RADIANS_PER_CIRCLE	= Math::PI * 2.0
