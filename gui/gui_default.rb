@@ -365,15 +365,15 @@ class GuiDefault < GuiInterface
 				# Rule: cannot edit one actor while viewing a different one (so show this actor while editing)
 				@actor_view.actor = user_object if self.mode == :actor
 			end
-		end
-
-		if user_object.is_a?(ParentUserObject) || user_object.is_a?(Project)		# TODO: responds_to? :effects ?
-			# intended for variable/event
+		when Variable, Event
 			if user_object == @user_object
+				# double click on variable/event
 				@user_object_editor.edit_title if @user_object_editor
 				return
 			end
+		end
 
+		if user_object.is_a?(ParentUserObject) || user_object.is_a?(Project)		# TODO: responds_to? :effects ?
 			# show editor for user_object
 			clear_user_object_editor		# only support one for now
 
@@ -397,8 +397,12 @@ class GuiDefault < GuiInterface
 	def trash!(user_object)
 		case user_object
 		when Actor
-			@actors_flyout.remove(user_object)
-			@actor_view.actor = nil if @actor_view.actor == user_object
+			if user_object == self.chosen_director.offscreen_render_actor.actor
+				self.chosen_director.offscreen_render_actor.actor = nil
+			else
+				@actors_flyout.remove(user_object)
+				@actor_view.actor = nil if @actor_view.actor == user_object
+			end
 		when Director
 			$gui.negative_message "Can't delete last director." and return if $engine.project.directors.count <= 1
 			$engine.project.directors.delete(user_object)
@@ -730,9 +734,10 @@ class GuiDefault < GuiInterface
 	def save_changes_before
 		return yield unless $engine.project.changed?
 		body = $engine.project.change_count.plural("unsaved change", "unsaved changes")
-		self << confirmation = GuiConfirmationDialog.new("Save Project before continuing?", body, "Continue without saving", "Save Project")		# yes, no
+		confirmation = GuiConfirmationDialog.new("Save Project before continuing?", body, "Continue without saving", "Save Project")
+		self << confirmation
 
-		#
+		# save choice callbacks
 		confirmation.on_yes    { confirmation.remove_from_parent! ; yield }
 		confirmation.on_no     { confirmation.remove_from_parent! ; save_project { yield } }
 		confirmation.on_cancel { confirmation.remove_from_parent! }
