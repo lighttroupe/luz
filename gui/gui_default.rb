@@ -434,6 +434,7 @@ class GuiDefault < GuiInterface
 			}
 		end
 		@user_object_editor = nil
+		@user_object = nil
 	end
 
 	def hide_something!
