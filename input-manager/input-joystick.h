@@ -2,7 +2,7 @@
 #define __INPUT_JOYSTICK_H__
 
 extern "C" {
-	#include <SDL/SDL.h>
+	#include "SDL.h"
 }
 
 #include "input.h"

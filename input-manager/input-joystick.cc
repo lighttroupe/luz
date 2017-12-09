@@ -14,7 +14,7 @@ void joystick_init()
 
 int joystick_count()
 {
-	SDL_NumJoysticks();
+	return SDL_NumJoysticks();
 }
 
 class InputJoystick;
@@ -25,9 +25,9 @@ InputJoystick* joystick_open_by_index(int index)
 }
 
 InputJoystick::InputJoystick(int index)
-	: m_device_name(SDL_JoystickName(index))
 {
 	m_joystick = SDL_JoystickOpen(index);
+	m_device_name = SDL_JoystickName(m_joystick);
 
 	// axis
 	m_axis_count = SDL_JoystickNumAxes(m_joystick);
