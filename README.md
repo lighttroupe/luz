@@ -1,10 +1,8 @@
 # Luz 2
 
-Fullscreen interactive motion graphics toy builder.
+Fullscreen interactive motion graphics toy builder!
 
 [![Screenshot](http://41.media.tumblr.com/accf5bff3d48056e959747db5fed666a/tumblr_nh8q2pWPCs1te3fw8o1_540.png)](http://lighttroupe.tumblr.com/)
-
-Luz lets you make and play visual toys!
 
 Just add music, input devices, a projector, and you've got an addiction.
 
@@ -16,11 +14,11 @@ Every actor gets unlimited effects that layer and combine in delightful ways.
 
 Every setting of every effect can be animated to time or beats, or connected to any button or axis of your various input devices.
 
-Luz supports wiimotes, Wacom tablets, joysticks, gamepads, and OpenSoundControl input.
+Luz supports wiimotes, Wacom tablets, joysticks, gamepads, and MIDI devices.
 
-Luz can also be driven by external MIDI sources or any OpenSoundControl sending software.
+Luz can also be driven by external OpenSoundControl sending software.
 
-Luz is written in Ruby and offloads all the heavy pixel pushing to ffmpeg, OpenGL, and your GPU.
+Luz is written in Ruby and offloads all the heavy pixel pushing to ffmpeg, OpenGL, and your modern graphics card.
 
 The Luz 2.0 interface was designed in Inkscape and the source SVGs are in the gui/images directory.
 
@@ -42,9 +40,9 @@ Here are some Luz 1 videos and tutorials (all the same concepts apply, only the 
 
 # Running Luz
 
-Luz currently only runs on Linux.  (Help is wanted porting it to OSX and Windows.)
+Luz currently only runs on Linux.  (Help is welcome porting it to OSX and Windows.)
 
-1. open terminal
+1. open a terminal
 2. sudo apt-get install git ruby ruby-dev ruby-pango libsdl2-dev libglw1-mesa-dev freeglut3-dev ruby-rmagick
 3. sudo gem install ruby-sdl2 syck opengl glu glut
 4. git clone https://github.com/lighttroupe/luz-next.git
