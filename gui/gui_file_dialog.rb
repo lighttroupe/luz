@@ -46,14 +46,14 @@ class GuiFileDialog < GuiWindow
 
 	def add_directories
 		@directories.each { |filename|
-			@directory_list << (renderer = GuiLabel.new.set(:string => filename, :width => 25, :color => DIRECTORY_COLOR))
+			@directory_list << (renderer=GuiLabel.new.set(:string => filename, :width => 25, :color => DIRECTORY_COLOR))
 			renderer.on_clicked { show_for_path(File.join(@path, filename)) }
 		}
 	end
 
 	def add_files
 		@files.each { |filename|
-			@directory_list << (renderer = GuiLabel.new.set(:string => filename, :width => 25, :color => FILE_COLOR))
+			@directory_list << (renderer=GuiLabel.new.set(:string => filename, :width => 25, :color => FILE_COLOR))
 			renderer.on_clicked { notify_for_filename(filename) }
 		}
 	end
@@ -76,7 +76,7 @@ private
 
 		self << (@path_label = GuiLabel.new.set(:width => 40, :text_align => :center, :color => [1.0,1.0,1.0], :scale_x => 0.7, :scale_y => 0.04, :offset_y => 0.5 - 0.08))
 
-		self << (@open_button = GuiLabel.new.set({:width => 10, :color => [0.2,0.8,0.2], :string => 'choose this one', :offset_x => 0.01, :offset_y => 0.5 - 0.13, :scale_x => 0.15, :scale_y => 0.05}))
+		#self << (@open_button = GuiLabel.new.set({:width => 10, :color => [0.2,0.8,0.2], :string => 'choose this one', :offset_x => 0.01, :offset_y => 0.5 - 0.13, :scale_x => 0.15, :scale_y => 0.05}))
 
 		self << (@directory_list = GuiList.new.set(:scale_x => 0.25, :scale_y => 0.825, :offset_x => 0.0, :offset_y => -0.1, :spacing_y => -1.0, :item_aspect_ratio => 8.0))
 
