@@ -42,8 +42,11 @@ FileUtils.mkdir_p(settings_directory_path) rescue Errno::EEXIST
 settings_file_path = File.join(settings_directory_path, SETTINGS_FILENAME)
 
 $settings = Settings.new.load(settings_file_path)
+
+# default settings (TODO: move elsewhere)
 $settings['value-animation-time'] ||= GuiSettingsWindow::DEFAULT_VALUE_ANIMATION_TIME
 $settings['gui-alpha'] ||= GuiSettingsWindow::DEFAULT_GUI_ALPHA
+$settings['recent-projects'] ||= []
 
 $application = LuzPerformer.new(APP_NAME)
 
@@ -106,7 +109,6 @@ $gui.positive_message('Welcome to Luz 2.0')
 
 $engine.on_new_project {
 	$gui = GuiDefault.new			# out with the old...
-	$gui.positive_message('New Project')
 }
 
 # Go!

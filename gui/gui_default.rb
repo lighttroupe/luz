@@ -74,10 +74,12 @@ class GuiDefault < GuiInterface
 	end
 
 	def choose_project_file
-		@dialog_container << dialog = GuiFileDialog.new('Choose Luz Project to Open', ['luz'])
+		dialog = GuiFileDialog.new('Choose Luz Project to Open', ['luz'], $settings['recent-projects'])
 		dialog.on_closed { dialog.remove_from_parent! }
 		dialog.on_selected { |path| dialog.remove_from_parent! ; yield path }
 		dialog.show_for_path($engine.project.path ? File.dirname($engine.project.path) : default_directory)
+
+		@dialog_container << dialog
 	end
 
 	#def choose_project_directory
@@ -202,7 +204,8 @@ class GuiDefault < GuiInterface
 			save_changes_before {
 				choose_project_file { |path|
 					if $application.open_project(path)
-						# positive_message 'Opened Successfully'
+						$settings['recent-projects'].delete(path)
+						$settings['recent-projects'].unshift(path)
 					else
 						negative_message 'Open Failed'
 					end
@@ -215,6 +218,7 @@ class GuiDefault < GuiInterface
 					# TODO: assert doesn't exist
 					FileUtils.cp BASE_SET_PATH, path		# copy into place
 					$application.open_project(path)
+					$settings['recent-projects'].unshift(path)
 				}
 			}
 		}
@@ -230,7 +234,7 @@ class GuiDefault < GuiInterface
 			set_state(:closed, {:scale_x => 1.1, :scale_y => 1.1, :offset_y => 0.0,:hidden => true})
 
 		# Message Bar
-		self << (@message_bar = GuiMessageBar.new.set(:offset_x => 0.0, :offset_y => 0.5 - 0.05, :scale_x => 0.32, :scale_y => 0.05))
+		self << (@message_bar = GuiMessageBar.new.set(:opacity => 0.0, :offset_x => 0.0, :offset_y => 0.5 - 0.05, :scale_x => 0.32, :scale_y => 0.05))
 
 		# Time Control
 		self << @time_control = GuiTimeControl.new.set(:scale_x => 0.02, :scale_y => 0.01, :background_scale_x => 1.2, :background_scale_y => 1.2, :background_image => $engine.load_image('images/drawer-n.png')).
