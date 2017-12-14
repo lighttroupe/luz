@@ -34,6 +34,12 @@ class GuiDefault < GuiInterface
 	def rendering_output?
 		mode == :output
 	end
+	def rendering_director?
+		mode == :director
+	end
+	def rendering_actor?
+		mode == :actor
+	end
 
 	def reload_notify
 		clear!
