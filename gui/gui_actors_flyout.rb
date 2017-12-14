@@ -1,4 +1,4 @@
-multi_require 'gui_actor_class_flyout'
+multi_require 'gui_actor_class_flyout', 'gui_director_edit_button.rb', 'gui_director_view_button.rb'
 
 class GuiActorsFlyout < GuiWindow
 	def initialize
@@ -29,13 +29,13 @@ class GuiActorsFlyout < GuiWindow
 		self << (@background=GuiObject.new.set(:background_image => $engine.load_image('images/actor-flyout-background.png')))
 
 		# Edit director button
-		self << @director_edit_button = GuiButton.new.set(:offset_y => 0.5 - 0.025, :scale_y => 0.05, :background_image => $engine.load_image('images/buttons/director-settings.png'), :background_image_hover => $engine.load_image('images/buttons/director-settings-hover.png'))
+		self << @director_edit_button = GuiDirectorEditButton.new.set(:offset_y => 0.5 - 0.025, :scale_y => 0.05, :background_image => $engine.load_image('images/buttons/director-settings.png'), :background_image_hover => $engine.load_image('images/buttons/director-settings-hover.png'), :background_image_on => $engine.load_image('images/buttons/director-settings-on.png'))
 		@director_edit_button.on_clicked {
 			$gui.build_editor_for($gui.chosen_director)
 		}
 
 		# View directors button
-		self << @director_view_button = GuiButton.new.set(:offset_y => 0.5 - 0.067, :scale_y => 0.03, :background_image => $engine.load_image('images/buttons/director-view.png'), :background_image_hover => $engine.load_image('images/buttons/director-view-hover.png'))
+		self << @director_view_button = GuiDirectorViewButton.new.set(:offset_y => 0.5 - 0.067, :scale_y => 0.03, :background_image => $engine.load_image('images/buttons/director-view.png'), :background_image_hover => $engine.load_image('images/buttons/director-view-hover.png'), :background_image_on => $engine.load_image('images/buttons/director-view-on.png'))
 		@director_view_button.on_clicked {
 			$gui.mode = :director
 		}
@@ -59,6 +59,9 @@ class GuiActorsFlyout < GuiWindow
 
 		@actor_class_flyout.on_actor_class_selected { |pointer, klass|
 			actor = klass.new
+			#fade = ActorEffectFade.new
+			#fade.amount_setting.animation_min = 1.0
+			#actor.effects << fade
 			@actors_list.add_after_selection(actor)
 			$engine.project_changed!
 			$gui.build_editor_for(actor, :pointer => pointer, :grab_keyboard_focus => true)

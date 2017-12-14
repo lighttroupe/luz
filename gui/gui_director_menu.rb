@@ -1,3 +1,5 @@
+multi_require 'gui_output_view_button'
+
 class GuiDirectorMenu < GuiWindow
 	def initialize(contents)
 		super()
@@ -11,11 +13,11 @@ class GuiDirectorMenu < GuiWindow
 
 		self << @grid = GuiGrid.new.set(:scale => 0.95, :spacing_x => 0.1, :spacing_y => 0.1, :min_columns => 3)
 
-		self << @output_view_button = GuiButton.new.set(:scale_x => 0.05, :scale_y => 0.06, :offset_x => -0.475, :offset_y => 0.47, :background_image => $engine.load_image('images/buttons/output-view.png'), :background_image_hover => $engine.load_image('images/buttons/output-view-hover.png'), :background_image_click => $engine.load_image('images/buttons/output-view-click.png'))
+		self << @output_view_button = GuiOutputViewButton.new.set(:scale_x => 0.05, :scale_y => 0.06, :offset_x => -0.475, :offset_y => 0.47, :background_image => $engine.load_image('images/buttons/output-view.png'), :background_image_hover => $engine.load_image('images/buttons/output-view-hover.png'), :background_image_click => $engine.load_image('images/buttons/output-view-click.png'), :background_image_on => $engine.load_image('images/buttons/output-view-on.png'))
 		@output_view_button.on_clicked {
 			$gui.mode = :output
 			close!
-			$gui.toggle!
+			#$gui.toggle!
 		}
 
 		self << @project_effects_button = GuiButton.new.set(:scale_x => 0.05, :scale_y => 0.06, :offset_x => 0.475, :offset_y => -0.47, :background_image => $engine.load_image('images/buttons/project-effects.png'), :background_image_hover => $engine.load_image('images/buttons/project-effects-hover.png'), :background_image_click => $engine.load_image('images/buttons/project-effects-click.png'))
