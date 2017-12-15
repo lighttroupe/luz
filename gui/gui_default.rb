@@ -97,7 +97,13 @@ class GuiDefault < GuiInterface
 			dialog.remove_from_parent!
 			choose_file_name { |file_name|
 				path_with_file_name = File.join(path, file_name)		# TODO: choose file name
-				yield path_with_file_name
+
+				if File.exists?(path_with_file_name)
+					negative_message 'File Already Exists'
+					negative_message 'Refusing to Overwrite'
+				else
+					yield path_with_file_name
+				end
 			}
 		}
 		dialog.show_for_path($engine.project.path ? File.dirname($engine.project.path) : default_directory)
@@ -192,41 +198,12 @@ class GuiDefault < GuiInterface
 		self << @main_menu = GuiMainMenu.new.set(:opacity => 0.0, :hidden => true).
 			add_state(:open, {:scale_x => 1.0, :opacity => 1.0, :hidden => false}).
 			set_state(:closed, {:scale_x => 2.0, :opacity => 0.0, :hidden => true})
-		@main_menu.on_close {
-			close_main_menu!
-		}
-		@main_menu.on_save {
-			save_project
-		}
-		#@main_menu.on_save_as {
-		#}
-		@main_menu.on_open {
-			save_changes_before {
-				choose_project_file { |path|
-					if $application.open_project(path)
-						$settings['recent-projects'].delete(path)
-						$settings['recent-projects'].unshift(path)
-					else
-						negative_message 'Open Failed'
-					end
-				}
-			}
-		}
-		@main_menu.on_new {
-			save_changes_before {
-				choose_project_path { |path|
-					# TODO: assert doesn't exist
-					FileUtils.cp BASE_SET_PATH, path		# copy into place
-					$application.open_project(path)
-					$settings['recent-projects'].unshift(path)
-				}
-			}
-		}
-		@main_menu.on_quit {
-			save_changes_before {
-				$application.finished!
-			}
-		}
+		@main_menu.on_new { new_project }
+		@main_menu.on_open { open_project }
+		@main_menu.on_save { save_project }
+		#@main_menu.on_save_as { save_project_as... }
+		@main_menu.on_close { close_main_menu! }
+		@main_menu.on_quit { save_changes_before { $application.finished! } }
 
 		# Director Menu
 		self << @directors_menu = GuiDirectorMenu.new($engine.project.directors).
@@ -253,6 +230,17 @@ class GuiDefault < GuiInterface
 		set_initial_state
 	end
 
+	def new_project
+		save_changes_before {
+			choose_project_path { |path|
+				# TODO: assert doesn't exist
+				FileUtils.cp BASE_SET_PATH, path		# copy into place
+				$application.open_project(path)
+				$settings['recent-projects'].unshift(path)
+			}
+		}
+	end
+
 	def save_project
 		if $engine.project.path
 			if $engine.project.save
@@ -270,6 +258,30 @@ class GuiDefault < GuiInterface
 					negative_message 'Save Failed'
 				end
 			}
+		end
+	end
+
+	def open_project
+		save_changes_before {
+			choose_project_file { |path|
+				if $application.open_project(path)
+					$settings['recent-projects'].delete(path)
+					$settings['recent-projects'].unshift(path)
+				else
+					negative_message 'Open Failed'
+				end
+			}
+		}
+	end
+
+	def browse_project_directory
+		if $engine.project.path
+			directory = File.dirname($engine.project.path)
+			cmd = "gnome-open #{directory}"
+			puts "executing: #{cmd}"
+			open("|#{cmd}")
+		else
+			negative_message 'Save Project First'
 		end
 	end
 
@@ -566,6 +578,9 @@ class GuiDefault < GuiInterface
 		#
 		if key.control?
 			case key
+			when 'f8'
+				browse_project_directory
+
 			when 'f9'
 				begin
 					cmd = 'input-manager/input-manager'
@@ -632,10 +647,12 @@ class GuiDefault < GuiInterface
 			when 'f3'
 				self.mode = :output
 			when 'o'
-				output_object_counts
+				#output_object_counts
+				open_project
 			when 'g'
 				toggle_gc_timing
 			#when 't'
+				#output_object_counts
 				#ObjectSpace.each_object(Variable) { |variable| puts variable.title }
 			end
 
