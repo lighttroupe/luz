@@ -96,7 +96,7 @@ class GuiDefault < GuiInterface
 		dialog.on_selected { |path|
 			dialog.remove_from_parent!
 			choose_file_name { |file_name|
-				path_with_file_name = File.join(path, file_name)		# TODO: choose file name
+				path_with_file_name = File.join(path, file_name)
 
 				if File.exists?(path_with_file_name)
 					negative_message 'File Already Exists'
