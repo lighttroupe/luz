@@ -230,15 +230,12 @@ private
 			return if @capture_object
 		end
 
-		#
-		# Well, are we over something?
-		#
 		if @hover_object
 			click_on(@hover_object)
 		else
-			if double_click? && $gui.respond_to?(:pointer_double_click_on_nothing)
+			if double_click?
 				$gui.pointer_double_click_on_nothing(self)
-			elsif $gui.respond_to?(:pointer_click_on_nothing)
+			else
 				$gui.pointer_click_on_nothing(self)
 				@click_time = Time.now
 			end
