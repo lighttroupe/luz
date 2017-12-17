@@ -129,7 +129,6 @@ class GuiDefault < GuiInterface
 		dialog.on_closed { dialog.remove_from_parent! }
 		dialog.on_selected { |path| dialog.remove_from_parent! ; yield path }
 		dialog.show_for_path($engine.project.path ? File.dirname($engine.project.path) : default_directory)
-
 		@dialog_container << dialog
 	end
 
@@ -140,7 +139,6 @@ class GuiDefault < GuiInterface
 			dialog.remove_from_parent!
 			choose_file_name { |file_name|
 				path_with_file_name = File.join(path, file_name)
-
 				if File.exists?(path_with_file_name)
 					negative_message 'File Already Exists'
 					negative_message 'Refusing to Overwrite'
@@ -204,23 +202,11 @@ class GuiDefault < GuiInterface
 		}
 	end
 
-	def browse_project_directory
-		if $engine.project.path
-			directory = File.dirname($engine.project.path)
-			cmd = "#{OPEN_DIRECTORY_COMMAND} #{directory}"
-			open("|#{cmd}")
-		else
-			negative_message 'Save Project First'
-		end
-	end
-
 	def save_changes_before
 		return yield unless $engine.project.changed?
 		body = $engine.project.change_count.plural("unsaved change", "unsaved changes")
 		confirmation = GuiConfirmationDialog.new("Save Project before continuing?", body, "Continue without saving", "Save Project")
 		self << confirmation
-
-		# save choice callbacks
 		confirmation.on_yes    { confirmation.remove_from_parent! ; yield }
 		confirmation.on_no     { confirmation.remove_from_parent! ; save_project { yield } }
 		confirmation.on_cancel { confirmation.remove_from_parent! }
@@ -480,20 +466,20 @@ class GuiDefault < GuiInterface
 		if key.control?
 			case key
 			when 'f8'
-				browse_project_directory
+				launch_project_directory_browser
 			when 'f9'
-				begin
-					open("|#{INPUT_MANAGER_COMMAND}")
-					positive_message "Launching Input Manager"
-				rescue
-					negative_message "Launching Input Manager Failed"
-				end
+				launch_input_manager
 			when 'f10'
-				begin
-					open("|#{SPECTRUM_ANALYZER_COMMAND}")
-					positive_message "Launching Spectrum Analyzer"
-				rescue
-					positive_message "Launching Spectrum Analyzer Failed"
+				launch_spectrum_analyzer
+			when 'left'
+				if @variables_flyout.keyboard_focus?
+					@variables_flyout.close!
+					default_focus!
+				elsif @variables_flyout.open?
+					@variables_flyout.grab_keyboard_focus!
+				else
+					@variables_flyout.open!
+					@variables_flyout.grab_keyboard_focus!
 				end
 			when 'right'
 				if @actors_flyout.keyboard_focus?
@@ -504,16 +490,6 @@ class GuiDefault < GuiInterface
 				else
 					@actors_flyout.open!
 					@actors_flyout.grab_keyboard_focus!
-				end
-			when 'left'
-				if @variables_flyout.keyboard_focus?
-					@variables_flyout.close!
-					default_focus!
-				elsif @variables_flyout.open?
-					@variables_flyout.grab_keyboard_focus!
-				else
-					@variables_flyout.open!
-					@variables_flyout.grab_keyboard_focus!
 				end
 			when 'up'
 				@directors_menu.open!
@@ -543,7 +519,6 @@ class GuiDefault < GuiInterface
 			when 'f3'
 				self.mode = :output
 			when 'o'
-				#output_object_counts
 				open_project
 			when 'g'
 				toggle_gc_timing
@@ -664,42 +639,42 @@ class GuiDefault < GuiInterface
 		@overlay.switch_state({:open => :closed}, duration=0.2)
 	end
 
+	# actor flyout
 	def close_actors_flyout!
 		@actors_flyout.switch_state({:open => :closed}, duration=0.2)
 	end
-
-	def open_directors_menu!
-		@directors_menu.switch_state({:closed => :open},durection=0.2)
-	end
-
-	def close_directors_menu!
-		@directors_menu.switch_state({:open => :closed}, duration=0.1)
-	end
-
-	def toggle_directors_menu!
-		@directors_menu.switch_state({:open => :closed, :closed => :open}, duration=0.2)
-	end
-
 	def toggle_actors_flyout!
 		@actors_flyout.switch_state({:open => :closed, :closed => :open}, duration=0.2)
 	end
 
+	# director menu
+	def open_directors_menu!
+		@directors_menu.switch_state({:closed => :open},durection=0.2)
+	end
+	def close_directors_menu!
+		@directors_menu.switch_state({:open => :closed}, duration=0.1)
+	end
+	def toggle_directors_menu!
+		@directors_menu.switch_state({:open => :closed, :closed => :open}, duration=0.2)
+	end
+
+	# event/variable flyout
 	def close_inputs_flyout!
 		@variables_flyout.switch_state({:open => :closed}, duration=0.2)
 	end
-
 	def toggle_inputs_flyout!
 		@variables_flyout.switch_state({:open => :closed, :closed => :open}, duration=0.2)
 	end
 
+	# beat/time control
 	def toggle_beat_monitor!
 		@beat_monitor.switch_state({:open => :closed, :closed => :open}, duration=0.2)
 	end
-
 	def toggle_time_control!
 		@time_control.switch_state({:open => :closed, :closed => :open}, duration=0.2)
 	end
 
+	# reopen button (bottom center)
 	def show_reopen_button!
 		@reopen_button.switch_state({:closed => :open}, duration=0.2)
 	end
@@ -728,6 +703,35 @@ class GuiDefault < GuiInterface
 
 	def reshow_latest!
 		build_editor_for(@last_user_object, :grab_keyboard_focus => true) if @last_user_object
+	end
+
+	# external apps
+	def launch_input_manager
+		begin
+			open("|#{INPUT_MANAGER_COMMAND}")
+			positive_message "Launching Input Manager"
+		rescue
+			negative_message "Launching Input Manager Failed"
+		end
+	end
+
+	def launch_spectrum_analyzer
+		begin
+			open("|#{SPECTRUM_ANALYZER_COMMAND}")
+			positive_message "Launching Spectrum Analyzer"
+		rescue
+			positive_message "Launching Spectrum Analyzer Failed"
+		end
+	end
+
+	def launch_project_directory_browser
+		if $engine.project.path
+			directory = File.dirname($engine.project.path)
+			cmd = "#{OPEN_DIRECTORY_COMMAND} #{directory}"
+			open("|#{cmd}")
+		else
+			negative_message 'Save Project First'
+		end
 	end
 
 	#
