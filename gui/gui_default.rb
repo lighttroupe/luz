@@ -130,13 +130,6 @@ class GuiDefault < GuiInterface
 		@dialog_container << dialog
 	end
 
-	#def choose_project_directory
-		#@dialog_container << dialog = GuiDirectoryDialog.new('Choose Directory for New Project')
-		#dialog.on_closed { dialog.remove_from_parent! }
-		#dialog.on_selected { |path| dialog.remove_from_parent! ; yield path }
-		#dialog.show_for_path($engine.project.path ? File.dirname($engine.project.path) : default_directory)
-	#end
-
 	# For choosing file name to save project
 	def choose_project_path
 		@dialog_container << dialog = GuiDirectoryDialog.new('Choose Directory for New project.luz')		# TODO: convert to a save-file-to-directory situation
