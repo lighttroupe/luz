@@ -647,17 +647,6 @@ class GuiDefault < GuiInterface
 		@actors_flyout.switch_state({:open => :closed, :closed => :open}, duration=0.2)
 	end
 
-	# director menu
-	def open_directors_menu!
-		@directors_menu.switch_state({:closed => :open},durection=0.2)
-	end
-	def close_directors_menu!
-		@directors_menu.switch_state({:open => :closed}, duration=0.1)
-	end
-	def toggle_directors_menu!
-		@directors_menu.switch_state({:open => :closed, :closed => :open}, duration=0.2)
-	end
-
 	# event/variable flyout
 	def close_inputs_flyout!
 		@variables_flyout.switch_state({:open => :closed}, duration=0.2)
@@ -674,12 +663,27 @@ class GuiDefault < GuiInterface
 		@time_control.switch_state({:open => :closed, :closed => :open}, duration=0.2)
 	end
 
+	# director menu
+	def open_directors_menu!
+		@directors_menu.switch_state({:closed => :open},durection=0.2)
+	end
+	def close_directors_menu!
+		@directors_menu.switch_state({:open => :closed}, duration=0.1)
+	end
+	def toggle_directors_menu!
+		@directors_menu.switch_state({:open => :closed, :closed => :open}, duration=0.2)
+	end
+
 	# reopen button (bottom center)
 	def show_reopen_button!
 		@reopen_button.switch_state({:closed => :open}, duration=0.2)
 	end
 	def hide_reopen_button!
 		@reopen_button.switch_state({:open => :closed}, duration=0.1)
+	end
+
+	def reshow_latest!
+		build_editor_for(@last_user_object, :grab_keyboard_focus => true) if @last_user_object
 	end
 
 	#
@@ -701,11 +705,9 @@ class GuiDefault < GuiInterface
 		build_editor_for(actor) unless @user_object == actor
 	end
 
-	def reshow_latest!
-		build_editor_for(@last_user_object, :grab_keyboard_focus => true) if @last_user_object
-	end
-
-	# external apps
+	#
+	# External Apps
+	#
 	def launch_input_manager
 		begin
 			open("|#{INPUT_MANAGER_COMMAND}")
