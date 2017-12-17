@@ -130,7 +130,6 @@ class GuiDefault < GuiInterface
 		@dialog_container << dialog
 	end
 
-	# For choosing file name to save project
 	def choose_project_path
 		@dialog_container << dialog = GuiDirectoryDialog.new('Choose Directory for New project.luz')		# TODO: convert to a save-file-to-directory situation
 		dialog.on_closed { dialog.remove_from_parent! }
@@ -179,7 +178,7 @@ class GuiDefault < GuiInterface
 			end
 		else
 			choose_project_path { |path|
-				if $engine.project.save_to_path(path)		# TODO: choose_project_path provides the file name
+				if $engine.project.save_to_path(path)
 					positive_message 'Project Saved'
 					yield if block_given?
 				else
