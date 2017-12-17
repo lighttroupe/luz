@@ -456,163 +456,26 @@ class GuiDefault < GuiInterface
 	end
 
 	#
-	# Utility methods
-	#
-	def create_user_object_editor_for_pointer(user_object, pointer, options)
-		GuiUserObjectEditor.new(user_object, {:scale_x => 0.3, :scale_y => 0.05}.merge(options)).
-			set({:offset_x => 0.0, :offset_y => -0.5, :opacity => 0.0, :scale_x => 0.65, :scale_y => 0.5, :hidden => false}).
-			animate({:offset_x => 0.0, :offset_y => -0.3, :scale_x => 0.65, :scale_y => 0.4, :opacity => 1.0}, duration=0.2)
-	end
-
-	def user_object_editor_edit_text
-		@user_object_editor.edit_title if @user_object_editor
-	end
-
-	def clear_user_object_editor		# TODO: for pointer ?
-		if @user_object_editor
-			editor = @user_object_editor		# local cache (closures!)
-			@user_object_editor.animate({:offset_y => -1.0}, duration=0.3) {
-				editor.remove_from_parent!
-				show_reopen_button! unless @user_object_editor
-			}
-		end
-		@last_user_object = @user_object
-		@user_object = nil
-		@user_object_editor = nil
-	end
-
-	def hide_something!
-		if @directors_menu.visible?
-			close_directors_menu!
-			default_focus!
-			true
-		elsif @variables_flyout.visible? or @actors_flyout.visible?
-			close_inputs_flyout!
-			close_actors_flyout!
-			default_focus!
-			true
-		elsif (@user_object_editor && @user_object_editor.visible?) && close_user_object_editor_on_click?
-			clear_user_object_editor
-			default_focus!
-			true
-		else
-			false
-		end
-	end
-
-	def close_main_menu!
-		@main_menu.switch_state({:open => :closed}, duration=0.1)
-		@overlay.switch_state({:open => :closed}, duration=0.2)
-	end
-
-	def close_actors_flyout!
-		@actors_flyout.switch_state({:open => :closed}, duration=0.2)
-	end
-
-	def open_directors_menu!
-		@directors_menu.switch_state({:closed => :open},durection=0.2)
-	end
-
-	def close_directors_menu!
-		@directors_menu.switch_state({:open => :closed}, duration=0.1)
-	end
-
-	def toggle_directors_menu!
-		@directors_menu.switch_state({:open => :closed, :closed => :open}, duration=0.2)
-	end
-
-	def toggle_actors_flyout!
-		@actors_flyout.switch_state({:open => :closed, :closed => :open}, duration=0.2)
-	end
-
-	def close_inputs_flyout!
-		@variables_flyout.switch_state({:open => :closed}, duration=0.2)
-	end
-
-	def toggle_inputs_flyout!
-		@variables_flyout.switch_state({:open => :closed, :closed => :open}, duration=0.2)
-	end
-
-	def toggle_beat_monitor!
-		@beat_monitor.switch_state({:open => :closed, :closed => :open}, duration=0.2)
-	end
-
-	def toggle_time_control!
-		@time_control.switch_state({:open => :closed, :closed => :open}, duration=0.2)
-	end
-
-	def show_reopen_button!
-		@reopen_button.switch_state({:closed => :open}, duration=0.2)
-	end
-	def hide_reopen_button!
-		@reopen_button.switch_state({:open => :closed}, duration=0.1)
-	end
-
-	#
-	# Next/Previous actor selection
-	#
-	def select_next_actor!
-		return unless chosen_director && chosen_director.actors.size > 0
-		index = chosen_director.actors.index(@user_object) || -1
-		index = (index + 1) % chosen_director.actors.size
-		actor = chosen_director.actors[index]
-		build_editor_for(actor) unless @user_object == actor
-	end
-
-	def select_previous_actor!
-		return unless chosen_director && chosen_director.actors.size > 0
-		index = chosen_director.actors.index(@user_object) || -1
-		index = (index - 1) % chosen_director.actors.size
-		actor = chosen_director.actors[index]
-		build_editor_for(actor) unless @user_object == actor
-	end
-
-	def default_focus!
-		user_object_editor = @user_object_editor
-
-		if user_object_editor && user_object_editor.visible?
-			user_object_editor.grab_keyboard_focus!
-		elsif @actors_flyout.open?
-			@actors_flyout.grab_keyboard_focus!
-		elsif @variables_flyout.open?
-			@variables_flyout.grab_keyboard_focus!
-		else
-			@keyboard.cancel_grab_silently!
-		end
-	end
-
-	def reshow_latest!
-		build_editor_for(@last_user_object, :grab_keyboard_focus => true) if @last_user_object
-	end
-
-	#
-	# Keyboard interaction
+	# Keyboard Interaction
 	#
 	def keyboard
 		@keyboard ||= Keyboard.new(self)
 	end
-
-	# raw_keyboard_input is called by SDL
-	def raw_keyboard_input(value)
+	def raw_keyboard_input(value)		# raw SDL value
 		keyboard.raw_keyboard_input(value)
 	end
-
 	def grab_keyboard_focus(object=nil, &proc)
 		keyboard.grab(object, &proc)
 	end
-
 	def has_keyboard_focus?(object)
 		keyboard.grabbed_by_object?(object)
 	end
-
 	def cancel_keyboard_focus!
 		keyboard.cancel_grab!
 	end
-
 	def cancel_keyboard_focus_for(object)
 		cancel_keyboard_focus! if has_keyboard_focus?(object)
 	end
-
 	def on_key_press(key)
 		if key.control?
 			case key
@@ -712,16 +575,28 @@ class GuiDefault < GuiInterface
 		end
 	end
 
+	def default_focus!
+		user_object_editor = @user_object_editor
+
+		if user_object_editor && user_object_editor.visible?
+			user_object_editor.grab_keyboard_focus!
+		elsif @actors_flyout.open?
+			@actors_flyout.grab_keyboard_focus!
+		elsif @variables_flyout.open?
+			@variables_flyout.grab_keyboard_focus!
+		else
+			@keyboard.cancel_grab_silently!
+		end
+	end
+
 	#
-	# Click Response
+	# Mouse Interaction
 	#
 	def pointer_click_on_nothing(pointer)
 		hide_something!
 	end
-
 	def pointer_double_click_on_nothing(pointer)
 	end
-
 	def scroll_up!(pointer)
 		view = active_view
 		view.scroll_up!(pointer) if view
@@ -737,6 +612,122 @@ class GuiDefault < GuiInterface
 	def scroll_right!(pointer)
 		view = active_view
 		view.scroll_right!(pointer) if view
+	end
+
+	#
+	# Utility methods
+	#
+	def create_user_object_editor_for_pointer(user_object, pointer, options)
+		GuiUserObjectEditor.new(user_object, {:scale_x => 0.3, :scale_y => 0.05}.merge(options)).
+			set({:offset_x => 0.0, :offset_y => -0.5, :opacity => 0.0, :scale_x => 0.65, :scale_y => 0.5, :hidden => false}).
+			animate({:offset_x => 0.0, :offset_y => -0.3, :scale_x => 0.65, :scale_y => 0.4, :opacity => 1.0}, duration=0.2)
+	end
+
+	def clear_user_object_editor		# TODO: for pointer ?
+		if @user_object_editor
+			editor = @user_object_editor		# local cache (closures!)
+			@user_object_editor.animate({:offset_y => -1.0}, duration=0.3) {
+				editor.remove_from_parent!
+				show_reopen_button! unless @user_object_editor
+			}
+		end
+		@last_user_object = @user_object
+		@user_object = nil
+		@user_object_editor = nil
+	end
+
+	def user_object_editor_edit_text
+		@user_object_editor.edit_title if @user_object_editor
+	end
+
+	def hide_something!
+		if @directors_menu.visible?
+			close_directors_menu!
+			default_focus!
+			true
+		elsif @variables_flyout.visible? or @actors_flyout.visible?
+			close_inputs_flyout!
+			close_actors_flyout!
+			default_focus!
+			true
+		elsif (@user_object_editor && @user_object_editor.visible?) && close_user_object_editor_on_click?
+			clear_user_object_editor
+			default_focus!
+			true
+		else
+			false
+		end
+	end
+
+	def close_main_menu!
+		@main_menu.switch_state({:open => :closed}, duration=0.1)
+		@overlay.switch_state({:open => :closed}, duration=0.2)
+	end
+
+	def close_actors_flyout!
+		@actors_flyout.switch_state({:open => :closed}, duration=0.2)
+	end
+
+	def open_directors_menu!
+		@directors_menu.switch_state({:closed => :open},durection=0.2)
+	end
+
+	def close_directors_menu!
+		@directors_menu.switch_state({:open => :closed}, duration=0.1)
+	end
+
+	def toggle_directors_menu!
+		@directors_menu.switch_state({:open => :closed, :closed => :open}, duration=0.2)
+	end
+
+	def toggle_actors_flyout!
+		@actors_flyout.switch_state({:open => :closed, :closed => :open}, duration=0.2)
+	end
+
+	def close_inputs_flyout!
+		@variables_flyout.switch_state({:open => :closed}, duration=0.2)
+	end
+
+	def toggle_inputs_flyout!
+		@variables_flyout.switch_state({:open => :closed, :closed => :open}, duration=0.2)
+	end
+
+	def toggle_beat_monitor!
+		@beat_monitor.switch_state({:open => :closed, :closed => :open}, duration=0.2)
+	end
+
+	def toggle_time_control!
+		@time_control.switch_state({:open => :closed, :closed => :open}, duration=0.2)
+	end
+
+	def show_reopen_button!
+		@reopen_button.switch_state({:closed => :open}, duration=0.2)
+	end
+	def hide_reopen_button!
+		@reopen_button.switch_state({:open => :closed}, duration=0.1)
+	end
+
+	#
+	# Next/Previous actor selection
+	#
+	def select_next_actor!
+		return unless chosen_director && chosen_director.actors.size > 0
+		index = chosen_director.actors.index(@user_object) || -1
+		index = (index + 1) % chosen_director.actors.size
+		actor = chosen_director.actors[index]
+		build_editor_for(actor) unless @user_object == actor
+	end
+
+	def select_previous_actor!
+		return unless chosen_director && chosen_director.actors.size > 0
+		index = chosen_director.actors.index(@user_object) || -1
+		index = (index - 1) % chosen_director.actors.size
+		actor = chosen_director.actors[index]
+		build_editor_for(actor) unless @user_object == actor
+	end
+
+	def reshow_latest!
+		build_editor_for(@last_user_object, :grab_keyboard_focus => true) if @last_user_object
 	end
 
 	#
