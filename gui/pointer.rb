@@ -262,12 +262,11 @@ private
 	end
 
 	def update_scroll_wheel
-		# Update Scrolling
 		target = (@drag_object || @hover_object || $gui)
-		target.scroll_up!(self) if scroll_up? && target.respond_to?(:scroll_up!)
-		target.scroll_down!(self) if scroll_down? && target.respond_to?(:scroll_down!)
-		target.scroll_left!(self) if scroll_left? && target.respond_to?(:scroll_left!)
-		target.scroll_right!(self) if scroll_right? && target.respond_to?(:scroll_right!)
+		target.scroll_up!(self) if scroll_up?
+		target.scroll_down!(self) if scroll_down?
+		target.scroll_left!(self) if scroll_left?
+		target.scroll_right!(self) if scroll_right?
 	end
 
 	def exit_hover_object!
