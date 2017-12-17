@@ -10,6 +10,8 @@ class GuiDefault < GuiInterface
 	DIRECTOR_VIEW_COLOR = [0.5,1,0.5,1]
 	OUTPUT_VIEW_COLOR = [0.5,0.5,1,1]
 
+	VIEW_COLOR_FOR_MODE = {:actor => ACTOR_VIEW_COLOR, :director => DIRECTOR_VIEW_COLOR, :output => OUTPUT_VIEW_COLOR}
+
 	DEFAULT_PROJECT_NAME = 'project.luz'
 
 	GUI_ALPHA_SETTING_KEY = 'gui-alpha'
@@ -232,10 +234,8 @@ class GuiDefault < GuiInterface
 	#  self << GuiObject.new.set(:scale_x => 0.1, :scale_y => 0.1, :offset_x => 0.0, :offset_y => 0.0)
 	#
 	def create!
-		# Remember: this is drawn first-to-last
-
-		@actor_view = GuiActorView.new	#.set(:opacity => 0.0, :hidden => true)
-		@director_view = GuiDirectorView.new	#.set(:opacity => 0.0, :hidden => true)
+		@actor_view = GuiActorView.new
+		@director_view = GuiDirectorView.new
 
 		#
 		# Actors / Directors flyout
@@ -338,43 +338,6 @@ class GuiDefault < GuiInterface
 	end
 
 	#
-	# Rendering: render is called every frame, gui_render only when the Editor plugin thinks it's visible
-	#
-	def view_color
-		case @mode
-		when :actor
-			ACTOR_VIEW_COLOR
-		when :director
-			DIRECTOR_VIEW_COLOR
-		else
-			OUTPUT_VIEW_COLOR
-		end
-	end
-
-	def render
-		# content
-		case @mode
-		when :actor
-			clear_screen(ACTOR_BACKGROUND_COLOR)
-			$engine.with_content_aspect_ratio {
-				@actor_view.gui_render
-			}
-		when :director
-			clear_screen(DIRECTOR_BACKGROUND_COLOR)
-			$engine.with_content_aspect_ratio {
-				@director_view.gui_render
-			}
-		when :output
-			yield
-		end
-
-		# GUI
-		with_alpha($settings[GUI_ALPHA_SETTING_KEY]) {
-			gui_render
-		}
-	end
-
-	#
 	# build_editor_for is the main "object activated" message
 	#
 	def build_editor_for(user_object, options={})
@@ -441,6 +404,39 @@ class GuiDefault < GuiInterface
 		end
 	end
 
+	#
+	# Rendering: render is called every frame, gui_render only when the Editor plugin thinks it's visible
+	#
+	def view_color
+		VIEW_COLOR_FOR_MODE[@mode]
+	end
+
+	def render
+		# content
+		case @mode
+		when :actor
+			clear_screen(ACTOR_BACKGROUND_COLOR)
+			$engine.with_content_aspect_ratio {
+				@actor_view.gui_render
+			}
+		when :director
+			clear_screen(DIRECTOR_BACKGROUND_COLOR)
+			$engine.with_content_aspect_ratio {
+				@director_view.gui_render
+			}
+		when :output
+			yield
+		end
+
+		# GUI
+		with_alpha($settings[GUI_ALPHA_SETTING_KEY]) {
+			gui_render
+		}
+	end
+
+	#
+	# Deleting
+	#
 	def trash!(user_object)
 		case user_object
 		when Actor
@@ -573,10 +569,6 @@ class GuiDefault < GuiInterface
 		index = (index - 1) % chosen_director.actors.size
 		actor = chosen_director.actors[index]
 		build_editor_for(actor) unless @user_object == actor
-	end
-
-	def chosen_actor_index
-		chosen_director.actors.index(chosen_actor)		# possibly nil
 	end
 
 	def default_focus!
