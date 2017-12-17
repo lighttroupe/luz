@@ -13,6 +13,10 @@ class GuiDefault < GuiInterface
 
 	GUI_ALPHA_SETTING_KEY = 'gui-alpha'
 
+	INPUT_MANAGER_COMMAND = 'input-manager/input-manager'
+	SPECTRUM_ANALYZER_COMMAND = 'spectrum-analyzer/spectrum-analyzer'
+	OPEN_DIRECTORY_COMMAND = 'gnome-open'
+
 	pipe [:positive_message, :negative_message], :message_bar
 
 	attr_accessor :mode, :gui_alpha
@@ -65,7 +69,7 @@ class GuiDefault < GuiInterface
 	end
 
 	#
-	# render mode
+	# Mode
 	#
 	def rendering_output?
 		@mode == :output
@@ -203,8 +207,7 @@ class GuiDefault < GuiInterface
 	def browse_project_directory
 		if $engine.project.path
 			directory = File.dirname($engine.project.path)
-			cmd = "gnome-open #{directory}"
-			puts "executing: #{cmd}"
+			cmd = "#{OPEN_DIRECTORY_COMMAND} #{directory}"
 			open("|#{cmd}")
 		else
 			negative_message 'Save Project First'
@@ -224,11 +227,7 @@ class GuiDefault < GuiInterface
 	end
 
 	#
-	# Building the GUI
-	#
-	# Minimal start for a new object:
-	#
-	#  self << GuiObject.new.set(:scale_x => 0.1, :scale_y => 0.1, :offset_x => 0.0, :offset_y => 0.0)
+	# Creating GUI -- minimal start for a new object: self << GuiObject.new.set(:scale_x => 0.1, :scale_y => 0.1, :offset_x => 0.0, :offset_y => 0.0)
 	#
 	def create!
 		@actor_view = GuiActorView.new
@@ -587,35 +586,52 @@ class GuiDefault < GuiInterface
 	end
 
 	#
-	# Keyboard input
+	# Keyboard interaction
 	#
+	def keyboard
+		@keyboard ||= Keyboard.new(self)
+	end
+
+	# raw_keyboard_input is called by SDL
+	def raw_keyboard_input(value)
+		keyboard.raw_keyboard_input(value)
+	end
+
+	def grab_keyboard_focus(object=nil, &proc)
+		keyboard.grab(object, &proc)
+	end
+
+	def has_keyboard_focus?(object)
+		keyboard.grabbed_by_object?(object)
+	end
+
+	def cancel_keyboard_focus!
+		keyboard.cancel_grab!
+	end
+
+	def cancel_keyboard_focus_for(object)
+		cancel_keyboard_focus! if has_keyboard_focus?(object)
+	end
+
 	def on_key_press(key)
-		#
-		# Ctrl key
-		#
 		if key.control?
 			case key
 			when 'f8'
 				browse_project_directory
-
 			when 'f9'
 				begin
-					cmd = 'input-manager/input-manager'
-					open("|#{cmd}")
+					open("|#{INPUT_MANAGER_COMMAND}")
 					positive_message "Launching Input Manager"
 				rescue
 					negative_message "Launching Input Manager Failed"
 				end
-
 			when 'f10'
 				begin
-					cmd = 'spectrum-analyzer/spectrum-analyzer'
-					open("|#{cmd}")
+					open("|#{SPECTRUM_ANALYZER_COMMAND}")
 					positive_message "Launching Spectrum Analyzer"
 				rescue
 					positive_message "Launching Spectrum Analyzer Failed"
 				end
-
 			when 'right'
 				if @actors_flyout.keyboard_focus?
 					@actors_flyout.close!
@@ -672,10 +688,6 @@ class GuiDefault < GuiInterface
 				#output_object_counts
 				#ObjectSpace.each_object(Variable) { |variable| puts variable.title }
 			end
-
-		#
-		# Alt key
-		#
 		elsif key.alt?
 			case key
 			when 'down'
@@ -685,11 +697,8 @@ class GuiDefault < GuiInterface
 				select_previous_actor!
 				default_focus!
 			end
-
-		#
-		# no modifier
-		#
 		else
+			# no modifier
 			case key
 			when 'escape'
 				if @main_menu.visible?
@@ -701,36 +710,6 @@ class GuiDefault < GuiInterface
 				end
 			end
 		end
-	end
-
-	#
-	# Keyboard interaction
-	#
-	def keyboard
-		@keyboard ||= Keyboard.new(self)
-	end
-
-	attr_reader :keyboard_grab_object, :keyboard_grab_proc
-
-	# raw_keyboard_input is called by SDL
-	def raw_keyboard_input(value)
-		keyboard.raw_keyboard_input(value)
-	end
-
-	def grab_keyboard_focus(object=nil, &proc)
-		keyboard.grab(object, &proc)
-	end
-
-	def has_keyboard_focus?(object)
-		keyboard.grabbed_by_object?(object)
-	end
-
-	def cancel_keyboard_focus!
-		keyboard.cancel_grab!
-	end
-
-	def cancel_keyboard_focus_for(object)
-		cancel_keyboard_focus! if has_keyboard_focus?(object)
 	end
 
 	#
