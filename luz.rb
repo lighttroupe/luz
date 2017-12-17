@@ -105,18 +105,14 @@ else
 end
 
 $gui = GuiDefault.new
-$gui.positive_message('Welcome to Luz 2.0')
-
-$engine.on_new_project {
-	$gui = GuiDefault.new			# out with the old...
-}
+$engine.on_new_project { $gui = GuiDefault.new }		# out with the old...
 
 # Go!
 begin
+	$gui.positive_message('Welcome to Luz 2.0')
 	$application.run
 rescue Interrupt
 ensure
+	$settings.save
 	puts "\nThanks for playing with me! -Luz"
 end
-
-$settings.save
