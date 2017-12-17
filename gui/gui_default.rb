@@ -12,11 +12,11 @@ class GuiDefault < GuiInterface
 
 	DEFAULT_PROJECT_NAME = 'project.luz'
 
+	GUI_ALPHA_SETTING_KEY = 'gui-alpha'
+
 	pipe [:positive_message, :negative_message], :message_bar
 
-	attr_accessor :mode, :directors_menu
-	attr_accessor :gui_alpha
-
+	attr_accessor :mode, :gui_alpha
 	attr_reader :gui_font, :user_object
 
 	def initialize
@@ -27,18 +27,8 @@ class GuiDefault < GuiInterface
 		@gui_font = "Ubuntu"		# "Comic Sans MS" "eufm10"
 	end
 
-	def toggle!
-		switch_state({:open => :closed, :closed => :open}, duration=0.35)
-	end
-
-	def rendering_output?
-		mode == :output
-	end
-	def rendering_director?
-		mode == :director
-	end
-	def rendering_actor?
-		mode == :actor
+	def preload_images
+		File.read('gui/preload-images').split("\n").each { |path| $engine.load_image(path) }
 	end
 
 	def reload_notify
@@ -46,12 +36,70 @@ class GuiDefault < GuiInterface
 		create!
 	end
 
-	def preload_images
-		File.read('gui/preload-images').split("\n").each { |path| $engine.load_image(path) }
+	def set_initial_state
+		@user_object = nil					# this object the user is editing
+		@user_object_editor = nil		# editor widget (window)
+
+		# Auto-select first director
+		director = $engine.project.directors.first
+
+		# Hack to load project file format 1
+		director.actors = $engine.project.actors if director.actors.empty? && !$engine.project.actors.empty?
+
+		self.chosen_actor = nil
+		self.chosen_director = director
+		self.mode = :output
 	end
 
 	#
-	# UserObject factory!
+	# Preferences
+	#
+	def close_user_object_editor_on_click?
+		false		# TODO: per-pointer preference?
+	end
+
+	#
+	# open/close
+	#
+	def toggle!
+		switch_state({:open => :closed, :closed => :open}, duration=0.35)
+	end
+
+	#
+	# render mode
+	#
+	def rendering_output?
+		@mode == :output
+	end
+	def rendering_director?
+		@mode == :director
+	end
+	def rendering_actor?
+		@mode == :actor
+	end
+
+	def active_view
+		if @mode == :actor
+			@actor_view
+		elsif @mode == :director
+			@director_view
+		end
+	end
+
+	# Actor and Director selection
+	pipe [:chosen_actor], :actor_view, :method => :actor
+	pipe [:chosen_actor=], :actor_view, :method => :actor=
+	pipe [:chosen_director], :director_view, :method => :director
+
+	def chosen_director=(director)
+		@director_view.director = director
+		@actors_flyout.actors = director.actors
+		self.mode = :director
+		clear_user_object_editor
+	end
+
+	#
+	# UserObject factory
 	#
 	pipe :new_event!, :variables_flyout
 	pipe :new_variable!, :variables_flyout
@@ -115,6 +163,73 @@ class GuiDefault < GuiInterface
 
 	def default_directory
 		Dir.home
+	end
+
+	def new_project
+		save_changes_before {
+			choose_project_path { |path|
+				# TODO: assert doesn't exist
+				FileUtils.cp BASE_SET_PATH, path		# copy into place
+				$application.open_project(path)
+				$settings['recent-projects'].unshift(path)
+			}
+		}
+	end
+
+	def save_project
+		if $engine.project.path
+			if $engine.project.save
+				positive_message 'Project Saved'
+				yield if block_given?
+			else
+				negative_message 'Save Failed'
+			end
+		else
+			choose_project_path { |path|
+				if $engine.project.save_to_path(path)		# TODO: choose_project_path provides the file name
+					positive_message 'Project Saved'
+					yield if block_given?
+				else
+					negative_message 'Save Failed'
+				end
+			}
+		end
+	end
+
+	def open_project
+		save_changes_before {
+			choose_project_file { |path|
+				if $application.open_project(path)
+					$settings['recent-projects'].delete(path)
+					$settings['recent-projects'].unshift(path)
+				else
+					negative_message 'Open Failed'
+				end
+			}
+		}
+	end
+
+	def browse_project_directory
+		if $engine.project.path
+			directory = File.dirname($engine.project.path)
+			cmd = "gnome-open #{directory}"
+			puts "executing: #{cmd}"
+			open("|#{cmd}")
+		else
+			negative_message 'Save Project First'
+		end
+	end
+
+	def save_changes_before
+		return yield unless $engine.project.changed?
+		body = $engine.project.change_count.plural("unsaved change", "unsaved changes")
+		confirmation = GuiConfirmationDialog.new("Save Project before continuing?", body, "Continue without saving", "Save Project")
+		self << confirmation
+
+		# save choice callbacks
+		confirmation.on_yes    { confirmation.remove_from_parent! ; yield }
+		confirmation.on_no     { confirmation.remove_from_parent! ; save_project { yield } }
+		confirmation.on_cancel { confirmation.remove_from_parent! }
 	end
 
 	#
@@ -230,90 +345,6 @@ class GuiDefault < GuiInterface
 		set_initial_state
 	end
 
-	def new_project
-		save_changes_before {
-			choose_project_path { |path|
-				# TODO: assert doesn't exist
-				FileUtils.cp BASE_SET_PATH, path		# copy into place
-				$application.open_project(path)
-				$settings['recent-projects'].unshift(path)
-			}
-		}
-	end
-
-	def save_project
-		if $engine.project.path
-			if $engine.project.save
-				positive_message 'Project Saved'
-				yield if block_given?
-			else
-				negative_message 'Save Failed'
-			end
-		else
-			choose_project_path { |path|
-				if $engine.project.save_to_path(path)		# TODO: choose_project_path provides the file name
-					positive_message 'Project Saved'
-					yield if block_given?
-				else
-					negative_message 'Save Failed'
-				end
-			}
-		end
-	end
-
-	def open_project
-		save_changes_before {
-			choose_project_file { |path|
-				if $application.open_project(path)
-					$settings['recent-projects'].delete(path)
-					$settings['recent-projects'].unshift(path)
-				else
-					negative_message 'Open Failed'
-				end
-			}
-		}
-	end
-
-	def browse_project_directory
-		if $engine.project.path
-			directory = File.dirname($engine.project.path)
-			cmd = "gnome-open #{directory}"
-			puts "executing: #{cmd}"
-			open("|#{cmd}")
-		else
-			negative_message 'Save Project First'
-		end
-	end
-
-	def set_initial_state
-		@user_object = nil					# this object the user is editing
-		@user_object_editor = nil		# editor widget (window)
-
-		# Auto-select first director
-		director = $engine.project.directors.first
-
-		# Hack to load project file format 1
-		director.actors = $engine.project.actors if director.actors.empty? && !$engine.project.actors.empty?
-
-		self.chosen_actor = nil
-		self.chosen_director = director
-		self.mode = :output
-	end
-
-	#
-	# Actor and Director selection
-	#
-	pipe [:chosen_actor], :actor_view, :method => :actor
-	pipe [:chosen_actor=], :actor_view, :method => :actor=
-	pipe [:chosen_director], :director_view, :method => :director
-
-	def chosen_director=(director)
-		@director_view.director = director
-		@actors_flyout.actors = director.actors
-		self.mode = :director
-		clear_user_object_editor
-	end
-
 	#
 	# Rendering: render is called every frame, gui_render only when the Editor plugin thinks it's visible
 	#
@@ -329,6 +360,7 @@ class GuiDefault < GuiInterface
 	end
 
 	def render
+		# content
 		case @mode
 		when :actor
 			clear_screen(ACTOR_BACKGROUND_COLOR)
@@ -344,7 +376,8 @@ class GuiDefault < GuiInterface
 			yield
 		end
 
-		with_alpha($settings['gui-alpha']) {
+		# GUI
+		with_alpha($settings[GUI_ALPHA_SETTING_KEY]) {
 			gui_render
 		}
 	end
@@ -572,6 +605,9 @@ class GuiDefault < GuiInterface
 		build_editor_for(@last_user_object, :grab_keyboard_focus => true) if @last_user_object
 	end
 
+	#
+	# Keyboard input
+	#
 	def on_key_press(key)
 		#
 		# Ctrl key
@@ -687,42 +723,6 @@ class GuiDefault < GuiInterface
 	end
 
 	#
-	# Click Response
-	#
-	def pointer_click_on_nothing(pointer)
-		hide_something!
-	end
-
-	def pointer_double_click_on_nothing(pointer)
-		#build_editor_for(@user_object, :grab_keyboard_focus => true) if @user_object
-	end
-
-	def active_view
-		if mode == :actor
-			@actor_view
-		elsif mode == :director
-			@director_view
-		end
-	end
-
-	def scroll_up!(pointer)
-		view = active_view
-		view.scroll_up!(pointer) if view
-	end
-	def scroll_down!(pointer)
-		view = active_view
-		view.scroll_down!(pointer) if view
-	end
-	def scroll_left!(pointer)
-		view = active_view
-		view.scroll_left!(pointer) if view
-	end
-	def scroll_right!(pointer)
-		view = active_view
-		view.scroll_right!(pointer) if view
-	end
-
-	#
 	# Keyboard interaction
 	#
 	def keyboard
@@ -753,22 +753,31 @@ class GuiDefault < GuiInterface
 	end
 
 	#
-	# Preferences
+	# Click Response
 	#
-	def close_user_object_editor_on_click?
-		false		# TODO: per-pointer preference?
+	def pointer_click_on_nothing(pointer)
+		hide_something!
 	end
 
-	def save_changes_before
-		return yield unless $engine.project.changed?
-		body = $engine.project.change_count.plural("unsaved change", "unsaved changes")
-		confirmation = GuiConfirmationDialog.new("Save Project before continuing?", body, "Continue without saving", "Save Project")
-		self << confirmation
+	def pointer_double_click_on_nothing(pointer)
+		#build_editor_for(@user_object, :grab_keyboard_focus => true) if @user_object
+	end
 
-		# save choice callbacks
-		confirmation.on_yes    { confirmation.remove_from_parent! ; yield }
-		confirmation.on_no     { confirmation.remove_from_parent! ; save_project { yield } }
-		confirmation.on_cancel { confirmation.remove_from_parent! }
+	def scroll_up!(pointer)
+		view = active_view
+		view.scroll_up!(pointer) if view
+	end
+	def scroll_down!(pointer)
+		view = active_view
+		view.scroll_down!(pointer) if view
+	end
+	def scroll_left!(pointer)
+		view = active_view
+		view.scroll_left!(pointer) if view
+	end
+	def scroll_right!(pointer)
+		view = active_view
+		view.scroll_right!(pointer) if view
 	end
 
 	#
