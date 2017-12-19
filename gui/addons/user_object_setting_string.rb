@@ -1,4 +1,4 @@
-require 'gui_string'
+multi_require 'gui_string'
 
 class UserObjectSettingString
 	def gui_build_editor
