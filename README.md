@@ -12,19 +12,21 @@ Create 'actors' using: vector shapes, animated gifs, sprites, webcams and videos
 
 Every actor gets unlimited effects that layer and combine in delightful ways.
 
-Every setting of every effect can be animated to time or beats, or connected to any button or axis of your various input devices.
+Every setting of every effect can be animated to time or beats, or connected to any button or axis of input devices.
 
-Luz supports wiimotes, Wacom tablets, joysticks, gamepads, and MIDI devices.
+Luz supports wiimotes, joysticks, gamepads, Wacom tablets, and MIDI devices.
 
-Luz can also be driven by external OpenSoundControl sending software.
+Luz can also be driven by OpenSoundControl sending software.
+
+Luz has provided interactive visuals at hundreds of venues, festivals, and house parties!
+
+Luz is perhaps the easiest way to meet people: "Have you tried this yet?" and hand them control of the projected visuals.
 
 Luz is written in Ruby and offloads all the heavy pixel pushing to ffmpeg, OpenGL, and your modern graphics card.
 
 The Luz 2.0 interface was designed in Inkscape and the source SVGs are in the gui/images directory.
 
-Luz has provided interactive visuals at hundreds of venues, festivals, and house parties!
-
-[![Code Climate](https://codeclimate.com/github/lighttroupe/luz-next.png)](https://codeclimate.com/github/lighttroupe/luz-next)
+[![Code Climate](https://codeclimate.com/github/lighttroupe/luz.png)](https://codeclimate.com/github/lighttroupe/luz)
 
 ## The Luz Project consists of:
 
@@ -45,8 +47,8 @@ Luz currently only runs on Linux.  (Help is welcome porting it to OSX and Window
 1. open a terminal
 2. sudo apt-get install git ruby ruby-dev ruby-pango libsdl2-dev libglw1-mesa-dev freeglut3-dev ruby-rmagick
 3. sudo gem install ruby-sdl2 syck opengl glu glut
-4. git clone https://github.com/lighttroupe/luz-next.git
-5. cd luz-next
+4. git clone https://github.com/lighttroupe/luz.git
+5. cd luz
 6. Optionally run **./build.sh** in utils/webcam for the Webcam plugin.
 7. Optionally run **./build.sh** in utils/video_file for the Video plugin.
 8. ./go
