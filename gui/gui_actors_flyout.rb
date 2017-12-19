@@ -59,9 +59,7 @@ class GuiActorsFlyout < GuiWindow
 
 		@actor_class_flyout.on_actor_class_selected { |pointer, klass|
 			actor = klass.new
-			#fade = ActorEffectFade.new
-			#fade.amount_setting.animation_min = 1.0
-			#actor.effects << fade
+			add_defaults_for_actor(actor)
 			@actors_list.add_after_selection(actor)
 			$engine.project_changed!
 			$gui.build_editor_for(actor, :pointer => pointer, :grab_keyboard_focus => true)
@@ -75,6 +73,19 @@ class GuiActorsFlyout < GuiWindow
 			@actor_class_flyout.switch_state({:open => :closed, :closed => :open}, duration=0.2)
 			@actor_class_flyout.grab_keyboard_focus! if @actor_class_flyout.open?
 		}
+	end
+
+	def add_defaults_for_actor(actor)
+		if false
+			fade = ActorEffectFade.new
+			fade.amount_setting.animation_min = 1.0
+			actor.effects << fade
+		end
+		if false
+			scale = ActorEffectScale.new
+			scale.amount_setting.animation_min = 0.1
+			actor.effects << scale
+		end
 	end
 
 	def on_list_selection_change
