@@ -33,18 +33,39 @@ class ValueAnimationManager < Array
 
 	def tick_animations!
 		delete_if { |animation|
+			# Floating point value animation
 			progress = ($env[:frame_time] - animation.begin_time) / (animation.end_time - animation.begin_time)
-			if progress >= 1.0
-				finalize_animation!(animation)
-				true		# delete
-			else
-				if animation.end_value.is_a? Float
+			if animation.end_value.is_a? Float
+				if progress >= 1.0
+					finalize_animation!(animation)
+					true		# delete
+				else
 					current_value = progress.scale(animation.begin_value, animation.end_value)
 					animation.object.send(animation.set_method, current_value)
-				else
-					# no animation for boolean, or others (just set their final value above)
+					false		# keep
 				end
-				false		# keep
+
+			# Integer animation
+			elsif animation.end_value.is_a? Integer
+				if $env[:is_beat]
+					current_value = animation.object.send(animation.get_method)
+					current_value += (animation.end_value > animation.begin_value) ? 1 : -1
+					animation.object.send(animation.set_method, current_value)
+
+					if current_value == animation.end_value
+						finalize_animation!(animation)
+					end
+				else
+					false		# keep
+				end
+			else
+				# no animation for boolean, or others (just set their final value above)
+				if progress >= 1.0
+					finalize_animation!(animation)
+					true		# delete
+				else
+					false		# keep
+				end
 			end
 		}
 	end
@@ -98,4 +119,4 @@ module ValueAnimation
 	def cancel_animations_for_field!(field)
 		$value_animation_manager.cancel_animations_for_object_and_field!(self, field)
 	end
-end 
+end
