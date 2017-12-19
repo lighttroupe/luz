@@ -727,13 +727,10 @@ class GuiDefault < GuiInterface
 	end
 
 	def launch_project_directory_browser
-		if $engine.project.path
-			directory = File.dirname($engine.project.path)
-			cmd = "#{OPEN_DIRECTORY_COMMAND} #{directory}"
-			open("|#{cmd}")
-		else
-			negative_message 'Save Project First'
-		end
+		negative_message('Save Project First') and return unless $engine.project.path
+		directory = File.dirname($engine.project.path)
+		cmd = "#{OPEN_DIRECTORY_COMMAND} #{directory}"
+		open("|#{cmd}")
 	end
 
 	#
