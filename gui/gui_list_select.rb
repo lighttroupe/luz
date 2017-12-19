@@ -44,14 +44,14 @@ class GuiListSelect < GuiValue
 		list_cached = list
 		current_index = list_cached.index(get_value)
 		next_index = current_index ? ((current_index - 1) % list_cached.size) : 0
-		set_value list_cached[next_index]
+		set_value(list_cached[next_index])
 	end
 
 	def scroll_down!(pointer)
 		list_cached = list
 		current_index = list_cached.index(get_value)
 		next_index = current_index ? ((current_index + 1) % list_cached.size) : 0
-		set_value list_cached[next_index]
+		set_value(list_cached[next_index])
 	end
 
 private
