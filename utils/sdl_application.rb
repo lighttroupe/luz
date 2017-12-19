@@ -40,13 +40,13 @@ class SDLApplication
 		start_time_ms = SDL2.get_ticks
 		frame_number = 1
 
-		while not finished?
+		until finished?
 			desired_ms_per_frame = (1000 / @frames_per_second)		# NOTE: desired FPS can change at any time
 
 			frame_start_ms = SDL2.get_ticks
 			age_in_seconds = (frame_start_ms - start_time_ms) / 1000.0
 
-			while event = SDL2::Event.poll
+			while (event=SDL2::Event.poll)
 				handle_sdl_event(event)
 			end
 
