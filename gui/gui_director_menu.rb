@@ -1,10 +1,10 @@
 multi_require 'gui_output_view_button'
 
 class GuiDirectorMenu < GuiWindow
-	def initialize(contents)
+	def initialize(directors)
 		super()
 		create!
-		@grid.contents = contents
+		@grid.contents = directors		#.map { |director| GuiDirector.new(director) }
 		update_grid_size!
 	end
 
