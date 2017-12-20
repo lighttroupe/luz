@@ -63,6 +63,10 @@ class GuiBox < GuiObject
 		@contents.each { |gui_object| gui_object.parent = nil }
 	end
 
+	def each(&proc)
+		@contents.each(&proc)
+	end
+
 	def clear!
 		unlink!
 		@contents.clear
