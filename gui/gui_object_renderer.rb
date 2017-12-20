@@ -5,6 +5,8 @@ class GuiObjectRenderer < GuiObject
 	callback :clicked
 	callback :double_clicked
 
+	easy_accessor :foreground_image
+
 	attr_reader :object
 
 	def initialize(object)
@@ -24,6 +26,11 @@ class GuiObjectRenderer < GuiObject
 		return if hidden?
 		gui_render_background
 		@object.gui_render		# TODO: send a symbol for customizable render method (ie simple curves)
+		if foreground_image
+			foreground_image.using {
+				unit_square
+			}
+		end
 	end
 
 	#
