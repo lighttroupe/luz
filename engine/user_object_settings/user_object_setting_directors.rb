@@ -28,6 +28,10 @@ class UserObjectSettingDirectors < UserObjectSetting
 private
 
 	def get_directors
+		@directors ||= all_directors.dup
+	end
+
+	def all_directors
 		$engine.project.directors
 	end
 end
