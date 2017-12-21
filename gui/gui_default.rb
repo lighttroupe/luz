@@ -16,6 +16,7 @@ class GuiDefault < GuiInterface
 	INPUT_MANAGER_COMMAND = 'input-manager/input-manager'
 	SPECTRUM_ANALYZER_COMMAND = 'spectrum-analyzer/spectrum-analyzer'
 	OPEN_DIRECTORY_COMMAND = 'gnome-open'
+	OPEN_RUBY_FILE_COMMAND = 'gnome-open'
 
 	pipe [:positive_message, :negative_message], :message_bar
 

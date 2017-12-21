@@ -115,6 +115,12 @@ private
 		self << (@description = GuiLabel.new.set({:width => 25, :lines => 3, :string => '', :color => [0.95,0.95,1.0], :offset_x => 0.19, :offset_y => 0.125, :scale_x => 0.58, :scale_y => 0.25}))
 		self << (@hint = GuiLabel.new.set({:width => 30, :lines => 3, :string => '', :color => [0.7,0.7,0.7], :offset_x => 0.19, :offset_y => -0.125, :scale_x => 0.58, :scale_y => 0.2}))
 
+		self << (@edit_source_button=GuiButton.new.set(:scale_x => 0.15, :scale_y => 0.07, :offset_x => 0.4, :offset_y => -0.5 + 0.035, :background_image => $engine.load_image('images/buttons/close.png'), :background_image_hover => $engine.load_image('images/buttons/close-hover.png')))
+		@edit_source_button.on_clicked {
+			path = @selected_object.source_file_path
+			open("|#{GuiDefault::OPEN_RUBY_FILE_COMMAND} #{path}")
+		}
+
 		#
 		# Close
 		#
