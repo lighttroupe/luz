@@ -11,7 +11,13 @@ class GuiUserObjectEditor < GuiWindow
 	end
 
 	def on_key_press(key)
-		if key == 'n' && key.control?
+		if key == 'e' && key.control?
+			if (effect = @user_object.selected_effect)
+				$engine.view_source(effect.class)
+			else
+				$engine.view_source(@user_object.class)
+			end
+		elsif key == 'n' && key.control?
 			@user_object.open_add_child_window!
 		elsif key == 'delete' && key.control?
 			@user_object.remove_selected

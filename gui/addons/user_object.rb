@@ -46,6 +46,13 @@ class UserObject
 		end
 	end
 
+	def selected_effect
+		selection = @gui_effects_list.selection
+		if selection.count == 1
+			selection.first
+		end
+	end
+
 	def select_previous_setting!
 		if @gui_settings_list
 			@gui_settings_list.grab_keyboard_focus!
@@ -108,6 +115,7 @@ class UserObject
 			@add_child_window.on_add { |new_object|
 				@add_child_window.hide!
 				add_and_select_new_object(new_object)
+				settings_list_grab_focus!
 			}
 			box << @add_child_window
 
@@ -160,6 +168,7 @@ class UserObject
 	def build_settings_list_for(user_object)
 		@gui_settings_list.clear!
 		user_object.settings.each_with_index { |setting, index|
+			# each UserObjectSetting builds its own gui editor, see gui/addons
 			@gui_settings_list << setting.gui_build_editor.set(:opacity => 0.0, :scale_y => 0.8).animate({:opacity => 1.0}, duration=index*0.1)
 		}
 	end

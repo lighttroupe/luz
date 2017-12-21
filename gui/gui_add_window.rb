@@ -63,13 +63,20 @@ class GuiAddWindow < GuiBox
 				select_first!
 			end
 		when 'return'
-			add_object(@selected_object) if @selected_object
+			if @selected_object
+				add_object(@selected_object)
+			end
 		else
 			if key.control?
-				super
+				if key == 'e'
+					$engine.view_source(@selected_object) if @selected_object
+				else
+					super
+				end
 			elsif key.alt? && key == 'backspace'
 				end_search!
 			else
+				was_searching = searching?
 				@search_label.on_key_press(key)
 				@search = @search.lstrip
 
@@ -78,7 +85,7 @@ class GuiAddWindow < GuiBox
 					@category_selector.switch_state({:open => :closed}, duration=0.1)
 					fill_from_search!
 				else
-					end_search!
+					end_search! if was_searching
 				end
 			end
 		end
