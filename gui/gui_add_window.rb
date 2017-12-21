@@ -53,12 +53,14 @@ class GuiAddWindow < GuiBox
 				end_search!
 				@category = @categories[(@categories.index(@category) - 1) % @categories.size]
 				fill_from_category!
+				select_first!
 			end
 		when 'right'
 			unless @categories.empty?
 				end_search!
 				@category = @categories[(@categories.index(@category) + 1) % @categories.size]
 				fill_from_category!
+				select_first!
 			end
 		when 'return'
 			add_object(@selected_object) if @selected_object
@@ -117,8 +119,7 @@ private
 
 		self << (@edit_source_button=GuiButton.new.set(:scale_x => 0.15, :scale_y => 0.07, :offset_x => 0.4, :offset_y => -0.5 + 0.035, :background_image => $engine.load_image('images/buttons/close.png'), :background_image_hover => $engine.load_image('images/buttons/close-hover.png')))
 		@edit_source_button.on_clicked {
-			path = @selected_object.source_file_path
-			open("|#{GuiDefault::OPEN_RUBY_FILE_COMMAND} #{path}")
+			$engine.view_source(@selected_object)
 		}
 
 		#
@@ -137,6 +138,10 @@ private
 		@hint.set_string('')
 	end
 
+	def select_first!
+		@list.set_selection(@list.first)
+	end
+
 	def fill_from_category!
 		clear_list!
 
@@ -148,7 +153,7 @@ private
 
 			# user selects an effect (class)
 			renderer.on_clicked {
-				if @selected_object == object
+				if @selected_object == object		# "double click"
 					add_object(@selected_object)
 				else
 					@list.set_selection(renderer)

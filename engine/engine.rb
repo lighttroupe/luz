@@ -103,6 +103,11 @@ class Engine
 		return change_count
 	end
 
+	def view_source(object)
+		path = object.source_file_path
+		open("|#{GuiDefault::OPEN_RUBY_FILE_COMMAND} #{path}")
+	end
+
 private
 
 	def tick(frame_time)
