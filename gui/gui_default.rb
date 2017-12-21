@@ -387,14 +387,14 @@ class GuiDefault < GuiInterface
 	end
 
 	#
-	# Rendering: render is called every frame, gui_render only when the Editor plugin thinks it's visible
+	# Rendering
 	#
 	def view_color
 		VIEW_COLOR_FOR_MODE[@mode]
 	end
 
 	def render
-		# content
+		# the visuals
 		case @mode
 		when :actor
 			clear_screen(ACTOR_BACKGROUND_COLOR)
@@ -410,10 +410,13 @@ class GuiDefault < GuiInterface
 			yield
 		end
 
-		# GUI
-		with_alpha($settings[GUI_ALPHA_SETTING_KEY]) {
-			gui_render
-		}
+		unless hidden?
+			# the GUI on top
+			with_alpha($settings[GUI_ALPHA_SETTING_KEY]) {
+				gui_render		# renders children, ie the interface
+				render_pointers
+			}
+		end
 	end
 
 	#

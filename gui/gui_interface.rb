@@ -7,12 +7,6 @@ class GuiInterface < GuiBox
 		@pointers = [PointerMouse.new.set_background_image($engine.load_image('images/pointer.png'))]
 	end
 
-	def gui_render
-		return if hidden?
-		super		# visual rendering
-		render_pointers
-	end
-
 	def gui_tick
 		tick_value_animations!
 		return if hidden?
