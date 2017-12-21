@@ -1,6 +1,7 @@
 class EventInputButtonComboPress < EventInput
 	title				"Button Combo Press"
 	description "Activates once when two buttons are pressed at the same time."
+	hint "For most devices this is quite difficult to do. Useful for exiting (Stop Performer plugin)."
 
 	categories :button
 
