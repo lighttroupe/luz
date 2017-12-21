@@ -76,16 +76,24 @@ class GuiAddWindow < GuiBox
 			elsif key.alt? && key == 'backspace'
 				end_search!
 			else
-				was_searching = searching?
-				@search_label.on_key_press(key)
-				@search = @search.lstrip
-
 				if searching?
-					@search_label.switch_state({:closed => :open}, duration=0.1)
-					@category_selector.switch_state({:open => :closed}, duration=0.1)
-					fill_from_search!
+					search_was = @search
+					@search_label.on_key_press(key)
+					@search.lstrip!		# (@search_label sets this instance variable)
+
+					if searching?
+						fill_from_search! if @search != search_was
+					else
+						end_search!
+					end
 				else
-					end_search! if was_searching
+					@search_label.on_key_press(key)
+					@search.lstrip!		# (@search_label sets this instance variable)
+					if searching?
+						@search_label.switch_state({:closed => :open}, duration=0.1)
+						@category_selector.switch_state({:open => :closed}, duration=0.1)
+						fill_from_search!
+					end
 				end
 			end
 		end
