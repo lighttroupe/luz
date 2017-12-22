@@ -98,7 +98,7 @@ class GuiDefault < GuiInterface
 	def chosen_director=(director)
 		@director_view.director = director
 		@actors_flyout.actors = director.actors
-		self.mode = :director
+		#self.mode = :director
 		clear_user_object_editor
 	end
 
@@ -336,9 +336,8 @@ class GuiDefault < GuiInterface
 
 		case user_object				# "let's take a look at this ..."
 		when Director
-			# switch to director?
 			if @directors_menu.visible?
-				close_directors_menu!
+				# switch to director
 				unless self.chosen_director == user_object
 					self.chosen_director = user_object				# change scenery
 					clear_user_object_editor
@@ -409,6 +408,8 @@ class GuiDefault < GuiInterface
 			}
 		when :output
 			yield
+		when :none
+			# ...
 		end
 
 		unless hidden?
@@ -522,6 +523,8 @@ class GuiDefault < GuiInterface
 				self.mode = :director
 			when 'f3'
 				self.mode = :output
+			when 'f4'
+				self.mode = :none
 			when 'o'
 				open_project
 			when 'g'

@@ -33,12 +33,13 @@ class Director
 	# pointer
 	#
 	def click(pointer)
-		if selected?
-			super
-		else
-			@parent.set_selection(self)
-			animate(:gui_enter_exit_progress, 0.5, 5.0)
-		end
+		super
+		animate(:gui_enter_exit_progress, 0.5, 5.0)
+		@parent.set_selection(self)
+
+		#if selected?
+		#else
+		#end
 	end
 
 	def scroll_down!(pointer)
