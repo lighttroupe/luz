@@ -23,13 +23,17 @@ class UserObjectSettingTimespan < UserObjectSetting
 		unit_and_number_to_time(@time_unit, @time_number)
 	end
 
-	def progress_since(time)
+	def progress_since(time, beat=nil)
 		return 1.0 if instant?
 
-		elapsed = $env[:time] - time
-		elapsed = elapsed.abs		# NOTE: progress backwards in time works just as well
-
-		(elapsed / self.to_seconds).clamp(0.0, 1.0)
+		if @time_unit == :beats
+			elapsed = $env[:beat] - beat
+			(elapsed / @time_number).clamp(0.0, 1.0)
+		else
+			elapsed = $env[:time] - time
+			elapsed = elapsed.abs		# NOTE: progress backwards in time works just as well
+			(elapsed / self.to_seconds).clamp(0.0, 1.0)
+		end
 	end
 
 	def delta
