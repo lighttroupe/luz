@@ -11,12 +11,9 @@ class UserObjectSettingDirector < UserObjectSetting
 		one { |director|
 			if (@enable_render_on_actor && @render_on_actor)
 				with_offscreen_buffer { |buffer|
-					# save future actor renders to buffer
 					buffer.using {
 						director.render!
 					}
-
-					# render buffer on chosen actor
 					buffer.with_image {
 						@render_on_actor.render!
 					}
@@ -28,7 +25,8 @@ class UserObjectSettingDirector < UserObjectSetting
 	end
 
 	def one
-		yield @director if @director
+		yield @director if @director && block_given?
+		@director
 	end
 
 	def summary
