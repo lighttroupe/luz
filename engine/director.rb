@@ -40,13 +40,13 @@ class Director < ParentUserObject
 	#
 	def render!
 		user_object_try {
-			if (offscreen_render_actor.present? and not $env[:hit_test] and not $env[:stage])
+			if (offscreen_render_actor.present? && !$env[:hit_test])
 				with_offscreen_buffer { |buffer|
 					# render scene to offscreen buffer
 					aspect_scale = $env[:aspect_scale]
 					buffer.using {
 						if aspect_scale
-							# make sure our 1x1 shape fills screen by rendering smaller... 
+							# make sure our 1x1 shape fills screen by rendering smaller...
 							with_scale(1.0/aspect_scale, 1.0/aspect_scale) {
 								render
 							}
@@ -75,7 +75,7 @@ class Director < ParentUserObject
 
 	def render
 		render_scene_recursive {
-			@actors.each { |actor| actor.render! }
+			@actors.each(&:render!)
 		}
 	end
 
