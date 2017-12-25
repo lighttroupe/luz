@@ -129,7 +129,7 @@ class GuiList < GuiBox
 
 	# instant-scroll a list to given value
 	def scroll_to(value)
-		if((index = index_of(value)) && @contents.size > 1)
+		if((index = index(value)) && @contents.size > 1)
 			animate({:scroll => (index.to_f / (@contents.size - 1)) * @scroll_max}, duration=0.2) if @scroll_max
 		end
 		self
@@ -161,10 +161,6 @@ class GuiList < GuiBox
 	#
 	# Helpers
 	#
-	def index_of(value)
-		@contents.index(value)
-	end
-
 	def distance_between_items
 		(spacing_y || 1.0) / (item_aspect_ratio || 1.0)		# TODO: this would be prettier if easy_attributes had defaults
 	end
