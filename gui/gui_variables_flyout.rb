@@ -40,14 +40,6 @@ class GuiVariablesFlyout < GuiWindow
 		}
 	end
 
-	def variables=(variables)
-		#@variables_list.contents = variables
-	end
-
-	def events=(events)
-		#@events_list.contents = events
-	end
-
 	def remove(obj)
 		@variables_list.remove(obj)
 		@events_list.remove(obj)
@@ -84,10 +76,8 @@ class GuiVariablesFlyout < GuiWindow
 				if key.control?
 					if @events_list.keyboard_focus?
 						new_event!
-						#close!
 					elsif @variables_list.keyboard_focus?
 						new_variable!
-						#close!
 					end
 				end
 			else
