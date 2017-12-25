@@ -358,11 +358,10 @@ class GuiDefault < GuiInterface
 				@actor_view.actor = user_object if self.mode == :actor
 			end
 		when Variable, Event
-			if editor_visible && user_object == @user_object
-				# double click on variable/event
-				@user_object_editor.edit_title if @user_object_editor
-				return
-			end
+			# double click on variable/event
+			#if editor_visible && user_object == @user_object
+				#@user_object_editor.edit_title if @user_object_editor
+			#end
 		end
 
 		if user_object.is_a?(ParentUserObject) || user_object.is_a?(Project)		# TODO: responds_to? :effects ?
