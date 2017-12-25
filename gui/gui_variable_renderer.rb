@@ -9,7 +9,7 @@ class	GuiVariableRenderer < GuiUserObjectRenderer
 
 	def click(pointer)
 		super
-		$gui.build_editor_for(self, :pointer => pointer, :grab_keyboard_focus => true)
+		$gui.build_editor_for(@object, :pointer => pointer, :grab_keyboard_focus => true)
 	end
 
 private
