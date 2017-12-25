@@ -17,7 +17,7 @@ class ProjectEffectDirectorToSelected < ProjectEffect
 		@to_directors_queue ||= []
 
 		if forwards.now?
-			chosen_director = $gui.chosen_director
+			chosen_director = $gui.chosen_next_director
 			if chosen_director
 				if @to_director
 					@to_directors_queue << chosen_director

@@ -20,7 +20,7 @@ class GuiDefault < GuiInterface
 
 	pipe [:positive_message, :negative_message], :message_bar
 
-	attr_accessor :mode, :gui_alpha
+	attr_accessor :mode, :gui_alpha, :chosen_next_director
 	attr_reader :gui_font, :user_object
 
 	def initialize
@@ -98,8 +98,9 @@ class GuiDefault < GuiInterface
 	def chosen_director=(director)
 		@director_view.director = director
 		@actors_flyout.actors = director.actors
-		#self.mode = :director
+		self.mode = :director
 		clear_user_object_editor
+		close_directors_menu!
 	end
 
 	#
@@ -298,7 +299,7 @@ class GuiDefault < GuiInterface
 		# Director Menu
 		self << @directors_menu = GuiDirectorMenu.new($engine.project.directors).
 			add_state(:open, {:scale_x => 1.0, :scale_y => 1.0, :opacity => 1.0, :hidden => false}).
-			set_state(:closed, {:scale_x => 1.1, :scale_y => 1.1, :offset_y => 0.0,:hidden => true})
+			set_state(:closed, {:scale_x => 1.1, :scale_y => 1.1, :opacity => 0.0,:hidden => true})
 
 		# Message Bar
 		self << (@message_bar = GuiMessageBar.new.set(:opacity => 0.0, :offset_x => 0.0, :offset_y => 0.5 - 0.05, :scale_x => 0.32, :scale_y => 0.05))
@@ -337,6 +338,8 @@ class GuiDefault < GuiInterface
 		case user_object				# "let's take a look at this ..."
 		when Director
 			if @directors_menu.visible?
+				# TODO: move this behavior to DirectorMenu !
+
 				# switch to director
 				unless self.chosen_director == user_object
 					self.chosen_director = user_object				# change scenery
@@ -344,9 +347,6 @@ class GuiDefault < GuiInterface
 					return
 				end
 			else
-				# create/view offscreen render actor
-				self.chosen_director.offscreen_render_actor_setting.set_to_new_actor_of_class(ActorRectangle) unless self.chosen_director.offscreen_render_actor.present?
-				self.chosen_director.offscreen_render_actor.one { |actor| build_editor_for(actor, options) }
 				return
 			end
 		when Actor
@@ -476,6 +476,8 @@ class GuiDefault < GuiInterface
 				launch_input_manager
 			when 'f10'
 				launch_spectrum_analyzer
+			when 'f11'
+				#$application.toggle_fullscreen!
 			when 'left'
 				if @variables_flyout.keyboard_focus?
 					@variables_flyout.close!

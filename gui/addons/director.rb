@@ -33,13 +33,15 @@ class Director
 	# pointer
 	#
 	def click(pointer)
-		super
-		animate(:gui_enter_exit_progress, 0.5, 5.0)
+		animate(:gui_enter_exit_progress, 0.5, 0.1)
 		@parent.set_selection(self)
 
-		#if selected?
-		#else
-		#end
+		$gui.chosen_next_director = self		# for playing live
+	end
+	def double_click(pointer)
+		$gui.close_directors_menu!
+		$gui.build_editor_for(self, :pointer => pointer, :grab_keyboard_focus => true)
+		@parent.child_click(pointer) if @parent
 	end
 
 	def scroll_down!(pointer)
