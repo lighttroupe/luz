@@ -5,6 +5,13 @@ class ProjectEffect < ChildUserObject
 
 	empty_method :pretick, :tick
 
+	def self.new_renderer
+		GuiUserObjectClassRenderer.new(self)
+	end
+	def new_renderer
+		GuiProjectEffectRenderer.new(self)
+	end
+
 	def pretick!
 		user_object_try { pretick }
 	end
