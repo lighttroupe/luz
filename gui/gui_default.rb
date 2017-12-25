@@ -386,6 +386,11 @@ class GuiDefault < GuiInterface
 		end
 	end
 
+	def edit_chosen_director_offscreen_render_actor!(klass)
+		chosen_director.offscreen_render_actor_setting.set_to_new_actor_of_class(klass) unless chosen_director.offscreen_render_actor.present?
+		chosen_director.offscreen_render_actor.one { |actor| build_editor_for(actor) }
+	end
+
 	#
 	# Rendering
 	#

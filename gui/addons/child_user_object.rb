@@ -1,5 +1,5 @@
 #
-# Addons for base class of all "effects" of UserObjects 
+# Addons for base class of all "effects" of UserObjects
 #
 class ChildUserObject < UserObject
 	LABEL_CHILD_INDEX_RANGE_COLOR = [1,1,0]
@@ -24,6 +24,12 @@ class ChildUserObject < UserObject
 	def hit_test_render!
 		super
 		enable_checkbox.hit_test_render!
+	end
+
+	def click(pointer)
+		# TODO: move to user object editor
+		super
+		$gui.build_editor_for(self, :pointer => pointer, :grab_keyboard_focus => true)
 	end
 
 private

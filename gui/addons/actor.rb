@@ -27,6 +27,11 @@ class Actor
 		update_offscreen_buffer! if update_offscreen_buffer?
 	end
 
+	def click(pointer)
+		super
+		$gui.build_editor_for(self, :pointer => pointer, :grab_keyboard_focus => true)
+	end
+
 private
 
 	def update_offscreen_buffer?

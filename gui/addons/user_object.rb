@@ -252,7 +252,6 @@ public
 	# Pointer
 	#
 	def click(pointer)
-		$gui.build_editor_for(self, :pointer => pointer, :grab_keyboard_focus => true)
 		@parent.child_click(pointer) if @parent
 	end
 

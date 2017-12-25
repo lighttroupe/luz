@@ -8,6 +8,11 @@ class Event
 		gui_render_on_off_state
 	end
 
+	def click(pointer)
+		super
+		$gui.build_editor_for(self, :pointer => pointer, :grab_keyboard_focus => true)
+	end
+
 private
 
 	def label_ems

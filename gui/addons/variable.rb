@@ -7,6 +7,11 @@ class Variable
 		gui_render_label
 	end
 
+	def click(pointer)
+		super
+		$gui.build_editor_for(self, :pointer => pointer, :grab_keyboard_focus => true)
+	end
+
 private
 
 	def label_ems
