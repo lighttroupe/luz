@@ -39,9 +39,6 @@ module GuiPointerBehavior
 		end
 	end
 
-	def child_click(pointer)
-		parent.child_click(pointer) if parent
-	end
 	def scroll_left!(pointer)
 		parent.scroll_left!(pointer) if parent
 	end

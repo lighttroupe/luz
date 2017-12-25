@@ -76,11 +76,4 @@ class GuiUserObjectRenderer < GuiObjectRenderer
 			LABEL_COLOR
 		end
 	end
-
-	#
-	# Pointer
-	#
-	def click(pointer)
-		@parent.child_click(pointer) if @parent
-	end
 end

@@ -165,6 +165,7 @@ private
 
 			# wrap in a renderer
 			renderer = object.new_renderer		# NOTE: we unwrap this in a few places
+			@list << renderer
 
 			# user selects an effect (class)
 			renderer.on_clicked {
@@ -174,8 +175,6 @@ private
 					@list.set_selection(renderer)
 				end
 			}
-
-			@list << renderer
 		}
 		@last_category = @category
 	end
@@ -185,7 +184,8 @@ private
 		matches = find_valid_effect_classes.select { |object| object.title.matches?(@search) }
 		matches.sort_by! { |object| object.title.length }
 		matches.each { |object|
-			renderer = object.new_renderer		# NOTE: we unwrap this in a few places
+			renderer = object.new_renderer
+			@list << renderer
 			renderer.on_clicked {
 				if @selected_object == object
 					add_object(@selected_object)
@@ -193,7 +193,6 @@ private
 					@list.set_selection(renderer)
 				end
 			}
-			@list << renderer
 		}
 		@list.set_selection(@list.first)
 	end
@@ -205,10 +204,10 @@ private
 
 	def choose_object(object)
 		@selected_object = object
-		create_for_object(object)
+		show_object_details(object)
 	end
 
-	def create_for_object(object)
+	def show_object_details(object)
 		@title.set_string(object.title)
 		@description.set_string(object.description)
 		@hint.set_string(object.hint)
@@ -219,7 +218,7 @@ private
 		new_object = object.new
 		new_object.after_load
 		add_notify(new_object)
-		end_search!		# ...
+		end_search!
 	end
 
 	def find_valid_effect_classes
