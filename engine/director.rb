@@ -11,6 +11,10 @@ class Director < ParentUserObject
 	###################################################################
 	# Object-level functions
 	###################################################################
+	def new_renderer
+		GuiDirectorRenderer.new(self)
+	end
+
 	def valid_child_class?(klass)
 		klass.ancestors.include? DirectorEffect
 	end

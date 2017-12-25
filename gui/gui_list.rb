@@ -97,7 +97,7 @@ class GuiList < GuiBox
 	end
 
 	def scroll_down!(pointer)
-		@scroll_velocity = (@scroll_velocity + VELOCITY_PER_SCROLL).clamp(-MAX_SCROLL_VELOCITY, MAX_SCROLL_VELOCITY) 
+		@scroll_velocity = (@scroll_velocity + VELOCITY_PER_SCROLL).clamp(-MAX_SCROLL_VELOCITY, MAX_SCROLL_VELOCITY)
 	end
 
 	def scroll_by(pointer, amount)
@@ -152,6 +152,7 @@ class GuiList < GuiBox
 		return unless (index = @contents.index(child))
 		if index > 0
 			@contents[index], @contents[index-1] = @contents[index-1], @contents[index]
+			contents_change_notify
 		end
 	end
 
@@ -159,6 +160,7 @@ class GuiList < GuiBox
 		return unless (index = @contents.index(child))
 		if index < (@contents.size - 1)
 			@contents[index], @contents[index+1] = @contents[index+1], @contents[index]
+			contents_change_notify
 		end
 	end
 

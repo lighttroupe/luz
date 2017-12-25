@@ -1,4 +1,4 @@
-class Theme
+class GuiThemeRenderer < GuiUserObjectRenderer
 	#
 	# Rendering
 	#
@@ -49,3 +49,4 @@ private
 		}
 	end
 end
+

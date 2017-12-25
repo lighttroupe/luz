@@ -1,4 +1,4 @@
-class Event
+class	GuiEventRenderer < GuiUserObjectRenderer
 	GUI_COLOR_ON = [1.0,1.0,0.0,1.0]
 	GUI_COLOR_OFF = [1.0,1.0,0.0,0.1]
 
@@ -10,7 +10,7 @@ class Event
 
 	def click(pointer)
 		super
-		$gui.build_editor_for(self, :pointer => pointer, :grab_keyboard_focus => true)
+		$gui.build_editor_for(@object, :pointer => pointer, :grab_keyboard_focus => true)
 	end
 
 private
@@ -22,7 +22,7 @@ private
 	def gui_render_on_off_state
 		with_translation(0.5 - 0.08, 0.0) {
 			with_scale(0.1, 0.35) {
-				with_color(now? ? GUI_COLOR_ON : GUI_COLOR_OFF) {
+				with_color(@object.now? ? GUI_COLOR_ON : GUI_COLOR_OFF) {
 					unit_square
 				}
 			}

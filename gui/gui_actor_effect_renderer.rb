@@ -1,0 +1,2 @@
+class GuiActorEffectRenderer < GuiChildUserObjectRenderer
+end

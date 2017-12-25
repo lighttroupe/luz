@@ -1,6 +1,6 @@
 class GuiTheme < GuiListSelect
 	def list
-		$engine.project.themes.map { |theme| GuiObjectRenderer.new(theme) }
+		$engine.project.themes.map(&:new_renderer)
 	end
 
 	def set_value(value)

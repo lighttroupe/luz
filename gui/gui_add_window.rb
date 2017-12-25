@@ -164,7 +164,7 @@ private
 			next unless (@category.nil? || object.in_category?(@category))
 
 			# wrap in a renderer
-			renderer = GuiObjectRenderer.new(object)		# NOTE: we unwrap this in a few places
+			renderer = object.new_renderer		# NOTE: we unwrap this in a few places
 
 			# user selects an effect (class)
 			renderer.on_clicked {
@@ -185,7 +185,7 @@ private
 		matches = find_valid_effect_classes.select { |object| object.title.matches?(@search) }
 		matches.sort_by! { |object| object.title.length }
 		matches.each { |object|
-			renderer = GuiObjectRenderer.new(object)		# NOTE: we unwrap this in a few places
+			renderer = object.new_renderer		# NOTE: we unwrap this in a few places
 			renderer.on_clicked {
 				if @selected_object == object
 					add_object(@selected_object)

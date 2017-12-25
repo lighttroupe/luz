@@ -17,7 +17,8 @@ class GuiListSelect < GuiValue
 		with_gui_object_properties {
 			object = get_value
 			if object
-				object.gui_render
+				@current_value_renderer = object.new_renderer if @current_value_renderer.nil? || @current_value_renderer.object != object
+				@current_value_renderer.gui_render		# TODO: renderer not attached, better to attach at time of selection than this
 			else
 				gui_render_no_value
 			end
@@ -58,7 +59,7 @@ private
 
 	def create_popup_list(pointer)
 		# Wrap the objects with a Renderer
-		renderers = list	#.map { |item| GuiObjectRenderer.new(item) }
+		renderers = list
 
 		popup = GuiListPopup.new(pointer).set(:offset_x => pointer.x, :offset_y => pointer.y, :scale_x => 0.0, :scale_y => 0.0, :item_aspect_ratio => item_aspect_ratio).
 			set_objects(renderers).

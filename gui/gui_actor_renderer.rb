@@ -1,4 +1,4 @@
-class Actor
+class	GuiActorRenderer < GuiUserObjectRenderer
 	ACTOR_COLOR = [1,1,1,1]
 
 	def gui_render
@@ -29,7 +29,7 @@ class Actor
 
 	def click(pointer)
 		super
-		$gui.build_editor_for(self, :pointer => pointer, :grab_keyboard_focus => true)
+		$gui.build_editor_for(@object, :pointer => pointer, :grab_keyboard_focus => true)
 	end
 
 private
@@ -50,6 +50,6 @@ private
 	end
 
 	def update_offscreen_buffer!
-		@offscreen_buffer.using { render! }
+		@offscreen_buffer.using { @object.render! }
 	end
 end

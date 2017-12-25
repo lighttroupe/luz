@@ -3,16 +3,54 @@
 #
 # It does no positioning of child objects, each is simply drawn on top of the previous.
 #
-
 require 'set'
 
 class GuiBox < GuiObject
+	callback :contents_change
+
 	def initialize(contents = [])
 		self.contents = contents
 		@selection = Set.new
 		@float_left = -0.5
 		@float_right = 0.5
 		super()
+	end
+
+	#
+	#
+	#
+	def count
+		@contents.count
+	end
+
+	def empty?
+		@contents.empty?
+	end
+
+	# finding
+	def first
+		@contents.first
+	end
+
+	def include?(object)
+		@contents.include? object
+	end
+
+	def index(object)
+		@contents.index(object)
+	end
+
+	#
+	# Adding
+	#
+	def contents=(contents)
+		if @contents
+			unlink!
+			notify = true
+		end
+		@contents = contents		# NOTE: points at list, doesn't copy it (list operations happen on the array we're showing)
+		@contents.each { |gui_object| gui_object.parent = self }
+		contents_change_notify if notify
 	end
 
 	def <<(gui_object)
@@ -31,15 +69,13 @@ class GuiBox < GuiObject
 			gui_object.offset_x = @float_right - (gui_object.scale_x / 2.0) - extra_spacing
 			@float_right -= (gui_object.scale_x + extra_spacing)
 		end
-	end
-
-	def first
-		@contents.first
+		contents_change_notify
 	end
 
 	def insert(index, object)
 		@contents.insert(index, object)
 		object.parent = self
+		contents_change_notify
 	end
 
 	def add_after_selection(object)
@@ -48,57 +84,40 @@ class GuiBox < GuiObject
 		else
 			self << object
 		end
-	end
-
-	def remove(gui_object)
-		@contents.delete(gui_object)
+		contents_change_notify
 	end
 
 	def prepend(gui_object)
 		@contents.unshift(gui_object)
 		gui_object.parent = self
-	end
-
-	def unlink!
-		@contents.each { |gui_object| gui_object.parent = nil }
-	end
-
-	def each(&proc)
-		@contents.each(&proc)
-	end
-
-	def clear!
-		unlink!
-		@contents.clear
-		clear_selection!
-	end
-
-	def count
-		@contents.count
-	end
-
-	def contents=(contents)
-		unlink! if @contents
-		@contents = contents		# NOTE: points at list, doesn't copy it (list operations happen on the array we're showing)
-		@contents.each { |gui_object| gui_object.parent = self }
+		contents_change_notify
 	end
 
 	def bring_to_top(object)
 		if @contents.delete(object)
 			@contents << object
+			contents_change_notify
 		end
 	end
 
-	def include?(object)
-		@contents.include? object
+	#
+	#
+	#
+	def clear!
+		return if empty?
+		unlink!
+		@contents.clear
+		clear_selection!
+		contents_change_notify
 	end
 
-	def index(object)
-		@contents.index(object)
+	def remove(gui_object)
+		@contents.delete(gui_object)
+		contents_change_notify
 	end
 
-	def empty?
-		@contents.empty?
+	def unlink!
+		@contents.each { |gui_object| gui_object.parent = nil }
 	end
 
 	#
@@ -163,8 +182,18 @@ class GuiBox < GuiObject
 	end
 
 	#
-	# Positioning
+	# Iterating
 	#
+	def each(&proc)
+		@contents.each(&proc)
+	end
+	def find(&proc)
+		@contents.find(&proc)
+	end
+	def map(&proc)
+		@contents.map(&proc)
+	end
+
 	def each_with_positioning
 		with_positioning {
 			@contents.each { |gui_object| yield gui_object }
@@ -191,7 +220,6 @@ class GuiBox < GuiObject
 
 	def gui_render
 		return if hidden?
-		# TODO: collapse this into with_standard { bg ; each ; focus }
 		with_positioning { gui_render_background }
 		each_with_positioning { |gui_object| gui_object.gui_render }
 		with_positioning { gui_render_keyboard_focus } if keyboard_focus?

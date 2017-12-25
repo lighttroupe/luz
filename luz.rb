@@ -20,13 +20,12 @@ $LOAD_PATH << './engine'
 $LOAD_PATH << './engine/user_object_settings'
 
 require 'reloadable_require'
-multi_require 'optparse', 'sdl2', 'opengl', 'glu', 'addons/dir', 'syck'
+multi_require 'optparse', 'sdl2', 'opengl', 'glu', 'addons/dir', 'syck', 'utils/boolean_accessor', 'utils/addons/array', 'utils/addons/class', 'utils/addons/dir', 'utils/addons/exception', 'utils/addons/fixnum', 'utils/addons/float', 'utils/addons/gl', 'utils/addons/hash', 'utils/addons/integer', 'utils/addons/kernel', 'utils/addons/module', 'utils/addons/nil', 'utils/addons/object', 'utils/addons/object_space', 'utils/addons/string'
 
 include GL
 include GLU
 
-load_directory(File.join(Dir.pwd, 'utils', 'addons'), '**.rb')
-multi_require 'method_piping', 'boolean_accessor', 'constants', 'drawing', 'luz_performer', 'engine', 'settings', 'vector3'
+multi_require 'method_piping', 'constants', 'drawing', 'luz_performer', 'engine', 'settings', 'vector3'
 
 # GUI
 multi_require 'easy_accessor', 'value_animation', 'value_animation_states'

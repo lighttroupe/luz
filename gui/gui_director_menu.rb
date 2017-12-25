@@ -4,7 +4,7 @@ class GuiDirectorMenu < GuiWindow
 	def initialize(directors)
 		super()
 		create!
-		@grid.contents = directors		#.map { |director| GuiDirector.new(director) }
+		set_directors(directors)
 		update_grid_size!
 	end
 
@@ -37,12 +37,24 @@ class GuiDirectorMenu < GuiWindow
 		}
 	end
 
+	def set_directors(directors)
+		directors.each { |director|
+			renderer = create_renderer_for_director(director)
+			@grid << renderer
+		}
+	end
+
 	def add_new_director!
 		director = Director.new
-		@grid << director
+		$engine.project.directors << director
+		@grid << create_renderer_for_director(director)
 		update_grid_size!
-		$gui.build_editor_for(director)
+		$gui.chosen_director = director
 		switch_state({:open => :closed}, duration=0.5)
+	end
+
+	def create_renderer_for_director(director)
+		director.new_renderer.set(:background_image => $engine.load_image('images/director-menu-director-background.png'))
 	end
 
 	def close!

@@ -15,7 +15,8 @@ class UserObjectSettingDirectors
 		box << create_user_object_setting_name_label
 
 		all_directors.each { |director|
-			@list << renderer=GuiObjectRenderer.new(director)
+			renderer = director.new_renderer
+			@list << renderer
 			if get_directors.include?(director)
 				renderer.foreground_image = @on_image
 			else

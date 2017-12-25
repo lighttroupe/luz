@@ -2,7 +2,7 @@ multi_require 'gui_list_select'
 
 class GuiEvent < GuiListSelect
 	def list
-		$engine.project.events.map { |theme| GuiObjectRenderer.new(theme) }
+		$engine.project.events.map(&:new_renderer)
 	end
 
 	def set_value(value)

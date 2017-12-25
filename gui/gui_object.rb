@@ -1,7 +1,12 @@
 require 'gui_pointer_behavior'
 require 'gui_selected_behavior'
 
-module MethodsForGuiObject
+#
+# Gui base class
+#
+class GuiObject
+	include MethodsForUserObject
+
 	include GuiPointerBehavior
 	include GuiSelectedBehavior
 	include ValueAnimation
@@ -62,6 +67,7 @@ module MethodsForGuiObject
 	#
 	#
 	def gui_tick
+		# override
 	end
 
 	easy_accessor :skip_hit_test
@@ -207,12 +213,4 @@ module MethodsForGuiObject
 		return @parent.add_to_root(object) if @parent
 		self << object
 	end
-end
-
-#
-# Gui base class
-#
-class GuiObject
-	include MethodsForUserObject
-	include MethodsForGuiObject
 end

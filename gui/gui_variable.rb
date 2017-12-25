@@ -5,7 +5,7 @@ class GuiVariable < GuiListSelect
 	end
 
 	def list
-		$engine.project.variables.map { |variable| GuiObjectRenderer.new(variable) }
+		$engine.project.variables.map(&:new_renderer)
 	end
 
 	def set_value(value)

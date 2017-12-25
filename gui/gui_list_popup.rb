@@ -12,13 +12,8 @@ class GuiListPopup < GuiBox
 		create!
 	end
 
-	def includes_gui_object?(object)
-		
-	end
-
 	def set_objects(objects)
 		@objects = objects
-
 		@objects.each { |object|
 			object.on_clicked {
 				@objects.each { |o2| o2.animate(:opacity => 0.2) unless object == o2 }		# FX: all but the selected item disappears

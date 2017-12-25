@@ -5,6 +5,10 @@ class Curve < ParentUserObject
 
 	attr_reader :vector, :approximation
 
+	def new_renderer
+		GuiCurveRenderer.new(self)
+	end
+
 	def to_yaml_properties
 		super + ['@vector', '@approximation']
 	end

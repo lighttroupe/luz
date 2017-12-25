@@ -3,6 +3,13 @@ require 'user_object'
 class VariableInput < ChildUserObject
 	attr_reader :current_value, :last_value
 
+	def self.new_renderer
+		GuiUserObjectClassRenderer.new(self)
+	end
+	def new_renderer
+		GuiVariableInputRenderer.new(self)
+	end
+
 	def after_load
 		set_default_instance_variables(:current_value => 0.0, :last_value => 0.0)
 		super

@@ -15,6 +15,10 @@ class Event < ParentUserObject
 	#
 	# Instance methods
 	#
+	def new_renderer
+		GuiEventRenderer.new(self)
+	end
+
 	def default_title
 		''		# 'New Event'
 	end

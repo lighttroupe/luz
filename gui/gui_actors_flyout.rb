@@ -14,8 +14,8 @@ class GuiActorsFlyout < GuiWindow
 			@actors_list.select_previous!
 			@actors_list.scroll_to_selection!
 		elsif key == 'return'
-			actor = @actors_list.selection.first
-			$gui.build_editor_for(actor) if actor
+			renderer = @actors_list.selection.first
+			$gui.build_editor_for(renderer.object) if renderer
 		elsif key == 'n' && key.control?
 			@actor_class_flyout.switch_state({:open => :closed, :closed => :open}, duration=0.2)
 			@actor_class_flyout.grab_keyboard_focus! if @actor_class_flyout.open?
@@ -45,6 +45,7 @@ class GuiActorsFlyout < GuiWindow
 		# Actor list				# TODO: item_aspect_ratio is related to screen ratio
 		self << @actors_list = GuiList.new([]).set(:scroll_wrap => false, :scale_x => 0.88, :scale_y => 0.82, :offset_x => 0.05, :offset_y => 0.0, :spacing_y => -1.0, :item_aspect_ratio => 0.75)
 		@actors_list.on_selection_change { on_list_selection_change }
+		@actors_list.on_contents_change { on_list_contents_changed }
 
 		# ...scrollbar
 		@gui_actors_list_scrollbar = GuiScrollbar.new(@actors_list).set(:scale_x => 0.08, :scale_y => 0.82, :offset_x => -0.43, :offset_y => 0.0)
@@ -60,11 +61,12 @@ class GuiActorsFlyout < GuiWindow
 			set_state(:closed, {:offset_y => -0.8, :hidden => true})
 
 		@actor_class_flyout.on_actor_class_selected { |pointer, klass|
-			actor = klass.new
-			add_defaults_for_actor(actor)
-			@actors_list.add_after_selection(actor)
-			$engine.project_changed!
+			actor = new_actor_with_defaults(klass)
+
 			$gui.build_editor_for(actor, :pointer => pointer, :grab_keyboard_focus => true)
+
+			renderer = create_renderer_for_actor(actor)
+			@actors_list.add_after_selection(renderer)
 			@actor_class_flyout.switch_state({:open => :closed}, duration=0.2)
 		}
 
@@ -77,7 +79,8 @@ class GuiActorsFlyout < GuiWindow
 		}
 	end
 
-	def add_defaults_for_actor(actor)
+	def new_actor_with_defaults(klass)
+		actor = klass.new
 		if false
 			fade = ActorEffectFade.new
 			fade.amount_setting.animation_min = 1.0
@@ -88,18 +91,32 @@ class GuiActorsFlyout < GuiWindow
 			scale.amount_setting.animation_min = 0.1
 			actor.effects << scale
 		end
+		actor
 	end
 
 	def on_list_selection_change
 		return unless (selection = @actors_list.selection.first)
-		$gui.build_editor_for(selection)		#.object)		# NOTE: undoing above wrapping
+		$gui.build_editor_for(selection.object)		# NOTE: undoing above wrapping
+	end
+	def on_list_contents_changed
+		$gui.chosen_director.actors = @actors_list.map(&:object)
+		$engine.project_changed!
+	end
+
+	def create_renderer_for_actor(actor)
+		GuiActorRenderer.new(actor).set(:draggable => true, :background_image => $engine.load_image('images/overlay.png'))
 	end
 
 	def actors=(actors)
-		@actors_list.contents = actors
+		@actors_list.clear!
+		actors.each { |actor|
+			renderer = create_renderer_for_actor(actor)
+			@actors_list << renderer
+		}
 	end
 
 	def remove(actor)
-		@actors_list.remove(actor)
+		renderer = @actors_list.find { |renderer| renderer.object == actor }
+		@actors_list.remove(renderer)
 	end
 end
