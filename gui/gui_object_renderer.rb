@@ -37,6 +37,7 @@ class GuiObjectRenderer < GuiObject
 	# pointer
 	#
 	def click(pointer)
+		parent.set_selection(self) if parent
 		clicked_notify(pointer)
 	end
 
