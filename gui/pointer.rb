@@ -10,6 +10,7 @@ class Pointer
 	HOLD_COLOR = [1,0.5,0,0.9]
 	DRAG_LINE_COLOR = [1,0.75,0,0.3]
 
+	DOUBLE_CLICK_TIME = 0.4
 	LONG_CLICK_HOLD_TIME = 0.6
 	SMALL_DISTANCE = 0.02
 
@@ -207,7 +208,7 @@ class Pointer
 private
 
 	def double_click?
-		!@click_time.nil? && (Time.now - @click_time) < 0.4
+		!@click_time.nil? && (Time.now - @click_time) < DOUBLE_CLICK_TIME
 	end
 
 	def show_click_spot
