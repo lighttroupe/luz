@@ -1,5 +1,3 @@
-multi_require 'gui_list_select'
-
 class GuiCurveIncreasing < GuiListSelect
 	def list
 		$engine.project.curves.select(&:up?).map(&:new_renderer)

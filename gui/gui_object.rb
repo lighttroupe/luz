@@ -1,6 +1,3 @@
-require 'gui_pointer_behavior'
-require 'gui_selected_behavior'
-
 #
 # Gui base class
 #

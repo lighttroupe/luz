@@ -1,5 +1,3 @@
-require 'gui_box'
-
 class GuiList < GuiBox
 	VELOCITY_PER_SCROLL = 3.0
 	MAX_SCROLL_VELOCITY = 16.0
