@@ -11,33 +11,25 @@ class GuiVariablesFlyout < GuiWindow
 		# Background
 		self << (@background = GuiObject.new.set(:background_image => $engine.load_image('images/variables-flyout-background.png')))
 
-		#self << @message_bus_monitor = GuiMessageBusMonitor.new.set(:scale_x => 0.91, :scale_y => 0.060, :offset_x => 0.0, :offset_y => 0.5 - 0.065/2.0, :background_image => $engine.load_image('images/message-bus-monitor-background.png'))
-
-		# Events list				TODO: don't use $engine here
+		# Events list
 		self << @events_list = GuiList.new($engine.project.events.map(&:new_renderer)).set(:scale_x => 0.85, :scale_y => 0.37, :offset_x => -0.06, :offset_y => 0.22, :item_aspect_ratio => 3.0, :spacing_y => -1.0)
-
-		# ...scrollbar
 		@gui_events_list_scrollbar = GuiScrollbar.new(@events_list).set(:scale_x => 0.08, :scale_y => 0.37, :offset_x => 0.4, :offset_y => 0.22)
 		self << @gui_events_list_scrollbar
 
 		# New Event button
 		self << (@new_event_button = GuiButton.new.set(:scale_x => 1.0, :scale_y => 0.045, :offset_x => 0.0, :offset_y => -0.013, :background_image => $engine.load_image('images/buttons/new-event-button.png'), :background_image_hover => $engine.load_image('images/buttons/new-event-button-hover.png')))
-		@new_event_button.on_clicked { |pointer|
-			new_event!
-		}
+		@new_event_button.on_clicked { |pointer| new_event! }
 
-		# Variables list		TODO: don't use $engine here
+		#
+		# Variables
+		#
 		self << @variables_list = GuiList.new($engine.project.variables.map(&:new_renderer)).set(:scale_x => 0.85, :scale_y => 0.37, :offset_x => -0.06, :offset_y => -0.24, :item_aspect_ratio => 3.0, :spacing_y => -1.0)
-
-		# ...scrollbar
 		@gui_variables_list_scrollbar = GuiScrollbar.new(@variables_list).set(:scale_x => 0.08, :scale_y => 0.37, :offset_x => 0.4, :offset_y => -0.24)
 		self << @gui_variables_list_scrollbar
 
 		# New Variable button
 		self << (@new_variable_button = GuiButton.new.set(:scale_x => 1.0, :scale_y => 0.043, :offset_x => 0.0, :offset_y => -0.476, :background_image => $engine.load_image('images/buttons/new-variable-button.png'), :background_image_hover => $engine.load_image('images/buttons/new-variable-button-hover.png')))
-		@new_variable_button.on_clicked { |pointer|
-			new_variable!(pointer)
-		}
+		@new_variable_button.on_clicked { |pointer| new_variable!(pointer) }
 	end
 
 	def remove(obj)
