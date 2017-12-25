@@ -74,6 +74,9 @@ options = OptionParser.new do |opts|
 	opts.on("--system-mouse", "System Mouse") do
 		$application.system_mouse = true
 	end
+	opts.on("--sprite-mouse", "Sprite Mouse") do
+		$application.system_mouse = false
+	end
 	opts.on("--output-window", "Output Window on 2nd Display") do
 		$application.use_output_window = true
 	end

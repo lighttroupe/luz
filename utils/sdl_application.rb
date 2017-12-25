@@ -16,6 +16,7 @@ class SDLApplication
 		@fullscreen = true
 		@stencil_buffer = true
 		@border = true
+		@system_mouse = true
 
 		# Frame rate should, ideally, match that of LCD, projector, etc.
 		# TODO: add an option for syncing to output device refresh rate, as a way to limit refresh rate.

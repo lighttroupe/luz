@@ -1,1 +1,1 @@
-ruby luz.rb --window --output-window
+ruby luz.rb --sprite-mouse --window --output-window

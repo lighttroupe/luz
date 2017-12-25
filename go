@@ -1,1 +1,1 @@
-ruby luz.rb --system-mouse --window
+ruby luz.rb
