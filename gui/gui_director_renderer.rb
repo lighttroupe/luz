@@ -37,13 +37,11 @@ class GuiDirectorRenderer < GuiUserObjectRenderer
 	def click(pointer)
 		animate(:gui_enter_exit_progress, 0.5, 0.1)
 		@parent.set_selection(@object)
-
 		$gui.chosen_next_director = @object		# for playing live
 	end
 	def double_click(pointer)
 		$gui.close_directors_menu!
 		$gui.build_editor_for(@object, :pointer => pointer, :grab_keyboard_focus => true)
-		@parent.child_click(pointer) if @parent
 	end
 
 	#

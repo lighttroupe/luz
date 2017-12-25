@@ -85,12 +85,6 @@ class GuiList < GuiBox
 	#
 	# Pointer interaction
 	#
-	def child_click(pointer)
-		@scroll_velocity = 0.0
-
-		# TODO: select? notify?
-	end
-
 	# NOTE: these are mousewheel-like activity
 	def scroll_up!(pointer)
 		@scroll_velocity = (@scroll_velocity - VELOCITY_PER_SCROLL).clamp(-MAX_SCROLL_VELOCITY, MAX_SCROLL_VELOCITY)
