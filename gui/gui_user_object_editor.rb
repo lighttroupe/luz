@@ -18,18 +18,18 @@ class GuiUserObjectEditor < GuiWindow
 				$engine.view_source(@user_object.class)
 			end
 		elsif key == 'n' && key.control?
-			@user_object.open_add_child_window!
+			open_add_child_window!
 		elsif key == 'delete' && key.control?
-			@user_object.remove_selected
+			remove_selected
 		elsif key == 'left' && !key.control?
-			@user_object.effects_list_grab_focus!
+			effects_list_grab_focus!
 		elsif key == 'right' && !key.control?
-			@user_object.settings_list_grab_focus!
+			settings_list_grab_focus!
 		elsif key == 'tab'
 			if key.shift?
-				@user_object.effects_list_grab_focus!
+				effects_list_grab_focus!
 			else
-				@user_object.select_next_setting!
+				select_next_setting!
 			end
 		else
 			super
@@ -218,7 +218,10 @@ class GuiUserObjectEditor < GuiWindow
 	end
 
 	def remove_selected
-		@gui_effects_list.selection.each { |object| effects.delete(object) }		# TODO: each_selected { }
+		@gui_effects_list.selection.each { |renderer|
+			@user_object.effects.delete(renderer.object)
+			@gui_effects_list.remove(renderer)
+		}
 		@gui_effects_list.clear_selection!		# needed?
 		@gui_settings_list.clear!							# (was showing for selected/deleted object)
 		#build_settings_list_for(self)
