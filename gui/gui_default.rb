@@ -606,6 +606,7 @@ class GuiDefault < GuiInterface
 				editor.remove_from_parent!
 				show_reopen_button! unless @user_object_editor
 			}
+			default_focus!
 		end
 		@last_user_object = @user_object
 		@user_object = nil
