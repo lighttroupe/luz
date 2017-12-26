@@ -8,7 +8,9 @@ class GuiThemeRenderer < GuiUserObjectRenderer
 	end
 
 	def open_add_child_window!
-		effects << Style.new
+		@object.effects << Style.new
+
+		# Save it ?
 	end
 
 	def clear_render_styles_cache!
@@ -20,7 +22,7 @@ private
 
 	def gui_render_styles
 		@gui_render_styles_list = GL.RenderCached(@gui_render_styles_list) {
-			if effects.size > 8
+			if @object.effects.size > 8
 				num_rows = 4
 			else
 				num_rows = 2
@@ -36,9 +38,9 @@ private
 					for y in (0...num_rows)
 						for x in (0...num_columns)
 							with_translation(x, (num_rows - y)) {
-								break if index >= effects.size
+								break if index >= @object.effects.size
 								with_scale(0.85) {
-									effects[index].gui_render
+									with_color(@object.effects[index].color) { unit_square }
 								}
 							}
 							index += 1
