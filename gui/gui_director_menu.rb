@@ -59,7 +59,7 @@ class GuiDirectorMenu < GuiWindow
 		}
 		renderer.on_double_clicked { |pointer|
 			close!
-			$gui.build_editor_for(director, :pointer => pointer, :grab_keyboard_focus => true)
+			$gui.chosen_director = director
 		}
 		renderer
 	end

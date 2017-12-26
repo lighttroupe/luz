@@ -337,18 +337,7 @@ class GuiDefault < GuiInterface
 
 		case user_object				# "let's take a look at this ..."
 		when Director
-			if @directors_menu.visible?
-				# TODO: move this behavior to DirectorMenu !
-
-				# switch to director
-				unless self.chosen_director == user_object
-					self.chosen_director = user_object				# change scenery
-					clear_user_object_editor
-					return
-				end
-			else
-				return
-			end
+			return
 		when Actor
 			if editor_visible
 				@actor_view.actor = user_object
