@@ -10,6 +10,11 @@ class GuiListSelect < GuiValue
 		@item_aspect_ratio = 1.6
 	end
 
+	def gui_tick
+		super
+		@current_value_renderer.gui_tick if @current_value_renderer
+	end
+
 	#
 	# Render
 	#
@@ -26,7 +31,7 @@ class GuiListSelect < GuiValue
 	end
 
 	def gui_render_no_value
-		@no_value_label ||= GuiLabel.new.set(:width => 6, :text_align => :center, :string => @no_value_text, :scale => 0.75, :opacity => 0.1)
+		@no_value_label ||= GuiLabel.new.set(:width => 6, :text_align => :center, :string => @no_value_text, :scale => 0.75, :opacity => 0.2)
 		@no_value_label.gui_render
 	end
 
@@ -58,18 +63,13 @@ class GuiListSelect < GuiValue
 private
 
 	def create_popup_list(pointer)
-		# Wrap the objects with a Renderer
 		renderers = list
-
 		popup = GuiListPopup.new(pointer).set(:offset_x => pointer.x, :offset_y => pointer.y, :scale_x => 0.0, :scale_y => 0.0, :item_aspect_ratio => item_aspect_ratio).
 			set_objects(renderers).
 			animate({:scale_x => 0.2, :scale_y => 0.6}, duration=0.15)
-
 		popup.on_selected { |object|
 			set_value(object)
-			#popup.exit!
 		}
-
 		add_to_root(popup)
 	end
 end
