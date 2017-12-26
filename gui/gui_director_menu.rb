@@ -56,6 +56,7 @@ class GuiDirectorMenu < GuiWindow
 			renderer.animate(:gui_enter_exit_progress, 0.5, 0.1)
 			@grid.set_selection(director)
 			$gui.chosen_next_director = director		# for playing live
+			renderer.grab_keyboard_focus!
 		}
 		renderer.on_double_clicked { |pointer|
 			close!
