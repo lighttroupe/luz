@@ -156,16 +156,16 @@ class Pointer
 	end
 
 	def is_over(object)		# NOTE: object is nil if no object
-		# do no work for the common case of "still hovering" (this gets called repeatedly with the same value)
 		if @hover_object == object
+			# do no work for the common case of "still hovering" (this gets called repeatedly with the same value)
 			@drag_out_notify_potential = true
 			return
 		end
 
 		# now hovering over something new!
-		#puts "now over #{object ? object.class : 'nil'} #{$env[:frame_number]}"
+		#$gui.positive_message "now over #{object ? object.class : 'nil'}"	# #{$env[:frame_number]}"
 
-		if @drag_object
+		if @drag_object && object
 			# drag_out notify.  callee can check in with us about which direction using eg. drag_delta_y
 			if @drag_out_notify_potential
 				if @drag_object.respond_to?(:drag_out)
@@ -180,9 +180,9 @@ class Pointer
 			return if object != @drag_object
 		end
 
-		exit_hover_object!		# pointer exits current object (if present)
-
 		if object
+			exit_hover_object!		# pointer exits current object (if present)
+
 			# enter new object
 			object.pointer_enter(self) if object.respond_to?(:pointer_enter)
 			@hover_object = object
@@ -219,7 +219,7 @@ private
 	end
 
 	def respond_to_click
-		show_click_spot	# if highlight_click?
+		show_click_spot		# if highlight_click?
 
 		#
 		# Pointer capture feature: all clicks go to the "capture object", which can uncapture via return value
