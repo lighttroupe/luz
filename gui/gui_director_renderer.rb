@@ -16,7 +16,9 @@ class GuiDirectorRenderer < GuiUserObjectRenderer
 
 		with_gui_object_properties {
 			# Render as cached image
-			with_image { unit_square }
+			with_image {
+				unit_square
+			}
 
 			# enter/exit progress bar
 			if (pointer_hovering? || selected?) && @gui_enter_exit_progress > 0.0
@@ -31,17 +33,12 @@ class GuiDirectorRenderer < GuiUserObjectRenderer
 		}
 	end
 
-	#
-	# pointer
-	#
-	def click(pointer)
-		animate(:gui_enter_exit_progress, 0.5, 0.1)
-		@parent.set_selection(@object)
-		$gui.chosen_next_director = @object		# for playing live
+	# mouse wheel shows enter/exit behavior in thumbnail
+	def scroll_down!(pointer)
+		@gui_enter_exit_progress = (@gui_enter_exit_progress - 0.1).clamp(0.0,1.0)
 	end
-	def double_click(pointer)
-		$gui.close_directors_menu!
-		$gui.build_editor_for(@object, :pointer => pointer, :grab_keyboard_focus => true)
+	def scroll_up!(pointer)
+		@gui_enter_exit_progress = (@gui_enter_exit_progress + 0.1).clamp(0.0,1.0)
 	end
 
 	#
@@ -53,30 +50,23 @@ class GuiDirectorRenderer < GuiUserObjectRenderer
 	end
 
 	def with_image
-		@offscreen_buffer.with_image { yield } if @offscreen_buffer		# otherwise doesn't yield
+		return unless @offscreen_buffer		# otherwise doesn't yield
+		@offscreen_buffer.with_image { yield }
 	end
 
 	def update_offscreen_buffer?
-		index = $engine.project.directors.index(@object)
-		@countdown ||= 3 + (index * 3)
-		if @countdown == 0
-			pointer_hovering? || selected?
-		else
-			@countdown -= 1
-			false
-		end
+		return true if pointer_hovering? || selected?
+
+		directors = $engine.project.directors
+		index = directors.index(@object)
+		count = directors.count
+
+		($env[:frame_number] % count) == index		# prevent rendering thumbnails too often
 	end
 
 	def update_offscreen_buffer!
 		with_enter_exit_progress(@gui_enter_exit_progress) {
 			@offscreen_buffer.using { with_scale(0.625,1.0) { @object.render! } }		# TODO: aspect ratio
 		}
-	end
-
-	def scroll_down!(pointer)
-		@gui_enter_exit_progress = (@gui_enter_exit_progress - 0.1).clamp(0.0,1.0)
-	end
-	def scroll_up!(pointer)
-		@gui_enter_exit_progress = (@gui_enter_exit_progress + 0.1).clamp(0.0,1.0)
 	end
 end

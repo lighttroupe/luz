@@ -17,7 +17,6 @@ class GuiDirectorMenu < GuiWindow
 		@output_view_button.on_clicked {
 			$gui.mode = :output
 			close!
-			#$gui.toggle!
 		}
 
 		self << @project_effects_button = GuiButton.new.set(:scale_x => 0.05, :scale_y => 0.06, :offset_x => 0.475, :offset_y => -0.47, :background_image => $engine.load_image('images/buttons/project-effects.png'), :background_image_hover => $engine.load_image('images/buttons/project-effects-hover.png'), :background_image_click => $engine.load_image('images/buttons/project-effects-click.png'))
@@ -38,10 +37,7 @@ class GuiDirectorMenu < GuiWindow
 	end
 
 	def set_directors(directors)
-		directors.each { |director|
-			renderer = create_renderer_for_director(director)
-			@grid << renderer
-		}
+		directors.each { |director| @grid << create_renderer_for_director(director) }
 	end
 
 	def add_new_director!
@@ -54,7 +50,18 @@ class GuiDirectorMenu < GuiWindow
 	end
 
 	def create_renderer_for_director(director)
-		director.new_renderer.set(:background_image => $engine.load_image('images/director-menu-director-background.png'))
+		renderer = director.new_renderer.set(:background_image => $engine.load_image('images/director-menu-director-background.png'))
+		# callbacks
+		renderer.on_clicked { |pointer|
+			renderer.animate(:gui_enter_exit_progress, 0.5, 0.1)
+			@grid.set_selection(director)
+			$gui.chosen_next_director = director		# for playing live
+		}
+		renderer.on_double_clicked { |pointer|
+			close!
+			$gui.build_editor_for(director, :pointer => pointer, :grab_keyboard_focus => true)
+		}
+		renderer
 	end
 
 	def close!
