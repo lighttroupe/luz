@@ -7,7 +7,9 @@ class	GuiActorRenderer < GuiUserObjectRenderer
 			# Render as cached image
 			with_color(ACTOR_COLOR) {
 				with_image {
-					unit_square
+					with_scale(0.98, 0.98) {
+						unit_square
+					}
 				}
 			}
 
@@ -27,10 +29,10 @@ class	GuiActorRenderer < GuiUserObjectRenderer
 		update_offscreen_buffer! if update_offscreen_buffer?
 	end
 
-	def click(pointer)
-		super
-		$gui.build_editor_for(@object, :pointer => pointer, :grab_keyboard_focus => true)
-	end
+	#def click(pointer)
+		#super
+		#$gui.build_editor_for(@object, :pointer => pointer, :grab_keyboard_focus => true)
+	#end
 
 private
 
