@@ -159,6 +159,8 @@ class GuiUserObjectEditor < GuiWindow
 				selection = @gui_effects_list.selection.first
 				gui_fill_settings_list(selection.object) if selection
 			}
+			@gui_effects_list.on_contents_change { on_effects_list_contents_changed }
+
 
 			# ...scrollbar
 			@gui_effects_list_scrollbar = GuiScrollbar.new(@gui_effects_list).set(:scale_x => 0.025, :offset_x => -0.152, :offset_y => -0.03, :scale_y => 0.75)
@@ -205,6 +207,11 @@ class GuiUserObjectEditor < GuiWindow
 		else
 			GuiObject.new		# nothing
 		end
+	end
+
+	def on_effects_list_contents_changed
+		@user_object.effects = @gui_effects_list.map(&:object)
+		$engine.project_changed!
 	end
 
 	def add_and_select_new_effect(new_effect)
