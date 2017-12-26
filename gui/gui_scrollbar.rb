@@ -57,7 +57,6 @@ class GuiScrollbar < GuiBox
 	end
 
 	def gui_render
-		# @target.scroll_velocity
 		with_positioning {
 			with_color(WELL_COLOR) {
 				unit_square
@@ -67,17 +66,19 @@ class GuiScrollbar < GuiBox
 	end
 
 	def hit_test_render!
+		return if hidden?
 		with_positioning {
 			render_hit_test_unit_square
-		} unless hidden?
+		}
 	end
 
+	#
 	def can_move?
 		@target.visible_percentage < 1.0
 	end
 
 	def update_drag(pointer)
-		scroll_by(pointer, -(pointer.drag_delta_y * 2.0))
+		@target.scroll_by(pointer, -(pointer.drag_delta_y * 2.0))
 	end
 
 	def scroll_up!(pointer)
@@ -86,9 +87,5 @@ class GuiScrollbar < GuiBox
 
 	def scroll_down!(pointer)
 		@target.scroll_down!(pointer)
-	end
-
-	def scroll_by(pointer, amount)
-		@target.scroll_by(pointer, amount)
 	end
 end
