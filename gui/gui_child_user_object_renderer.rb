@@ -49,8 +49,8 @@ private
 			@conditions_index_range_label ||= GuiLabel.new.set(:width => 10, :scale_x => 0.45, :scale_y => 0.45)
 			with_translation(0.20, -0.3) {
 				with_color(LABEL_CHILD_INDEX_RANGE_COLOR) {
-					if (@cached_child_number_min != conditions.child_number_min) || (@cached_child_number_max != conditions.child_number_max)
-						@cached_child_number_min, @cached_child_number_max = conditions.child_number_min, conditions.child_number_max
+					if (@cached_child_number_min != @object.conditions.child_number_min) || (@cached_child_number_max != @object.conditions.child_number_max)
+						@cached_child_number_min, @cached_child_number_max = @object.conditions.child_number_min, @object.conditions.child_number_max
 						if @cached_child_number_min == @cached_child_number_max
 							@conditions_index_range_label.set_string("only child #{@cached_child_number_min}")
 						else
