@@ -7,4 +7,3 @@ class GuiDirector < GuiListSelect
 		super(value ? value.object : nil)
 	end
 end
-
