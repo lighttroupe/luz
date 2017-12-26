@@ -10,6 +10,10 @@ class Style < UserObject
 
 	pipe :color=, :color_setting
 
+	def new_renderer
+		GuiStyleRenderer.new(self)
+	end
+
 	def default_title
 		''
 	end
@@ -22,14 +26,6 @@ class Style < UserObject
 	def using
 		image.using {
 			with_color(color_setting.color) {		# TODO: seems to be a caching issue with using 'color' directly?
-				yield
-			}
-		}
-	end
-
-	def using_listsafe
-		image.using {
-			with_color_listsafe(color_setting.color) {		# TODO: seems to be a caching issue with using 'color' directly?
 				yield
 			}
 		}
