@@ -204,6 +204,17 @@ class GuiDefault < GuiInterface
 		}
 	end
 
+	def open_most_recent_project
+		save_changes_before {
+			path = $settings['recent-projects'].first
+			if $application.open_project(path)
+				# :D
+			else
+				negative_message 'Open Failed'
+			end
+		}
+	end
+
 	def save_changes_before
 		return yield unless $engine.project.changed?
 		body = $engine.project.change_count.plural("unsaved change", "unsaved changes")
@@ -520,7 +531,11 @@ class GuiDefault < GuiInterface
 			when 'f4'
 				self.mode = :none
 			when 'o'
-				open_project
+				if key.shift?
+					open_most_recent_project
+				else
+					open_project
+				end
 			when 'g'
 				toggle_gc_timing
 			when 'x'
