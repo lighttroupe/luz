@@ -15,7 +15,7 @@ class GuiActorsFlyout < GuiWindow
 			@actors_list.scroll_to_selection!
 		elsif key == 'return'
 			renderer = @actors_list.selection.first
-			$gui.build_editor_for(renderer.object) if renderer
+			$gui.build_editor_for(renderer.object, :grab_keyboard_focus => true) if renderer
 		elsif key == 'n' && key.control?
 			@actor_class_flyout.switch_state({:open => :closed, :closed => :open}, duration=0.2)
 			@actor_class_flyout.grab_keyboard_focus! if @actor_class_flyout.open?
@@ -96,7 +96,7 @@ class GuiActorsFlyout < GuiWindow
 
 	def on_list_selection_change
 		return unless (selection = @actors_list.selection.first)
-		$gui.build_editor_for(selection.object)		# NOTE: undoing above wrapping
+		$gui.build_editor_for(selection.object, :grab_keyboard_focus => true)		# NOTE: undoing above wrapping
 	end
 	def on_list_contents_changed
 		$gui.chosen_director.actors = @actors_list.map(&:object)
