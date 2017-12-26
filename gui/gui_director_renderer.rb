@@ -21,12 +21,20 @@ class GuiDirectorRenderer < GuiUserObjectRenderer
 			}
 
 			# enter/exit progress bar
-			if (pointer_hovering? || selected?) && @gui_enter_exit_progress > 0.0
-				with_translation(0.0, -0.5 + 0.02) {
-					with_scale(0.95,0.01) {
-						with_color_listsafe(ENTER_EXIT_PROGESS_COLOR) {
-							render_progress_bar_with_cache(@gui_enter_exit_progress)
+			if (pointer_hovering? || selected?)
+				if @gui_enter_exit_progress > 0.0
+					with_translation(0.0, -0.5 + 0.02) {
+						with_scale(0.95,0.01) {
+							with_color_listsafe(ENTER_EXIT_PROGESS_COLOR) {
+								render_progress_bar_with_cache(@gui_enter_exit_progress)
+							}
 						}
+					}
+				end
+
+				with_translation(-0.23, -0.5 + 0.1) {
+					with_scale(0.5,0.1) {
+						gui_render_label
 					}
 				}
 			end
