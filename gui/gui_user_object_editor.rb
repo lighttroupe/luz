@@ -1,3 +1,6 @@
+#
+# GuiUserObjectEditor is the main editor
+#
 class GuiUserObjectEditor < GuiWindow
 	attr_accessor :pointer
 
@@ -10,6 +13,9 @@ class GuiUserObjectEditor < GuiWindow
 		set(options)
 	end
 
+	#
+	# Keyboard interactions
+	#
 	def on_key_press(key)
 		if key == 'e' && key.control?
 			if (effect = @user_object.selected_effect)
@@ -34,20 +40,6 @@ class GuiUserObjectEditor < GuiWindow
 		else
 			super
 		end
-	end
-
-	def hide!
-		#switch_state({:open => :closed}, duration=0.1)
-		remove_from_parent!
-		$gui.default_focus!
-	end
-
-	def grab_keyboard_focus!
-		@user_object.grab_keyboard_focus!
-	end
-
-	def edit_title
-		@title_text.grab_keyboard_focus!
 	end
 
 	def gui_render
@@ -106,47 +98,6 @@ class GuiUserObjectEditor < GuiWindow
 		self << gui_build_editor		# find gui_build_editor implementations in gui/addons
 	end
 
-	#
-	# Instance level
-	#
-	def grab_keyboard_focus!
-		effects_list_grab_focus!
-	end
-
-	def effects_list_grab_focus!
-		@gui_effects_list.grab_keyboard_focus! if @gui_effects_list
-	end
-
-	def settings_list_grab_focus!
-		@gui_settings_list.grab_keyboard_focus! if @gui_settings_list
-	end
-
-	def select_next_setting!
-		if @gui_settings_list
-			@gui_settings_list.grab_keyboard_focus!
-			@gui_settings_list.select_next!
-		end
-	end
-
-	def selected_effect
-		selection = @gui_effects_list.selection
-		if selection.count == 1
-			selection.first
-		end
-	end
-
-	def select_previous_setting!
-		if @gui_settings_list
-			@gui_settings_list.grab_keyboard_focus!
-			@gui_settings_list.select_previous!
-		end
-	end
-
-	def open_add_child_window!
-		@add_child_window.grab_keyboard_focus!
-		@add_child_window.switch_state({:closed => :open}, duration=0.2)
-	end
-
 	# Creates and returns a GuiObject to serve as an editor for this object
 	def gui_build_editor
 		if @user_object.respond_to? :effects
@@ -160,7 +111,6 @@ class GuiUserObjectEditor < GuiWindow
 				gui_fill_settings_list(selection.object) if selection
 			}
 			@gui_effects_list.on_contents_change { on_effects_list_contents_changed }
-
 
 			# ...scrollbar
 			@gui_effects_list_scrollbar = GuiScrollbar.new(@gui_effects_list).set(:scale_x => 0.025, :offset_x => -0.152, :offset_y => -0.03, :scale_y => 0.75)
@@ -209,9 +159,113 @@ class GuiUserObjectEditor < GuiWindow
 		end
 	end
 
+	def gui_fill_settings_list(user_object)
+		return unless @gui_settings_list
+
+		# UX: if we're selecting the parent object, no children (effects) should be selected
+		if user_object == @user_object
+			@gui_effects_list.clear_selection!
+		else	# selecting a child (effect)
+			remove_child_conditions_widgets!
+			build_child_conditions_widgets!(user_object)
+		end
+		build_settings_list_for(user_object)
+	end
+
+	def build_settings_list_for(user_object)
+		@gui_settings_list.clear!
+		user_object.settings.each_with_index { |setting, index|
+			# each UserObjectSetting builds its own gui editor, see gui/addons
+			@gui_settings_list << setting.gui_build_editor.set(:opacity => 0.0, :scale_y => 0.8).animate({:opacity => 1.0}, duration=index*0.1)
+		}
+	end
+
+	#
+	# child conditions (eg only-while-event and only-children-2-to-5)
+	#
+	def build_child_conditions_widgets!(user_object)
+		return unless user_object.respond_to? :conditions
+
+		conditions_container = GuiBox.new.set(:scale_x => 0.45, :scale_y => 0.05, :offset_x => 0.18, :offset_y => 0.40)
+
+		# only while event
+		conditions_container << @gui_child_conditions_enable_event = GuiToggle.new(user_object.conditions, :enable_event).set(:scale_x => 0.035, :float => :left)
+		conditions_container << @gui_child_conditions_event_invert = GuiToggle.new(user_object.conditions, :event_invert).set(:scale_x => 0.035, :float => :left)
+		conditions_container << @gui_child_conditions_event = GuiEvent.new(user_object.conditions, :event).set(:scale_x => 0.4, :float => :left, :item_aspect_ratio => 5.0)
+
+		# only applying to children 2-4
+		if user_object.is_a? ActorEffect
+			conditions_container << @gui_child_conditions_enable_child_index = GuiToggle.new(user_object.conditions, :enable_child_index).set(:offset_x => 0.05, :scale_x => 0.035, :float => :left)
+			conditions_container << @gui_child_conditions_child_number_min = GuiInteger.new(user_object.conditions, :child_number_min, 1, 100).set(:scale_x => 0.1, :float => :left, :text_align => :center)
+			conditions_container << @gui_child_conditions_child_number_max = GuiInteger.new(user_object.conditions, :child_number_max, 1, 100).set(:scale_x => 0.1, :float => :left, :text_align => :center)
+		end
+
+		self << conditions_container
+	end
+	def remove_child_conditions_widgets!
+		@gui_child_conditions_enable_event.remove_from_parent! if @gui_child_conditions_enable_event
+		@gui_child_conditions_event.remove_from_parent! if @gui_child_conditions_event
+		@gui_child_conditions_enable_child_index.remove_from_parent! if @gui_child_conditions_enable_child_index
+		@gui_child_conditions_child_number_min.remove_from_parent! if @gui_child_conditions_child_number_min
+		@gui_child_conditions_child_number_max.remove_from_parent! if @gui_child_conditions_child_number_max
+	end
+
+	#
+	# Helpers
+	#
+	def grab_keyboard_focus!
+		effects_list_grab_focus!
+	end
+
+	def edit_title
+		@title_text.grab_keyboard_focus!
+	end
+
+	def open_add_child_window!
+		@add_child_window.grab_keyboard_focus!
+		@add_child_window.switch_state({:closed => :open}, duration=0.2)
+	end
+
+	def clone_selected
+		$gui.positive_message "Clone...not implemented."
+		#if (original = @gui_effects_list.selection.first)
+			#duplicate = original.deep_clone { |obj| !(obj.is_a?(ParentUserObject)) }
+			#duplicate.parent = nil
+			#duplicate.reset_pointer_behavior!
+			# more needed
+			#@gui_effects_list.add_after_selection(duplicate)
+			#@gui_effects_list.set_selection(duplicate)
+		#end
+	end
+
+	def hide!
+		#switch_state({:open => :closed}, duration=0.1)
+		remove_from_parent!
+		$gui.default_focus!
+	end
+
+	def close!
+		animate({:opacity => 0.0, :offset_y => offset_y - 0.2, :scale_x => scale_x * 1.1}, duration=0.2) { set_hidden(true) }
+		$gui.show_reopen_button!
+	end
+
+	#
+	# Effects list
+	#
+	def effects_list_grab_focus!
+		@gui_effects_list.grab_keyboard_focus! if @gui_effects_list
+	end
+
 	def on_effects_list_contents_changed
 		@user_object.effects = @gui_effects_list.map(&:object)
 		$engine.project_changed!
+	end
+
+	def selected_effect
+		selection = @gui_effects_list.selection
+		if selection.count == 1
+			selection.first
+		end
 	end
 
 	def add_and_select_new_effect(new_effect)
@@ -234,69 +288,24 @@ class GuiUserObjectEditor < GuiWindow
 		#build_settings_list_for(self)
 	end
 
-	def remove_child_conditions_widgets!
-		@gui_child_conditions_enable_event.remove_from_parent! if @gui_child_conditions_enable_event
-		@gui_child_conditions_event.remove_from_parent! if @gui_child_conditions_event
-		@gui_child_conditions_enable_child_index.remove_from_parent! if @gui_child_conditions_enable_child_index
-		@gui_child_conditions_child_number_min.remove_from_parent! if @gui_child_conditions_child_number_min
-		@gui_child_conditions_child_number_max.remove_from_parent! if @gui_child_conditions_child_number_max
+	#
+	# Settings list
+	#
+	def settings_list_grab_focus!
+		@gui_settings_list.grab_keyboard_focus! if @gui_settings_list
 	end
 
-	def build_child_conditions_widgets!(user_object)
-		return unless user_object.respond_to? :conditions
-
-		conditions_container = GuiBox.new.set(:scale_x => 0.45, :scale_y => 0.05, :offset_x => 0.18, :offset_y => 0.40)
-
-		# only while event
-		conditions_container << @gui_child_conditions_enable_event = GuiToggle.new(user_object.conditions, :enable_event).set(:scale_x => 0.035, :float => :left)
-		conditions_container << @gui_child_conditions_event_invert = GuiToggle.new(user_object.conditions, :event_invert).set(:scale_x => 0.035, :float => :left)
-		conditions_container << @gui_child_conditions_event = GuiEvent.new(user_object.conditions, :event).set(:scale_x => 0.4, :float => :left, :item_aspect_ratio => 5.0)
-
-		# only applying to children 2-4
-		if user_object.is_a? ActorEffect
-			conditions_container << @gui_child_conditions_enable_child_index = GuiToggle.new(user_object.conditions, :enable_child_index).set(:offset_x => 0.05, :scale_x => 0.035, :float => :left)
-			conditions_container << @gui_child_conditions_child_number_min = GuiInteger.new(user_object.conditions, :child_number_min, 1, 100).set(:scale_x => 0.1, :float => :left, :text_align => :center)
-			conditions_container << @gui_child_conditions_child_number_max = GuiInteger.new(user_object.conditions, :child_number_max, 1, 100).set(:scale_x => 0.1, :float => :left, :text_align => :center)
+	def select_next_setting!
+		if @gui_settings_list
+			@gui_settings_list.grab_keyboard_focus!
+			@gui_settings_list.select_next!
 		end
-
-		self << conditions_container
 	end
 
-	def clone_selected
-		$gui.positive_message "Clone...not implemented."
-		#if (original = @gui_effects_list.selection.first)
-			#duplicate = original.deep_clone { |obj| !(obj.is_a?(ParentUserObject)) }
-			#duplicate.parent = nil
-			#duplicate.reset_pointer_behavior!
-			# more needed
-			#@gui_effects_list.add_after_selection(duplicate)
-			#@gui_effects_list.set_selection(duplicate)
-		#end
-	end
-
-	def gui_fill_settings_list(user_object)
-		return unless @gui_settings_list
-
-		# UX: if we're selecting the parent object, no children (effects) should be selected
-		if user_object == @user_object
-			@gui_effects_list.clear_selection!
-		else	# selecting a child (effect)
-			remove_child_conditions_widgets!
-			build_child_conditions_widgets!(user_object)
+	def select_previous_setting!
+		if @gui_settings_list
+			@gui_settings_list.grab_keyboard_focus!
+			@gui_settings_list.select_previous!
 		end
-		build_settings_list_for(user_object)
-	end
-
-	def build_settings_list_for(user_object)
-		@gui_settings_list.clear!
-		user_object.settings.each_with_index { |setting, index|
-			# each UserObjectSetting builds its own gui editor, see gui/addons
-			@gui_settings_list << setting.gui_build_editor.set(:opacity => 0.0, :scale_y => 0.8).animate({:opacity => 1.0}, duration=index*0.1)
-		}
-	end
-
-	def close!
-		animate({:opacity => 0.0, :offset_y => offset_y - 0.2, :scale_x => scale_x * 1.1}, duration=0.2) { set_hidden(true) }
-		$gui.show_reopen_button!
 	end
 end
