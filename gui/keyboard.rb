@@ -4,7 +4,13 @@ class Keyboard
 	end
 
 	def raw_keyboard_input(key)
-		send_key_to_grab(key) || @gui.on_key_press(key)
+		if @grab_proc
+			@grab_proc.call(key)
+		elsif @grab_object && !@grab_object.hidden?		# NOTE object can hide and unhide
+			@grab_object.on_key_press(key)
+		else
+			@gui.on_key_press(key)
+		end
 	end
 
 	def grab(object=nil, &proc)
@@ -22,19 +28,5 @@ class Keyboard
 
 	def grabbed_by_object?(object)
 		!@grab_object.nil? && object == @grab_object		# not true when nils
-	end
-
-private
-
-	def send_key_to_grab(key)
-		if @grab_proc
-			@grab_proc.call(key)
-			true
-		elsif @grab_object && !@grab_object.hidden?		# NOTE object can hide and unhide
-			@grab_object.on_key_press(key)
-			true
-		else
-			false
-		end
 	end
 end
