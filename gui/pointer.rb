@@ -180,9 +180,9 @@ class Pointer
 			return if object != @drag_object
 		end
 
-		if object
-			exit_hover_object!		# pointer exits current object (if present)
+		exit_hover_object!		# pointer exits current object (if present)
 
+		if object
 			# enter new object
 			object.pointer_enter(self) if object.respond_to?(:pointer_enter)
 			@hover_object = object
