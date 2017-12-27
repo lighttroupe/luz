@@ -1,5 +1,5 @@
 class GuiVariable < GuiListSelect
-	def initialize(object, method)		# options is [[:one,'One'],[:two,'Two']]
+	def initialize(object, method)
 		super(object, method)
 		@item_aspect_ratio = 4.0
 	end
