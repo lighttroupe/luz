@@ -1,12 +1,10 @@
+#
+# GuiThemeRenderer renders a Theme (as grid of styles)
+#
 class GuiThemeRenderer < GuiUserObjectRenderer
 	def gui_render
 		gui_render_styles
 		gui_render_label if pointer_hovering?
-	end
-
-	def open_add_child_window!
-		@object.effects << Style.new
-		# Save it ?
 	end
 
 	def clear_render_styles_cache!
@@ -47,4 +45,3 @@ private
 		}
 	end
 end
-
