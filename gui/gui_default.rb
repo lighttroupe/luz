@@ -38,7 +38,7 @@ class GuiDefault < GuiInterface
 	def reload_notify
 		clear!
 		create!
-		default_focus!
+		set_initial_state_from_project
 	end
 
 	def set_initial_state_from_project
@@ -47,13 +47,10 @@ class GuiDefault < GuiInterface
 
 		# Auto-select first director
 		director = $engine.project.directors.first
-
-		# Hack to load project file format 1
-		director.actors = $engine.project.actors if director.actors.empty? && !$engine.project.actors.empty?
-
-		self.chosen_actor = nil
 		self.chosen_director = director
+		self.chosen_actor = nil
 		self.mode = :output
+		default_focus!
 	end
 
 	#
