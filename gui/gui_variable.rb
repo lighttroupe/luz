@@ -1,3 +1,4 @@
+# Widget for setting a Variable attribute
 class GuiVariable < GuiListSelect
 	def initialize(object, method)
 		super(object, method)
@@ -5,10 +6,10 @@ class GuiVariable < GuiListSelect
 	end
 
 	def list
-		$engine.project.variables.map(&:new_renderer)
+		$engine.project.variables.map(&:new_renderer)		# wrap
 	end
 
 	def set_value(value)
-		super(value.object) if value
+		super(value.object) if value										# unwrap
 	end
 end

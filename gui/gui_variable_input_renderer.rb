@@ -1,3 +1,6 @@
+#
+# GuiVariableInputRenderer renders one input to a Variable (list item)
+#
 class	GuiVariableInputRenderer < GuiChildUserObjectRenderer
 	PROGRESS_BAR_COLOR = [0.0,1.0,0.5,0.7]
 
