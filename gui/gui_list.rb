@@ -3,6 +3,9 @@ class GuiList < GuiBox
 	MAX_SCROLL_VELOCITY = 16.0
 	VELOCITY_DAMPER = 0.7					# TODO: setting
 
+	BACKGROUND_COLOR = [0.0,0.0,0.0,0.80]
+	ALT_COLOR = [0.0,0.0,0.0,0.75]
+
 	easy_accessor :spacing_x, :spacing_y, :item_aspect_ratio, :scroll_wrap, :scroll, :scroll_velocity
 
 	callback :scroll_change
@@ -51,8 +54,6 @@ class GuiList < GuiBox
 		end
 	end
 
-	BACKGROUND_COLOR = [0,0,0,0.8]
-	ALT_COLOR = [0.1,0.1,0.12,0.7]
 	def gui_render
 		return if hidden?
 #		with_positioning { with_color(BACKGROUND_COLOR) { unit_square } }

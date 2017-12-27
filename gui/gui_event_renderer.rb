@@ -1,6 +1,6 @@
 class	GuiEventRenderer < GuiUserObjectRenderer
-	COLOR_ON = [0.3,0.3,0.0,1.0]
-	COLOR_OFF = [1.0,1.0,0.0,0.0]
+	BACKGROUND_COLOR_ON = [1.0,1.0,0.0,0.2]
+	BACKGROUND_COLOR_ON_HOVERING = [1.0,1.0,0.0,0.4]
 
 	def gui_render
 		gui_render_background
@@ -9,9 +9,13 @@ class	GuiEventRenderer < GuiUserObjectRenderer
 
 	def background_color
 		if @object.now?
-			COLOR_ON
+			if pointer_hovering? || selected?
+				BACKGROUND_COLOR_ON_HOVERING
+			else
+				BACKGROUND_COLOR_ON
+			end
 		else
-			COLOR_OFF
+			super
 		end
 	end
 
