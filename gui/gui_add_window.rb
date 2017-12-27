@@ -35,46 +35,48 @@ class GuiAddWindow < GuiBox
 	end
 
 	def on_key_press(key)
-		case key
-		when 'escape'
-			if searching?
-				end_search!
+		if key.control?
+			if key == 'e'
+				$engine.view_source(@selected_object) if @selected_object
 			else
-				hide!
+				super
 			end
-		when 'up'
-			@list.select_previous!
-			@list.scroll_to_selection!
-		when 'down'
-			@list.select_next!
-			@list.scroll_to_selection!
-		when 'left'
-			unless @categories.empty?
+		elsif key.alt?
+			if key == 'backspace'
 				end_search!
-				@category = @categories[(@categories.index(@category) - 1) % @categories.size]
-				fill_from_category!
-				select_first!
-			end
-		when 'right'
-			unless @categories.empty?
-				end_search!
-				@category = @categories[(@categories.index(@category) + 1) % @categories.size]
-				fill_from_category!
-				select_first!
-			end
-		when 'return'
-			if @selected_object
-				add_object(@selected_object)
 			end
 		else
-			if key.control?
-				if key == 'e'
-					$engine.view_source(@selected_object) if @selected_object
+			case key
+			when 'escape'
+				if searching?
+					end_search!
 				else
-					super
+					hide!
 				end
-			elsif key.alt? && key == 'backspace'
-				end_search!
+			when 'up'
+				@list.select_previous!
+				@list.scroll_to_selection!
+			when 'down'
+				@list.select_next!
+				@list.scroll_to_selection!
+			when 'left'
+				unless @categories.empty?
+					end_search!
+					@category = @categories[(@categories.index(@category) - 1) % @categories.size]
+					fill_from_category!
+					select_first!
+				end
+			when 'right'
+				unless @categories.empty?
+					end_search!
+					@category = @categories[(@categories.index(@category) + 1) % @categories.size]
+					fill_from_category!
+					select_first!
+				end
+			when 'return'
+				if @selected_object
+					add_object(@selected_object)
+				end
 			else
 				if searching?
 					search_was = @search
