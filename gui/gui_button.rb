@@ -1,7 +1,5 @@
 class GuiButton < GuiObject
 	BUTTON_COLOR = [1.0,1.0,1.0,1.0]
-	#BUTTON_HOVER_COLOR = [1.0,0.5,0.5]
-	#BUTTON_CLICK_COLOR = [0.5,1.0,0.5]
 
 	callback :clicked
 	callback :holding
@@ -20,9 +18,7 @@ class GuiButton < GuiObject
 	def gui_render
 		return if hidden?
 		with_positioning {
-#			with_color(gui_color) {
-				gui_render_background
-#			}
+			gui_render_background
 		}
 	end
 
