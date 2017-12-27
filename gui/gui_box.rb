@@ -201,10 +201,20 @@ class GuiBox < GuiObject
 	#
 	# Reordering
 	#
-	def move_child_up(child)
+	def move_child_up(child, number=1)
+		return unless (index = @contents.index(child))
+		if index > (number-1)
+			@contents[index], @contents[index-number] = @contents[index-number], @contents[index]
+			contents_change_notify
+		end
 	end
 
-	def move_child_down(child)
+	def move_child_down(child, number=1)
+		return unless (index = @contents.index(child))
+		if index < (@contents.size - number)
+			@contents[index], @contents[index+number] = @contents[index+number], @contents[index]
+			contents_change_notify
+		end
 	end
 
 	#

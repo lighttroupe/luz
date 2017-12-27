@@ -139,25 +139,6 @@ class GuiList < GuiBox
 	end
 
 	#
-	# Reordering
-	#
-	def move_child_up(child)
-		return unless (index = @contents.index(child))
-		if index > 0
-			@contents[index], @contents[index-1] = @contents[index-1], @contents[index]
-			contents_change_notify
-		end
-	end
-
-	def move_child_down(child)
-		return unless (index = @contents.index(child))
-		if index < (@contents.size - 1)
-			@contents[index], @contents[index+1] = @contents[index+1], @contents[index]
-			contents_change_notify
-		end
-	end
-
-	#
 	# Helpers
 	#
 	def distance_between_items
