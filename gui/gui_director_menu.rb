@@ -55,7 +55,7 @@ class GuiDirectorMenu < GuiWindow
 		# callbacks
 		renderer.on_clicked { |pointer|
 			renderer.animate(:gui_enter_exit_progress, 0.5, 0.1)
-			@grid.set_selection(director)
+			@grid.set_selection(renderer)
 			$gui.chosen_next_director = director		# for playing live
 			renderer.grab_keyboard_focus!
 		}
@@ -64,6 +64,10 @@ class GuiDirectorMenu < GuiWindow
 			$gui.chosen_director = director
 		}
 		renderer
+	end
+
+	def grab_keyboard_focus!
+		@grid.first.grab_keyboard_focus! if @grid.first
 	end
 
 	def close!
