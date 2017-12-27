@@ -5,7 +5,6 @@ class GuiObject
 	include MethodsForUserObject
 
 	include GuiPointerBehavior
-	include GuiSelectedBehavior
 	include ValueAnimation
 	include ValueAnimationStates
 	include Drawing
@@ -38,6 +37,10 @@ class GuiObject
 
 	def visible?
 		!hidden?
+	end
+
+	def selected?
+		@parent && @parent.respond_to?(:child_is_selected?) && @parent.child_is_selected?(self)
 	end
 
 	#
