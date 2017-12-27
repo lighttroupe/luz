@@ -1,20 +1,11 @@
 #!/usr/bin/env ruby
+######################################################################################
+# Copyright 2018 Ian McIntosh <ian@openanswers.org> released under the GPL version 2 #
+######################################################################################
+
+puts "Using Ruby #{RUBY_VERSION}#{" - WARNING: Intended for Ruby 2+" if RUBY_VERSION[0] == '1'}"
 
 Dir.chdir(File.dirname(__FILE__))		# (so this file can be run from anywhere)
-
-######################################################################################
-# Copyright 2015 Ian McIntosh <ian@openanswers.org> released under the GPL version 2 #
-######################################################################################
-
-if RUBY_VERSION[0] != '2'
-	puts "For Speed and Smoooth Flow, choose Ruby 2 (you are using #{RUBY_VERSION})"
-	exit
-else
-	puts "Using Ruby #{RUBY_VERSION}"
-end
-
-APP_NAME = 'Luz 2.0'
-BASE_SET_PATH = 'base.luz'
 
 # load path
 $LOAD_PATH.unshift('./utils').unshift('./engine').unshift('./engine/user_object_settings').unshift('./gui').unshift('.')
@@ -22,13 +13,9 @@ $LOAD_PATH.unshift('./utils').unshift('./engine').unshift('./engine/user_object_
 # requires
 require 'reloadable_require'
 multi_require 'sdl2', 'opengl', 'glu', 'pathname', 'optparse', 'syck'
-include GL
+include GL		# (we use GL methods in many places)
 include GLU
-
-# Luz addons
 multi_require 'boolean_accessor', 'method_piping', 'settings', 'vector3', 'easy_accessor', 'value_animation', 'value_animation_states', 'addons/dir', 'addons/array', 'addons/class', 'addons/dir', 'addons/exception', 'addons/fixnum', 'addons/float', 'addons/gl', 'addons/hash', 'addons/integer', 'addons/kernel', 'addons/module', 'addons/nil', 'addons/object', 'addons/object_space', 'addons/string'
-
-# Luz engine
 multi_require 'constants', 'drawing', 'sdl_application', 'luz_performer', 'engine', 'pointer', 'pointer_mouse', 'gui_default'
 
 # Settings file
@@ -57,7 +44,7 @@ else
 	$engine.project.append_from_path(BASE_SET_PATH)
 end
 
-# GUI
+# Create GUI
 create_gui = lambda { $gui = GuiDefault.new ; $gui.set_initial_state_from_project }
 $engine.on_new_project(&create_gui)
 create_gui.call

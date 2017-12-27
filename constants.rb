@@ -1,3 +1,6 @@
+APP_NAME = 'Luz 2.0'
+BASE_SET_PATH = 'base.luz'
+
 # Defaults
 MESSAGE_BUS_IP			= "255.255.255.255"		# Broadcast address
 MESSAGE_BUS_PORT		= 10007								# LOOOZ ! :D
