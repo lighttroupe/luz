@@ -1,37 +1,37 @@
---- 
+---
   :version: 1
   :actors: []
-  :directors: 
+  :directors:
     - !ruby/object:Director
-      title: Director One
+      title: First Director
       enabled: true
       offscreen_render_actor_setting: !ruby/object:UserObjectSettingActor
         name: offscreen_render_actor
-        options: 
+        options:
           :summary: renders on %
-        breaks_cache: 
-        actor: 
+        breaks_cache:
+        actor:
       effects: []
       actors: []
-  :themes: 
+  :themes:
     - !ruby/object:Theme
       title: Tango
       enabled: true
-      effects: 
+      effects:
         - !ruby/object:Style
           title: ""
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             name: &id001 color
             options: &id002
-              
-              :default: 
+
+              :default:
                 - 1.0
                 - 1.0
                 - 1.0
                 - 1.0
               :only_literal: true
-            breaks_cache: 
+            breaks_cache:
             color: !ruby/object:Color
               alpha: 1.0
               blue: 0.0
@@ -41,15 +41,15 @@
             name: &id003 image
             options: &id004
               {}
-            breaks_cache: 
-            image_name: 
+            breaks_cache:
+            image_name:
         - !ruby/object:Style
           title: ""
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             name: *id001
             options: *id002
-            breaks_cache: 
+            breaks_cache:
             color: !ruby/object:Color
               alpha: 1.0
               blue: 0.0
@@ -58,15 +58,15 @@
           image_setting: !ruby/object:UserObjectSettingImage
             name: *id003
             options: *id004
-            breaks_cache: 
-            image_name: 
+            breaks_cache:
+            image_name:
         - !ruby/object:Style
           title: ""
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             name: *id001
             options: *id002
-            breaks_cache: 
+            breaks_cache:
             color: !ruby/object:Color
               alpha: 1.0
               blue: 0.0862745098039216
@@ -75,15 +75,15 @@
           image_setting: !ruby/object:UserObjectSettingImage
             name: *id003
             options: *id004
-            breaks_cache: 
-            image_name: 
+            breaks_cache:
+            image_name:
         - !ruby/object:Style
           title: ""
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             name: *id001
             options: *id002
-            breaks_cache: 
+            breaks_cache:
             color: !ruby/object:Color
               alpha: 1.0
               blue: 0.811764705882353
@@ -92,15 +92,15 @@
           image_setting: !ruby/object:UserObjectSettingImage
             name: *id003
             options: *id004
-            breaks_cache: 
-            image_name: 
+            breaks_cache:
+            image_name:
         - !ruby/object:Style
           title: ""
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             name: *id001
             options: *id002
-            breaks_cache: 
+            breaks_cache:
             color: !ruby/object:Color
               alpha: 1.0
               blue: 0.643137254901961
@@ -109,15 +109,15 @@
           image_setting: !ruby/object:UserObjectSettingImage
             name: *id003
             options: *id004
-            breaks_cache: 
-            image_name: 
+            breaks_cache:
+            image_name:
         - !ruby/object:Style
           title: ""
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             name: *id001
             options: *id002
-            breaks_cache: 
+            breaks_cache:
             color: !ruby/object:Color
               alpha: 1.0
               blue: 0.630212863355459
@@ -126,15 +126,15 @@
           image_setting: !ruby/object:UserObjectSettingImage
             name: *id003
             options: *id004
-            breaks_cache: 
-            image_name: 
+            breaks_cache:
+            image_name:
         - !ruby/object:Style
           title: ""
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             name: *id001
             options: *id002
-            breaks_cache: 
+            breaks_cache:
             color: !ruby/object:Color
               alpha: 1.0
               blue: 0.0392156862745098
@@ -143,15 +143,15 @@
           image_setting: !ruby/object:UserObjectSettingImage
             name: *id003
             options: *id004
-            breaks_cache: 
-            image_name: 
+            breaks_cache:
+            image_name:
         - !ruby/object:Style
           title: ""
           enabled: true
           color_setting: !ruby/object:UserObjectSettingColor
             name: *id001
             options: *id002
-            breaks_cache: 
+            breaks_cache:
             color: !ruby/object:Color
               alpha: 1.0
               blue: 0.353490501258869
@@ -160,14 +160,14 @@
           image_setting: !ruby/object:UserObjectSettingImage
             name: *id003
             options: *id004
-            breaks_cache: 
-            image_name: 
-  :curves: 
+            breaks_cache:
+            image_name:
+  :curves:
     - &id006 !ruby/object:Curve
       title: Linear
       enabled: true
       effects: []
-      vector: 
+      vector:
         - 0.0
         - 0.125
         - 0.25
@@ -177,14 +177,14 @@
         - 0.75
         - 0.875
         - 1.0
-      approximation: 
+      approximation:
         - 0.0
         - 1.0
     - !ruby/object:Curve
       title: Fast
       enabled: true
       effects: []
-      vector: 
+      vector:
         - 0.0
         - 0.269079566001892
         - 0.5
@@ -194,7 +194,7 @@
         - 0.949894666671753
         - 0.981220602989197
         - 1.0
-      approximation: 
+      approximation:
         - 0.0
         - 0.0110257677733898
         - 0.0220495108515024
@@ -399,7 +399,7 @@
       title: Slow
       enabled: true
       effects: []
-      vector: 
+      vector:
         - 0.0
         - 0.025036059319973
         - 0.059481430798769
@@ -409,7 +409,7 @@
         - 0.5
         - 0.737171947956085
         - 1.0
-      approximation: 
+      approximation:
         - 0.0
         - 0.000940718513447791
         - 0.00188207568135113
@@ -614,7 +614,7 @@
       title: Easy
       enabled: true
       effects: []
-      vector: 
+      vector:
         - 0.0
         - 0.0156708955764771
         - 0.0909382030367851
@@ -624,7 +624,7 @@
         - 0.90279883146286
         - 0.981200814247131
         - 1.0
-      approximation: 
+      approximation:
         - 0.0
         - 0.000220658504986204
         - 0.000445292593212798
@@ -829,7 +829,7 @@
       title: Psych
       enabled: true
       effects: []
-      vector: 
+      vector:
         - 0.0
         - 0.472393929958344
         - 0.753448307514191
@@ -839,7 +839,7 @@
         - 0.249688848853111
         - 0.527607679367065
         - 1.0
-      approximation: 
+      approximation:
         - 0.0
         - 0.0202983487397432
         - 0.040583997964859
@@ -1044,7 +1044,7 @@
       title: Wobble
       enabled: true
       effects: []
-      vector: 
+      vector:
         - 0.0
         - 0.0501960255205631
         - 0.237754493951797
@@ -1054,7 +1054,7 @@
         - 0.734050393104553
         - 0.768632471561432
         - 1.0
-      approximation: 
+      approximation:
         - 0.0
         - 0.0
         - 0.0
@@ -1259,7 +1259,7 @@
       title: Sine
       enabled: true
       effects: []
-      vector: 
+      vector:
         - 0.5
         - 0.850356936454773
         - 1.0
@@ -1269,7 +1269,7 @@
         - 0.0
         - 0.152764499187469
         - 0.5
-      approximation: 
+      approximation:
         - 0.5
         - 0.515496015548706
         - 0.530978322029114
@@ -1474,7 +1474,7 @@
       title: Sine Inv
       enabled: true
       effects: []
-      vector: 
+      vector:
         - 0.5
         - 0.158814638853073
         - 0.0
@@ -1484,7 +1484,7 @@
         - 1.0
         - 0.848762691020966
         - 0.5
-      approximation: 
+      approximation:
         - 0.5
         - 0.489469945430756
         - 0.474308222532272
@@ -1689,7 +1689,7 @@
       title: Bong!
       enabled: true
       effects: []
-      vector: 
+      vector:
         - 0.5
         - 0.94306093454361
         - 0.09691172093153
@@ -1699,7 +1699,7 @@
         - 0.409974157810211
         - 0.462336033582687
         - 0.5
-      approximation: 
+      approximation:
         - 0.5
         - 0.537595927715302
         - 0.574999749660492
@@ -1904,7 +1904,7 @@
       title: Wide
       enabled: true
       effects: []
-      vector: 
+      vector:
         - 0.0
         - 0.369195938110352
         - 0.685079336166382
@@ -1914,7 +1914,7 @@
         - 0.685079276561737
         - 0.369196027517319
         - 0.0
-      approximation: 
+      approximation:
         - 0.0
         - 0.015226736664772
         - 0.0304497368633747
@@ -2119,7 +2119,7 @@
       title: Smooth
       enabled: true
       effects: []
-      vector: 
+      vector:
         - 0.0
         - 0.0912469774484634
         - 0.470689117908478
@@ -2129,7 +2129,7 @@
         - 0.449575871229172
         - 0.0877451002597809
         - 0.0
-      approximation: 
+      approximation:
         - 0.0
         - 0.000754420470912009
         - 0.00153714104089886
@@ -2334,7 +2334,7 @@
       title: Plateau
       enabled: true
       effects: []
-      vector: 
+      vector:
         - 0.0
         - 0.188123553991318
         - 0.826233506202698
@@ -2344,7 +2344,7 @@
         - 0.832477509975433
         - 0.191254645586014
         - 0.0
-      approximation: 
+      approximation:
         - 0.0
         - 0.00150314287748188
         - 0.00306513928808272
@@ -2549,7 +2549,7 @@
       title: Coaster
       enabled: true
       effects: []
-      vector: 
+      vector:
         - 0.0
         - 0.288459807634354
         - 0.987236320972443
@@ -2559,7 +2559,7 @@
         - 0.325064033269882
         - 0.0940449312329292
         - 0.0
-      approximation: 
+      approximation:
         - 0.0
         - 0.00224667275324464
         - 0.00458415411412716
@@ -2764,7 +2764,7 @@
       title: Ramp
       enabled: true
       effects: []
-      vector: 
+      vector:
         - 0.0
         - 0.691340744495392
         - 1.0
@@ -2774,7 +2774,7 @@
         - 0.0408035852015018
         - 0.00314226048067212
         - 0.0
-      approximation: 
+      approximation:
         - 0.0
         - 0.0303957313299179
         - 0.0607661791145802
@@ -2979,7 +2979,7 @@
       title: Climb
       enabled: true
       effects: []
-      vector: 
+      vector:
         - 0.0
         - 0.0255119558423758
         - 0.0906503424048424
@@ -2989,7 +2989,7 @@
         - 0.989049553871155
         - 0.64501965045929
         - 0.0
-      approximation: 
+      approximation:
         - 0.0
         - 0.000760531635023654
         - 0.00152363779488951
@@ -3194,7 +3194,7 @@
       title: Lob
       enabled: true
       effects: []
-      vector: 
+      vector:
         - 0.0
         - 0.33165454864502
         - 0.62568336725235
@@ -3204,7 +3204,7 @@
         - 0.88161426782608
         - 0.709625363349915
         - 0.5
-      approximation: 
+      approximation:
         - 0.0
         - 0.0136160114780068
         - 0.0272292718291283
@@ -3406,67 +3406,67 @@
         - 0.508691847324371
         - 0.5
   :variables: []
-  :events: 
+  :events:
     - &id005 !ruby/object:Event
       title: beat tap!
       enabled: true
-      effects: 
+      effects:
         - !ruby/object:EventInputButtonPress
           title: Button Press
           enabled: true
           button_setting: !ruby/object:UserObjectSettingButton
             name: button
-            options: 
+            options:
               :summary: true
-            breaks_cache: 
+            breaks_cache:
             button: Keyboard / Space
           conditions: !ruby/object:ChildConditions
             child_index_max: 0
             child_index_min: 0
             enable_child_index: false
             enable_event: false
-            event: 
+            event:
             event_invert: false
             enable_child_index: false
             child_index_min: 0
             child_index_max: 0
             enable_event: false
-            event: 
+            event:
             event_invert: false
-  :effects: 
+  :effects:
     - !ruby/object:ProjectEffectBeatTapping
       title: Beat Tapping
       enabled: true
       event_setting: !ruby/object:UserObjectSettingEvent
         name: event
-        options: 
+        options:
           :summary: true
-        breaks_cache: 
+        breaks_cache:
         event: *id005
       conditions: !ruby/object:ChildConditions
         child_index_max: 0
         child_index_min: 0
         enable_child_index: false
         enable_event: false
-        event: 
+        event:
         event_invert: false
         enable_child_index: false
         child_index_min: 0
         child_index_max: 0
         enable_event: false
-        event: 
+        event:
         event_invert: false
     - !ruby/object:ProjectEffectScreenClear
       title: Screen Clear
       enabled: true
       color_setting: !ruby/object:UserObjectSettingColor
         name: color
-        options: 
-          :default: 
+        options:
+          :default:
             - 0.0
             - 0.0
             - 0.0
-        breaks_cache: 
+        breaks_cache:
         color: !ruby/object:Color
           alpha: 1.0
           blue: 0.0
@@ -3474,7 +3474,7 @@
           red: 0.0
       amount_setting: !ruby/object:UserObjectSettingFloat
         name: amount
-        options: 
+        options:
           :range: !ruby/range
             begin: 0.0
             end: 1.0
@@ -3483,7 +3483,7 @@
             begin: 1.0
             end: 0.0
             excl: false
-        breaks_cache: 
+        breaks_cache:
         min: 0.0
         max: 1.0
         enter_value: 0.0
@@ -3502,74 +3502,74 @@
         activation_direction: :to
         activation_curve: *id006
         activation_value: 1.0
-        activation_variable: 
+        activation_variable:
       conditions: !ruby/object:ChildConditions
         child_index_max: 0
         child_index_min: 0
         enable_child_index: false
         enable_event: false
-        event: 
+        event:
         event_invert: false
         enable_child_index: false
         child_index_min: 0
         child_index_max: 0
         enable_event: false
-        event: 
+        event:
         event_invert: false
     - !ruby/object:ProjectEffectAspectRatio
       title: Aspect Ratio
       enabled: true
       mode_setting: !ruby/object:UserObjectSettingSelect
         name: mode
-        options: 
+        options:
           :default: :stretched
-          :options: 
+          :options:
             - - :stretched
               - Stretched
             - - :square_horizontal
               - Square (stretch horizontally)
             - - :square_vertical
               - Square (stretch vertically)
-        breaks_cache: 
+        breaks_cache:
         selected: :stretched
       conditions: !ruby/object:ChildConditions
         child_index_max: 0
         child_index_min: 0
         enable_child_index: false
         enable_event: false
-        event: 
+        event:
         event_invert: false
         enable_child_index: false
         child_index_min: 0
         child_index_max: 0
         enable_event: false
-        event: 
+        event:
         event_invert: false
     - !ruby/object:ProjectEffectDirectorCycle
       title: Director Cycle
       enabled: true
       directors_setting: !ruby/object:UserObjectSettingDirectors
         name: directors
-        options: 
+        options:
           :summary: true
-        breaks_cache: 
+        breaks_cache:
       backwards_setting: !ruby/object:UserObjectSettingEvent
         name: backwards
-        options: 
+        options:
           :summary: % back
-        breaks_cache: 
-        event: 
+        breaks_cache:
+        event:
       forwards_setting: !ruby/object:UserObjectSettingEvent
         name: forwards
-        options: 
+        options:
           :summary: % forward
-        breaks_cache: 
-        event: 
+        breaks_cache:
+        event:
       crossfade_time_setting: !ruby/object:UserObjectSettingTimespan
         name: crossfade_time
-        options: 
+        options:
           :summary: true
-        breaks_cache: 
+        breaks_cache:
         time_number: 8.0
         time_unit: :beats
       conditions: !ruby/object:ChildConditions
@@ -3577,11 +3577,11 @@
         child_index_min: 0
         enable_child_index: false
         enable_event: false
-        event: 
+        event:
         event_invert: false
         enable_child_index: false
         child_index_min: 0
         child_index_max: 0
         enable_event: false
-        event: 
+        event:
         event_invert: false
