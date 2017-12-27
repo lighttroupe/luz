@@ -100,7 +100,7 @@ class GuiActorsFlyout < GuiWindow
 		$gui.build_editor_for(selection.object, :grab_keyboard_focus => true)		# NOTE: undoing above wrapping
 	end
 	def on_list_contents_changed
-		$gui.chosen_director.actors = @actors_list.map(&:object)
+		$gui.chosen_director.actors = @actors_list.map(&:object) if $gui.chosen_director
 		$engine.project_changed!
 	end
 
