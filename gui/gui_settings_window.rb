@@ -18,10 +18,6 @@ class GuiSettingsWindow < GuiWindow
 		self << GuiLabel.new.set_string("Frames Per Second").set(:width => 13, :text_align => :left, :scale_x => 0.5, :scale_y => 0.06, :offset_x => -0.13, :offset_y => 0.47)
 		self << GuiInteger.new(self, :frames_per_second, FRAMES_PER_SECONDS_MIN, FRAMES_PER_SECONDS_MAX).set(:width => 2, :offset_x => -0.45, :scale_x => 0.1, :offset_y => 0.47, :scale_y => 0.05)
 
-		# live editing
-		#self << GuiLabel.new.set_string("Live Editing").set(:width => 13, :text_align => :left, :scale_x => 0.5, :scale_y => 0.06, :offset_x => -0.13, :offset_y => 0.41)
-		#self << GuiToggle.new(self, :live_editing).set(:offset_x => -0.425, :scale_x => 0.05, :offset_y => 0.40, :scale_y => 0.05)
-
 		# value animation time
 		self << GuiLabel.new.set_string("Value Animation Time").set(:width => 13, :text_align => :left, :scale_x => 0.5, :scale_y => 0.06, :offset_x => -0.13, :offset_y => 0.35)
 		self << GuiFloat.new(self, :value_animation_time, VALUE_ANIMATION_TIME_MIN, VALUE_ANIMATION_TIME_MAX, digits=1).set(:width => 3, :offset_x => -0.45, :scale_x => 0.1, :offset_y => 0.345, :scale_y => 0.05)

@@ -1,5 +1,5 @@
 #
-# GuiUserObjectEditor is the main editor
+# GuiUserObjectEditor is the main editor window
 #
 class GuiUserObjectEditor < GuiWindow
 	attr_accessor :pointer

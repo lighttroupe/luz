@@ -1,3 +1,6 @@
+#
+# GuiUserObjectClassRenderer renders lists of UserObject classes, ie in the 'add new' popup
+#
 class GuiUserObjectClassRenderer < GuiObjectRenderer
 	LABEL_COLOR = [1,1,1,1]
 	TITLE_HEIGHT = 1.0

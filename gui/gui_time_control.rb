@@ -1,3 +1,6 @@
+#
+# GuiTimeControl lets user control speed of engine time
+#
 class GuiTimeControl < GuiObject
 	def initialize
 		draggable!

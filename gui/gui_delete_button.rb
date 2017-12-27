@@ -1,3 +1,6 @@
+#
+# GuiDeleteButton requires 'removing cover' then deleting, and eagerly closes cover
+#
 class GuiDeleteButton < GuiBox
 	callback :clicked
 

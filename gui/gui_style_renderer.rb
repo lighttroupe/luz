@@ -1,3 +1,6 @@
+#
+# GuiStyleRenderer renders a Style (image/color) in a list row
+#
 class GuiStyleRenderer < GuiUserObjectRenderer
 	def gui_render
 		using_listsafe { unit_square }

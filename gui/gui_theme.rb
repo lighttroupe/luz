@@ -1,3 +1,6 @@
+#
+# GuiTheme is a widget for selecting a Theme
+#
 class GuiTheme < GuiListSelect
 	def list
 		$engine.project.themes.map(&:new_renderer)
