@@ -1,3 +1,6 @@
+#
+# GuiDirector is a widget for selecting a Director instance variable
+#
 class GuiDirector < GuiListSelect
 	def list
 		$engine.project.directors.map(&:new_renderer)

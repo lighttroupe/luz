@@ -1,3 +1,6 @@
+#
+# GuiDirectorEditButton lights up while editing director, otherwise click to edit
+#
 class GuiDirectorEditButton < GuiButton
 	easy_accessor :background_image_on
 
