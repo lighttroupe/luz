@@ -38,6 +38,7 @@ class GuiDefault < GuiInterface
 	def reload_notify
 		clear!
 		create!
+		default_focus!
 	end
 
 	def set_initial_state
