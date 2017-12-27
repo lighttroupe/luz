@@ -57,13 +57,13 @@ class GuiUserObjectRenderer < GuiObjectRenderer
 
 	def gui_render_label_internal
 		with_color(label_color) {
-			@title_label ||= GuiLabel.new.set(:width => label_ems, :scale_y => USER_OBJECT_TITLE_HEIGHT)
+			@title_label ||= GuiLabel.new.set(:width => label_width, :scale_y => USER_OBJECT_TITLE_HEIGHT)
 			@title_label.string = @object.title
 			@title_label.gui_render
 		}
 	end
 
-	def label_ems
+	def label_width
 		12
 	end
 

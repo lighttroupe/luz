@@ -31,7 +31,7 @@ class	GuiChildUserObjectRenderer < GuiUserObjectRenderer
 
 private
 
-	def label_ems
+	def label_width
 		14
 	end
 
