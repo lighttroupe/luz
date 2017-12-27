@@ -28,13 +28,13 @@ class GuiDirectorRenderer < GuiUserObjectRenderer
 						}
 					}
 				end
-
-				with_translation(-0.23, -0.5 + 0.1) {
-					with_scale(0.5,0.1) {
-						gui_render_label
-					}
-				}
 			end
+
+			with_translation(-0.23, -0.5 + 0.1) {
+				with_scale(0.5,0.1) {
+					gui_render_label
+				}
+			}
 		}
 	end
 
