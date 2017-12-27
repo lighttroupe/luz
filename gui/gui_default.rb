@@ -682,6 +682,7 @@ class GuiDefault < GuiInterface
 	# director menu
 	def open_directors_menu!
 		@directors_menu.switch_state({:closed => :open},durection=0.2)
+		@directors_menu.grab_keyboard_focus!
 	end
 	def close_directors_menu!
 		@directors_menu.switch_state({:open => :closed}, duration=0.1)

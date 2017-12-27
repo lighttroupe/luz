@@ -72,25 +72,28 @@ class GuiDirectorMenu < GuiWindow
 	end
 
 	def on_key_press(key)
-		case key
-		when 'escape'
-			close!
-		when 'up', 'down', 'left', 'right'
-			if key.control?
-				close! if key == 'up'
-				# swallow other ctrl-arrow keys
+		if key.control?
+			case key
+			when 'n'
+				add_new_director!
+			when 'up'
+				close!
 			else
-				@grid.on_key_press(key)
+				super
 			end
-		when 'n'
-			add_new_director! if key.control?
-
-		when 'return'
-			selected = @grid.selection.first
-			$gui.build_editor_for(selected) if selected
-			close!
 		else
-			super
+			case key
+			when 'escape'
+				close!
+			when 'return'
+				selected = @grid.selection.first
+				if selected
+					close!
+					$gui.chosen_director = selected.object
+				end
+			else
+				super
+			end
 		end
 	end
 

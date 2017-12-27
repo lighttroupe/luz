@@ -4,7 +4,6 @@
 class GuiVBox < GuiBox
 	def on_key_press(key)
 		return super if key.control?
-
 		case key
 		when 'up'
 			select_previous!

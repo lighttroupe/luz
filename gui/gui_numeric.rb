@@ -83,6 +83,7 @@ class GuiNumeric < GuiValue
 	NUMERIC_CHARACTERS = ['0','1','2','3','4','5','6','7','8','9','-','.']
 
 	def on_key_press(key)
+		return super if key.control?
 		case key
 		when 'space'
 			# ignore

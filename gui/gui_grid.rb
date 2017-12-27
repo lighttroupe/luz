@@ -55,6 +55,7 @@ class GuiGrid < GuiBox
 	end
 
 	def on_key_press(key)
+		return super if key.control?
 		case key
 		when 'up'
 			select_previous!(column_count)
@@ -64,6 +65,8 @@ class GuiGrid < GuiBox
 			select_previous!
 		when 'right'
 			select_next!
+		else
+			super
 		end
 	end
 end
