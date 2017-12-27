@@ -1,3 +1,6 @@
+#
+# GuiUserObjectRenderer is base class to renderers of specific UserObjects
+#
 class GuiUserObjectRenderer < GuiObjectRenderer
 	LABEL_COLOR_CRASHY = [1,0,0,0.35]
 	LABEL_COLOR_EVENT_OFF = [1,1,0,0.35]
@@ -6,17 +9,6 @@ class GuiUserObjectRenderer < GuiObjectRenderer
 	USER_OBJECT_TITLE_HEIGHT = 1.0
 
 	SHAKE_DISTANCE = 0.007
-
-	#
-	# Class level
-	#
-	extend Drawing
-	def self.gui_render_label
-		with_color(LABEL_COLOR) {
-			@@class_title_label ||= Hash.new { |hash, key| hash[key] = GuiLabel.new.set(:width => 14, :string => key, :scale_x => 0.95, :scale_y => USER_OBJECT_TITLE_HEIGHT) }
-			@@class_title_label[title].gui_render
-		}
-	end
 
 	#
 	# Dragging
