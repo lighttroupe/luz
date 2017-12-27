@@ -27,7 +27,7 @@ class Director < ParentUserObject
 	end
 
 	def default_title
-		'New Director'
+		''
 	end
 
 	def after_load
