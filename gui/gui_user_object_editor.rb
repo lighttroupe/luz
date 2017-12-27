@@ -17,28 +17,36 @@ class GuiUserObjectEditor < GuiWindow
 	# Keyboard interactions
 	#
 	def on_key_press(key)
-		if key == 'e' && key.control?
-			if (effect = @user_object.selected_effect)
-				$engine.view_source(effect.class)
+		if key.control?
+			if key == 'd'
+				clone_selected
+			elsif key == 'e'
+				if (effect = selected_effect)
+					$engine.view_source(effect.class)
+				else
+					$engine.view_source(@user_object.class)
+				end
+			elsif key == 'n'
+				open_add_child_window!
+			elsif key == 'delete'
+				remove_selected
 			else
-				$engine.view_source(@user_object.class)
-			end
-		elsif key == 'n' && key.control?
-			open_add_child_window!
-		elsif key == 'delete' && key.control?
-			remove_selected
-		elsif key == 'left' && !key.control?
-			effects_list_grab_focus!
-		elsif key == 'right' && !key.control?
-			settings_list_grab_focus!
-		elsif key == 'tab'
-			if key.shift?
-				effects_list_grab_focus!
-			else
-				select_next_setting!
+				super
 			end
 		else
-			super
+			if key == 'left'
+				effects_list_grab_focus!
+			elsif key == 'right'
+				settings_list_grab_focus!
+			elsif key == 'tab'
+				if key.shift?
+					effects_list_grab_focus!
+				else
+					select_next_setting!
+				end
+			else
+				super
+			end
 		end
 	end
 
@@ -65,7 +73,7 @@ class GuiUserObjectEditor < GuiWindow
 			@class_icon_button.add_state(:active, {:opacity => 1.0})
 			@class_icon_button.set_state(:inactive, {:opacity => 0.25})
 			@class_icon_button.on_clicked {
-				@user_object.gui_fill_settings_list(@user_object)
+				gui_fill_settings_list(@user_object)
 				@title_text.cancel_keyboard_focus!
 			}
 
@@ -227,15 +235,14 @@ class GuiUserObjectEditor < GuiWindow
 	end
 
 	def clone_selected
-		$gui.positive_message "Clone...not implemented."
-		#if (original = @gui_effects_list.selection.first)
-			#duplicate = original.deep_clone { |obj| !(obj.is_a?(ParentUserObject)) }
-			#duplicate.parent = nil
-			#duplicate.reset_pointer_behavior!
-			# more needed
-			#@gui_effects_list.add_after_selection(duplicate)
-			#@gui_effects_list.set_selection(duplicate)
-		#end
+		#$gui.positive_message "Clone...not implemented."
+		if (selected = @gui_effects_list.selection.first)
+			original = selected.object
+			duplicate = original.deep_clone_user_object
+			renderer = duplicate.new_renderer
+			@gui_effects_list.add_after_selection(renderer)
+			@gui_effects_list.set_selection(renderer)
+		end
 	end
 
 	def hide!
@@ -264,7 +271,7 @@ class GuiUserObjectEditor < GuiWindow
 	def selected_effect
 		selection = @gui_effects_list.selection
 		if selection.count == 1
-			selection.first
+			selection.first.object
 		end
 	end
 

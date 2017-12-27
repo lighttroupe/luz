@@ -151,6 +151,10 @@ class UserObject
 
 	empty_method :before_delete
 
+	def deep_clone_user_object
+		deep_clone { |obj| !(obj.is_a?(ParentUserObject)) }
+	end
+
 	#
 	# settings
 	#
