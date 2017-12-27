@@ -1,4 +1,6 @@
-# Widget for setting a Variable attribute
+#
+# GuiVariable is a widget for setting a Variable instance variable
+#
 class GuiVariable < GuiListSelect
 	def initialize(object, method)
 		super(object, method)
