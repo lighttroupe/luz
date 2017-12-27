@@ -1,5 +1,4 @@
 # superclass for single-value setting widgets like GuiTheme
-multi_require 'gui_list_popup'
 
 class GuiListSelect < GuiValue
 	easy_accessor :no_value_text, :item_aspect_ratio, :width
