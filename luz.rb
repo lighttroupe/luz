@@ -44,12 +44,8 @@ $settings['value-animation-time'] ||= GuiSettingsWindow::DEFAULT_VALUE_ANIMATION
 $settings['gui-alpha'] ||= GuiSettingsWindow::DEFAULT_GUI_ALPHA
 $settings['recent-projects'] ||= []
 
-#
+# Create Application
 $application = LuzPerformer.new(APP_NAME)
-
-# Parse command line arguments
-project_path = ARGV.pop		# last argument is optional project name
-
 $application.create
 
 # Create Luz Engine
@@ -57,18 +53,20 @@ $engine = Engine.new
 $engine.post_initialize		# TODO: add message bus ip/port params
 $engine.load_plugins
 
-# Build GUI
-$gui = GuiDefault.new
-$engine.on_new_project { $gui = GuiDefault.new ; $gui.set_initial_state_from_project }		# out with the old...
-
 # Load Project
+project_path = ARGV.pop		# last argument is optional project name
 if project_path
 	$engine.load_from_path(project_path)
 else
 	$engine.project.append_from_path(BASE_SET_PATH)
 end
 
+# Build GUI
+$gui = GuiDefault.new
 $gui.set_initial_state_from_project
+
+# ...replace GUI when project changes
+$engine.on_new_project { $gui = GuiDefault.new ; $gui.set_initial_state_from_project }
 
 # Go!
 begin
