@@ -342,21 +342,14 @@ class GuiDefault < GuiInterface
 		hide_reopen_button!
 
 		case user_object				# "let's take a look at this ..."
-		when Director
-			return
 		when Actor
 			if editor_visible
 				@actor_view.actor = user_object
 				return
 			else
-				# Rule: cannot edit one actor while viewing a different one (so show this actor while editing)
+				 #Rule: cannot edit one actor while viewing a different one (so show this actor while editing)
 				@actor_view.actor = user_object if self.mode == :actor
 			end
-		when Variable, Event
-			# double click on variable/event
-			#if editor_visible && user_object == @user_object
-				#@user_object_editor.edit_title if @user_object_editor
-			#end
 		end
 
 		if user_object.is_a?(ParentUserObject) || user_object.is_a?(Project)		# TODO: responds_to? :effects ?

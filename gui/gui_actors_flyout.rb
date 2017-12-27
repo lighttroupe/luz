@@ -33,8 +33,8 @@ class GuiActorsFlyout < GuiWindow
 		self << @director_edit_button = GuiDirectorEditButton.new.set(:offset_y => 0.5 - 0.025, :scale_y => 0.05, :background_image => $engine.load_image('images/buttons/director-settings.png'), :background_image_hover => $engine.load_image('images/buttons/director-settings-hover.png'), :background_image_on => $engine.load_image('images/buttons/director-settings-on.png'))
 		@director_edit_button.on_clicked {
 			# create/view offscreen render actor
-			$gui.edit_chosen_director_offscreen_render_actor!(ActorRectangle)
-			#$gui.build_editor_for($gui.chosen_director)
+			#$gui.edit_chosen_director_offscreen_render_actor!(ActorRectangle)
+			$gui.build_editor_for($gui.chosen_director)
 		}
 
 		# View directors button
