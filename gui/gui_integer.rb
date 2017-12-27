@@ -1,5 +1,3 @@
-multi_require 'gui_numeric'
-
 class GuiInteger < GuiNumeric
 	def initialize(object, method, min, max)
 		super(object, method, min, max)

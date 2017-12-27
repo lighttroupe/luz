@@ -1,3 +1,6 @@
+#
+# GuiScrollbar shows progress in scroll, plus allows dragging and scroll wheel operation
+#
 class GuiScrollbarScroller < GuiObject
 	HOVER_COLOR = [0.7,0.7,0.0,0.8]
 	INACTIVE_COLOR = [0.08,0.08,0.08,0.4]

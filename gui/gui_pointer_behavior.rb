@@ -1,5 +1,5 @@
 #
-# This is default behavior for objects that can be hovered over.
+# GuiPointerBehavior is behavior for objects that can be hovered, clicked, held
 #
 module GuiPointerBehavior
 	empty_method :on_pointer_enter, :on_pointer_exit, :on_first_pointer_enter, :on_last_pointer_exit

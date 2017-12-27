@@ -1,3 +1,6 @@
+#
+# GuiBeatMonitor shows the beat and allows click-to-set-beat
+#
 class GuiBeatLight < GuiObject
 	BEAT_ON_COLOR = [1,1,1,1]
 	BEAT_OFF_COLOR = [0,0.1,0.1,0.5]

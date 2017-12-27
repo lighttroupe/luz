@@ -1,3 +1,6 @@
+#
+# GuiSettingsWindow is for app level settings
+#
 class GuiSettingsWindow < GuiWindow
 	FRAMES_PER_SECONDS_MIN = 12
 	FRAMES_PER_SECONDS_MAX = 70

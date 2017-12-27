@@ -1,5 +1,5 @@
 #
-# This is a non-popup list
+# GuiSelect is a non-popup selection from a list
 #
 class GuiSelect < GuiListSelect
 	def initialize(object, method, options)		# options is [[:one,'One'],[:two,'Two']]

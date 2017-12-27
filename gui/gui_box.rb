@@ -3,8 +3,6 @@
 #
 # It does no positioning of child objects, each is simply drawn on top of the previous.
 #
-require 'set'
-
 class GuiBox < GuiObject
 	callback :contents_change
 

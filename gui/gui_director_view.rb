@@ -1,5 +1,3 @@
-multi_require 'cartesian_scaffolding', 'camera'
-
 class GuiDirectorView < GuiBox
 	attr_accessor :director
 

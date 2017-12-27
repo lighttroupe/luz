@@ -1,6 +1,3 @@
-#
-#
-#
 class GuiDirectorRenderer < GuiUserObjectRenderer
 	ENTER_EXIT_PROGESS_COLOR = [1.0,1.0,0.0,0.8]
 

@@ -1,5 +1,5 @@
 #
-# Gui base class
+# GuiObject is base class for all Gui objects
 #
 class GuiObject
 	include MethodsForUserObject

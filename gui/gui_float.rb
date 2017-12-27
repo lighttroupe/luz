@@ -1,5 +1,3 @@
-multi_require 'gui_numeric'
-
 class GuiFloat < GuiNumeric
 	def initialize(object, method, min, max, digits)
 		super(object, method, min, max)

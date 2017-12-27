@@ -1,5 +1,3 @@
-require 'gui_object'
-
 #
 # GuiLabel is a piece of static text
 #

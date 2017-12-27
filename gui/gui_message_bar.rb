@@ -1,3 +1,6 @@
+#
+# GuiMessageBar is the "flash message" area
+#
 class GuiMessageBar < GuiBox
 	MESSAGE_DURATION = 2.0
 	MESSAGE_DURATION_FAST = 1.0

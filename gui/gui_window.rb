@@ -1,3 +1,6 @@
+#
+# GuiWindow is base class for "windows" (top level containers)
+#
 class GuiWindow < GuiBox
 	callback :open
 	callback :close

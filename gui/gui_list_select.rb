@@ -1,5 +1,6 @@
-# superclass for single-value setting widgets like GuiTheme
-
+#
+# GuiListSelect is a select box with popup list
+#
 class GuiListSelect < GuiValue
 	easy_accessor :no_value_text, :item_aspect_ratio, :width
 

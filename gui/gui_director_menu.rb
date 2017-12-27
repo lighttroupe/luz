@@ -1,5 +1,6 @@
-multi_require 'gui_output_view_button'
-
+#
+# GuiDirectorMenu is the fullscreen director grid
+#
 class GuiDirectorMenu < GuiWindow
 	def initialize(directors)
 		super()

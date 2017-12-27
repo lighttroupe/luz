@@ -1,5 +1,5 @@
 #
-# GuiObjectRenderer renders an object (usually a UserObject) without reparenting it
+# GuiObjectRenderer is base class for "renderers", ie rendering an object (usually a UserObject) without reparenting it
 #
 class GuiObjectRenderer < GuiObject
 	callback :clicked

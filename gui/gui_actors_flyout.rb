@@ -1,5 +1,6 @@
-multi_require 'gui_actor_class_flyout', 'gui_director_edit_button.rb', 'gui_director_view_button.rb'
-
+#
+# GuiActorsFlyout is the right-side list of Actors
+#
 class GuiActorsFlyout < GuiWindow
 	def initialize
 		super
