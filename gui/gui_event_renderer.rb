@@ -10,8 +10,8 @@ class	GuiEventRenderer < GuiUserObjectRenderer
 
 private
 
-	def label_ems
-		7
+	def label_width
+		9
 	end
 
 	def gui_render_on_off_state
