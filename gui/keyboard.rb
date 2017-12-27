@@ -5,8 +5,10 @@ class Keyboard
 
 	def raw_keyboard_input(key)
 		if @grab_proc
+			#$gui.positive_message "proc"
 			@grab_proc.call(key)
 		elsif @grab_object && !@grab_object.hidden?		# NOTE object can hide and unhide
+			#$gui.positive_message "o:#{@grab_object}"
 			@grab_object.on_key_press(key)
 		else
 			@gui.on_key_press(key)
