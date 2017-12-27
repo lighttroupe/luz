@@ -41,7 +41,7 @@ class GuiDefault < GuiInterface
 		default_focus!
 	end
 
-	def set_initial_state
+	def set_initial_state_from_project
 		@user_object = nil					# this object the user is editing
 		@user_object_editor = nil		# editor widget (window)
 
@@ -329,8 +329,6 @@ class GuiDefault < GuiInterface
 
 		add_state(:closed, {:scale_x => 1.5, :scale_y => 1.5, :opacity => 0.0, :hidden => true})
 		set_state(:open, {:scale_x => 1.0, :scale_y => 1.0, :opacity => 1.0, :hidden => false})
-
-		set_initial_state
 	end
 
 	#

@@ -57,6 +57,10 @@ $engine = Engine.new
 $engine.post_initialize		# TODO: add message bus ip/port params
 $engine.load_plugins
 
+# Build GUI
+$gui = GuiDefault.new
+$engine.on_new_project { $gui = GuiDefault.new ; $gui.set_initial_state_from_project }		# out with the old...
+
 # Load Project
 if project_path
 	$engine.load_from_path(project_path)
@@ -64,9 +68,7 @@ else
 	$engine.project.append_from_path(BASE_SET_PATH)
 end
 
-# Build GUI
-$gui = GuiDefault.new
-$engine.on_new_project { $gui = GuiDefault.new }		# out with the old...
+$gui.set_initial_state_from_project
 
 # Go!
 begin
