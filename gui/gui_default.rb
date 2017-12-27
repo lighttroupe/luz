@@ -50,7 +50,6 @@ class GuiDefault < GuiInterface
 		self.chosen_director = director
 		self.chosen_actor = nil
 		self.mode = :output
-		default_focus!
 	end
 
 	#
