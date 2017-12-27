@@ -39,6 +39,12 @@ class GuiButton < GuiObject
 private
 
 	def gui_color
-		(pointer_clicking?) ? BUTTON_CLICK_COLOR : ((pointer_hovering?) ? BUTTON_HOVER_COLOR : nil)
+		if pointer_clicking?
+			BUTTON_CLICK_COLOR
+		elsif pointer_hovering?
+			BUTTON_HOVER_COLOR
+		else
+			nil
+		end
 	end
 end
