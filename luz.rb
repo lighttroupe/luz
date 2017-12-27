@@ -16,28 +16,24 @@ end
 APP_NAME = 'Luz 2.0'
 BASE_SET_PATH = 'base.luz'
 
-# Add directories to load path
+# load path
 $LOAD_PATH.unshift('./utils').unshift('./engine').unshift('./engine/user_object_settings').unshift('./gui').unshift('.')
 
+# requires
 require 'reloadable_require'
-
-# SDL2, OpenGL, system utils
 multi_require 'sdl2', 'opengl', 'glu', 'pathname', 'optparse', 'syck'
-
 include GL
 include GLU
 
 # Luz addons
-multi_require 'boolean_accessor', 'method_piping', 'vector3', 'easy_accessor', 'value_animation', 'value_animation_states', 'addons/dir', 'addons/array', 'addons/class', 'addons/dir', 'addons/exception', 'addons/fixnum', 'addons/float', 'addons/gl', 'addons/hash', 'addons/integer', 'addons/kernel', 'addons/module', 'addons/nil', 'addons/object', 'addons/object_space', 'addons/string'
+multi_require 'boolean_accessor', 'method_piping', 'settings', 'vector3', 'easy_accessor', 'value_animation', 'value_animation_states', 'addons/dir', 'addons/array', 'addons/class', 'addons/dir', 'addons/exception', 'addons/fixnum', 'addons/float', 'addons/gl', 'addons/hash', 'addons/integer', 'addons/kernel', 'addons/module', 'addons/nil', 'addons/object', 'addons/object_space', 'addons/string'
 
 # Luz engine
-multi_require 'constants', 'drawing', 'sdl_application', 'luz_performer', 'engine', 'settings', 'pointer', 'pointer_mouse', 'gui_default'
-
-# Settings directory
-settings_directory_path = File.join(Dir.home, SETTINGS_DIRECTORY_NAME)
-FileUtils.mkdir_p(settings_directory_path) rescue Errno::EEXIST
+multi_require 'constants', 'drawing', 'sdl_application', 'luz_performer', 'engine', 'pointer', 'pointer_mouse', 'gui_default'
 
 # Settings file
+settings_directory_path = File.join(Dir.home, SETTINGS_DIRECTORY_NAME)
+FileUtils.mkdir_p(settings_directory_path) rescue Errno::EEXIST
 settings_file_path = File.join(settings_directory_path, SETTINGS_FILENAME)
 $settings = Settings.new.load(settings_file_path)
 $settings['value-animation-time'] ||= GuiSettingsWindow::DEFAULT_VALUE_ANIMATION_TIME		# TODO: move elsewhere
@@ -61,12 +57,10 @@ else
 	$engine.project.append_from_path(BASE_SET_PATH)
 end
 
-# Build GUI
-$gui = GuiDefault.new
-$gui.set_initial_state_from_project
-
-# ...replace GUI when project changes
-$engine.on_new_project { $gui = GuiDefault.new ; $gui.set_initial_state_from_project }
+# GUI
+create_gui = lambda { $gui = GuiDefault.new ; $gui.set_initial_state_from_project }
+$engine.on_new_project(&create_gui)
+create_gui.call
 
 # Go!
 begin
