@@ -1,8 +1,6 @@
-
 class GuiHBox < GuiBox
 	def on_key_press(key)
 		return super if key.control?
-
 		case key
 		when 'left'
 			select_previous!

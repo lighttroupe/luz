@@ -5,6 +5,13 @@ class DirectorEffect < ChildUserObject
 
 	attr_accessor :director		# set just before render time
 
+	def self.new_renderer
+		GuiUserObjectClassRenderer.new(self)
+	end
+	def new_renderer
+		GuiDirectorEffectRenderer.new(self)
+	end
+
 	def after_load
 		set_default_instance_variables(:enabled => true)
 		super

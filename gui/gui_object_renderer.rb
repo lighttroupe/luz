@@ -1,5 +1,5 @@
 #
-# GuiObjectRenderer renders an object (usually a UserObject) without reparenting it
+# GuiObjectRenderer is base class for "renderers", ie rendering an object (usually a UserObject) without reparenting it
 #
 class GuiObjectRenderer < GuiObject
 	callback :clicked
@@ -17,7 +17,7 @@ class GuiObjectRenderer < GuiObject
 		super || (@object == object)
 	end
 
-	pipe :gui_tick, :object
+	#pipe :gui_tick, :object
 
 	#
 	# rendering
@@ -37,6 +37,7 @@ class GuiObjectRenderer < GuiObject
 	# pointer
 	#
 	def click(pointer)
+		parent.set_selection(self) if parent
 		clicked_notify(pointer)
 	end
 

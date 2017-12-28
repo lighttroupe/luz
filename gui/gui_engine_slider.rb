@@ -1,6 +1,3 @@
-multi_require 'gui_list_select'
-multi_require 'gui_engine_slider_renderer'
-
 class GuiEngineSlider < GuiListSelect
 	VALUE_COLOR = [0.2, 0.5, 0.2, 1.0]
 

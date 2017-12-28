@@ -1,5 +1,5 @@
 #
-# This is where user chooses which actor to make
+# GuiActorClassFlyout lets user choose an Actor type
 #
 class GuiActorClassFlyout < GuiWindow
 	callback :actor_class_selected

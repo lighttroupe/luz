@@ -1,9 +1,10 @@
-require 'gui_box'
-
 class GuiList < GuiBox
 	VELOCITY_PER_SCROLL = 3.0
 	MAX_SCROLL_VELOCITY = 16.0
 	VELOCITY_DAMPER = 0.7					# TODO: setting
+
+	BACKGROUND_COLOR = [0.0,0.0,0.0,0.80]
+	ALT_COLOR = [0.0,0.0,0.0,0.75]
 
 	easy_accessor :spacing_x, :spacing_y, :item_aspect_ratio, :scroll_wrap, :scroll, :scroll_velocity
 
@@ -53,8 +54,6 @@ class GuiList < GuiBox
 		end
 	end
 
-	BACKGROUND_COLOR = [0,0,0,0.8]
-	ALT_COLOR = [0.1,0.1,0.12,0.7]
 	def gui_render
 		return if hidden?
 #		with_positioning { with_color(BACKGROUND_COLOR) { unit_square } }
@@ -85,19 +84,13 @@ class GuiList < GuiBox
 	#
 	# Pointer interaction
 	#
-	def child_click(pointer)
-		@scroll_velocity = 0.0
-
-		# TODO: select? notify?
-	end
-
 	# NOTE: these are mousewheel-like activity
 	def scroll_up!(pointer)
 		@scroll_velocity = (@scroll_velocity - VELOCITY_PER_SCROLL).clamp(-MAX_SCROLL_VELOCITY, MAX_SCROLL_VELOCITY)
 	end
 
 	def scroll_down!(pointer)
-		@scroll_velocity = (@scroll_velocity + VELOCITY_PER_SCROLL).clamp(-MAX_SCROLL_VELOCITY, MAX_SCROLL_VELOCITY) 
+		@scroll_velocity = (@scroll_velocity + VELOCITY_PER_SCROLL).clamp(-MAX_SCROLL_VELOCITY, MAX_SCROLL_VELOCITY)
 	end
 
 	def scroll_by(pointer, amount)
@@ -135,7 +128,7 @@ class GuiList < GuiBox
 
 	# instant-scroll a list to given value
 	def scroll_to(value)
-		if((index = index_of(value)) && @contents.size > 1)
+		if((index = index(value)) && @contents.size > 1)
 			animate({:scroll => (index.to_f / (@contents.size - 1)) * @scroll_max}, duration=0.2) if @scroll_max
 		end
 		self
@@ -146,29 +139,8 @@ class GuiList < GuiBox
 	end
 
 	#
-	# Reordering
-	#
-	def move_child_up(child)
-		return unless (index = @contents.index(child))
-		if index > 0
-			@contents[index], @contents[index-1] = @contents[index-1], @contents[index]
-		end
-	end
-
-	def move_child_down(child)
-		return unless (index = @contents.index(child))
-		if index < (@contents.size - 1)
-			@contents[index], @contents[index+1] = @contents[index+1], @contents[index]
-		end
-	end
-
-	#
 	# Helpers
 	#
-	def index_of(value)
-		@contents.index(value)
-	end
-
 	def distance_between_items
 		(spacing_y || 1.0) / (item_aspect_ratio || 1.0)		# TODO: this would be prettier if easy_attributes had defaults
 	end

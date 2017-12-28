@@ -1,0 +1,2 @@
+class GuiCurveIncreasingRenderer < GuiCurveRenderer
+end

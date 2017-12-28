@@ -58,6 +58,7 @@ class GuiString < GuiValue
 	end
 
 	def on_key_press(key)
+		return super if key.control?
 		case key
 		when 'return', 'escape', 'tab'
 			cancel_keyboard_focus!

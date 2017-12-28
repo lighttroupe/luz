@@ -1,12 +1,12 @@
-require 'gui_list_select'
-
+#
+# GuiActor is a widget for selecting an Actor instance variable
+#
 class GuiActor < GuiListSelect
 	def list
-		#actors = [] ; ObjectSpace.each_object(Actor) { |a| actors << a }
-		$engine.project.actors.map { |actor| GuiObjectRenderer.new(actor) }
+		$engine.project.actors.map(&:new_renderer)
 	end
 
 	def set_value(value)
-		value ? super(value.object) : super(nil)
+		super(value ? value.object : nil)
 	end
 end

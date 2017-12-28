@@ -1,7 +1,4 @@
-#
-# Addons for base class of all "effects" of UserObjects
-#
-class ChildUserObject < UserObject
+class	GuiChildUserObjectRenderer < GuiUserObjectRenderer
 	LABEL_CHILD_INDEX_RANGE_COLOR = [1,1,0]
 
 	#
@@ -29,12 +26,12 @@ class ChildUserObject < UserObject
 	def click(pointer)
 		# TODO: move to user object editor
 		super
-		$gui.build_editor_for(self, :pointer => pointer, :grab_keyboard_focus => true)
+		$gui.build_editor_for(@object, :pointer => pointer, :grab_keyboard_focus => true)
 	end
 
 private
 
-	def label_ems
+	def label_width
 		14
 	end
 
@@ -47,13 +44,13 @@ private
 	end
 
 	def gui_render_child_conditions
-		if conditions.enable_child_index
+		if @object.conditions.enable_child_index
 			#@conditions_index_range_label = nil
 			@conditions_index_range_label ||= GuiLabel.new.set(:width => 10, :scale_x => 0.45, :scale_y => 0.45)
 			with_translation(0.20, -0.3) {
 				with_color(LABEL_CHILD_INDEX_RANGE_COLOR) {
-					if (@cached_child_number_min != conditions.child_number_min) || (@cached_child_number_max != conditions.child_number_max)
-						@cached_child_number_min, @cached_child_number_max = conditions.child_number_min, conditions.child_number_max
+					if (@cached_child_number_min != @object.conditions.child_number_min) || (@cached_child_number_max != @object.conditions.child_number_max)
+						@cached_child_number_min, @cached_child_number_max = @object.conditions.child_number_min, @object.conditions.child_number_max
 						if @cached_child_number_min == @cached_child_number_max
 							@conditions_index_range_label.set_string("only child #{@cached_child_number_min}")
 						else
@@ -71,15 +68,15 @@ private
 	end
 
 	def enable_checkbox
-		@enable_checkbox ||= GuiToggle.new(self, :enabled).set(:offset_x => -0.45, :offset_y => 0.0, :scale_x => 0.09, :scale_y => 0.9)
+		@enable_checkbox ||= GuiToggle.new(@object, :enabled).set(:offset_x => -0.45, :offset_y => 0.0, :scale_x => 0.09, :scale_y => 0.9)
 	end
 
 	def label_color
-		if crashy?
+		if @object.crashy?
 			LABEL_COLOR_CRASHY
-		elsif !enabled?
+		elsif !@object.enabled?
 			LABEL_COLOR_DISABLED
-		elsif !conditions.event_satisfied?
+		elsif !@object.conditions.event_satisfied?
 			LABEL_COLOR_EVENT_OFF
 		else
 			LABEL_COLOR

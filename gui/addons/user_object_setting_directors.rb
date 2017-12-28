@@ -14,8 +14,8 @@ class UserObjectSettingDirectors
 		box << (@list = GuiGrid.new.set(:scale_x => 0.98, :scale_y => 0.98, :offset_y => -0.40, :item_scale_y => 5.0, :min_columns => 8))	#, :item_aspect_ratio => 4.0))
 		box << create_user_object_setting_name_label
 
-		all_directors.each { |director|
-			@list << renderer=GuiObjectRenderer.new(director)
+		@list.contents = all_directors.map { |director|
+			renderer = director.new_renderer
 			if get_directors.include?(director)
 				renderer.foreground_image = @on_image
 			else
@@ -24,6 +24,7 @@ class UserObjectSettingDirectors
 			renderer.on_clicked {
 				toggle_selection(director)
 			}
+			renderer
 		}
 		box
 	end

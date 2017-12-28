@@ -1,5 +1,5 @@
 #
-# Baseclass of all $gui implementations, such as GuiDefault.
+# GuiInterface is base class of all $gui implementations, such as GuiDefault.
 #
 class GuiInterface < GuiBox
 	def initialize

@@ -3,8 +3,6 @@
 #
 # (This is the only file that should need to change when switching SDL to an alternative.)
 #
-require 'sdl_application'
-
 class LuzPerformer < SDLApplication
 	SDL_TO_LUZ_BUTTON_NAMES = {'`' => 'Grave', '\\' => 'Backslash', '[' => 'Left Bracket', ']' => 'Right Bracket', ';' => 'Semicolon', "'" => 'Apostrophe', '/' => 'Slash', '.' => 'Period', ',' => 'Comma', '-' => 'Minus', '=' => 'Equal', 'Left Ctrl' => 'Left Control', 'Right Ctrl' => 'Right Control'}
 	SHIFT_LOOKUP = {'/' => '?', "'" => '"', ';' => ':', ',' => '<', '.' => '>', '=' => '+', '-' => '_', '1' => '!', '2' => '@', '3' => '#', '4' => '$', '5' => '%', '6' => '^', '7' => '&', '8' => '*', '9' => '(', '0' => ')', '[' => '{', ']' => '}'}
@@ -32,7 +30,48 @@ class LuzPerformer < SDLApplication
 
 	# public API is in baseclass
 
+	def parse_command_line_options
+		command_line_options.parse!
+	end
+
 private
+
+	def command_line_options
+		OptionParser.new do |opts|
+			opts.banner = "Usage: luz.rb [options] [project.luz]"
+
+			opts.on("--width <width>", Integer, "Resolution width (eg. 800)") do |w|
+				self.width = w
+			end
+			opts.on("--height <height>", Integer, "Resolution height (eg. 600)") do |h|
+				self.height = h
+			end
+			opts.on("--bits-per-pixel <bpp>", Integer, "Bits per pixel (8, 16, 24, 32)") do |bpp|
+				self.bits_per_pixel = bpp
+			end
+			opts.on("--frames-per-second <fps>", Integer, "Target FPS") do |fps|
+				self.frames_per_second = fps.to_i
+			end
+			opts.on("--fullscreen", "Fullscreen") do
+				self.fullscreen = true
+			end
+			opts.on("--window", "Window") do
+				self.fullscreen = false
+			end
+			opts.on("--system-mouse", "System Mouse") do
+				self.system_mouse = true
+			end
+			opts.on("--sprite-mouse", "Sprite Mouse") do
+				self.system_mouse = false
+			end
+			opts.on("--output-window", "Output Window on 2nd Display") do
+				self.use_output_window = true
+			end
+			opts.on("--borderless", "Borderless") do
+				self.border = false
+			end
+		end
+	end
 
 	def do_frame(time)
 		$engine.do_frame(time)

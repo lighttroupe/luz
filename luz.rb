@@ -1,94 +1,34 @@
 #!/usr/bin/env ruby
-
 ######################################################################################
-# Copyright 2015 Ian McIntosh <ian@openanswers.org> released under the GPL version 2 #
+# Copyright 2018 Ian McIntosh <ian@openanswers.org> released under the GPL version 2 #
 ######################################################################################
 
-if RUBY_VERSION[0] != '2'
-	puts "For Speed and Smoooth Flow, choose Ruby 2 (you are using #{RUBY_VERSION})"
-	exit
-else
-	puts "Using Ruby #{RUBY_VERSION}"
-end
+puts "Using Ruby #{RUBY_VERSION}#{" - WARNING: Intended for Ruby 2+" if RUBY_VERSION[0] == '1'}"
 
-APP_NAME = 'Luz 2'
-BASE_SET_PATH = 'base.luz'
+Dir.chdir(File.dirname(__FILE__))		# (so this file can be run from anywhere)
 
-Dir.chdir(File.dirname(__FILE__))	# So that this file can be run from anywhere
-$LOAD_PATH.unshift('./utils').unshift('.')
-$LOAD_PATH << './engine'
-$LOAD_PATH << './engine/user_object_settings'
+# load path
+$LOAD_PATH.unshift('./utils').unshift('./engine').unshift('./engine/user_object_settings').unshift('./gui').unshift('.')
 
+# requires
 require 'reloadable_require'
-multi_require 'optparse', 'sdl2', 'opengl', 'glu', 'addons/dir', 'syck'
-
-include GL
+multi_require 'sdl2', 'opengl', 'glu', 'pathname', 'optparse', 'syck'
+include GL		# (we use GL methods in many places)
 include GLU
+multi_require 'boolean_accessor', 'method_piping', 'settings', 'vector3', 'easy_accessor', 'value_animation', 'value_animation_states', 'addons/dir', 'addons/array', 'addons/class', 'addons/dir', 'addons/exception', 'addons/fixnum', 'addons/float', 'addons/gl', 'addons/hash', 'addons/integer', 'addons/kernel', 'addons/module', 'addons/nil', 'addons/object', 'addons/object_space', 'addons/string'
+multi_require 'constants', 'drawing', 'sdl_application', 'luz_performer', 'engine', 'pointer', 'pointer_mouse', 'gui_default'
 
-load_directory(File.join(Dir.pwd, 'utils', 'addons'), '**.rb')
-multi_require 'method_piping', 'boolean_accessor', 'constants', 'drawing', 'luz_performer', 'engine', 'settings', 'vector3'
-
-# GUI
-multi_require 'easy_accessor', 'value_animation', 'value_animation_states'
-$LOAD_PATH << './gui'
-multi_require 'pointer', 'pointer_mouse', 'gui_default'
-
-#
-# Begin App
-#
+# Settings file
 settings_directory_path = File.join(Dir.home, SETTINGS_DIRECTORY_NAME)
 FileUtils.mkdir_p(settings_directory_path) rescue Errno::EEXIST
-
 settings_file_path = File.join(settings_directory_path, SETTINGS_FILENAME)
-
 $settings = Settings.new.load(settings_file_path)
-
-# default settings (TODO: move elsewhere)
-$settings['value-animation-time'] ||= GuiSettingsWindow::DEFAULT_VALUE_ANIMATION_TIME
+$settings['value-animation-time'] ||= GuiSettingsWindow::DEFAULT_VALUE_ANIMATION_TIME		# TODO: move elsewhere
 $settings['gui-alpha'] ||= GuiSettingsWindow::DEFAULT_GUI_ALPHA
 $settings['recent-projects'] ||= []
 
+# Create Application
 $application = LuzPerformer.new(APP_NAME)
-
-options = OptionParser.new do |opts|
-	opts.banner = "Usage: luz.rb [options] [project.luz]"
-
-	opts.on("--width <width>", Integer, "Resolution width (eg. 800)") do |w|
-		$application.width = w
-	end
-	opts.on("--height <height>", Integer, "Resolution height (eg. 600)") do |h|
-		$application.height = h
-	end
-	opts.on("--bits-per-pixel <bpp>", Integer, "Bits per pixel (8, 16, 24, 32)") do |bpp|
-		$application.bits_per_pixel = bpp
-	end
-	opts.on("--frames-per-second <fps>", Integer, "Target FPS") do |fps|
-		$application.frames_per_second = fps.to_i
-	end
-	opts.on("--fullscreen", "Fullscreen") do
-		$application.fullscreen = true
-	end
-	opts.on("--window", "Window") do
-		$application.fullscreen = false
-	end
-	opts.on("--system-mouse", "System Mouse") do
-		$application.system_mouse = true
-	end
-	opts.on("--sprite-mouse", "Sprite Mouse") do
-		$application.system_mouse = false
-	end
-	opts.on("--output-window", "Output Window on 2nd Display") do
-		$application.use_output_window = true
-	end
-	opts.on("--borderless", "Borderless") do
-		$application.border = false
-	end
-end
-
-# Parse command line arguments
-options.parse!
-project_path = ARGV.pop		# last argument is optional project name
-
 $application.create
 
 # Create Luz Engine
@@ -96,26 +36,26 @@ $engine = Engine.new
 $engine.post_initialize		# TODO: add message bus ip/port params
 $engine.load_plugins
 
-# Engine callbacks
-USER_OBJECT_EXCEPTION_FORMAT = "#{'#' * 80}\nOops! The plugin shown below has caused an error and has stopped functioning:\n\n%s\nObject:%s\n#{'#' * 80}\n"
-$engine.on_user_object_exception { |object, exception| puts sprintf(USER_OBJECT_EXCEPTION_FORMAT, exception.report_format, object.title) }
-
 # Load Project
+project_path = ARGV.pop		# last argument is optional project name
 if project_path
 	$engine.load_from_path(project_path)
 else
 	$engine.project.append_from_path(BASE_SET_PATH)
 end
 
-$gui = GuiDefault.new
-$engine.on_new_project { $gui = GuiDefault.new }		# out with the old...
+# Create GUI
+create_gui = lambda { $gui = GuiDefault.new ; $gui.set_initial_state_from_project }
+$engine.on_new_project(&create_gui)
+create_gui.call
 
 # Go!
 begin
-	$gui.positive_message('Welcome to Luz 2.0')
+	$gui.positive_message("Welcome to #{APP_NAME}")
 	$application.run
 rescue Interrupt
 ensure
+	# ...done!
 	$settings.save
 	puts "\nThanks for playing with me! -Luz"
 end

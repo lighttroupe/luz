@@ -1,16 +1,17 @@
-require 'gui_pointer_behavior'
-require 'gui_selected_behavior'
+#
+# GuiObject is base class for all Gui objects
+#
+class GuiObject
+	include MethodsForUserObject
 
-module MethodsForGuiObject
 	include GuiPointerBehavior
-	include GuiSelectedBehavior
 	include ValueAnimation
 	include ValueAnimationStates
 	include Drawing
 
 	BACKGROUND_COLOR = [0.0,0.0,0.0,0.0]
 	BACKGROUND_COLOR_HOVERING = [1.0,1.0,1.0,0.25]
-	BACKGROUND_COLOR_SELECTED = [0.6,0.5,1.0,0.25]
+	BACKGROUND_COLOR_SELECTED = [0.6,0.5,1.0,0.15]
 	BACKGROUND_COLOR_SELECTED_AND_HOVERING = [0.8,0.7,1.0,0.25]
 
 	easy_accessor :parent, :offset_x, :offset_y, :float, :scale_x, :scale_y, :roll, :opacity, :color, :keyboard_focus_image, :background_image, :background_scale_x, :background_scale_y
@@ -38,6 +39,10 @@ module MethodsForGuiObject
 		!hidden?
 	end
 
+	def selected?
+		@parent && @parent.respond_to?(:child_is_selected?) && @parent.child_is_selected?(self)
+	end
+
 	#
 	# Keyboard focus
 	#
@@ -55,13 +60,14 @@ module MethodsForGuiObject
 	end
 
 	def on_key_press(value)
-		@parent.on_key_press(value) if @parent		# Default is to pass it up the heirarchy
+		@parent.on_key_press(value) if @parent		# pass it up the heirarchy
 	end
 
 	#
 	#
 	#
 	def gui_tick
+		# override
 	end
 
 	easy_accessor :skip_hit_test
@@ -152,13 +158,13 @@ module MethodsForGuiObject
 	end
 
 	def click(pointer)
-		@parent.click(pointer) if @parent			# Default is to pass it up the heirarchy		TODO: change this to "child_click" ? (see UserObject monkeypatching)
+		@parent.click(pointer) if @parent						# pass it up the heirarchy
 	end
 	def scroll_up!(pointer)
-		@parent.scroll_up!(pointer) if @parent			# Default is to pass it up the heirarchy
+		@parent.scroll_up!(pointer) if @parent			# pass it up the heirarchy
 	end
 	def scroll_down!(pointer)
-		@parent.scroll_down!(pointer) if @parent			# Default is to pass it up the heirarchy
+		@parent.scroll_down!(pointer) if @parent		# pass it up the heirarchy
 	end
 
 	def begin_drag(pointer)
@@ -207,12 +213,4 @@ module MethodsForGuiObject
 		return @parent.add_to_root(object) if @parent
 		self << object
 	end
-end
-
-#
-# Gui base class
-#
-class GuiObject
-	include MethodsForUserObject
-	include MethodsForGuiObject
 end

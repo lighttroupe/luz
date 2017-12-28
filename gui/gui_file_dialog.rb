@@ -1,5 +1,3 @@
-require 'pathname'
-
 #
 # GuiFileDialog is a file browser/chooser
 #

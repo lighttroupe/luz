@@ -1,5 +1,3 @@
-require 'gui_file_object'
-
 class GuiImageDialog < GuiFileDialog
 	def create!
 		super

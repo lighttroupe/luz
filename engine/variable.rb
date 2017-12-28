@@ -20,6 +20,10 @@ class Variable < ParentUserObject
 	#
 	# Instance methods
 	#
+	def new_renderer
+		GuiVariableRenderer.new(self)
+	end
+
 	def default_title
 		''		# 'New Variable' if basic mode ?
 	end

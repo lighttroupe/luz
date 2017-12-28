@@ -3,6 +3,13 @@ require 'user_object'
 class EventInput < ChildUserObject
 	attr_reader :current_value, :last_activation_time		# for use by plugins
 
+	def self.new_renderer
+		GuiUserObjectClassRenderer.new(self)
+	end
+	def new_renderer
+		GuiEventInputRenderer.new(self)
+	end
+
 	def after_load
 		set_default_instance_variables(:current_value => 0, :current_value_raw => false, :last_value => false, :last_activation_time => 0.0)
 		super

@@ -35,46 +35,48 @@ class GuiAddWindow < GuiBox
 	end
 
 	def on_key_press(key)
-		case key
-		when 'escape'
-			if searching?
-				end_search!
+		if key.control?
+			if key == 'e'
+				$engine.view_source(@selected_object) if @selected_object
 			else
-				hide!
+				super
 			end
-		when 'up'
-			@list.select_previous!
-			@list.scroll_to_selection!
-		when 'down'
-			@list.select_next!
-			@list.scroll_to_selection!
-		when 'left'
-			unless @categories.empty?
+		elsif key.alt?
+			if key == 'backspace'
 				end_search!
-				@category = @categories[(@categories.index(@category) - 1) % @categories.size]
-				fill_from_category!
-				select_first!
-			end
-		when 'right'
-			unless @categories.empty?
-				end_search!
-				@category = @categories[(@categories.index(@category) + 1) % @categories.size]
-				fill_from_category!
-				select_first!
-			end
-		when 'return'
-			if @selected_object
-				add_object(@selected_object)
 			end
 		else
-			if key.control?
-				if key == 'e'
-					$engine.view_source(@selected_object) if @selected_object
+			case key
+			when 'escape'
+				if searching?
+					end_search!
 				else
-					super
+					hide!
 				end
-			elsif key.alt? && key == 'backspace'
-				end_search!
+			when 'up'
+				@list.select_previous!
+				@list.scroll_to_selection!
+			when 'down'
+				@list.select_next!
+				@list.scroll_to_selection!
+			when 'left'
+				unless @categories.empty?
+					end_search!
+					@category = @categories[(@categories.index(@category) - 1) % @categories.size]
+					fill_from_category!
+					select_first!
+				end
+			when 'right'
+				unless @categories.empty?
+					end_search!
+					@category = @categories[(@categories.index(@category) + 1) % @categories.size]
+					fill_from_category!
+					select_first!
+				end
+			when 'return'
+				if @selected_object
+					add_object(@selected_object)
+				end
 			else
 				if searching?
 					search_was = @search
@@ -164,7 +166,8 @@ private
 			next unless (@category.nil? || object.in_category?(@category))
 
 			# wrap in a renderer
-			renderer = GuiObjectRenderer.new(object)		# NOTE: we unwrap this in a few places
+			renderer = object.new_renderer		# NOTE: we unwrap this in a few places
+			@list << renderer
 
 			# user selects an effect (class)
 			renderer.on_clicked {
@@ -174,8 +177,6 @@ private
 					@list.set_selection(renderer)
 				end
 			}
-
-			@list << renderer
 		}
 		@last_category = @category
 	end
@@ -185,7 +186,8 @@ private
 		matches = find_valid_effect_classes.select { |object| object.title.matches?(@search) }
 		matches.sort_by! { |object| object.title.length }
 		matches.each { |object|
-			renderer = GuiObjectRenderer.new(object)		# NOTE: we unwrap this in a few places
+			renderer = object.new_renderer
+			@list << renderer
 			renderer.on_clicked {
 				if @selected_object == object
 					add_object(@selected_object)
@@ -193,7 +195,6 @@ private
 					@list.set_selection(renderer)
 				end
 			}
-			@list << renderer
 		}
 		@list.set_selection(@list.first)
 	end
@@ -205,10 +206,10 @@ private
 
 	def choose_object(object)
 		@selected_object = object
-		create_for_object(object)
+		show_object_details(object)
 	end
 
-	def create_for_object(object)
+	def show_object_details(object)
 		@title.set_string(object.title)
 		@description.set_string(object.description)
 		@hint.set_string(object.hint)
@@ -219,7 +220,7 @@ private
 		new_object = object.new
 		new_object.after_load
 		add_notify(new_object)
-		end_search!		# ...
+		end_search!
 	end
 
 	def find_valid_effect_classes

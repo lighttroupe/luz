@@ -1,3 +1,6 @@
+#
+# GuiMainMenu is the main application menu with project options and quit
+#
 class GuiMainMenu < GuiWindow
 	callback :save, :close, :open, :new, :quit
 

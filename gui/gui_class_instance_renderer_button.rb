@@ -1,5 +1,3 @@
-require 'gui_object_renderer_button.rb'
-
 class GuiClassInstanceRendererButton < GuiObjectRendererButton
 	attr_reader :klass
 

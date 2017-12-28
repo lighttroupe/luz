@@ -1,3 +1,6 @@
+#
+# GuiToggle is a widget for editing booleans
+#
 class GuiToggle < GuiObject
 	callback :clicked
 	easy_accessor :image
@@ -11,7 +14,7 @@ class GuiToggle < GuiObject
 	end
 
 	#
-	# API
+	# Helpers
 	#
 	def get_value
 		@object.instance_variable_get(@method) == true
@@ -23,6 +26,14 @@ class GuiToggle < GuiObject
 
 	def on?
 		get_value
+	end
+
+	#
+	# Pointer
+	#
+	def click(pointer)
+		set_value(!get_value)
+		clicked_notify
 	end
 
 	#
@@ -38,14 +49,6 @@ class GuiToggle < GuiObject
 				}
 			}
 		}
-	end
-
-	#
-	# Pointer
-	#
-	def click(pointer)
-		set_value(!get_value)
-		clicked_notify
 	end
 end
 

@@ -1,4 +1,6 @@
-# base class for all Gui objects that show/edit a single instance variable on an object
+#
+# GuiValue is base class to all Gui objects that show/edit a single instance variable on an object
+#
 class GuiValue < GuiObject
 	def initialize(object, method)
 		super()

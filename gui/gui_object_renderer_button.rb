@@ -1,5 +1,3 @@
-require 'gui_button'
-
 class GuiObjectRendererButton < GuiButton
 	attr_accessor :object
 

@@ -7,6 +7,13 @@ class ActorEffect < ChildUserObject
 
 	attr_accessor :parent_user_object  	# set just before render time
 
+	def self.new_renderer
+		GuiUserObjectClassRenderer.new(self)
+	end
+	def new_renderer
+		GuiActorEffectRenderer.new(self)
+	end
+
 	def after_load
 		set_default_instance_variables(:enabled => true)
 		super

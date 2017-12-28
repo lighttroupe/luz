@@ -65,7 +65,7 @@ module Kernel
 		count = 0
 		paths = []		# collect and then sort to make load order consistent
 		Dir.new(path).each_matching_recursive(filter_pattern) { |filepath| paths << filepath }
-		paths.sort!.each { |filepath| count += 1 if reload_if_newer(filepath) }
+		paths.sort.each { |filepath| count += 1 if reload_if_newer(filepath) }
 		return count
 	end
 

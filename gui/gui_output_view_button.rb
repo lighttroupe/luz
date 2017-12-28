@@ -1,3 +1,6 @@
+#
+# GuiOutputViewButton glows while in output view
+#
 class GuiOutputViewButton < GuiButton
 	easy_accessor :background_image_on
 

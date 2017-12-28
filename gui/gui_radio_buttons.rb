@@ -1,3 +1,6 @@
+#
+# GuiRadioButtons are multiple buttons, with one 'on' at a time
+#
 class GuiRadioButton < GuiObject
 	ON_COLOR = [1,1,1,1]
 	OFF_COLOR = [1,1,1,0.5]

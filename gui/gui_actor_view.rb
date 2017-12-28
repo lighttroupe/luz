@@ -1,3 +1,6 @@
+#
+# GuiActorView is shown fullscreen when examining just one Actor
+#
 class GuiActorView < GuiBox
 	attr_accessor :actor
 

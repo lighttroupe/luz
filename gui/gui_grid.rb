@@ -55,15 +55,42 @@ class GuiGrid < GuiBox
 	end
 
 	def on_key_press(key)
-		case key
-		when 'up'
-			select_previous!(column_count)
-		when 'down'
-			select_next!(column_count)
-		when 'left'
-			select_previous!
-		when 'right'
-			select_next!
+		return super if key.control?
+
+		if key.alt?
+			case key
+			when 'up'
+				selection = @selection.first
+				move_child_up(selection, column_count) if selection
+			when 'down'
+				selection = @selection.first
+				move_child_down(selection, column_count) if selection
+			when 'left'
+				selection = @selection.first
+				move_child_up(selection) if selection
+			when 'right'
+				selection = @selection.first
+				move_child_down(selection) if selection
+			else
+				super
+			end
+		else
+			case key
+			when 'up'
+				select_previous!(column_count)
+				selection_grab_focus!
+			when 'down'
+				select_next!(column_count)
+				selection_grab_focus!
+			when 'left'
+				select_previous!
+				selection_grab_focus!
+			when 'right'
+				select_next!
+				selection_grab_focus!
+			else
+				super
+			end
 		end
 	end
 end

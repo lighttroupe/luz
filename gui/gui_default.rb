@@ -1,4 +1,4 @@
-multi_require 'gui_pointer_behavior', 'gui_object', 'gui_value', 'gui_label', 'gui_box', 'gui_window', 'gui_hbox', 'gui_vbox', 'gui_list', 'gui_scrollbar', 'gui_grid', 'gui_message_bar', 'gui_beat_monitor', 'gui_time_control', 'gui_button', 'gui_float', 'gui_toggle', 'gui_curve', 'gui_curve_increasing', 'gui_theme', 'gui_integer', 'gui_select', 'gui_actor', 'gui_director', 'gui_event', 'gui_variable', 'gui_font_select', 'gui_engine_button', 'gui_engine_slider', 'gui_radio_buttons', 'gui_object_renderer', 'gui_main_menu', 'gui_settings_window', 'gui_actor_view', 'gui_director_view', 'gui_user_object_editor', 'gui_delete_button', 'gui_enter_exit_button', 'gui_enter_exit_popup', 'gui_add_window', 'gui_interface', 'gui_actor_class_button', 'gui_director_menu', 'gui_actors_flyout', 'gui_variables_flyout', 'gui_message_bus_monitor', 'gui_file_dialog', 'gui_directory_dialog', 'gui_image_dialog', 'gui_confirmation_dialog', 'keyboard'
+multi_require 'gui_pointer_behavior', 'gui_object', 'gui_value', 'gui_string', 'gui_numeric', 'gui_label', 'gui_box', 'gui_window', 'gui_hbox', 'gui_vbox', 'gui_list', 'gui_list_select', 'gui_scrollbar', 'gui_grid', 'gui_message_bar', 'gui_beat_monitor', 'gui_time_control', 'gui_button', 'gui_float', 'gui_toggle', 'gui_curve', 'gui_curve_increasing', 'gui_theme', 'gui_integer', 'gui_select', 'gui_actor', 'gui_director', 'gui_event', 'gui_variable', 'gui_font_select', 'gui_engine_button', 'gui_engine_button_renderer', 'gui_engine_slider', 'gui_engine_slider_renderer', 'gui_radio_buttons', 'gui_object_renderer', 'gui_main_menu', 'gui_settings_window', 'gui_actor_view', 'gui_director_view', 'gui_user_object_editor', 'gui_delete_button', 'gui_enter_exit_button', 'gui_enter_exit_popup', 'gui_add_window', 'gui_interface', 'gui_director_menu', 'gui_actors_flyout', 'gui_variables_flyout', 'gui_message_bus_monitor', 'gui_file_dialog', 'gui_directory_dialog', 'gui_image_dialog', 'gui_confirmation_dialog', 'keyboard', 'gui_user_object_renderer', 'gui_user_object_class_renderer', 'gui_child_user_object_renderer', 'gui_project_effect_renderer', 'gui_actor_renderer', 'gui_actor_effect_renderer', 'gui_director_renderer', 'gui_event_renderer', 'gui_event_input_renderer', 'gui_variable_renderer', 'gui_variable_input_renderer', 'gui_curve_renderer', 'gui_curve_increasing_renderer', 'gui_theme_renderer', 'gui_style_renderer', 'gui_list_popup', 'gui_output_view_button', 'gui_actor_class_flyout', 'gui_director_edit_button', 'gui_director_view_button', 'cartesian_scaffolding', 'camera', 'gui_object_renderer_button', 'gui_file_object', 'gui_class_instance_renderer_button', 'gui_actor_class_button'
 load_directory(Dir.pwd + '/gui/addons/', '**.rb')		# Addons to existing objects
 
 class GuiDefault < GuiInterface
@@ -38,20 +38,17 @@ class GuiDefault < GuiInterface
 	def reload_notify
 		clear!
 		create!
+		set_initial_state_from_project
 	end
 
-	def set_initial_state
+	def set_initial_state_from_project
 		@user_object = nil					# this object the user is editing
 		@user_object_editor = nil		# editor widget (window)
 
 		# Auto-select first director
 		director = $engine.project.directors.first
-
-		# Hack to load project file format 1
-		director.actors = $engine.project.actors if director.actors.empty? && !$engine.project.actors.empty?
-
-		self.chosen_actor = nil
 		self.chosen_director = director
+		self.chosen_actor = nil
 		self.mode = :output
 	end
 
@@ -204,6 +201,17 @@ class GuiDefault < GuiInterface
 		}
 	end
 
+	def open_most_recent_project
+		save_changes_before {
+			path = $settings['recent-projects'].first
+			if $application.open_project(path)
+				# :D
+			else
+				negative_message 'Open Failed'
+			end
+		}
+	end
+
 	def save_changes_before
 		return yield unless $engine.project.changed?
 		body = $engine.project.change_count.plural("unsaved change", "unsaved changes")
@@ -317,8 +325,6 @@ class GuiDefault < GuiInterface
 
 		add_state(:closed, {:scale_x => 1.5, :scale_y => 1.5, :opacity => 0.0, :hidden => true})
 		set_state(:open, {:scale_x => 1.0, :scale_y => 1.0, :opacity => 1.0, :hidden => false})
-
-		set_initial_state
 	end
 
 	#
@@ -336,32 +342,13 @@ class GuiDefault < GuiInterface
 		hide_reopen_button!
 
 		case user_object				# "let's take a look at this ..."
-		when Director
-			if @directors_menu.visible?
-				# TODO: move this behavior to DirectorMenu !
-
-				# switch to director
-				unless self.chosen_director == user_object
-					self.chosen_director = user_object				# change scenery
-					clear_user_object_editor
-					return
-				end
-			else
-				return
-			end
 		when Actor
 			if editor_visible
 				@actor_view.actor = user_object
 				return
 			else
-				# Rule: cannot edit one actor while viewing a different one (so show this actor while editing)
+				 #Rule: cannot edit one actor while viewing a different one (so show this actor while editing)
 				@actor_view.actor = user_object if self.mode == :actor
-			end
-		when Variable, Event
-			if editor_visible && user_object == @user_object
-				# double click on variable/event
-				@user_object_editor.edit_title if @user_object_editor
-				return
 			end
 		end
 
@@ -380,8 +367,7 @@ class GuiDefault < GuiInterface
 		else
 			# tell editor its child was clicked (this is needed due to non-propagation of click messages: the user object gets notified, it tells us)
 			parent = @user_object if @user_object && @user_object.effects.include?(user_object)		# TODO: hacking around children not knowing their parents for easier puppetry
-			parent.on_child_user_object_selected(user_object) if parent		# NOTE: can't click a child if parent is not visible, but the 'if' doesn't hurt
-
+			@user_object_editor.gui_fill_settings_list(user_object) if parent
 			nil
 		end
 	end
@@ -533,11 +519,15 @@ class GuiDefault < GuiInterface
 			when 'f4'
 				self.mode = :none
 			when 'o'
-				open_project
+				if key.shift?
+					open_most_recent_project
+				else
+					open_project
+				end
 			when 'g'
 				toggle_gc_timing
-			#when 't'
-				#output_object_counts
+			when 'x'
+				output_object_counts
 				#ObjectSpace.each_object(Variable) { |variable| puts variable.title }
 			end
 		elsif key.alt?
@@ -619,6 +609,7 @@ class GuiDefault < GuiInterface
 				editor.remove_from_parent!
 				show_reopen_button! unless @user_object_editor
 			}
+			default_focus!
 		end
 		@last_user_object = @user_object
 		@user_object = nil
@@ -680,6 +671,7 @@ class GuiDefault < GuiInterface
 	# director menu
 	def open_directors_menu!
 		@directors_menu.switch_state({:closed => :open},durection=0.2)
+		@directors_menu.grab_keyboard_focus!
 	end
 	def close_directors_menu!
 		@directors_menu.switch_state({:open => :closed}, duration=0.1)
