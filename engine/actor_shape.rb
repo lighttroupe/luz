@@ -1,16 +1,12 @@
 class ActorShape < Actor
-	description 'Base class for shapes'
 	virtual
 
-	ORIGIN = [0.0, 0.0]
-
-	# TODO: of course this will come from the 'style' setting
-	#setting 'texture_method', :integer, :range => 1..2, :default => 1..2, :breaks_cache => true
+	description 'Base class for shapes'
 
 	attr_reader :shape
 
 	def render
-		shape { |options| render_with_options(options) }		# shape expected to return array of x,y pairs, or array of arrays: [x1,y1,x2,y2,...]
+		shape { |options| render_with_options(options) }		# shape expected to yield array of x,y pairs, or array of arrays: [x1,y1,x2,y2,...]
 	end
 
 	def render_with_options(options)
@@ -76,7 +72,6 @@ private
 		}
 		GLU.TessEndPolygon($tessalator)
 	end
-
 
 	def texture_coord(v)
 		v
