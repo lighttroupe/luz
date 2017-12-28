@@ -101,4 +101,18 @@ class Director < ParentUserObject
 			yield if block_given?
 		end
 	end
+
+	#
+	# cached rendering (for live previews)
+	#
+	def with_image
+		@offscreen_buffer.with_image { yield } if @offscreen_buffer
+	end
+
+	def update_offscreen_buffer!
+		@offscreen_buffer ||= get_offscreen_buffer(:medium)
+		#with_enter_exit_progress(@gui_enter_exit_progress) {
+			@offscreen_buffer.using { with_scale(0.625,1.0) { render! } }		# TODO: aspect ratio
+		#}
+	end
 end
