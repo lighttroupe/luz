@@ -3,6 +3,8 @@ multi_require 'parent_user_object', 'style'
 class Theme < ParentUserObject
 	title 'Theme'
 
+	attr_accessor :gui_render_styles_list
+
 	def new_renderer
 		GuiThemeRenderer.new(self)
 	end

@@ -8,14 +8,14 @@ class GuiThemeRenderer < GuiUserObjectRenderer
 	end
 
 	def clear_render_styles_cache!
-		GL.DestroyList(@gui_render_styles_list) if @gui_render_styles_list
-		@gui_render_styles_list = nil
+		GL.DestroyList(@object.gui_render_styles_list) if @object.gui_render_styles_list
+		@object.gui_render_styles_list = nil
 	end
 
 private
 
 	def gui_render_styles
-		@gui_render_styles_list = GL.RenderCached(@gui_render_styles_list) {
+		@object.gui_render_styles_list = GL.RenderCached(@object.gui_render_styles_list) {
 			if @object.effects.size > 8
 				num_rows = 4
 			else
