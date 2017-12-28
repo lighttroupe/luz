@@ -18,11 +18,6 @@ class Style < UserObject
 		''
 	end
 
-	def set_color(color)
-		self.color = color
-		self
-	end
-
 	def using
 		image.using {
 			with_color(color_setting.color) {		# TODO: seems to be a caching issue with using 'color' directly?
