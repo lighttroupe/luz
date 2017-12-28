@@ -3,8 +3,6 @@ multi_require 'user_object', 'actor_effect', 'color', 'drawing'
 class Actor < ParentUserObject
 	include Drawing
 
-	DEFAULT_X, DEFAULT_Y = 0.0, 0.0
-	DEFAULT_WIDTH, DEFAULT_HEIGHT = 1.0, 1.0
 	WIDTH, HEIGHT = 1.0, 1.0
 	RADIUS = 0.5 		# (used by children)
 
@@ -22,18 +20,11 @@ class Actor < ParentUserObject
 	#
 	empty_method :render, :with_canvas
 
-	attr_accessor :x, :y
-
-	def z
-		0.0		# Actors live in 2D.  This just makes us easy to work with. :)
-	end
-
-	def to_yaml_properties
-		super + ['@x', '@y']
+	def new_renderer
+		GuiActorRenderer.new(self)
 	end
 
 	def after_load
-		set_default_instance_variables(:x => DEFAULT_X, :y => DEFAULT_Y, :width => DEFAULT_WIDTH, :height => DEFAULT_HEIGHT, :enabled => true)
 		super
 		clear_cache
 	end
@@ -79,6 +70,18 @@ class Actor < ParentUserObject
 			}
 		}
 		$actor_render_stack.pop
+	end
+
+	#
+	# Offscreen rendering
+	#
+	def with_image
+		@offscreen_buffer.with_image { yield } if @offscreen_buffer		# otherwise doesn't yield
+	end
+
+	def update_offscreen_buffer!
+		@offscreen_buffer ||= get_offscreen_buffer(:medium)
+		@offscreen_buffer.using { render! }
 	end
 
 private
