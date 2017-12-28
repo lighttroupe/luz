@@ -8,8 +8,8 @@ class ProjectEffectDirectorCycle < ProjectEffect
 
 	setting 'directors', :directors, :summary => true
 
-	setting 'backwards', :event, :summary => '% back'
 	setting 'forwards', :event, :summary => '% forward'
+	setting 'backwards', :event, :summary => '% back'
 
 	setting 'crossfade_time', :timespan, :summary => true
 
