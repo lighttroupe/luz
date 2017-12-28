@@ -22,6 +22,6 @@ class	GuiEventRenderer < GuiUserObjectRenderer
 private
 
 	def label_width
-		9
+		8
 	end
 end
