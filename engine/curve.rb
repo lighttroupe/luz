@@ -5,6 +5,8 @@ class Curve < ParentUserObject
 
 	attr_reader :vector, :approximation
 
+	attr_accessor :gui_render_list
+
 	def new_renderer
 		GuiCurveRenderer.new(self)
 	end

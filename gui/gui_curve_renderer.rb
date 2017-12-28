@@ -20,7 +20,7 @@ private
 
 	def gui_render_curve
 		with_color(gui_icon_color) {
-			@gui_render_list = GL.RenderCached(@gui_render_list) {
+			@object.gui_render_list = GL.RenderCached(@object.gui_render_list) {
 				with_translation(-0.5, -0.5) {
 					vertices = []
 					GL.Begin(GL::TRIANGLE_STRIP)
