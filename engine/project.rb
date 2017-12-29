@@ -20,23 +20,17 @@ class Project < UserObject
 	OBJECT_SYMBOL_TO_CLASS = {:actors => Actor, :directors => Director, :themes => Theme, :curves => Curve, :variables => Variable, :events => Event, :effects => ProjectEffect}
 	CLASS_TO_OBJECT_SYMBOL = {Actor => :actors, Director => :directors, Theme => :themes, Curve => :curves, Variable => :variables, Event => :events, ProjectEffect => :effects}
 
-	attr_accessor *OBJECT_SYMBOLS
+	# readers
+	attr_reader *OBJECT_SYMBOLS
 
+	# writers
 	OBJECT_SYMBOLS.each { |name|
-		define_method(name) {
-			instance_variable_get('@' + name.to_s)
-		}
-
 		define_method(name.to_s + '=') { |value|
+			return if instance_variable_get('@' + name.to_s) == value
 			instance_variable_set('@' + name.to_s, value)
 			changed!
 		}
 	}
-
-	# For use by editor
-	def title
-		'Project Plugins'
-	end
 
 	attr_reader :path, :change_count, :missing_plugin_names, :effects
 
@@ -44,6 +38,11 @@ class Project < UserObject
 		@last_save_time = Time.now
 		clear
 		@missing_plugin_names = []
+	end
+
+	# (used by editor)
+	def title
+		'Project Plugins'
 	end
 
 	def clear
