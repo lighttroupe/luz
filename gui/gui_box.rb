@@ -42,11 +42,11 @@ class GuiBox < GuiObject
 	# Adding
 	#
 	def contents=(contents)
-		if @contents
+		if @contents && @contents.any?
 			unlink!
-			notify = true
+			notify = true			# NOTE: changing from empty doesn't notify
 		end
-		@contents = contents		# NOTE: points at list, doesn't copy it (list operations happen on the array we're showing)
+		@contents = contents
 		@contents.each { |gui_object| gui_object.parent = self }
 		contents_change_notify if notify
 	end
