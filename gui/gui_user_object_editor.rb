@@ -29,7 +29,7 @@ class GuiUserObjectEditor < GuiWindow
 			elsif key == 'n'
 				open_add_child_window!
 			elsif key == 'delete'
-				remove_selected
+				remove_selected_effect
 			else
 				super
 			end
@@ -118,7 +118,7 @@ class GuiUserObjectEditor < GuiWindow
 				selection = @gui_effects_list.selection.first
 				gui_fill_settings_list(selection.object) if selection
 			}
-			@gui_effects_list.on_contents_change { on_effects_list_contents_changed }
+			@gui_effects_list.on_contents_change { set_user_object_effects_from_gui! }
 
 			# ...scrollbar
 			@gui_effects_list_scrollbar = GuiScrollbar.new(@gui_effects_list).set(:scale_x => 0.025, :offset_x => -0.152, :offset_y => -0.03, :scale_y => 0.75)
@@ -140,7 +140,7 @@ class GuiUserObjectEditor < GuiWindow
 			# Remove button
 			box << (@remove_child_button=GuiButton.new.set(:scale_x => 0.05, :scale_y => 0.07, :offset_x => -0.31, :offset_y => -0.5 + 0.035, :background_image => $engine.load_image('images/buttons/remove.png'), :background_image_hover => $engine.load_image('images/buttons/remove-hover.png')))
 			@remove_child_button.on_clicked { |pointer|
-				remove_selected
+				remove_selected_effect
 			}
 
 			# Settings list
@@ -263,7 +263,7 @@ class GuiUserObjectEditor < GuiWindow
 		@gui_effects_list.grab_keyboard_focus! if @gui_effects_list
 	end
 
-	def on_effects_list_contents_changed
+	def set_user_object_effects_from_gui!
 		@user_object.effects = @gui_effects_list.map(&:object)
 		$engine.project_changed!
 	end
@@ -285,7 +285,7 @@ class GuiUserObjectEditor < GuiWindow
 		$engine.project_changed!
 	end
 
-	def remove_selected
+	def remove_selected_effect
 		@gui_effects_list.selection.each { |renderer|
 			@user_object.effects.delete(renderer.object)
 			@gui_effects_list.remove(renderer)
