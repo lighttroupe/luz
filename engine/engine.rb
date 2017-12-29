@@ -108,7 +108,7 @@ class Engine
 		command_line(GuiDefault::OPEN_RUBY_FILE_COMMAND, path)
 	end
 
-	def command_line(command, arguments)
+	def command_line(command, arguments='')
 		begin
 			open("|#{command} #{arguments}")
 			return true
