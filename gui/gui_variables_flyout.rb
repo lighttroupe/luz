@@ -92,23 +92,25 @@ class GuiVariablesFlyout < GuiWindow
 				end
 			when 'd'
 				if key.control?
-					if @events_list.keyboard_focus?
-						if (selected = @events_list.selection.first)
-							original = selected.object
-							duplicate = original.deep_clone_user_object
-							renderer = create_renderer_for_event(duplicate)
-							@events_list.add_after_selection(renderer)
-							@events_list.set_selection(renderer)
-						end
-					elsif @variables_list.keyboard_focus?
-						if (selected = @variables_list.selection.first)
-							original = selected.object
-							duplicate = original.deep_clone_user_object
-							renderer = create_renderer_for_variable(duplicate)
-							@variables_list.add_after_selection(renderer)
-							@variables_list.set_selection(renderer)
-						end
-					end
+					$gui.negative_message "duplicate not implemented"
+
+					#if @events_list.keyboard_focus?
+						#if (selected = @events_list.selection.first)
+							#original = selected.object
+							#duplicate = original.deep_clone_user_object
+							#renderer = create_renderer_for_event(duplicate)
+							#@events_list.add_after_selection(renderer)
+							#@events_list.set_selection(renderer)
+						#end
+					#elsif @variables_list.keyboard_focus?
+						#if (selected = @variables_list.selection.first)
+							#original = selected.object
+							#duplicate = original.deep_clone_user_object
+							#renderer = create_renderer_for_variable(duplicate)
+							#@variables_list.add_after_selection(renderer)
+							#@variables_list.set_selection(renderer)
+						#end
+					#end
 				end
 			else
 				super

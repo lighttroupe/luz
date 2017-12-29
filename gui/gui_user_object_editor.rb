@@ -235,14 +235,14 @@ class GuiUserObjectEditor < GuiWindow
 	end
 
 	def clone_selected
-		#$gui.positive_message "Clone...not implemented."
-		if (selected = @gui_effects_list.selection.first)
-			original = selected.object
-			duplicate = original.deep_clone_user_object
-			renderer = duplicate.new_renderer
-			@gui_effects_list.add_after_selection(renderer)
-			@gui_effects_list.set_selection(renderer)
-		end
+		$gui.negative_message "duplicate not implemented"
+		#if (selected = @gui_effects_list.selection.first)
+			#original = selected.object
+			#duplicate = original.deep_clone_user_object
+			#renderer = duplicate.new_renderer
+			#@gui_effects_list.add_after_selection(renderer)
+			#@gui_effects_list.set_selection(renderer)
+		#end
 	end
 
 	def hide!
