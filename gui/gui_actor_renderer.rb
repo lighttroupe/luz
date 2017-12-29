@@ -28,6 +28,10 @@ class	GuiActorRenderer < GuiUserObjectRenderer
 		@object.update_offscreen_buffer! if update_offscreen_buffer?
 	end
 
+	def label_width
+		8
+	end
+
 private
 
 	def update_offscreen_buffer?
