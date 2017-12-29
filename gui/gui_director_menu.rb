@@ -39,7 +39,7 @@ class GuiDirectorMenu < GuiWindow
 	end
 
 	def set_directors(directors)
-		directors.each { |director| @grid << create_renderer_for_director(director) }
+		@grid.contents = directors.map { |director| create_renderer_for_director(director) }
 	end
 
 	def grab_keyboard_focus!
@@ -110,6 +110,22 @@ class GuiDirectorMenu < GuiWindow
 private
 
 	def update_grid_size!
-		@grid.min_columns = (@grid.count > 9) ? (@grid.count > 16 ? 5 : 4) : 3
+		@grid.min_columns = choose_column_count
+	end
+
+	def choose_column_count
+		if @grid.count > 49
+			8
+		elsif @grid.count > 36
+			7
+		elsif @grid.count > 25
+			6
+		elsif @grid.count > 16
+			5
+		elsif @grid.count > 9
+			4
+		else
+			3
+		end
 	end
 end

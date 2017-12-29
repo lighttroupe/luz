@@ -109,11 +109,7 @@ class GuiActorsFlyout < GuiWindow
 	end
 
 	def actors=(actors)
-		@actors_list.clear!
-		actors.each { |actor|
-			renderer = create_renderer_for_actor(actor)
-			@actors_list << renderer
-		}
+		@actors_list.contents = actors.map { |actor| create_renderer_for_actor(actor) }
 	end
 
 	def remove(actor)
