@@ -43,8 +43,9 @@ class ProjectEffectScreenCapture < ProjectEffect
 			# Run 'convert' in another process
 			# Use 'nice' at maximum niceness to help prevent disruption - TODO: run all conversions at shutdown time?
 			cmd = "nice -n 19 convert -flip -depth 8 -size #{$application.width}x#{$application.height} rgb:\"#{raw_filepath}\" \"#{output_filepath}\" ; rm \"#{raw_filepath}\""
-			puts "executing: #{cmd}"
-			open("|#{cmd}")
+			#puts "executing: #{cmd}"
+			$engine.command_line(cmd)
+			#open("|#{cmd}")
 		else
 			puts "compressing screen capture in-process (HINT: install the ImageMagick 'convert' application for faster screenshots)" unless @warned
 			@warned = true

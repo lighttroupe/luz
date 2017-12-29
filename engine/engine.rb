@@ -105,7 +105,17 @@ class Engine
 
 	def view_source(object)
 		path = object.source_file_path
-		open("|#{GuiDefault::OPEN_RUBY_FILE_COMMAND} #{path}")
+		command_line(GuiDefault::OPEN_RUBY_FILE_COMMAND, path)
+	end
+
+	def command_line(command, arguments)
+		begin
+			open("|#{command} #{arguments}")
+			return true
+		rescue Errno::ENOENT
+			$gui.negative_message "Command '#{command}' not found."
+		end
+		false
 	end
 
 private

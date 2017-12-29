@@ -715,28 +715,25 @@ class GuiDefault < GuiInterface
 	# External Apps
 	#
 	def launch_input_manager
-		begin
-			open("|#{INPUT_MANAGER_COMMAND}")
+		if $engine.command_line(INPUT_MANAGER_COMMAND)
 			positive_message "Launching Input Manager"
-		rescue
+		else
 			negative_message "Launching Input Manager Failed"
 		end
 	end
 
 	def launch_spectrum_analyzer
-		begin
-			open("|#{SPECTRUM_ANALYZER_COMMAND}")
+		if $engine.command_line(SPECTRUM_ANALYZER_COMMAND)
 			positive_message "Launching Spectrum Analyzer"
-		rescue
-			positive_message "Launching Spectrum Analyzer Failed"
+		else
+			negative_message "Launching Spectrum Analyzer Failed"
 		end
 	end
 
 	def launch_project_directory_browser
 		negative_message('Save Project First') and return unless $engine.project.path
 		directory = File.dirname($engine.project.path)
-		cmd = "#{OPEN_DIRECTORY_COMMAND} #{directory}"
-		open("|#{cmd}")
+		$engine.command_line(OPEN_DIRECTORY_COMMAND, directory)
 	end
 
 	#
