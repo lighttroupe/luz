@@ -443,8 +443,11 @@ class GuiDefault < GuiInterface
 	def keyboard
 		@keyboard ||= Keyboard.new(self)
 	end
-	def raw_keyboard_input(value)		# raw SDL value
-		keyboard.raw_keyboard_input(value)
+	def raw_key_down(value)
+		keyboard.raw_key_down(value)
+	end
+	def raw_key_up(value)
+		keyboard.raw_key_up(value)
 	end
 	def grab_keyboard_focus(object=nil, &proc)
 		keyboard.grab(object, &proc)

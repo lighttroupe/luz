@@ -1,4 +1,4 @@
-	class UserObjectSettingFloat
+class UserObjectSettingFloat
 	attr_accessor :min, :max, :enable_enter_animation, :enable_exit_animation
 
 	pipe :grab_keyboard_focus, :vbox
@@ -32,8 +32,14 @@
 
 				@animation_widgets = [@animation_curve_widget, @animation_max_widget, @animation_every_text, @animation_repeat_number_widget, @animation_repeat_unit_widget]
 
-				@enable_animation_toggle.on_clicked_with_init {
+				@enable_animation_toggle.on_clicked_with_init { |pointer|
 					if @enable_animation_toggle.on?
+						# shift-click auto-copies min -> max, meaning no actual animation
+						if pointer && $gui.keyboard.shift_down?
+							@animation_max = @animation_min
+							$engine.project_changed!
+						end
+
 						@animation_widgets.each_with_index { |widget, index| widget.animate(ENABLED_SETTINGS_STYLE, duration = (0.05 + (index * 0.3))) }
 					else
 						@animation_widgets.each_with_index { |widget, index| widget.animate(DISABLED_SETTINGS_STYLE, duration = (0.2)) }
@@ -85,8 +91,14 @@
 
 			@activation_widgets = [@activation_curve_widget, @activation_value_widget, @activation_direction_widget, @activation_when_text, @activation_variable_widget, @new_activation_variable_button]
 
-			@enable_activation_toggle.on_clicked_with_init {
+			@enable_activation_toggle.on_clicked_with_init { |pointer|
 				if @enable_activation_toggle.on?
+					# shift-click auto-copies min -> activation, meaning no actual activation
+					if pointer && $gui.keyboard.shift_down?
+						@activation_value = @animation_min
+						$engine.project_changed!
+					end
+
 					@activation_widgets.each_with_index { |widget, index| widget.animate(ENABLED_SETTINGS_STYLE, duration = (0.05 + (index * 0.3))) }
 				else
 					@activation_widgets.each_with_index { |widget, index| widget.animate(DISABLED_SETTINGS_STYLE, duration = (0.2)) }

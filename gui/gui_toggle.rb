@@ -33,7 +33,7 @@ class GuiToggle < GuiObject
 	#
 	def click(pointer)
 		set_value(!get_value)
-		clicked_notify
+		clicked_notify(pointer)
 	end
 
 	#

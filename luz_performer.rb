@@ -106,12 +106,13 @@ private
 			key_name = SDL2::Key.name_of(event.sym)
 			button_name = sdl_to_luz_button_name(key_name)
 			$engine.on_button_down(button_name, 1)	# 1 is frame_offset: use it on the coming frame
-			$gui.raw_keyboard_input(sdl_to_gui_key(key_name, event))
+			$gui.raw_key_down(sdl_to_gui_key(key_name, event))
 
 		when SDL2::Event::KeyUp
 			key_name = SDL2::Key.name_of(event.sym)
 			button_name = sdl_to_luz_button_name(key_name)
 			$engine.on_button_up(button_name, 1)		# 1 is frame_offset: use it on the coming frame
+			$gui.raw_key_up(sdl_to_gui_key(key_name, event))
 
 		when SDL2::Event::Quit
 			finished!

@@ -1,9 +1,18 @@
 class Keyboard
+	SHIFT_KEYS = ['left shift', 'right shift']
+	boolean_accessor :shift_down
+
 	def initialize(gui)
 		@gui = gui
 	end
 
-	def raw_keyboard_input(key)
+	def raw_key_up(key)
+		@shift_down = false if SHIFT_KEYS.include?(key)
+	end
+
+	def raw_key_down(key)
+		@shift_down = true if SHIFT_KEYS.include?(key)
+
 		if @grab_proc
 			#$gui.positive_message "proc"
 			@grab_proc.call(key)
