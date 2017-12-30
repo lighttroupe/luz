@@ -105,7 +105,11 @@ class GuiActorsFlyout < GuiWindow
 	end
 
 	def create_renderer_for_actor(actor)
-		GuiActorRenderer.new(actor).set(:draggable => true, :background_image => $engine.load_image('images/overlay.png'))
+		renderer = GuiActorRenderer.new(actor).set(:draggable => true, :background_image => $engine.load_image('images/overlay.png'))
+		renderer.on_clicked {
+			$gui.build_editor_for(actor, :grab_keyboard_focus => true)		# NOTE: undoing above wrapping
+		}
+		renderer
 	end
 
 	def actors=(actors)
