@@ -12,7 +12,7 @@ module EngineTime
 		@frame_time_delta = @frame_time - @last_frame_time
 
 		# Engine time (modified by simulation speed)
-		@time_delta = (@simulation_speed * (@frame_time_delta)) + @add_to_engine_time
+		@time_delta = (@simulation_speed * @frame_time_delta) + @add_to_engine_time
 		@time += @time_delta
 		@add_to_engine_time = 0.0
 	end
