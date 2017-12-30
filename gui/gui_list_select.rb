@@ -66,7 +66,7 @@ private
 		renderers = list
 		popup = GuiListPopup.new(pointer).set(:offset_x => pointer.x, :offset_y => pointer.y, :scale_x => 0.0, :scale_y => 0.0, :item_aspect_ratio => item_aspect_ratio).
 			set_objects(renderers).
-			animate({:scale_x => 0.2, :scale_y => 0.6}, duration=0.15)
+			animate({:scale_x => 0.18, :scale_y => 0.6}, duration=0.15)
 		popup.on_selected { |object|
 			set_value(object)
 		}
