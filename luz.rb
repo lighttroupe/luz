@@ -27,9 +27,14 @@ $settings['value-animation-time'] ||= GuiSettingsWindow::DEFAULT_VALUE_ANIMATION
 $settings['gui-alpha'] ||= GuiSettingsWindow::DEFAULT_GUI_ALPHA
 $settings['recent-projects'] ||= []
 
+if ARGV.last.to_s.include?(Project::FILE_EXTENSION_WITH_DOT)
+	project_path = ARGV.pop		# last argument is optional project name
+end
+
 # Create Application
 $application = LuzPerformer.new(APP_NAME)
-$application.create
+$application.parse_command_line_options
+$application.init_video
 
 # Create Luz Engine
 $engine = Engine.new
@@ -37,7 +42,6 @@ $engine.post_initialize		# TODO: add message bus ip/port params
 $engine.load_plugins
 
 # Load Project
-project_path = ARGV.pop		# last argument is optional project name
 if project_path
 	$engine.load_from_path(project_path)
 else

@@ -23,9 +23,9 @@ class SDLApplication
 		@frames_per_second = 60
 	end
 
-	def create
+	def init_video
 		init_sdl
-		create_windows
+		create_sdl_windows
 	end
 
 	def toggle_fullscreen!
@@ -129,7 +129,7 @@ private
 		SDL2::Mouse::Cursor.hide
 	end
 
-	def create_windows
+	def create_sdl_windows
 		#SDL2.setGLAttr(SDL2::GL_STENCIL_SIZE, 8) if @stencil_buffer		UPGRADE
 		#@screen = SDL2.set_video_mode(@width, @height, @bits_per_pixel, sdl_video_mode_flags)
 
@@ -137,14 +137,18 @@ private
 		@context = SDL2::GL::Context.create(@window)
 
 		displays = SDL2::Display.displays
-		if displays.count > 1 && use_output_window?
-			output_window_display = displays[1]
-			bounds = output_window_display.bounds
+		if use_output_window?
+			if displays.count > 1
+				output_window_display = displays[1]
+				bounds = output_window_display.bounds
 
-			SDL2::GL.set_attribute(SDL2::GL::SHARE_WITH_CURRENT_CONTEXT, 1)
-			p ["swap interval", SDL2::GL.swap_interval]
-			SDL2::GL.swap_interval = 0
-			@output_window = SDL2::Window.create(@name + " Output", bounds.x, bounds.y, bounds.w, bounds.h, sdl_output_window_video_mode_flags)
+				SDL2::GL.set_attribute(SDL2::GL::SHARE_WITH_CURRENT_CONTEXT, 1)
+				puts "Swap interval in #{SDL2::GL.swap_interval}"
+				SDL2::GL.swap_interval = 0
+				@output_window = SDL2::Window.create(@name + " Output", bounds.x, bounds.y, bounds.w, bounds.h, sdl_output_window_video_mode_flags)
+			else
+				puts "Output Window option requires multiple displays (only one display detected)"
+			end
 		end
 
 		#@context.make_current(@output_window) if @output_window
