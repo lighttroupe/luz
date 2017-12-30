@@ -28,12 +28,6 @@ class SDLApplication
 		create_sdl_windows
 	end
 
-	def toggle_fullscreen!
-		@fullscreen = !@fullscreen
-		create_windows
-		init_gl_viewport
-	end
-
 	#
 	# Main Loop
 	#

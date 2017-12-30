@@ -499,8 +499,8 @@ class GuiDefault < GuiInterface
 				unless hide_something!
 					reshow_latest!
 				end
-			when 'return'
-				$application.toggle_fullscreen!
+			#when 'return'
+				#$application.toggle_fullscreen!
 			when 'b'
 				toggle_beat_monitor!
 			when 't'
