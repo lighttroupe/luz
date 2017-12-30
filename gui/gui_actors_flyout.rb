@@ -80,9 +80,11 @@ class GuiActorsFlyout < GuiWindow
 		}
 	end
 
+	NEW_ACTOR_FADE_SETTING = 'actors-begin-faded'
 	def new_actor_with_defaults(klass)
 		actor = klass.new
-		if false
+
+		if $settings[NEW_ACTOR_FADE_SETTING]
 			fade = ActorEffectFade.new
 			fade.amount_setting.animation_min = 1.0
 			actor.effects << fade

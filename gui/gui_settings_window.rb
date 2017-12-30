@@ -26,12 +26,14 @@ class GuiSettingsWindow < GuiWindow
 		self << GuiFloat.new(self, :value_animation_time, VALUE_ANIMATION_TIME_MIN, VALUE_ANIMATION_TIME_MAX, digits=1).set(:width => 3, :offset_x => -0.45, :scale_x => 0.1, :offset_y => 0.345, :scale_y => 0.05)
 		self << GuiLabel.new.set_string("seconds").set(:color => [0.35,0.35,0.35], :width => 5, :text_align => :right, :scale_x => 0.15, :scale_y => 0.03, :offset_x => -0.39, :offset_y => 0.31)
 
+		# Interface Alpha
 		self << GuiLabel.new.set_string("Interface Alpha").set(:width => 13, :text_align => :left, :scale_x => 0.5, :scale_y => 0.06, :offset_x => -0.13, :offset_y => 0.23)
 		self << GuiFloat.new(self, :gui_alpha, GUI_ALPHA_MIN, GUI_ALPHA_MAX, digits=2).set(:width => 3, :offset_x => -0.45, :scale_x => 0.1, :offset_y => 0.23, :scale_y => 0.05)
 
-		# default to value animation
-		#self << GuiLabel.new.set_string("Animate Value Changes").set(:width => 13, :text_align => :right, :scale_x => 0.5, :scale_y => 0.06, :offset_x => -0.25, :offset_y => 0.41)
-		#self << GuiToggle.new(self, :live_editing).set(:offset_x => 0.05, :scale_x => 0.05, :offset_y => 0.40, :scale_y => 0.05)
+		# Actors begin Faded
+		self << GuiLabel.new.set_string("Actors begin Faded").set(:width => 13, :text_align => :left, :scale_x => 0.5, :scale_y => 0.06, :offset_x => -0.13, :offset_y => 0.11)
+		#self << GuiFloat.new(self, :gui_alpha, GUI_ALPHA_MIN, GUI_ALPHA_MAX, digits=2).set(:width => 3, :offset_x => -0.45, :scale_x => 0.1, :offset_y => 0.23, :scale_y => 0.05)
+		self << GuiToggle.new(self, :actors_begin_faded).set(:offset_x => -0.45, :scale_x => 0.1, :offset_y => 0.11, :scale_y => 0.05)
 	end
 
 	def frames_per_second
@@ -62,5 +64,13 @@ class GuiSettingsWindow < GuiWindow
 	def gui_alpha=(value)
 		$gui.gui_alpha = value
 		$settings['gui-alpha'] = value
+	end
+
+	def actors_begin_faded
+		$settings['actors-begin-faded'] || false
+	end
+	def actors_begin_faded=(value)
+		p 'trues'
+		$settings['actors-begin-faded'] = value
 	end
 end
