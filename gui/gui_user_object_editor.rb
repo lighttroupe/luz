@@ -198,7 +198,7 @@ class GuiUserObjectEditor < GuiWindow
 
 		# only while event
 		conditions_container << @gui_child_conditions_enable_event = GuiToggle.new(user_object.conditions, :enable_event).set(:scale_x => 0.035, :float => :left)
-		conditions_container << @gui_child_conditions_event_invert = GuiToggle.new(user_object.conditions, :event_invert).set(:scale_x => 0.035, :float => :left)
+		conditions_container << @gui_child_conditions_event_invert = GuiToggle.new(user_object.conditions, :event_invert).set(:scale_x => 0.035, :float => :left, :background_image => $engine.load_image('images/buttons/invert-event.png'))
 		conditions_container << @gui_child_conditions_event = GuiEvent.new(user_object.conditions, :event).set(:scale_x => 0.4, :float => :left, :item_aspect_ratio => 5.0)
 
 		# only applying to children 2-4
