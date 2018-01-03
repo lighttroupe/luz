@@ -1,6 +1,6 @@
 class	GuiChildUserObjectRenderer < GuiUserObjectRenderer
-	LABEL_CHILD_INDEX_RANGE_COLOR = [1,1,0]
-	LABEL_CHILD_SUMMARY_COLOR = [0.9,0.9,1]
+	LABEL_CHILD_INDEX_RANGE_COLOR = [0,1,0]
+	LABEL_CHILD_SUMMARY_COLOR = [1,1,0]
 
 	#
 	# class level
@@ -38,7 +38,7 @@ private
 	end
 
 	def gui_render_label
-		with_translation(0.0, 0.25) {
+		with_translation(0.0, 0.24) {
 			with_scale(0.8, 0.7) {
 				super
 			}
@@ -46,35 +46,26 @@ private
 	end
 
 	def gui_render_summary
-		@summary_label ||= GuiLabel.new.set(:text_align => :left, :width => 16)
-		settings_summary = @object.settings_summary.join(',')
+		@summary_label ||= GuiLabel.new.set(:text_align => :left, :width => 16, :offset_y => -0.25, :scale_x => 0.8, :scale_y => 0.45, :color => LABEL_CHILD_SUMMARY_COLOR)
+		settings_summary = @object.settings_summary.join('  ')
 		@summary_label.set_string(settings_summary)
-
-		with_translation(0.0, -0.3) {
-			with_scale(0.8, 0.4) {
-				with_color(LABEL_CHILD_SUMMARY_COLOR) {
-					@summary_label.gui_render
-				}
-			}
-		}
+		@summary_label.gui_render
 	end
 
 	def gui_render_child_conditions
 		if @object.conditions.enable_child_index
 			#@conditions_index_range_label = nil
-			@conditions_index_range_label ||= GuiLabel.new.set(:text_align => :right, :width => 8, :scale_x => 0.45, :scale_y => 0.45)
-			with_translation(0.25, 0.3) {
-				with_color(LABEL_CHILD_INDEX_RANGE_COLOR) {
-					if (@cached_child_number_min != @object.conditions.child_number_min) || (@cached_child_number_max != @object.conditions.child_number_max)
-						@cached_child_number_min, @cached_child_number_max = @object.conditions.child_number_min, @object.conditions.child_number_max
-						if @cached_child_number_min == @cached_child_number_max
-							@conditions_index_range_label.set_string("child #{@cached_child_number_min}")
-						else
-							@conditions_index_range_label.set_string("#{@cached_child_number_min}-#{@cached_child_number_max}")
-						end
+			@conditions_index_range_label ||= GuiLabel.new.set(:text_align => :right, :width => 8, :scale_x => 0.45, :scale_y => 0.45, :color => LABEL_CHILD_INDEX_RANGE_COLOR)
+			with_translation(0.25, 0.25) {
+				if (@cached_child_number_min != @object.conditions.child_number_min) || (@cached_child_number_max != @object.conditions.child_number_max)
+					@cached_child_number_min, @cached_child_number_max = @object.conditions.child_number_min, @object.conditions.child_number_max
+					if @cached_child_number_min == @cached_child_number_max
+						@conditions_index_range_label.set_string("child #{@cached_child_number_min}")
+					else
+						@conditions_index_range_label.set_string("#{@cached_child_number_min}-#{@cached_child_number_max}")
 					end
-					@conditions_index_range_label.gui_render
-				}
+				end
+				@conditions_index_range_label.gui_render
 			}
 		end
 	end
@@ -84,7 +75,7 @@ private
 	end
 
 	def enable_checkbox
-		@enable_checkbox ||= GuiToggle.new(@object, :enabled).set(:offset_x => -0.45, :offset_y => 0.0, :scale_x => 0.09, :scale_y => 0.9)
+		@enable_checkbox ||= GuiToggle.new(@object, :enabled).set(:offset_x => -0.45, :offset_y => 0.10, :scale_x => 0.09, :scale_y => 0.8)
 	end
 
 	def label_color
