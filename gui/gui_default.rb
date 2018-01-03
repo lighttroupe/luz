@@ -62,7 +62,16 @@ class GuiDefault < GuiInterface
 	#
 	# open/close
 	#
+	def open?
+		in_state?(:open)
+	end
+
 	def toggle!
+		if open?
+			$application.hide_mouse
+		else
+			$application.show_mouse
+		end
 		switch_state({:open => :closed, :closed => :open}, duration=0.35)
 	end
 

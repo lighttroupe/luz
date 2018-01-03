@@ -96,6 +96,15 @@ class SDLApplication
 		image.write(path)
 	end
 
+	def hide_mouse
+		# NOTE: using a blank cursor works better than SDL2::Mouse.hide with Wacom tablets
+		#SDL2::Mouse.setCursor(SDL2::Surface.new(8,8,8,0,0,0,0),1,1,0,1,0,0)
+		SDL2::Mouse::Cursor.hide
+	end
+	def show_mouse
+		SDL2::Mouse::Cursor.show
+	end
+
 private
 
 	def init_sdl
@@ -115,12 +124,6 @@ private
 
 		# Mouse
 		hide_mouse unless system_mouse?
-	end
-
-	def hide_mouse
-		# NOTE: using a blank cursor works better than SDL2::Mouse.hide with Wacom tablets
-		#SDL2::Mouse.setCursor(SDL2::Surface.new(8,8,8,0,0,0,0),1,1,0,1,0,0)
-		SDL2::Mouse::Cursor.hide
 	end
 
 	def create_sdl_windows
