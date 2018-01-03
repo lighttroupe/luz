@@ -1,4 +1,6 @@
 class ActorEffectPixelGlowMap < ActorEffect
+	virtual		# deprecated, not useful
+
 	title				"Pixel Glow Map"
 	description "Uses chosen image to add to (or subtact from) actor's pixel values."
 
