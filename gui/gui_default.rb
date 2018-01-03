@@ -101,6 +101,10 @@ class GuiDefault < GuiInterface
 	pipe [:chosen_actor=], :actor_view, :method => :actor=
 	pipe [:chosen_director], :director_view, :method => :director
 
+	def chosen_user_object
+		@user_object
+	end
+
 	def chosen_director=(director)
 		@director_view.director = director
 		@actors_flyout.actors = director.actors
@@ -519,7 +523,12 @@ class GuiDefault < GuiInterface
 			when '.'
 				$engine.beat_double_time!
 			when 'r'
+				director = chosen_director
+				user_object = chosen_user_object
 				$application.reload_code!
+				$gui.chosen_director = director
+				$gui.build_editor_for(user_object) if user_object
+				$gui.default_focus!
 			when 's'
 				save_project
 			when 'f1'
