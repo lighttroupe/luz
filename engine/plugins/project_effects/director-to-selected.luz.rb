@@ -8,7 +8,7 @@ class ProjectEffectDirectorToSelected < ProjectEffect
 
 	setting 'starting_director', :director
 
-	setting 'forwards', :event, :summary => '% forward'
+	setting 'forwards', :event, :summary => true
 
 	setting 'crossfade_time', :timespan, :summary => true
 
