@@ -95,7 +95,7 @@ class GuiDefault < GuiInterface
 	def chosen_director=(director)
 		@director_view.director = director
 		@actors_flyout.actors = director.actors
-		self.mode = :director
+		self.mode = :director if self.mode == :actor		# can't view one director's actor while viewing another director
 		clear_user_object_editor
 		close_directors_menu!
 	end
