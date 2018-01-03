@@ -203,6 +203,8 @@ class UserObject
 	end
 
 	def settings_summary
-		@settings.collect_non_nil { |setting| setting.summary }
+		settings.map { |setting|
+			setting.summary
+		}.compact
 	end
 end
