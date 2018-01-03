@@ -98,8 +98,8 @@ class GuiActorsFlyout < GuiWindow
 	end
 
 	def on_list_selection_change
-		return unless (selection = @actors_list.selection.first)
-		$gui.build_editor_for(selection.object, :grab_keyboard_focus => true)		# NOTE: undoing above wrapping
+		#return unless (selection = @actors_list.selection.first)
+		#$gui.build_editor_for(selection.object, :grab_keyboard_focus => true)		# NOTE: undoing above wrapping
 	end
 	def on_list_contents_changed
 		$gui.chosen_director.actors = @actors_list.map(&:object) if $gui.chosen_director
