@@ -11,8 +11,8 @@ class GuiObject
 
 	BACKGROUND_COLOR = [0.0,0.0,0.0,0.0]
 	BACKGROUND_COLOR_HOVERING = [1.0,1.0,1.0,0.25]
-	BACKGROUND_COLOR_SELECTED = [0.6,0.5,1.0,0.15]
-	BACKGROUND_COLOR_SELECTED_AND_HOVERING = [0.8,0.7,1.0,0.25]
+	BACKGROUND_COLOR_SELECTED = [0.6,0.5,1.0,0.35]
+	BACKGROUND_COLOR_SELECTED_AND_HOVERING = [0.8,0.7,1.0,0.45]
 
 	easy_accessor :parent, :offset_x, :offset_y, :float, :scale_x, :scale_y, :roll, :opacity, :color, :keyboard_focus_image, :background_image, :background_scale_x, :background_scale_y
 	boolean_accessor :hidden
