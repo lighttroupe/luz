@@ -523,12 +523,7 @@ class GuiDefault < GuiInterface
 			when '.'
 				$engine.beat_double_time!
 			when 'r'
-				director = chosen_director
-				user_object = chosen_user_object
-				$application.reload_code!
-				$gui.chosen_director = director
-				$gui.build_editor_for(user_object) if user_object
-				$gui.default_focus!
+				reload!
 			when 's'
 				save_project
 			when 'f1'
@@ -573,6 +568,17 @@ class GuiDefault < GuiInterface
 				end
 			end
 		end
+	end
+
+	def reload!
+		director = chosen_director
+		user_object = chosen_user_object
+		mode = self.mode
+		$application.reload_code!
+		$gui.chosen_director = director
+		self.mode = mode
+		$gui.build_editor_for(user_object) if user_object
+		$gui.default_focus!
 	end
 
 	def default_focus!
