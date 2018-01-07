@@ -26,19 +26,17 @@ Luz is written in Ruby and offloads all the heavy pixel pushing to ffmpeg, OpenG
 
 The Luz 2.0 interface was designed in Inkscape and the source SVGs are in the gui/images directory.
 
-[![Code Climate](https://codeclimate.com/github/lighttroupe/luz.png)](https://codeclimate.com/github/lighttroupe/luz)
+## Video Tutorials
+
+Here are some Luz 1 videos and tutorials (all the same concepts apply, only the interface is different):
+
+<https://www.youtube.com/user/superlighttube/videos?flow=grid&sort=da&view=0>
 
 ## The Luz Project consists of:
 
 - **Luz 2**: fullscreen motion graphics editor and performer (Ruby, OpenGL, SDL, OSC input)
 - **Luz Input Manager**: sends live input device data to Luz (C++, Gtk, libwiimote, SDL Input, OSC out)
 - **Luz Spectrum Analyzer**: sends live audio information to Luz (C++, Gtk, OpenGL, FFTW, OSC out)
-
-## Video Tutorials
-
-Here are some Luz 1 videos and tutorials (all the same concepts apply, only the interface is different):
-
-<https://www.youtube.com/user/superlighttube/videos?flow=grid&sort=da&view=0>
 
 # Installing Luz
 
@@ -61,3 +59,11 @@ Luz currently only runs on Linux.  (Help is welcome porting it to OSX and Window
 2. Run **make** in the root directory to build Input Manager and Spectrum Analyzer.
 
 3. Ctrl-F9 and Ctrl-F10 from within Luz launch the apps.
+
+## Luz Source Code
+
+Luz has simple, beautiful source code.  It's a good way to learn programming with Ruby.  Ruby is the most beautiful programming language!
+
+[![Code Climate](https://codeclimate.com/github/lighttroupe/luz.png)](https://codeclimate.com/github/lighttroupe/luz)
+
+My email address shows on the Luz main menu, and I welcome questions or ideas! -Ian
