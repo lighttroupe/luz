@@ -40,18 +40,18 @@ Here are some Luz 1 videos and tutorials (all the same concepts apply, only the 
 
 <https://www.youtube.com/user/superlighttube/videos?flow=grid&sort=da&view=0>
 
-# Running Luz
-
-Luz currently only runs on Linux.  (Help is welcome porting it to OSX and Windows.)
+# Installing Luz
 
 1. open a terminal
-2. sudo apt-get install git ruby ruby-dev ruby-pango libsdl2-dev libglw1-mesa-dev freeglut3-dev ruby-rmagick
-3. sudo gem install ruby-sdl2 syck opengl glu glut
-4. git clone https://github.com/lighttroupe/luz.git
-5. cd luz
+2. **sudo apt-get install git ruby ruby-dev ruby-pango libsdl2-dev libglw1-mesa-dev freeglut3-dev ruby-rmagick**
+3. **sudo gem install ruby-sdl2 syck opengl glu glut**
+4. **git clone https://github.com/lighttroupe/luz.git**
+5. **cd luz**
 6. Optionally run **./build.sh** in utils/webcam for the Webcam plugin.
 7. Optionally run **./build.sh** in utils/video_file for the Video plugin.
-8. ./go
+8. **./go**
+
+Luz currently only runs on Linux.  (Help is welcome porting it to OSX and Windows.)
 
 ## Running Input Manager and Spectrum Analyzer
 
