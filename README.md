@@ -62,8 +62,8 @@ Luz currently only runs on Linux.  (Help is welcome porting it to OSX and Window
 
 ## Luz Source Code
 
-Luz has simple, beautiful source code.  It's a good way to learn programming with Ruby.  Ruby is the most beautiful programming language!
-
 [![Code Climate](https://codeclimate.com/github/lighttroupe/luz.png)](https://codeclimate.com/github/lighttroupe/luz)
+
+Luz has simple, beautiful source code.  It's a good way to learn programming with Ruby.  Ruby is the most beautiful programming language!
 
 My email address shows on the Luz main menu, and I welcome questions or ideas! -Ian
