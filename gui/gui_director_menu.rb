@@ -89,6 +89,9 @@ class GuiDirectorMenu < GuiWindow
 				add_new_director!
 			when 'up'
 				close!
+			when 'right'
+				$gui.build_editor_for($engine.project)
+				close!
 			else
 				super
 			end
