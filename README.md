@@ -20,7 +20,7 @@ Luz can also be driven by OpenSoundControl sending software.
 
 Luz has provided interactive visuals at hundreds of venues, festivals, and house parties!
 
-Luz is perhaps the easiest way to meet people: "Have you tried this yet?" and hand them control of the projected visuals.
+Befriend people: "Have you tried this yet?" and hand them control of the projected visuals.
 
 Luz is written in Ruby and offloads all the heavy pixel pushing to ffmpeg, OpenGL, and your modern graphics card.
 
@@ -42,20 +42,21 @@ Here are some Luz 1 videos and tutorials (all the same concepts apply, only the 
 
 # Installing Luz
 
-1. open a terminal
-2. **sudo apt-get install git ruby ruby-dev ruby-pango libsdl2-dev libglw1-mesa-dev freeglut3-dev ruby-rmagick**
-3. **sudo gem install ruby-sdl2 syck opengl glu glut**
-4. **git clone https://github.com/lighttroupe/luz.git**
-5. **cd luz**
-6. Optionally run **./build.sh** in utils/webcam for the Webcam plugin.
-7. Optionally run **./build.sh** in utils/video_file for the Video plugin.
-8. **./go**
+Open a terminal and copy and paste in the following commands:
+
+1. **sudo apt-get install git ruby ruby-dev ruby-pango libsdl2-dev libglw1-mesa-dev freeglut3-dev ruby-rmagick**
+2. **sudo gem install ruby-sdl2 syck opengl glu glut**
+3. **git clone https://github.com/lighttroupe/luz.git**
+4. **cd luz**
+5. Optionally run **./build.sh** in utils/webcam for the Webcam plugin.
+6. Optionally run **./build.sh** in utils/video_file for the Video plugin.
+7. **./go**
 
 Luz currently only runs on Linux.  (Help is welcome porting it to OSX and Windows.)
 
 ## Running Input Manager and Spectrum Analyzer
 
-1. Install dependencies: **sudo apt-get install build-essential libx11-dev libxext-dev libxi-dev libbluetooth-dev libportmidi-dev libcwiid-dev liblo-dev libunique-dev libgtkmm-2.4-dev libasound2-dev libfftw3-dev libgtkmm-2.4-dev libgtkglextmm-x11-1.2-dev libgl1-mesa-dev libglu1-mesa-dev**
+1. Run **sudo apt-get install build-essential libx11-dev libxext-dev libxi-dev libbluetooth-dev libportmidi-dev libcwiid-dev liblo-dev libunique-dev libgtkmm-2.4-dev libasound2-dev libfftw3-dev libgtkmm-2.4-dev libgtkglextmm-x11-1.2-dev libgl1-mesa-dev libglu1-mesa-dev**
 
 2. Run **make** in the root directory to build Input Manager and Spectrum Analyzer.
 
