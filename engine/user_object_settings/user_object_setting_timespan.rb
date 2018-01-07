@@ -27,9 +27,11 @@ class UserObjectSettingTimespan < UserObjectSetting
 		return 1.0 if instant?
 
 		if @time_unit == :beats
+			return 0.0 if beat.nil?
 			elapsed = $env[:beat] - beat
 			(elapsed / @time_number).clamp(0.0, 1.0)
 		else
+			return 0.0 if time.nil?
 			elapsed = $env[:time] - time
 			elapsed = elapsed.abs		# NOTE: progress backwards in time works just as well
 			(elapsed / self.to_seconds).clamp(0.0, 1.0)
