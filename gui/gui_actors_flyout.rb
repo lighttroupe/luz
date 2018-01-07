@@ -105,6 +105,27 @@ class GuiActorsFlyout < GuiWindow
 		$gui.chosen_director.actors = @actors_list.map(&:object) if $gui.chosen_director
 		$engine.project_changed!
 	end
+	#def select_actor(actor)
+		#@actors_list.set_selection(renderer_for_actor(actor))
+	#end
+	#def renderer_for_actor(actor)
+		#@actors_list.each { |renderer|
+			#return renderer if renderer.object == actor
+		#}
+	#end
+
+	def select_next!
+		@actors_list.select_next!
+		@actors_list.scroll_to_selection!
+		renderer = @actors_list.selection.first
+		$gui.build_editor_for(renderer.object, :grab_keyboard_focus => true) if renderer		# NOTE: undoing above wrapping
+	end
+	def select_previous!
+		@actors_list.select_previous!
+		@actors_list.scroll_to_selection!
+		renderer = @actors_list.selection.first
+		$gui.build_editor_for(renderer.object, :grab_keyboard_focus => true) if renderer		# NOTE: undoing above wrapping
+	end
 
 	def create_renderer_for_actor(actor)
 		renderer = GuiActorRenderer.new(actor).set(:draggable => true, :background_image => $engine.load_image('images/overlay.png'))
