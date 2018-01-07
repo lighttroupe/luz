@@ -5,6 +5,7 @@ class	GuiEventInputRenderer < GuiChildUserObjectRenderer
 	def gui_render
 		gui_render_background
 		gui_render_label
+		gui_render_summary
 		gui_render_enable_checkbox
 	end
 

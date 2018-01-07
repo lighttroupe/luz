@@ -8,6 +8,7 @@ class	GuiVariableInputRenderer < GuiChildUserObjectRenderer
 		gui_render_background
 		gui_render_progress_bar if @object.enabled?
 		gui_render_label
+		gui_render_summary
 		gui_render_enable_checkbox
 	end
 
