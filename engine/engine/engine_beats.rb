@@ -1,4 +1,4 @@
-require 'beat_detector'
+multi_require 'beat_detector'
 
 module EngineBeats
 	def init_beats
