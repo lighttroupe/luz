@@ -6,16 +6,17 @@ class ActorEffectText < ActorEffect
 
 	categories :color
 
-	setting 'font', :font, :on_change => :not_drawn!
 	setting 'text', :string, :multiline => true, :on_change => :not_drawn!
+
+	setting 'font', :font, :on_change => :not_drawn!
 
 	#setting 'font_size', :float, :default => 0.1..1.0, :range => 0.0..1.0, :simple => true, :on_change => :not_drawn!
 
 	ALIGNMENT_OPTIONS = [[:left, 'Left'], [:center, 'Center'], [:right, 'Right']]
 	setting 'font_alignment', :select, :default => :center, :options => ALIGNMENT_OPTIONS, :on_change => :not_drawn!
 
-	setting 'border_left', :float, :default => 0.0..1.0, :range => -1000.0..1000.0, :on_change => :not_drawn!
-	setting 'border_top', :float, :default => 0.0..1.0, :range => -1000.0..1000.0, :on_change => :not_drawn!
+	#setting 'border_left', :float, :default => 0.0..1.0, :range => -1000.0..1000.0, :on_change => :not_drawn!
+	#setting 'border_top', :float, :default => 0.0..1.0, :range => -1000.0..1000.0, :on_change => :not_drawn!
 
 	setting 'lines', :integer, :default => 1..10, :range => 1..100, :on_change => :not_drawn!
 	setting 'line_spacing', :float, :default => 0.0..1.0, :range => -1.0..1.0, :simple => true, :on_change => :not_drawn!
