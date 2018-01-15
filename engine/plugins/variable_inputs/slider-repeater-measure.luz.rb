@@ -17,7 +17,7 @@ class VariableInputSliderLooperMeasure < VariableInput
 			@record_next_measure = false
 			@starting_measure = $env[:measure]
 			@starting_measure_scale = $env[:measure_scale]
-			@samples = Array.new
+			@samples = []
 		end
 
 		if @recording
@@ -30,7 +30,7 @@ class VariableInputSliderLooperMeasure < VariableInput
 				@recording = false
 			end
 
-			return @samples.last		# Pass-through the current value
+			@samples.last		# current value
 
 		else
 			#
@@ -38,7 +38,9 @@ class VariableInputSliderLooperMeasure < VariableInput
 			#
 			if @samples
 				progress = ($env[:measure_scale] + @starting_measure_scale) % 1.0
-				@samples[(progress * (@samples.size - 1)).floor]
+				index = (progress * (@samples.size - 1)).floor
+				#p "index #{index} for #{slider}"
+				@samples[index]
 			else
 				slider
 			end
