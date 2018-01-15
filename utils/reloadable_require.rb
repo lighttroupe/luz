@@ -55,6 +55,8 @@ module Kernel
 			@@loading_file_path = nil
 			return true
 		rescue Exception => e
+			$gui.positive_message "File Reload Failed" if $gui
+			puts "File Reload Failed - #{@@loading_file_path}:"
 			e.report
 			@@loading_file_path = nil
 			return false

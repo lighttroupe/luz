@@ -7,6 +7,7 @@ module EngineExceptions
 		rescue Exception => e
 			obj.crashy = true
 			puts sprintf("#{'#'*80}\nOops! The plugin shown below has caused an error and has stopped functioning:\n\n%s\nObject:%s\n#{'#'*80}\n", e.report_format, obj.title)
+			$gui.positive_message "Oops! An Exception"
 		end
 	end
 
