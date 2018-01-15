@@ -133,9 +133,11 @@ class GuiVariablesFlyout < GuiWindow
 				end
 			when 'return'
 				if @events_list.keyboard_focus?
-					$gui.build_editor_for(@events_list.selection.first)
+					renderer = @events_list.selection.first
+					$gui.build_editor_for(renderer.object, :grab_keyboard_focus => true) if renderer
 				elsif @variables_list.keyboard_focus?
-					$gui.build_editor_for(@variables_list.selection.first)
+					renderer = @variables_list.selection.first
+					$gui.build_editor_for(renderer.object, :grab_keyboard_focus => true) if renderer
 				end
 			else
 				super
