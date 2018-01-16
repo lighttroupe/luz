@@ -6,8 +6,11 @@
 class CairoFont
 	#easy_accessor :font, :string
 
+	CHARACTER_wIDTH = 64		# pixels
+	CHARACTER_HEIGHT = 128		# pixels
+
 	def render_to_image(string, font, width_in_characters, lines=1, text_align=:left)
-		@canvas ||= CairoCanvas.new(24 * width_in_characters, lines*150)		# HACK: arbitrary pixel size
+		@canvas ||= CairoCanvas.new(CHARACTER_wIDTH * width_in_characters, CHARACTER_HEIGHT * lines)		# HACK: arbitrary pixel size
 		@image ||= Image.new
 		render(string, font, size=1.0, width_in_characters, lines, text_align)
 		@image
