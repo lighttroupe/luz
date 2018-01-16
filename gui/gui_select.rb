@@ -2,15 +2,17 @@
 # GuiSelect is a non-popup selection from a list
 #
 class GuiSelect < GuiListSelect
+	DEFAULT_LABEL_WIDTH = 30		# in letters
+
 	def initialize(object, method, options)		# options is [[:one,'One'],[:two,'Two']]
 		super(object, method)
 		@options = options
 		@list = @options.map(&:first)		# keys
-		@selected_label = GuiLabel.new.set(:width => 10, :string => selected_label_text, :scale_x => 0.9)
+		@selected_label = GuiLabel.new.set(:width => DEFAULT_LABEL_WIDTH, :string => selected_label_text, :scale_x => 0.9)
 		@color = [0.6, 0.6, 1.0, 1.0]
 	end
 
-	pipe [:width=, :text_align=], :selected_label
+	pipe [:width=, :text_align=], :selected_label		# (label width override by parent)
 
 	#
 	# API
