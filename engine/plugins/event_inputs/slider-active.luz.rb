@@ -5,7 +5,7 @@ class EventInputSliderActive < EventInput
 	categories :slider
 
 	setting 'slider', :slider, :summary => true
-	setting 'seconds_after', :float, :simple => true, :summary => true, :range => 0.0..60.0 :default => 0.2..0.2
+	setting 'seconds_after', :float, :simple => true, :summary => true, :range => 0.0..60.0, :default => 0.2..0.2
 
 	def value
 		now = Time.now.to_f
