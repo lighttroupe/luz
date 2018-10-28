@@ -104,6 +104,7 @@ class Engine
 	end
 
 	def view_source(object)
+		return unless object
 		path = object.source_file_path
 		command_line(GuiDefault::OPEN_RUBY_FILE_COMMAND, path)
 	end
