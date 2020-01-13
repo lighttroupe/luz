@@ -1,8 +1,8 @@
 #
 # Image is a wrapper for an OpenGL Texture, with loading and sampling support.
 #
-RMAGICK_BYPASS_VERSION_TEST = true			# work around bug in rmagick-ruby for ubuntu 10.04
-require 'RMagick'
+#RMAGICK_BYPASS_VERSION_TEST = true			# work around bug in rmagick-ruby for ubuntu 10.04
+require 'rmagick'
 require 'drawing'
 
 class Image
