@@ -1,4 +1,4 @@
-class Fixnum
+class Numeric
 	def clamp(low, high)
 		return low if self <= low
 		return high if self >= high

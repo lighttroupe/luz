@@ -15,7 +15,7 @@ require 'reloadable_require'
 multi_require 'sdl2', 'opengl', 'glu', 'pathname', 'optparse', 'syck'
 include GL		# (we use GL methods in many places)
 include GLU
-multi_require 'boolean_accessor', 'method_piping', 'settings', 'vector3', 'easy_accessor', 'value_animation', 'value_animation_states', 'addons/dir', 'addons/array', 'addons/class', 'addons/dir', 'addons/exception', 'addons/fixnum', 'addons/float', 'addons/gl', 'addons/hash', 'addons/integer', 'addons/kernel', 'addons/module', 'addons/nil', 'addons/object', 'addons/object_space', 'addons/string'
+multi_require 'boolean_accessor', 'method_piping', 'settings', 'vector3', 'easy_accessor', 'value_animation', 'value_animation_states', 'addons/dir', 'addons/array', 'addons/class', 'addons/dir', 'addons/exception', 'addons/numeric', 'addons/float', 'addons/gl', 'addons/hash', 'addons/integer', 'addons/kernel', 'addons/module', 'addons/nil', 'addons/object', 'addons/object_space', 'addons/string'
 multi_require 'constants', 'drawing', 'sdl_application', 'luz_performer', 'engine', 'pointer', 'pointer_mouse', 'gui_default'
 
 # Settings file
