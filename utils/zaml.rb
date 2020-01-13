@@ -11,7 +11,7 @@
 # Authors: Markus Roberts, Jesse Hallett, Ian McIntosh, Igal Koshevoy, Simon Chiang
 #
 
-require 'yaml'
+#require 'yaml'
 
 class ZAML
     VERSION = "0.1.1"

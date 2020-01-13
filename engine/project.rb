@@ -1,4 +1,4 @@
-multi_require 'callbacks', 'project_effect', 'yaml', 'zaml'
+multi_require 'callbacks', 'project_effect', 'zaml'
 
 # For File.mv
 require 'fileutils'	# ruby 1.9
