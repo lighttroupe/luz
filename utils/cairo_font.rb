@@ -69,7 +69,7 @@ private
 
 					# multi-line mode with word wrapping
 					if lines > 1
-						layout.wrap = Pango::WRAP_WORD
+						layout.wrap = Pango::WrapMode::WORD
 						layout.width = actual_width_in_pixels.to_f * Pango::SCALE / horizontal_scale		# wrap at this width (in pango units)
 						layout.alignment = symbol_to_pango_align(text_align)
 					end

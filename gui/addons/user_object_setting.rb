@@ -11,6 +11,6 @@ class UserObjectSetting
 	end
 
 	def create_user_object_setting_name_label
-		@name_label ||= GuiLabel.new.set(:width => 15, :string => name.gsub('_',' '), :color => [1.0,1.0,1.0,1.0], :scale_x => 0.5, :scale_y => 0.35, :offset_x => -0.25, :offset_y => 0.5)
+		@name_label ||= GuiLabel.new.set(:width => 14, :string => name.gsub('_',' '), :color => [0.9,0.9,0.9,1.0], :scale_x => 0.6, :scale_y => 0.3, :offset_x => -0.2, :offset_y => 0.40)
 	end
 end
