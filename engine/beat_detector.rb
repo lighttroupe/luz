@@ -38,12 +38,20 @@ class BeatDetector
 		# Ignore cases of two beat signals very close together (plus it's just not reasonable to have beats as close as one frame apart)
 		return if (@last_tapped_beat_frame >= ($env[:frame_number] - 1))
 
-		@beats.shift
+		@beats.shift if @beats.count >= BEATS_FOR_CALCULATION
 		@beats.push(beat_time)
 
 		# Update beat time if the last N taps were very evenly spaced (likely-intentional beat tapping)
 		min, max, avg = @beats.delta_min_max_avg
-		@new_seconds_per_beat = avg if (max - min) <= ACCEPTABLE_BEAT_VARIATION
+		if (max - min) <= ACCEPTABLE_BEAT_VARIATION
+			# nearest BPM
+			new_seconds_per_beat = avg
+			new_beats_per_minute = (60.0 / new_seconds_per_beat)
+			new_beats_per_minute = new_beats_per_minute.round
+			self.beats_per_minute = new_beats_per_minute
+			# $gui.positive_message "new bpm #{new_beats_per_minute}"
+			# @new_seconds_per_beat = 60.0 /
+		end
 
 		@last_tapped_beat_time, @last_tapped_beat_frame = beat_time, $env[:frame_number]
 	end
@@ -52,8 +60,9 @@ class BeatDetector
 		60.0 / @seconds_per_beat	# TODO: could produce a 1/0 here ?
 	end
 
-	def beats_per_minute=(rhs)
-		@seconds_per_beat = 60.0 / rhs
+	def beats_per_minute=(bpm)
+		@seconds_per_beat = 60.0 / bpm
+		$gui.positive_message "#{bpm.to_i} BPM" if $gui
 	end
 
 	#
@@ -108,6 +117,8 @@ class BeatDetector
 			@seconds_per_beat /= divisor
 			@seconds_per_beat = 8.0 if @seconds_per_beat > 8.0
 			@seconds_per_beat = 0.1 if @seconds_per_beat < 0.1
+
+			# $gui.positive_message sprintf("new bpm %d", 60.0 / @seconds_per_beat)
 
 			@next_planned_beat_time = ((@next_planned_beat_time - @last_beat_time) / divisor) + @last_beat_time
 
