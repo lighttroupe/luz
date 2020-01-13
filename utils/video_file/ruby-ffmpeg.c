@@ -116,12 +116,12 @@ printf("%d, %d, %d, %d ...", video_file->fd, video_file->video_index, video_file
 	video_file->sws_context = sws_getContext(video_file->av_codec_context->width, video_file->av_codec_context->height,	// input size
 																video_file->av_codec_context->pix_fmt,
 																video_file->av_codec_context->width, video_file->av_codec_context->height,	// output size
-																PIX_FMT_RGB24, SWS_FAST_BILINEAR, 0, 0, 0 );
+																AV_PIX_FMT_RGB24, SWS_FAST_BILINEAR, 0, 0, 0 );
 
 	video_file->av_frame = av_frame_alloc();
 	video_file->av_frame_rgb = av_frame_alloc();
 
-	int buffer_size = avpicture_get_size(PIX_FMT_RGB24, video_file->av_codec_context->width, video_file->av_codec_context->height);
+	int buffer_size = avpicture_get_size(AV_PIX_FMT_RGB24, video_file->av_codec_context->width, video_file->av_codec_context->height);
 
 	char* temp_buffer = ALLOC_N(char, buffer_size);								// rb_str_new() sometimes segfaults with just ""
 	video_file->ruby_string_buffer = rb_str_new(temp_buffer, buffer_size);
@@ -131,7 +131,7 @@ printf("%d, %d, %d, %d ...", video_file->fd, video_file->video_index, video_file
 
 	// "Assign appropriate parts of buffer to image planes in av_frame_rgb"
 	// "Note that av_frame_rgb is an AVFrame, but AVFrame is a superset of AVPicture"
-	avpicture_fill((AVPicture *)(video_file->av_frame_rgb), RSTRING_PTR(video_file->ruby_string_buffer), PIX_FMT_RGB24, video_file->av_codec_context->width, video_file->av_codec_context->height);
+	avpicture_fill((AVPicture *)(video_file->av_frame_rgb), RSTRING_PTR(video_file->ruby_string_buffer), AV_PIX_FMT_RGB24, video_file->av_codec_context->width, video_file->av_codec_context->height);
 
 	video_file->frame_count = video_file->av_format_context->streams[video_file->video_index]->nb_frames;
 	if(video_file->frame_count == AV_NOPTS_VALUE) {
