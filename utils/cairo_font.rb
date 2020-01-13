@@ -116,7 +116,7 @@ private
 	end
 
 	def symbol_to_pango_align(sym)
-		{:left => Pango::ALIGN_LEFT, :center => Pango::ALIGN_CENTER, :right => Pango::ALIGN_RIGHT}[sym] || Pango::ALIGN_LEFT
+		{:left => Pango::Alignment::LEFT, :center => Pango::Alignment::CENTER, :right => Pango::Alignment::RIGHT}[sym] || Pango::Alignment::LEFT
 	end
 end
 
