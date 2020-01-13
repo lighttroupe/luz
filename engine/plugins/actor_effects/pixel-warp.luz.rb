@@ -11,16 +11,16 @@ class ActorEffectPixelWarp < ActorEffect
 	setting 'method', :select, :default => :warp_horizontal, :options => [[:bulge, 'Bulge'], [:boxes, 'Boxes'], [:warp_horizontal, 'Warp Horizontal'], [:warp_vertical, 'Warp Vertical']], :summary => true
 
 	WARP_BOXES = "
-		texture_st.s += amount * 0.2 * (cos((texture_st.s-0.5) * mix(1, 500, frequency)));
-		texture_st.t += amount * 0.2 * (cos((texture_st.t-0.5) * mix(1, 500, frequency)));
+		texture_st.s += amount * 0.2 * (cos((texture_st.s-0.5) * mix(1.0, 500.0, frequency)));
+		texture_st.t += amount * 0.2 * (cos((texture_st.t-0.5) * mix(1.0, 500.0, frequency)));
 	"
 
 	WARP_HORIZONTAL = "
-		texture_st.x += amount * 0.2 * (cos((texture_st.y-0.5) * mix(1, 500, frequency)));
+		texture_st.x += amount * 0.2 * (cos((texture_st.y-0.5) * mix(1.0, 500.0, frequency)));
 	"
 
 	WARP_VERTICAL = "
-		texture_st.y += amount * 0.2 * (cos((texture_st.x-0.5) * mix(1, 500, frequency)));
+		texture_st.y += amount * 0.2 * (cos((texture_st.x-0.5) * mix(1.0, 500.0, frequency)));
 	"
 
 	BULGE = "
